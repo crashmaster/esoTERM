@@ -179,13 +179,14 @@ describe("Test character information getters", function()
     -- }}}
 
     it("Get level XP for non-veteran character, value not cached", function()
+        local actual_xp = 321
         given_that_IsUnitVeteran_returns(false)
-        and_GetUnitXP_returns(123)
+        and_GetUnitXP_returns(actual_xp)
         when_get_character_level_xp_is_called()
         then_IsUnitVeteran_was_called_once_with("player")
         and_GetUnitXP_was_called_once_with("player")
-        and_the_returned_level_xp_was(123)
-        and_the_cached_character_level_xp_became(123)
+        and_the_returned_level_xp_was(actual_xp)
+        and_the_cached_character_level_xp_became(actual_xp)
     end)
 
     -- {{{
@@ -203,12 +204,13 @@ describe("Test character information getters", function()
     -- }}}
 
     it("Get level XP for veteran character, value not cached", function()
+        local actual_xp = 321
         given_that_IsUnitVeteran_returns(true)
-        and_GetUnitVeteranPoints_returns(321)
+        and_GetUnitVeteranPoints_returns(actual_xp)
         when_get_character_level_xp_is_called()
         then_IsUnitVeteran_was_called_once_with("player")
         and_GetUnitVeteranPoints_was_called_once_with("player")
-        and_the_returned_level_xp_was(321)
+        and_the_returned_level_xp_was(actual_xp)
     end)
 
     -- {{{
@@ -226,13 +228,15 @@ describe("Test character information getters", function()
     -- }}}
 
     it("Get level XP for non-veteran character, value cached", function()
+        local actual_xp = 2222
+        local cached_xp = 1111
         given_that_IsUnitVeteran_returns(false)
-        and_GetUnitXP_returns(2222)
-        and_cached_character_level_xp_is(1111)
+        and_GetUnitXP_returns(actual_xp)
+        and_cached_character_level_xp_is(cached_xp)
         when_get_character_level_xp_is_called()
         then_IsUnitVeteran_was_not_called()
         and_GetUnitXP_was_not_called()
-        and_the_returned_level_xp_was(1111)
+        and_the_returned_level_xp_was(cached_xp)
     end)
 
     -- {{{
@@ -241,26 +245,29 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Get level XP for veteran character, value cached", function()
+    it("Get cached level XP for veteran character", function()
+        local actual_xp = 2222
+        local cached_xp = 1111
         given_that_IsUnitVeteran_returns(true)
-        and_GetUnitVeteranPoints_returns(2222)
-        and_cached_character_level_xp_is(1111)
+        and_GetUnitVeteranPoints_returns(actual_xp)
+        and_cached_character_level_xp_is(cached_xp)
         when_get_character_level_xp_is_called()
         then_IsUnitVeteran_was_not_called()
         and_GetUnitVeteranPoints_was_not_called()
-        and_the_returned_level_xp_was(1111)
+        and_the_returned_level_xp_was(cached_xp)
     end)
 
     it("Get level XP for any character, reissue IsUnitVeteran", function()
+        local xp = 123
         given_that_IsUnitVeteran_returns(false)
-        and_GetUnitXP_returns(123)
+        and_GetUnitXP_returns(xp)
         and_cached_character_veteranness_is(false)
         when_get_character_level_xp_is_called()
         then_IsUnitVeteran_was_called_once_with("player")
         and_GetUnitXP_was_called_once_with("player")
         and_the_cached_character_veteranness_became(false)
-        and_the_returned_level_xp_was(123)
-        and_the_cached_character_level_xp_became(123)
+        and_the_returned_level_xp_was(xp)
+        and_the_cached_character_level_xp_became(xp)
     end)
 
     -- {{{
@@ -286,12 +293,13 @@ describe("Test character information getters", function()
     -- }}}
 
     it("Get level of non-veteran character, value not cached", function()
+        local level = 19
         given_that_IsUnitVeteran_returns(false)
-        and_GetUnitLevel_returns(19)
+        and_GetUnitLevel_returns(level)
         when_get_character_level_is_called()
         then_IsUnitVeteran_was_called_once_with("player")
         and_GetUnitLevel_was_called_once_with("player")
-        and_the_returned_level_was(19)
+        and_the_returned_level_was(level)
     end)
 
     -- {{{
@@ -309,12 +317,13 @@ describe("Test character information getters", function()
     -- }}}
 
     it("Get level of veteran character, value not cached", function()
+        local level = 2
         given_that_IsUnitVeteran_returns(true)
-        and_GetUnitVeteranRank_returns(2)
+        and_GetUnitVeteranRank_returns(level)
         when_get_character_level_is_called()
         then_IsUnitVeteran_was_called_once_with("player")
         and_GetUnitVeteranRank_was_called_once_with("player")
-        and_the_returned_level_was(2)
+        and_the_returned_level_was(level)
     end)
 end)
 
