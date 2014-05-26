@@ -1,0 +1,70 @@
+--
+-- Player Info Layout:
+--
+-- [#1] [#2], [#3] [#4], [#5] [#6], [#7] [#8]
+--
+-- Legend
+--  #1 - Alliance vs. Alliance (AvA.) Rank (e.g.: Sergeant)
+--  #2 - Character Name (e.g.: Hank)
+--  #3 - Level Information (e.g.: Veteran 3)
+--  #4 - Class (e.g.: Dragon Knight)
+--  #5 - Actual Level Experience / Maximal Level Experience (e.g.: 123 / 500)
+--  #6 - Last Experience Gain (e.g.: +72)
+--  #7 - Actual AvA. Experience / Maximal AvA Experience (e.g.: 321 / 800)
+--  #8 - Last AvA Experience Gain (e.g.: +8)
+--
+-- Not applicable information is skipped.
+--
+
+local pinfo = {}
+
+pinfo.PLAYER_UNIT_TAG = "player"
+
+function pinfo.get_character_name(character_info)
+    if character_info["name"] ~= nil then
+        return character_info["name"]
+    else
+        local name = GetUnitName(pinfo.PLAYER_UNIT_TAG)
+        character_info["name"] = name
+        return name
+    end
+end
+
+function pinfo.is_character_veteran(character_info)
+    if character_info["veteran"] ~= nil then
+        return character_info["veteran"]
+    else
+        local veteranness = IsUnitVeteran(pinfo.PLAYER_UNIT_TAG)
+        character_info["veteran"] = veteranness
+        return veteranness
+    end
+end
+
+function pinfo._get_character_level_xp(character_info)
+    if pinfo.is_character_veteran(character_info) == false then
+        return GetUnitXP(pinfo.PLAYER_UNIT_TAG)
+    else
+        return GetUnitVeteranPoints(pinfo.PLAYER_UNIT_TAG)
+    end
+end
+
+function pinfo.get_character_level_xp(character_info)
+    if character_info["level_xp"] ~= nil then
+        return character_info["level_xp"]
+    else
+        character_info["veteran"] = nil
+        local level_xp = pinfo._get_character_level_xp(character_info)
+        character_info["level_xp"] = level_xp
+        return level_xp
+    end
+end
+
+function pinfo.get_character_level(character_info)
+    if pinfo.is_character_veteran(character_info) == false then
+        return GetUnitLevel(pinfo.PLAYER_UNIT_TAG)
+    else
+        return GetUnitVeteranRank(pinfo.PLAYER_UNIT_TAG)
+    end
+end
+
+return pinfo
