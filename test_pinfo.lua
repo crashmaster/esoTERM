@@ -17,11 +17,11 @@ local function engage_spy_on_function(scope, function_name)
     spy.on(scope, function_name)
 end
 
-local function mock_function(function_name, return_value)
+local function mock_function(scope, function_name, return_value)
     local function_object = function(arg) return return_value end
-    update_function(GLOBAL, function_name, function_object)
-    engage_spy_on_function(GLOBAL, function_name)
-    MOCKED_FUNCTIONS[GLOBAL] = function_name
+    update_function(scope, function_name, function_object)
+    engage_spy_on_function(scope, function_name)
+    MOCKED_FUNCTIONS[scope] = function_name
 end
 
 local function recall_spy_from_function(scope, function_name)
@@ -61,14 +61,14 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_GetUnitName_returns(name)
-        mock_function("GetUnitName", name)
+        mock_function(GLOBAL, "GetUnitName", name)
     end
 
     local function and_cached_character_name_is_not_set()
         character_info["name"] = nil
     end
 
-    local function when_get_character_name_is_called()
+    local function when_get_character_name_is_called_with_character_info()
         results["character_name"] = pinfo.get_character_name(character_info)
     end
 
@@ -90,7 +90,7 @@ describe("Test character information getters", function()
         given_that_GetUnitName_returns(name_from_system)
             and_cached_character_name_is_not_set()
 
-        when_get_character_name_is_called()
+        when_get_character_name_is_called_with_character_info()
 
         then_the_returned_character_name_was(name_from_system)
             and_GetUnitName_was_called_once_with_player()
@@ -103,7 +103,7 @@ describe("Test character information getters", function()
     end
 
     local function and_GetUnitName_returns(name)
-        mock_function("GetUnitName", name)
+        mock_function(GLOBAL, "GetUnitName", name)
     end
 
     local function and_GetUnitName_was_not_called()
@@ -116,7 +116,7 @@ describe("Test character information getters", function()
         given_that_cached_character_name_is(name_from_cache)
             and_GetUnitName_returns(name_from_system)
 
-        when_get_character_name_is_called()
+        when_get_character_name_is_called_with_character_info()
 
         then_the_returned_character_name_was(name_from_cache)
             and_GetUnitName_was_not_called()
@@ -124,14 +124,14 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_IsUnitVeteran_returns(veteranness)
-        mock_function("IsUnitVeteran", veteranness)
+        mock_function(GLOBAL, "IsUnitVeteran", veteranness)
     end
 
     local function and_cached_character_veteranness_is_not_set()
         character_info["veteran"] = nil
     end
 
-    local function when_is_character_veteran_is_called()
+    local function when_is_character_veteran_is_called_with_character_info()
         results["veteranness"] = pinfo.is_character_veteran(character_info)
     end
 
@@ -153,7 +153,7 @@ describe("Test character information getters", function()
         given_that_IsUnitVeteran_returns(veteranness_from_system)
             and_cached_character_veteranness_is_not_set()
 
-        when_is_character_veteran_is_called()
+        when_is_character_veteran_is_called_with_character_info()
 
         then_the_returned_character_veteranness_was(veteranness_from_system)
             and_IsUnitVeteran_was_called_once_with_player()
@@ -166,7 +166,7 @@ describe("Test character information getters", function()
     end
 
     local function and_IsUnitVeteran_returns(veteranness)
-        mock_function("IsUnitVeteran", veteranness)
+        mock_function(GLOBAL, "IsUnitVeteran", veteranness)
     end
 
     local function and_IsUnitVeteran_was_not_called()
@@ -179,31 +179,35 @@ describe("Test character information getters", function()
         given_that_cached_character_veteranness_is(veteranness_from_cache)
             and_IsUnitVeteran_returns(veteranness_from_system)
 
-        when_is_character_veteran_is_called()
+        when_is_character_veteran_is_called_with_character_info()
 
         then_the_returned_character_veteranness_was(veteranness_from_cache)
             and_IsUnitVeteran_was_not_called()
     end)
 
     -- {{{
-    local function and_GetUnitXP_returns(level_xp)
-        mock_function("GetUnitXP", level_xp)
+    local function given_that_GetUnitXP_returns(level_xp)
+        mock_function(GLOBAL, "GetUnitXP", level_xp)
     end
 
-    local function when_get_character_level_xp_is_called()
+    local function and_is_character_veteran_returns(veteranness)
+        mock_function(pinfo, "is_character_veteran", veteranness)
+    end
+
+    local function when_get_character_level_xp_is_called_with_character_info()
         results["level_xp"] = pinfo.get_character_level_xp(character_info)
     end
 
-    local function then_is_character_veteran_was_called_once_with(parameter)
-        assert.spy(pinfo.is_character_veteran).was.called_with(parameter)
+    local function then_the_returned_level_xp_was(level_xp)
+        assert.is.equal(level_xp, results["level_xp"])
+    end
+
+    local function and_is_character_veteran_was_called_with_character_info()
+        assert.spy(pinfo.is_character_veteran).was.called_with(character_info)
     end
 
     local function and_GetUnitXP_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitXP).was.called_with("player")
-    end
-
-    local function and_the_returned_level_xp_was(level_xp)
-        assert.is.equal(level_xp, results["level_xp"])
     end
 
     local function and_the_cached_character_level_xp_became(xp)
@@ -211,72 +215,69 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("When level XP is not cached, than get it from the system",
+    it("When normal Level-Xp is not cached, than get it from the system",
     function()
-        given_that_IsUnitVeteran_returns(veteranness_from_system)
-            and_cached_character_veteranness_is_not_set()
-            and_GetUnitXP_returns(xp_from_system)
+        given_that_GetUnitXP_returns(xp_from_system)
+            and_is_character_veteran_returns(false)
 
-        when_get_character_level_xp_is_called()
+        when_get_character_level_xp_is_called_with_character_info()
 
-        then_IsUnitVeteran_was_called_once_with_player()
+        then_the_returned_level_xp_was(xp_from_system)
+            and_is_character_veteran_was_called_with_character_info()
             and_GetUnitXP_was_called_once_with_player()
-            and_the_returned_level_xp_was(xp_from_system)
             and_the_cached_character_level_xp_became(xp_from_system)
     end)
 
---  -- {{{
---  local function and_GetUnitVeteranPoints_returns(level_xp)
---      local function_name = "GetUnitVeteranPoints"
---      local function_object = function(tag) return level_xp end
---      update_function(GLOBAL, function_name, function_object)
---      engage_spy_on_function(GLOBAL, function_name)
---      fake_functions[GLOBAL] = function_name
---  end
+    -- {{{
+    local function given_that_GetUnitVeteranPoints_returns(level_xp)
+        mock_function(GLOBAL, "GetUnitVeteranPoints", level_xp)
+    end
 
---  local function and_GetUnitVeteranPoints_was_called_once_with_player()
---      assert.spy(GLOBAL.GetUnitVeteranPoints).was.called_with("player")
---  end
---  -- }}}
+    local function and_GetUnitVeteranPoints_was_called_once_with_player()
+        assert.spy(GLOBAL.GetUnitVeteranPoints).was.called_with("player")
+    end
+    -- }}}
 
---  it("Get level XP for veteran character, value not cached", function()
---      given_that_IsUnitVeteran_returns(true)
---          and_cached_character_veteranness_is_not_set()
---          and_GetUnitVeteranPoints_returns(xp_from_system)
+    it("When veteran Level-Xp is not cached, than get it from the system",
+    function()
+        given_that_GetUnitVeteranPoints_returns(xp_from_system)
+            and_is_character_veteran_returns(true)
 
---      when_get_character_level_xp_is_called()
+        when_get_character_level_xp_is_called_with_character_info()
 
---      then_IsUnitVeteran_was_called_once_with_player()
---          and_GetUnitVeteranPoints_was_called_once_with_player()
---          and_the_returned_level_xp_was(xp_from_system)
---  end)
+        then_the_returned_level_xp_was(xp_from_system)
+            and_is_character_veteran_was_called_with_character_info()
+            and_GetUnitVeteranPoints_was_called_once_with_player()
+            and_the_cached_character_level_xp_became(xp_from_system)
+    end)
 
---  -- {{{
---  local function and_cached_character_level_xp_is(xp)
---      character_info["level_xp"] = xp
---  end
+    -- {{{
+    local function and_cached_character_level_xp_is(xp)
+        character_info["level_xp"] = xp
+    end
 
---  local function then_is_character_veteran_was_not_called()
---      assert.spy(pinfo.is_character_veteran).was_not.called()
---  end
+    local function then_is_character_veteran_was_not_called()
+        assert.spy(pinfo.is_character_veteran).was_not.called()
+    end
 
---  local function and_GetUnitXP_was_not_called()
---      assert.spy(GLOBAL.GetUnitXP).was_not.called()
---  end
---  -- }}}
+    local function and_GetUnitXP_was_not_called()
+        assert.spy(GLOBAL.GetUnitXP).was_not.called()
+    end
+    -- }}}
 
---  it("Get level XP for non-veteran character, value cached", function()
---      given_that_IsUnitVeteran_returns(false)
---          and_cached_character_veteranness_is(false)
---          and_GetUnitXP_returns(xp_from_system)
---          and_cached_character_level_xp_is(xp_from_cache)
+    it("When normal Level-Xp is cached, than get that",
+    function()
+        given_that_IsUnitVeteran_returns(false)
+            and_cached_character_veteranness_is(false)
+            and_GetUnitXP_returns(xp_from_system)
+            and_cached_character_level_xp_is(xp_from_cache)
 
---      when_get_character_level_xp_is_called()
+        when_get_character_level_xp_is_called()
 
---      then_IsUnitVeteran_was_not_called()
---          and_GetUnitXP_was_not_called()
---          and_the_returned_level_xp_was(xp_from_cache)
---  end)
+        then_IsUnitVeteran_was_not_called()
+            and_GetUnitXP_was_not_called()
+            and_the_returned_level_xp_was(xp_from_cache)
+    end)
 
 --  -- {{{
 --  local function and_GetUnitVeteranPoints_was_not_called()
@@ -284,7 +285,7 @@ describe("Test character information getters", function()
 --  end
 --  -- }}}
 
---  it("Get cached level XP for veteran character", function()
+--  it("Get cached Level-Xp for veteran character", function()
 --      given_that_IsUnitVeteran_returns(true)
 --          and_GetUnitVeteranPoints_returns(xp_from_system)
 --          and_cached_character_level_xp_is(xp_from_cache)
@@ -296,7 +297,7 @@ describe("Test character information getters", function()
 --          and_the_returned_level_xp_was(xp_from_cache)
 --  end)
 
---  it("Get level XP for any character, reissue IsUnitVeteran", function()
+--  it("Get Level-Xp for any character, reissue IsUnitVeteran", function()
 --      given_that_IsUnitVeteran_returns(false)
 --          and_GetUnitXP_returns(xp_from_system)
 --          and_cached_character_veteranness_is(false)
