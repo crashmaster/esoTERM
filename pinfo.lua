@@ -52,18 +52,27 @@ function pinfo.get_character_level_xp(character_info)
     if character_info["level_xp"] ~= nil then
         return character_info["level_xp"]
     else
-        character_info["veteran"] = nil
         local level_xp = pinfo._get_character_level_xp(character_info)
         character_info["level_xp"] = level_xp
         return level_xp
     end
 end
 
-function pinfo.get_character_level(character_info)
+function pinfo._get_character_level(character_info)
     if pinfo.is_character_veteran(character_info) == false then
         return GetUnitLevel(pinfo.PLAYER_UNIT_TAG)
     else
         return GetUnitVeteranRank(pinfo.PLAYER_UNIT_TAG)
+    end
+end
+
+function pinfo.get_character_level(character_info)
+    if character_info["level"] ~= nil then
+        return character_info["level"]
+    else
+        local level = pinfo._get_character_level(character_info)
+        character_info["level"] = level
+        return level
     end
 end
 
