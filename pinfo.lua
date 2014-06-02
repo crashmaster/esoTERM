@@ -21,21 +21,21 @@ local pinfo = {}
 pinfo.PLAYER_UNIT_TAG = "player"
 
 function pinfo.get_character_name(character_info)
-    if character_info["name"] ~= nil then
-        return character_info["name"]
+    if character_info.name ~= nil then
+        return character_info.name
     else
         local name = GetUnitName(pinfo.PLAYER_UNIT_TAG)
-        character_info["name"] = name
+        character_info.name = name
         return name
     end
 end
 
 function pinfo.is_character_veteran(character_info)
-    if character_info["veteran"] ~= nil then
-        return character_info["veteran"]
+    if character_info.veteran ~= nil then
+        return character_info.veteran
     else
         local veteranness = IsUnitVeteran(pinfo.PLAYER_UNIT_TAG)
-        character_info["veteran"] = veteranness
+        character_info.veteran = veteranness
         return veteranness
     end
 end
@@ -49,11 +49,11 @@ function pinfo._get_character_level_xp(character_info)
 end
 
 function pinfo.get_character_level_xp(character_info)
-    if character_info["level_xp"] ~= nil then
-        return character_info["level_xp"]
+    if character_info.level_xp ~= nil then
+        return character_info.level_xp
     else
         local level_xp = pinfo._get_character_level_xp(character_info)
-        character_info["level_xp"] = level_xp
+        character_info.level_xp = level_xp
         return level_xp
     end
 end
@@ -67,12 +67,33 @@ function pinfo._get_character_level(character_info)
 end
 
 function pinfo.get_character_level(character_info)
-    if character_info["level"] ~= nil then
-        return character_info["level"]
+    if character_info.level ~= nil then
+        return character_info.level
     else
         local level = pinfo._get_character_level(character_info)
-        character_info["level"] = level
+        character_info.level = level
         return level
+    end
+end
+
+function pinfo.get_character_gender(character_info)
+    if character_info.gender ~= nil then
+        return character_info.gender
+    else
+        local gender = GetUnitGender(pinfo.PLAYER_UNIT_TAG)
+        character_info.gender = gender
+        return gender
+    end
+end
+
+function pinfo.get_character_ava_rank(character_info)
+    if character_info.ava_rank ~= nil then
+        return character_info.ava_rank
+    else
+        local ava_rank, ava_sub_rank = GetUnitAvARank(pinfo.PLAYER_UNIT_TAG)
+        character_info.ava_rank = ava_rank
+        character_info.ava_sub_rank = ava_sub_rank
+        return ava_rank, ava_sub_rank
     end
 end
 
