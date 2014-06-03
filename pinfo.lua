@@ -97,4 +97,16 @@ function pinfo.get_character_ava_rank(character_info)
     end
 end
 
+function pinfo.get_character_ava_rank_name(character_info)
+    if character_info.ava_rank_name ~= nil then
+        return character_info.ava_rank_name
+    else
+        local gender = pinfo.get_character_gender(character_info)
+        local rank = pinfo.get_character_ava_rank(character_info)
+        local rank_name = GetAvARankName(gender, rank)
+        character_info.ava_rank_name = rank_name
+        return rank_name
+    end
+end
+
 return pinfo

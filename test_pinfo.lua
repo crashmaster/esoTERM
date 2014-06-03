@@ -55,6 +55,8 @@ describe("Test character information getters", function()
     local char_rank_cache = 1
     local char_sub_rank_sys = 0
     local char_sub_rank_cache = 1
+    local char_rank_name_sys = "Novice"
+    local char_rank_name_cache = "General"
 
     setup(function()
         character_info = {}
@@ -548,6 +550,101 @@ describe("Test character information getters", function()
 
         then_the_returned_character_ava_rank_was(char_rank_cache)
             and_GetUnitAvARank_was_not_called()
+    end)
+
+    -- {{{
+    local function given_that_GetAvARankName_returns(name)
+        mock_function(GLOBAL, "GetAvARankName", name)
+    end
+
+    local function and_cached_character_ava_rank_name_is_not_set()
+        character_info["ava_rank_name"] = nil
+    end
+
+    local function and_get_character_gender_returns(gender)
+        mock_function(pinfo, "get_character_gender", gender)
+    end
+
+    local function and_get_character_ava_rank_returns(rank, sub_rank)
+        mock_function(pinfo, "get_character_ava_rank", rank, sub_rank)
+    end
+
+    local function when_get_character_ava_rank_name_is_called_with_character_info()
+        results["ava_rank_name"] = pinfo.get_character_ava_rank_name(character_info)
+    end
+
+    local function then_the_returned_character_ava_rank_name_was(rank, sub_rank)
+        assert.is.equal(rank, results["ava_rank_name"])
+    end
+
+    local function and_GetAvARankName_was_called_once_with(gender, rank)
+        assert.spy(GLOBAL.GetAvARankName).was.called_with(gender, rank)
+    end
+
+    local function and_get_character_gender_was_called_once_with_character_info()
+        assert.spy(pinfo.get_character_gender).was.called_with(character_info)
+    end
+
+    local function and_get_character_ava_rank_was_called_once_with_character_info()
+        assert.spy(pinfo.get_character_ava_rank).was.called_with(character_info)
+    end
+
+    local function and_the_cached_character_ava_rank_name_became(name)
+        assert.is.equal(name, character_info["ava_rank_name"])
+    end
+    -- }}}
+
+    it("Query AvA RANK-NAME of the characher from the system, when not cached",
+    function()
+        given_that_GetAvARankName_returns(char_rank_name_sys)
+            and_cached_character_ava_rank_name_is_not_set()
+            and_get_character_gender_returns(char_gender_cache)
+            and_get_character_ava_rank_returns(char_rank_cache, char_sub_rank_cache)
+
+        when_get_character_ava_rank_name_is_called_with_character_info()
+
+        then_the_returned_character_ava_rank_name_was(char_rank_name_sys)
+            and_GetAvARankName_was_called_once_with(char_gender_cache, char_rank_cache)
+            and_get_character_gender_was_called_once_with_character_info()
+            and_get_character_ava_rank_was_called_once_with_character_info()
+            and_the_cached_character_ava_rank_name_became(char_rank_name_sys)
+    end)
+
+    -- {{{
+    local function given_that_cached_character_ava_rank_name_is(name)
+        character_info["ava_rank_name"] = name
+    end
+
+    local function and_GetAvARankName_returns(name)
+        mock_function(GLOBAL, "GetAvARankName", name)
+    end
+
+    local function and_GetAvARankName_was_not_called()
+        assert.spy(GLOBAL.GetAvARankName).was_not.called()
+    end
+
+    local function and_get_character_gender_was_not_called()
+        assert.spy(pinfo.get_character_gender).was_not.called()
+    end
+
+    local function and_get_character_ava_rank_was_not_called()
+        assert.spy(pinfo.get_character_ava_rank).was_not.called()
+    end
+    -- }}}
+
+    it("Query AvA RANK-NAME of the characher from the cache",
+    function()
+        given_that_cached_character_ava_rank_name_is(char_rank_name_cache)
+            and_GetAvARankName_returns(char_rank_name_sys)
+            and_get_character_gender_returns(char_gender_cache)
+            and_get_character_ava_rank_returns(char_rank_cache, char_sub_rank_cache)
+
+        when_get_character_ava_rank_name_is_called_with_character_info()
+
+        then_the_returned_character_ava_rank_name_was(char_rank_name_cache)
+            and_GetAvARankName_was_not_called()
+            and_get_character_gender_was_not_called()
+            and_get_character_ava_rank_was_not_called()
     end)
 end)
 
