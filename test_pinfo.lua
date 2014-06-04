@@ -57,6 +57,8 @@ describe("Test character information getters", function()
     local char_sub_rank_cache = 1
     local char_rank_name_sys = "Novice"
     local char_rank_name_cache = "General"
+    local char_class_sys = "Mage"
+    local char_class_cache = "Warrior"
 
     setup(function()
         character_info = {}
@@ -78,15 +80,15 @@ describe("Test character information getters", function()
     end
 
     local function and_cached_character_name_is_not_set()
-        character_info["name"] = nil
+        character_info.name = nil
     end
 
     local function when_get_character_name_is_called_with_character_info()
-        results["name"] = pinfo.get_character_name(character_info)
+        results.name = pinfo.get_character_name(character_info)
     end
 
     local function then_the_returned_character_name_was(name)
-        assert.is.equal(name, results["name"])
+        assert.is.equal(name, results.name)
     end
 
     local function and_GetUnitName_was_called_once_with_player()
@@ -94,7 +96,7 @@ describe("Test character information getters", function()
     end
 
     local function and_the_cached_character_name_became(name)
-        assert.is.equal(name, character_info["name"])
+        assert.is.equal(name, character_info.name)
     end
     -- }}}
 
@@ -112,7 +114,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_cached_character_name_is(name)
-        character_info["name"] = name
+        character_info.name = name
     end
 
     local function and_GetUnitName_returns(name)
@@ -141,15 +143,15 @@ describe("Test character information getters", function()
     end
 
     local function and_cached_character_veteranness_is_not_set()
-        character_info["veteran"] = nil
+        character_info.veteran = nil
     end
 
     local function when_is_character_veteran_is_called_with_character_info()
-        results["veteran"] = pinfo.is_character_veteran(character_info)
+        results.veteran = pinfo.is_character_veteran(character_info)
     end
 
     local function then_the_returned_character_veteranness_was(veteranness)
-        assert.is.equal(veteranness, results["veteran"])
+        assert.is.equal(veteranness, results.veteran)
     end
 
     local function and_IsUnitVeteran_was_called_once_with_player()
@@ -157,7 +159,7 @@ describe("Test character information getters", function()
     end
 
     local function and_the_cached_character_veteranness_became(veteranness)
-        assert.is.equal(veteranness, character_info["veteran"])
+        assert.is.equal(veteranness, character_info.veteran)
     end
     -- }}}
 
@@ -175,7 +177,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_cached_character_veteranness_is(veteranness)
-        character_info["veteran"] = veteranness
+        character_info.veteran = veteranness
     end
 
     local function and_IsUnitVeteran_returns(veteranness)
@@ -204,7 +206,7 @@ describe("Test character information getters", function()
     end
 
     local function and_cached_character_level_xp_is_not_set()
-        character_info["level_xp"] = nil
+        character_info.level_xp = nil
     end
 
     local function and_is_character_veteran_returns(veteranness)
@@ -212,11 +214,11 @@ describe("Test character information getters", function()
     end
 
     local function when_get_character_level_xp_is_called_with_character_info()
-        results["level_xp"] = pinfo.get_character_level_xp(character_info)
+        results.level_xp = pinfo.get_character_level_xp(character_info)
     end
 
     local function then_the_returned_level_xp_was(level_xp)
-        assert.is.equal(level_xp, results["level_xp"])
+        assert.is.equal(level_xp, results.level_xp)
     end
 
     local function and_is_character_veteran_was_called_with_character_info()
@@ -228,7 +230,7 @@ describe("Test character information getters", function()
     end
 
     local function and_the_cached_character_level_xp_became(xp)
-        assert.is.equal(xp, character_info["level_xp"])
+        assert.is.equal(xp, character_info.level_xp)
     end
     -- }}}
 
@@ -272,7 +274,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_cached_character_level_xp_is(xp)
-        character_info["level_xp"] = xp
+        character_info.level_xp = xp
     end
 
     local function and_GetUnitXP_returns(xp)
@@ -324,15 +326,15 @@ describe("Test character information getters", function()
     end
 
     local function and_cached_character_level_is_not_set()
-        character_info["level"] = nil
+        character_info.level = nil
     end
 
     local function when_get_character_level_is_called_with_character_info()
-        results["level"] = pinfo.get_character_level(character_info)
+        results.level = pinfo.get_character_level(character_info)
     end
 
     local function then_the_returned_level_was(level)
-        assert.is.equal(level, results["level"])
+        assert.is.equal(level, results.level)
     end
 
     local function and_GetUnitLevel_was_called_once_with_player()
@@ -376,7 +378,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_cached_character_level_is(lvl)
-        character_info["level"] = lvl
+        character_info.level = lvl
     end
 
     local function and_GetUnitLevel_returns(lvl)
@@ -428,15 +430,15 @@ describe("Test character information getters", function()
     end
 
     local function and_cached_character_gender_is_not_set()
-        character_info["gender"] = nil
+        character_info.gender = nil
     end
 
     local function when_get_character_gender_is_called_with_character_info()
-        results["gender"] = pinfo.get_character_gender(character_info)
+        results.gender = pinfo.get_character_gender(character_info)
     end
 
     local function then_the_returned_character_gender_was(gender)
-        assert.is.equal(gender, results["gender"])
+        assert.is.equal(gender, results.gender)
     end
 
     local function and_GetUnitGender_was_called_once_with_player()
@@ -444,7 +446,7 @@ describe("Test character information getters", function()
     end
 
     local function and_the_cached_character_gender_became(gender)
-        assert.is.equal(gender, character_info["gender"])
+        assert.is.equal(gender, character_info.gender)
     end
     -- }}}
 
@@ -462,7 +464,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_cached_character_gender_is(gender)
-        character_info["gender"] = gender
+        character_info.gender = gender
     end
 
     local function and_GetUnitGender_returns(gender)
@@ -491,17 +493,17 @@ describe("Test character information getters", function()
     end
 
     local function and_cached_character_ava_rank_is_not_set()
-        character_info["ava_rank"] = nil
-        character_info["ava_sub_rank"] = nil
+        character_info.ava_rank = nil
+        character_info.ava_sub_rank = nil
     end
 
     local function when_get_character_ava_rank_is_called_with_character_info()
-        results["ava_rank"], results["ava_sub_rank"] = pinfo.get_character_ava_rank(character_info)
+        results.ava_rank, results.ava_sub_rank = pinfo.get_character_ava_rank(character_info)
     end
 
     local function then_the_returned_character_ava_rank_was(rank, sub_rank)
-        assert.is.equal(rank, results["ava_rank"])
-        assert.is.equal(sub_rank, results["ava_sub_rank"])
+        assert.is.equal(rank, results.ava_rank)
+        assert.is.equal(sub_rank, results.ava_sub_rank)
     end
 
     local function and_GetUnitAvARank_was_called_once_with_player()
@@ -509,8 +511,8 @@ describe("Test character information getters", function()
     end
 
     local function and_the_cached_character_ava_rank_became(rank, sub_rank)
-        assert.is.equal(rank, character_info["ava_rank"])
-        assert.is.equal(sub_rank, character_info["ava_sub_rank"])
+        assert.is.equal(rank, character_info.ava_rank)
+        assert.is.equal(sub_rank, character_info.ava_sub_rank)
     end
     -- }}}
 
@@ -528,8 +530,8 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_cached_character_ava_rank_is(rank, sub_rank)
-        character_info["ava_rank"] = rank
-        character_info["ava_sub_rank"] = sub_rank
+        character_info.ava_rank = rank
+        character_info.ava_sub_rank = sub_rank
     end
 
     local function and_GetUnitAvARank_returns(rank, sub_rank)
@@ -558,7 +560,7 @@ describe("Test character information getters", function()
     end
 
     local function and_cached_character_ava_rank_name_is_not_set()
-        character_info["ava_rank_name"] = nil
+        character_info.ava_rank_name = nil
     end
 
     local function and_get_character_gender_returns(gender)
@@ -570,11 +572,11 @@ describe("Test character information getters", function()
     end
 
     local function when_get_character_ava_rank_name_is_called_with_character_info()
-        results["ava_rank_name"] = pinfo.get_character_ava_rank_name(character_info)
+        results.ava_rank_name = pinfo.get_character_ava_rank_name(character_info)
     end
 
     local function then_the_returned_character_ava_rank_name_was(rank, sub_rank)
-        assert.is.equal(rank, results["ava_rank_name"])
+        assert.is.equal(rank, results.ava_rank_name)
     end
 
     local function and_GetAvARankName_was_called_once_with(gender, rank)
@@ -590,7 +592,7 @@ describe("Test character information getters", function()
     end
 
     local function and_the_cached_character_ava_rank_name_became(name)
-        assert.is.equal(name, character_info["ava_rank_name"])
+        assert.is.equal(name, character_info.ava_rank_name)
     end
     -- }}}
 
@@ -612,7 +614,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_cached_character_ava_rank_name_is(name)
-        character_info["ava_rank_name"] = name
+        character_info.ava_rank_name = name
     end
 
     local function and_GetAvARankName_returns(name)
@@ -645,6 +647,69 @@ describe("Test character information getters", function()
             and_GetAvARankName_was_not_called()
             and_get_character_gender_was_not_called()
             and_get_character_ava_rank_was_not_called()
+    end)
+
+    -- {{{
+    local function given_that_GetUnitClass_returns(class)
+        mock_function(GLOBAL, "GetUnitClass", class)
+    end
+
+    local function and_cached_character_class_is_not_set()
+        character_info.class = nil
+    end
+
+    local function when_get_character_class_is_called_with_character_info()
+        results.class = pinfo.get_character_class(character_info)
+    end
+
+    local function then_the_returned_character_class_was(class)
+        assert.is.equal(class, results.class)
+    end
+
+    local function and_GetUnitClass_was_called_once_with_player()
+        assert.spy(GLOBAL.GetUnitClass).was.called_with("player")
+    end
+
+    local function and_the_cached_character_class_became(class)
+        assert.is.equal(class, character_info.class)
+    end
+    -- }}}
+
+    it("Query CLASS of the character from the system, when not cached",
+    function()
+        given_that_GetUnitClass_returns(char_class_sys)
+            and_cached_character_class_is_not_set()
+
+        when_get_character_class_is_called_with_character_info()
+
+        then_the_returned_character_class_was(char_class_sys)
+            and_GetUnitClass_was_called_once_with_player()
+            and_the_cached_character_class_became(char_class_sys)
+    end)
+
+    -- {{{
+    local function given_that_cached_character_class_is(class)
+        character_info.class = class
+    end
+
+    local function and_GetUnitClass_returns(class)
+        mock_function(GLOBAL, "GetUnitClass", class)
+    end
+
+    local function and_GetUnitClass_was_not_called()
+        assert.spy(GLOBAL.GetUnitClass).was_not.called()
+    end
+    -- }}}
+
+    it("Query CLASS of the character from the cache",
+    function()
+        given_that_cached_character_class_is(char_class_cache)
+            and_GetUnitClass_returns(char_class_sys)
+
+        when_get_character_class_is_called_with_character_info()
+
+        then_the_returned_character_class_was(char_class_cache)
+            and_GetUnitClass_was_not_called()
     end)
 end)
 

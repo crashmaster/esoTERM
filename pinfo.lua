@@ -3,8 +3,8 @@
 --
 -- [#1] [#2], [#3] [#4], [#5] [#6] [#7], [#8] [#9] [#10]
 --
--- Legend
---  #1  - Alliance vs. Alliance (AvA.) Rank (e.g.: Sergeant)
+-- Legend:
+--  #1  - Alliance vs. Alliance (AvA.) Rank Name (e.g.: Sergeant)
 --  #2  - Character Name (e.g.: Hank)
 --  #3  - Level Information (e.g.: Veteran 3)
 --  #4  - Class (e.g.: Dragon Knight)
@@ -108,6 +108,16 @@ function pinfo.get_character_ava_rank_name(character_info)
         local rank_name = GetAvARankName(gender, rank)
         character_info.ava_rank_name = rank_name
         return rank_name
+    end
+end
+
+function pinfo.get_character_class(character_info)
+    if character_info.class ~= nil then
+        return character_info.class
+    else
+        local class = GetUnitClass(pinfo.PLAYER_UNIT_TAG)
+        character_info.class = class
+        return class
     end
 end
 
