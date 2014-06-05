@@ -731,7 +731,7 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query NON-VETERAN CHARACTER LEVEL-XP from the SYSTEM, when not cached",
+    it("Query NON-VETERAN CHARACTER LEVEL-XP MAX from the SYSTEM, when not cached",
     function()
         given_that_GetUnitXPMax_returns(1)
             and_cached_character_level_xp_max_is_not_set()
@@ -755,7 +755,7 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query VETERAN CHARACTER LEVEL-XP from the SYSTEM, when not cached",
+    it("Query VETERAN CHARACTER LEVEL-XP MAX from the SYSTEM, when not cached",
     function()
         given_that_GetUnitVeteranPointsMax_returns(1)
             and_cached_character_level_xp_max_is_not_set()
@@ -783,7 +783,7 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query NON-VETERAN CHARACTER LEVEL-XP from the CACHE",
+    it("Query NON-VETERAN CHARACTER LEVEL-XP MAX from the CACHE",
     function()
         given_that_cached_character_level_xp_max_is(0)
             and_GetUnitXPMax_returns(1)
@@ -806,7 +806,7 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query VETERAN CHARACTER LEVEL-XP from the CACHE",
+    it("Query VETERAN CHARACTER LEVEL-XP MAX from the CACHE",
     function()
         given_that_cached_character_level_xp_max_is(0)
             and_GetUnitVeteranPointsMax_returns(1)
