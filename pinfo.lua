@@ -139,4 +139,10 @@ function pinfo.get_character_level_xp_max(character_info)
     end
 end
 
+function pinfo.get_character_level_xp_percent(character_info)
+    local level_xp_max = pinfo.get_character_level_xp_max(character_info)
+    local level_xp = pinfo.get_character_level_xp(character_info)
+    return level_xp * 100 / level_xp_max
+end
+
 return pinfo

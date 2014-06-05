@@ -818,6 +818,44 @@ describe("Test character information getters", function()
             and_is_character_veteran_was_not_called()
             and_GetUnitVeteranPointsMax_was_not_called()
     end)
+
+    -- {{{
+    local function given_that_get_character_level_xp_returns(level_xp)
+        mock_function(pinfo, "get_character_level_xp", level_xp)
+    end
+
+    local function and_that_get_character_level_xp_max_returns(level_xp_max)
+        mock_function(pinfo, "get_character_level_xp_max", level_xp_max)
+    end
+
+    local function when_get_character_level_xp_percent_is_called_with_character_info()
+        results.level_xp_percent = pinfo.get_character_level_xp_percent(character_info)
+    end
+
+    local function then_the_returned_level_xp_percent_was(level_xp_percent)
+        assert.is.equal(level_xp_percent, results.level_xp_percent)
+    end
+
+    local function and_get_character_level_xp_was_called_with_character_info()
+        assert.spy(pinfo.get_character_level_xp).was.called_with(character_info)
+    end
+
+    local function and_get_character_level_xp_max_was_called_with_character_info()
+        assert.spy(pinfo.get_character_level_xp_max).was.called_with(character_info)
+    end
+    -- }}}
+
+    it("Query CHARACTER LEVEL-XP PERCENT",
+    function()
+        given_that_get_character_level_xp_returns(82)
+            and_that_get_character_level_xp_max_returns(500)
+
+        when_get_character_level_xp_percent_is_called_with_character_info()
+
+        then_the_returned_level_xp_percent_was(16.4)
+            and_get_character_level_xp_was_called_with_character_info()
+            and_get_character_level_xp_max_was_called_with_character_info()
+    end)
 end)
 
 -- vim:fdm=marker
