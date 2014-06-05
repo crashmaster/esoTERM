@@ -41,25 +41,6 @@ describe("Test character information getters", function()
     local character_info = nil
     local results = nil
 
-    local char_name_sys = "John"
-    local char_name_cache = "Jeff"
-    local char_vet_sys = false
-    local char_vet_cache = true
-    local char_lvl_xp_sys = 0
-    local char_lvl_xp_cache = 1
-    local char_lvl_sys = 0
-    local char_lvl_cache = 1
-    local char_gender_sys = 0
-    local char_gender_cache = 1
-    local char_rank_sys = 0
-    local char_rank_cache = 1
-    local char_sub_rank_sys = 0
-    local char_sub_rank_cache = 1
-    local char_rank_name_sys = "Novice"
-    local char_rank_name_cache = "General"
-    local char_class_sys = "Mage"
-    local char_class_cache = "Warrior"
-
     setup(function()
         character_info = {}
         results = {}
@@ -100,16 +81,16 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query NAME of the character from the system, when not cached",
+    it("Query CHARACTER NAME from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitName_returns(char_name_sys)
+        given_that_GetUnitName_returns("Hank")
             and_cached_character_name_is_not_set()
 
         when_get_character_name_is_called_with_character_info()
 
-        then_the_returned_character_name_was(char_name_sys)
+        then_the_returned_character_name_was("Hank")
             and_GetUnitName_was_called_once_with_player()
-            and_the_cached_character_name_became(char_name_sys)
+            and_the_cached_character_name_became("Hank")
     end)
 
     -- {{{
@@ -126,14 +107,14 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query NAME of the character from the cache",
+    it("Query CHARACTER NAME from the CACHE",
     function()
-        given_that_cached_character_name_is(char_name_cache)
-            and_GetUnitName_returns(char_name_sys)
+        given_that_cached_character_name_is("Jeff")
+            and_GetUnitName_returns("Hank")
 
         when_get_character_name_is_called_with_character_info()
 
-        then_the_returned_character_name_was(char_name_cache)
+        then_the_returned_character_name_was("Jeff")
             and_GetUnitName_was_not_called()
     end)
 
@@ -163,16 +144,16 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query VETERAN-NESS of the character from the system, when not cached",
+    it("Query CHARACTER VETERAN-NESS from the SYSTEM, when not cached",
     function()
-        given_that_IsUnitVeteran_returns(char_vet_sys)
+        given_that_IsUnitVeteran_returns(true)
             and_cached_character_veteranness_is_not_set()
 
         when_is_character_veteran_is_called_with_character_info()
 
-        then_the_returned_character_veteranness_was(char_vet_sys)
+        then_the_returned_character_veteranness_was(true)
             and_IsUnitVeteran_was_called_once_with_player()
-            and_the_cached_character_veteranness_became(char_vet_sys)
+            and_the_cached_character_veteranness_became(true)
     end)
 
     -- {{{
@@ -189,14 +170,14 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query VETERAN-NESS of the character from the cache",
+    it("Query CHARACTER VETERAN-NESS from the CACHE",
     function()
-        given_that_cached_character_veteranness_is(char_vet_cache)
-            and_IsUnitVeteran_returns(char_vet_sys)
+        given_that_cached_character_veteranness_is(false)
+            and_IsUnitVeteran_returns(true)
 
         when_is_character_veteran_is_called_with_character_info()
 
-        then_the_returned_character_veteranness_was(char_vet_cache)
+        then_the_returned_character_veteranness_was(false)
             and_IsUnitVeteran_was_not_called()
     end)
 
@@ -234,18 +215,18 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query LEVEL-XP of the non-veteran character from the system, when not cached",
+    it("Query NON-VETERAN CHARACTER LEVEL-XP from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitXP_returns(char_lvl_xp_sys)
+        given_that_GetUnitXP_returns(1)
             and_cached_character_level_xp_is_not_set()
             and_is_character_veteran_returns(false)
 
         when_get_character_level_xp_is_called_with_character_info()
 
-        then_the_returned_level_xp_was(char_lvl_xp_sys)
+        then_the_returned_level_xp_was(1)
             and_is_character_veteran_was_called_with_character_info()
             and_GetUnitXP_was_called_once_with_player()
-            and_the_cached_character_level_xp_became(char_lvl_xp_sys)
+            and_the_cached_character_level_xp_became(1)
     end)
 
     -- {{{
@@ -258,18 +239,18 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query LEVEL-XP of the veteran character from the system, when not cached",
+    it("Query VETERAN CHARACTER LEVEL-XP from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitVeteranPoints_returns(char_lvl_xp_sys)
+        given_that_GetUnitVeteranPoints_returns(1)
             and_cached_character_level_xp_is_not_set()
             and_is_character_veteran_returns(true)
 
         when_get_character_level_xp_is_called_with_character_info()
 
-        then_the_returned_level_xp_was(char_lvl_xp_sys)
+        then_the_returned_level_xp_was(1)
             and_is_character_veteran_was_called_with_character_info()
             and_GetUnitVeteranPoints_was_called_once_with_player()
-            and_the_cached_character_level_xp_became(char_lvl_xp_sys)
+            and_the_cached_character_level_xp_became(1)
     end)
 
     -- {{{
@@ -286,15 +267,15 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query LEVEL-XP of the non-veteran character from the cache",
+    it("Query NON-VETERAN CHARACTER LEVEL-XP from the CACHE",
     function()
-        given_that_cached_character_level_xp_is(char_lvl_xp_cache)
-            and_GetUnitXP_returns(char_lvl_xp_sys)
+        given_that_cached_character_level_xp_is(0)
+            and_GetUnitXP_returns(1)
             and_is_character_veteran_returns(false)
 
         when_get_character_level_xp_is_called_with_character_info()
 
-        then_the_returned_level_xp_was(char_lvl_xp_cache)
+        then_the_returned_level_xp_was(0)
             and_GetUnitXP_was_not_called()
     end)
 
@@ -308,15 +289,15 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query LEVEL-XP of the veteran character from the cache",
+    it("Query VETERAN CHARACTER LEVEL-XP from the CACHE",
     function()
-        given_that_cached_character_level_xp_is(char_lvl_xp_cache)
-            and_GetUnitVeteranPoints_returns(char_lvl_xp_sys)
+        given_that_cached_character_level_xp_is(0)
+            and_GetUnitVeteranPoints_returns(1)
             and_is_character_veteran_returns(true)
 
         when_get_character_level_xp_is_called_with_character_info()
 
-        then_the_returned_level_xp_was(char_lvl_xp_cache)
+        then_the_returned_level_xp_was(0)
             and_GetUnitVeteranPoints_was_not_called()
     end)
 
@@ -342,15 +323,15 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query LEVEL of the non-veteran character from the system, when not cached",
+    it("Query NON-VETERAN CHARACTER LEVEL from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitLevel_returns(char_lvl_sys)
+        given_that_GetUnitLevel_returns(1)
             and_cached_character_level_is_not_set()
             and_is_character_veteran_returns(false)
 
         when_get_character_level_is_called_with_character_info()
 
-        then_the_returned_level_was(char_lvl_sys)
+        then_the_returned_level_was(1)
             and_GetUnitLevel_was_called_once_with_player()
     end)
 
@@ -364,15 +345,15 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query LEVEL of the veteran character from the system, when not cached",
+    it("Query VETERAN CHARACTER LEVEL from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitVeteranRank_returns(char_lvl_sys)
+        given_that_GetUnitVeteranRank_returns(1)
             and_cached_character_level_is_not_set()
             and_is_character_veteran_returns(true)
 
         when_get_character_level_is_called_with_character_info()
 
-        then_the_returned_level_was(char_lvl_sys)
+        then_the_returned_level_was(1)
             and_GetUnitVeteranRank_was_called_once_with_player()
     end)
 
@@ -390,15 +371,15 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query LEVEL of the non-veteran character from the cache",
+    it("Query NON-VETERAN CHARACTER LEVEL from the CACHE",
     function()
-        given_that_cached_character_level_is(char_lvl_cache)
-            and_GetUnitLevel_returns(char_lvl_sys)
+        given_that_cached_character_level_is(0)
+            and_GetUnitLevel_returns(1)
             and_is_character_veteran_returns(false)
 
         when_get_character_level_is_called_with_character_info()
 
-        then_the_returned_level_was(char_lvl_cache)
+        then_the_returned_level_was(0)
             and_GetUnitLevel_was_not_called()
     end)
 
@@ -412,15 +393,15 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query LEVEL of the veteran character from the cache",
+    it("Query VETERAN CHARACTER LEVEL from the CACHE",
     function()
-        given_that_cached_character_level_is(char_lvl_cache)
-            and_GetUnitVeteranRank_returns(char_lvl_sys)
+        given_that_cached_character_level_is(0)
+            and_GetUnitVeteranRank_returns(1)
             and_is_character_veteran_returns(true)
 
         when_get_character_level_is_called_with_character_info()
 
-        then_the_returned_level_was(char_lvl_cache)
+        then_the_returned_level_was(0)
             and_GetUnitVeteranRank_was_not_called()
     end)
 
@@ -450,16 +431,16 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query GENDER of the character from the system, when not cached",
+    it("Query CHARACTER GENDER from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitGender_returns(char_gender_sys)
+        given_that_GetUnitGender_returns(1)
             and_cached_character_gender_is_not_set()
 
         when_get_character_gender_is_called_with_character_info()
 
-        then_the_returned_character_gender_was(char_gender_sys)
+        then_the_returned_character_gender_was(1)
             and_GetUnitGender_was_called_once_with_player()
-            and_the_cached_character_gender_became(char_gender_sys)
+            and_the_cached_character_gender_became(1)
     end)
 
     -- {{{
@@ -476,14 +457,14 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query GENDER of the character from the cache",
+    it("Query CHARACTER GENDER from the CACHE",
     function()
-        given_that_cached_character_gender_is(char_gender_cache)
-            and_GetUnitGender_returns(char_gender_sys)
+        given_that_cached_character_gender_is(0)
+            and_GetUnitGender_returns(1)
 
         when_get_character_gender_is_called_with_character_info()
 
-        then_the_returned_character_gender_was(char_gender_cache)
+        then_the_returned_character_gender_was(0)
             and_GetUnitGender_was_not_called()
     end)
 
@@ -516,16 +497,16 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query AvA RANK of the character from the system, when not cached",
+    it("Query CHARACTER AvA RANK from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitAvARank_returns(char_rank_sys, char_sub_rank_sys)
+        given_that_GetUnitAvARank_returns(1, 1)
             and_cached_character_ava_rank_is_not_set()
 
         when_get_character_ava_rank_is_called_with_character_info()
 
-        then_the_returned_character_ava_rank_was(char_rank_sys, char_sub_rank_sys)
+        then_the_returned_character_ava_rank_was(1, 1)
             and_GetUnitAvARank_was_called_once_with_player()
-            and_the_cached_character_ava_rank_became(char_rank_sys, char_sub_rank_sys)
+            and_the_cached_character_ava_rank_became(1, 1)
     end)
 
     -- {{{
@@ -543,14 +524,14 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query AvA RANK of the character from the cache",
+    it("Query CHARACTER AvA RANK from the CACHE",
     function()
-        given_that_cached_character_ava_rank_is(char_rank_cache)
-            and_GetUnitAvARank_returns(char_rank_sys, char_sub_rank_sys)
+        given_that_cached_character_ava_rank_is(0)
+            and_GetUnitAvARank_returns(1, 1)
 
         when_get_character_ava_rank_is_called_with_character_info()
 
-        then_the_returned_character_ava_rank_was(char_rank_cache)
+        then_the_returned_character_ava_rank_was(0)
             and_GetUnitAvARank_was_not_called()
     end)
 
@@ -596,20 +577,20 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query AvA RANK-NAME of the characher from the system, when not cached",
+    it("Query CHARACHER AvA RANK-NAME from the SYSTEM, when not cached",
     function()
-        given_that_GetAvARankName_returns(char_rank_name_sys)
+        given_that_GetAvARankName_returns("General")
             and_cached_character_ava_rank_name_is_not_set()
-            and_get_character_gender_returns(char_gender_cache)
-            and_get_character_ava_rank_returns(char_rank_cache, char_sub_rank_cache)
+            and_get_character_gender_returns(0)
+            and_get_character_ava_rank_returns(0, 0)
 
         when_get_character_ava_rank_name_is_called_with_character_info()
 
-        then_the_returned_character_ava_rank_name_was(char_rank_name_sys)
-            and_GetAvARankName_was_called_once_with(char_gender_cache, char_rank_cache)
+        then_the_returned_character_ava_rank_name_was("General")
+            and_GetAvARankName_was_called_once_with(0, 0)
             and_get_character_gender_was_called_once_with_character_info()
             and_get_character_ava_rank_was_called_once_with_character_info()
-            and_the_cached_character_ava_rank_name_became(char_rank_name_sys)
+            and_the_cached_character_ava_rank_name_became("General")
     end)
 
     -- {{{
@@ -634,16 +615,16 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query AvA RANK-NAME of the characher from the cache",
+    it("Query CHARACHER AvA RANK-NAME from the CACHE",
     function()
-        given_that_cached_character_ava_rank_name_is(char_rank_name_cache)
-            and_GetAvARankName_returns(char_rank_name_sys)
-            and_get_character_gender_returns(char_gender_cache)
-            and_get_character_ava_rank_returns(char_rank_cache, char_sub_rank_cache)
+        given_that_cached_character_ava_rank_name_is("Novice")
+            and_GetAvARankName_returns("General")
+            and_get_character_gender_returns(0)
+            and_get_character_ava_rank_returns(0, 0)
 
         when_get_character_ava_rank_name_is_called_with_character_info()
 
-        then_the_returned_character_ava_rank_name_was(char_rank_name_cache)
+        then_the_returned_character_ava_rank_name_was("Novice")
             and_GetAvARankName_was_not_called()
             and_get_character_gender_was_not_called()
             and_get_character_ava_rank_was_not_called()
@@ -675,16 +656,16 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query CLASS of the character from the system, when not cached",
+    it("Query CHARACTER CLASS from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitClass_returns(char_class_sys)
+        given_that_GetUnitClass_returns("Mage")
             and_cached_character_class_is_not_set()
 
         when_get_character_class_is_called_with_character_info()
 
-        then_the_returned_character_class_was(char_class_sys)
+        then_the_returned_character_class_was("Mage")
             and_GetUnitClass_was_called_once_with_player()
-            and_the_cached_character_class_became(char_class_sys)
+            and_the_cached_character_class_became("Mage")
     end)
 
     -- {{{
@@ -701,14 +682,14 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query CLASS of the character from the cache",
+    it("Query CHARACTER CLASS from the CACHE",
     function()
-        given_that_cached_character_class_is(char_class_cache)
-            and_GetUnitClass_returns(char_class_sys)
+        given_that_cached_character_class_is("Warrior")
+            and_GetUnitClass_returns("Mage")
 
         when_get_character_class_is_called_with_character_info()
 
-        then_the_returned_character_class_was(char_class_cache)
+        then_the_returned_character_class_was("Warrior")
             and_GetUnitClass_was_not_called()
     end)
 end)
