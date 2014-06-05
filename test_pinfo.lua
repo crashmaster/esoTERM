@@ -856,6 +856,10 @@ describe("Test character information getters", function()
             and_get_character_level_xp_was_called_with_character_info()
             and_get_character_level_xp_max_was_called_with_character_info()
     end)
+
+    it("Query CHARACTER AvA-RANK POINTS from the SYSTEM, when not cached",
+    function()
+    end)
 end)
 
 -- vim:fdm=marker
