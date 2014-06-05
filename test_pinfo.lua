@@ -857,8 +857,67 @@ describe("Test character information getters", function()
             and_get_character_level_xp_max_was_called_with_character_info()
     end)
 
+    -- {{{
+    local function given_that_GetUnitAvARankPoints_returns(rank_points)
+        mock_function(GLOBAL, "GetUnitAvARankPoints", rank_points)
+    end
+
+    local function and_cached_character_rank_points_is_not_set()
+        character_info.rank_points = nil
+    end
+
+    local function when_get_character_rank_points_is_called_with_character_info()
+        results.rank_points = pinfo.get_character_rank_points(character_info)
+    end
+
+    local function then_the_returned_character_rank_points_was(rank_points)
+        assert.is.equal(rank_points, results.rank_points)
+    end
+
+    local function and_GetUnitAvARankPoints_was_called_once_with_player()
+        assert.spy(GLOBAL.GetUnitAvARankPoints).was.called_with("player")
+    end
+
+    local function and_the_cached_character_rank_points_became(rank_points)
+        assert.is.equal(rank_points, character_info.rank_points)
+    end
+    -- }}}
+
     it("Query CHARACTER AvA-RANK POINTS from the SYSTEM, when not cached",
     function()
+        given_that_GetUnitAvARankPoints_returns(1)
+            and_cached_character_rank_points_is_not_set()
+
+        when_get_character_rank_points_is_called_with_character_info()
+
+        then_the_returned_character_rank_points_was(1)
+            and_GetUnitAvARankPoints_was_called_once_with_player()
+            and_the_cached_character_rank_points_became(1)
+    end)
+
+    -- {{{
+    local function given_that_cached_character_rank_points_is(rank_points)
+        character_info.rank_points = rank_points
+    end
+
+    local function and_GetUnitAvARankPoints_returns(rank_points)
+        mock_function(GLOBAL, "GetUnitAvARankPoints", rank_points)
+    end
+
+    local function and_GetUnitAvARankPoints_was_not_called()
+        assert.spy(GLOBAL.GetUnitAvARankPoints).was_not.called()
+    end
+    -- }}}
+
+    it("Query CHARACTER AvA-RANK POINTS from the cache",
+    function()
+        given_that_cached_character_rank_points_is(0)
+            and_GetUnitAvARankPoints_returns(1)
+
+        when_get_character_rank_points_is_called_with_character_info()
+
+        then_the_returned_character_rank_points_was(0)
+            and_GetUnitAvARankPoints_was_not_called()
     end)
 end)
 

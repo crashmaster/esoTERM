@@ -145,4 +145,14 @@ function pinfo.get_character_level_xp_percent(character_info)
     return level_xp * 100 / level_xp_max
 end
 
+function pinfo.get_character_rank_points(character_info)
+    if character_info.rank_points ~= nil then
+        return character_info.rank_points
+    else
+        local rank_points = GetUnitAvARankPoints(pinfo.PLAYER_UNIT_TAG)
+        character_info.rank_points = rank_points
+        return rank_points
+    end
+end
+
 return pinfo
