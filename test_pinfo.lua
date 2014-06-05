@@ -210,8 +210,8 @@ describe("Test character information getters", function()
         assert.spy(GLOBAL.GetUnitXP).was.called_with("player")
     end
 
-    local function and_the_cached_character_level_xp_became(xp)
-        assert.is.equal(xp, character_info.level_xp)
+    local function and_the_cached_character_level_xp_became(level_xp)
+        assert.is.equal(level_xp, character_info.level_xp)
     end
     -- }}}
 
@@ -254,12 +254,16 @@ describe("Test character information getters", function()
     end)
 
     -- {{{
-    local function given_that_cached_character_level_xp_is(xp)
-        character_info.level_xp = xp
+    local function given_that_cached_character_level_xp_is(level_xp)
+        character_info.level_xp = level_xp
     end
 
-    local function and_GetUnitXP_returns(xp)
-        mock_function(GLOBAL, "GetUnitXP", xp)
+    local function and_GetUnitXP_returns(level_xp)
+        mock_function(GLOBAL, "GetUnitXP", level_xp)
+    end
+
+    local function and_is_character_veteran_was_not_called()
+        assert.spy(pinfo.is_character_veteran).was_not.called()
     end
 
     local function and_GetUnitXP_was_not_called()
@@ -276,12 +280,13 @@ describe("Test character information getters", function()
         when_get_character_level_xp_is_called_with_character_info()
 
         then_the_returned_level_xp_was(0)
+            and_is_character_veteran_was_not_called()
             and_GetUnitXP_was_not_called()
     end)
 
     -- {{{
-    local function and_GetUnitVeteranPoints_returns()
-        mock_function(GLOBAL, "GetUnitVeteranPoints", xp)
+    local function and_GetUnitVeteranPoints_returns(level_xp)
+        mock_function(GLOBAL, "GetUnitVeteranPoints", level_xp)
     end
 
     local function and_GetUnitVeteranPoints_was_not_called()
@@ -298,6 +303,7 @@ describe("Test character information getters", function()
         when_get_character_level_xp_is_called_with_character_info()
 
         then_the_returned_level_xp_was(0)
+            and_is_character_veteran_was_not_called()
             and_GetUnitVeteranPoints_was_not_called()
     end)
 
@@ -380,6 +386,7 @@ describe("Test character information getters", function()
         when_get_character_level_is_called_with_character_info()
 
         then_the_returned_level_was(0)
+            and_is_character_veteran_was_not_called()
             and_GetUnitLevel_was_not_called()
     end)
 
@@ -402,6 +409,7 @@ describe("Test character information getters", function()
         when_get_character_level_is_called_with_character_info()
 
         then_the_returned_level_was(0)
+            and_is_character_veteran_was_not_called()
             and_GetUnitVeteranRank_was_not_called()
     end)
 
@@ -691,6 +699,124 @@ describe("Test character information getters", function()
 
         then_the_returned_character_class_was("Warrior")
             and_GetUnitClass_was_not_called()
+    end)
+
+    -- {{{
+    local function given_that_GetUnitXPMax_returns(level_xp_max)
+        mock_function(GLOBAL, "GetUnitXPMax", level_xp_max)
+    end
+
+    local function and_cached_character_level_xp_max_is_not_set()
+        character_info.level_xp_max = nil
+    end
+
+    local function when_get_character_level_xp_max_is_called_with_character_info()
+        results.level_xp_max = pinfo.get_character_level_xp_max(character_info)
+    end
+
+    local function then_the_returned_level_xp_max_was(level_xp_max)
+        assert.is.equal(level_xp_max, results.level_xp_max)
+    end
+
+    local function and_is_character_veteran_was_called_with_character_info()
+        assert.spy(pinfo.is_character_veteran).was.called_with(character_info)
+    end
+
+    local function and_GetUnitXPMax_was_called_once_with_player()
+        assert.spy(GLOBAL.GetUnitXPMax).was.called_with("player")
+    end
+
+    local function and_the_cached_character_level_xp_max_became(level_xp_max)
+        assert.is.equal(level_xp_max, character_info.level_xp_max)
+    end
+    -- }}}
+
+    it("Query NON-VETERAN CHARACTER LEVEL-XP from the SYSTEM, when not cached",
+    function()
+        given_that_GetUnitXPMax_returns(1)
+            and_cached_character_level_xp_max_is_not_set()
+            and_is_character_veteran_returns(false)
+
+        when_get_character_level_xp_max_is_called_with_character_info()
+
+        then_the_returned_level_xp_max_was(1)
+            and_is_character_veteran_was_called_with_character_info()
+            and_GetUnitXPMax_was_called_once_with_player()
+            and_the_cached_character_level_xp_max_became(1)
+    end)
+
+    -- {{{
+    local function given_that_GetUnitVeteranPointsMax_returns(level_xp_max)
+        mock_function(GLOBAL, "GetUnitVeteranPointsMax", level_xp_max)
+    end
+
+    local function and_GetUnitVeteranPointsMax_was_called_once_with_player()
+        assert.spy(GLOBAL.GetUnitVeteranPointsMax).was.called_with("player")
+    end
+    -- }}}
+
+    it("Query VETERAN CHARACTER LEVEL-XP from the SYSTEM, when not cached",
+    function()
+        given_that_GetUnitVeteranPointsMax_returns(1)
+            and_cached_character_level_xp_max_is_not_set()
+            and_is_character_veteran_returns(true)
+
+        when_get_character_level_xp_max_is_called_with_character_info()
+
+        then_the_returned_level_xp_max_was(1)
+            and_is_character_veteran_was_called_with_character_info()
+            and_GetUnitVeteranPointsMax_was_called_once_with_player()
+            and_the_cached_character_level_xp_max_became(1)
+    end)
+
+    -- {{{
+    local function given_that_cached_character_level_xp_max_is(level_xp_max)
+        character_info.level_xp_max = level_xp_max
+    end
+
+    local function and_GetUnitXPMax_returns(level_xp_max)
+        mock_function(GLOBAL, "GetUnitXPMax", level_xp_max)
+    end
+
+    local function and_GetUnitXPMax_was_not_called()
+        assert.spy(GLOBAL.GetUnitXPMax).was_not.called()
+    end
+    -- }}}
+
+    it("Query NON-VETERAN CHARACTER LEVEL-XP from the CACHE",
+    function()
+        given_that_cached_character_level_xp_max_is(0)
+            and_GetUnitXPMax_returns(1)
+            and_is_character_veteran_returns(false)
+
+        when_get_character_level_xp_max_is_called_with_character_info()
+
+        then_the_returned_level_xp_max_was(0)
+            and_is_character_veteran_was_not_called()
+            and_GetUnitXPMax_was_not_called()
+    end)
+
+    -- {{{
+    local function and_GetUnitVeteranPointsMax_returns(level_xp_max)
+        mock_function(GLOBAL, "GetUnitVeteranPointsMax", level_xp_max)
+    end
+
+    local function and_GetUnitVeteranPointsMax_was_not_called()
+        assert.spy(GLOBAL.GetUnitVeteranPointsMax).was_not.called()
+    end
+    -- }}}
+
+    it("Query VETERAN CHARACTER LEVEL-XP from the CACHE",
+    function()
+        given_that_cached_character_level_xp_max_is(0)
+            and_GetUnitVeteranPointsMax_returns(1)
+            and_is_character_veteran_returns(true)
+
+        when_get_character_level_xp_max_is_called_with_character_info()
+
+        then_the_returned_level_xp_max_was(0)
+            and_is_character_veteran_was_not_called()
+            and_GetUnitVeteranPointsMax_was_not_called()
     end)
 end)
 

@@ -121,4 +121,22 @@ function pinfo.get_character_class(character_info)
     end
 end
 
+function pinfo._get_character_level_xp_max(character_info)
+    if pinfo.is_character_veteran(character_info) == false then
+        return GetUnitXPMax(pinfo.PLAYER_UNIT_TAG)
+    else
+        return GetUnitVeteranPointsMax(pinfo.PLAYER_UNIT_TAG)
+    end
+end
+
+function pinfo.get_character_level_xp_max(character_info)
+    if character_info.level_xp_max ~= nil then
+        return character_info.level_xp_max
+    else
+        local level_xp_max = pinfo._get_character_level_xp_max(character_info)
+        character_info.level_xp_max = level_xp_max
+        return level_xp_max
+    end
+end
+
 return pinfo
