@@ -585,7 +585,7 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query CHARACHER AvA RANK-NAME from the SYSTEM, when not cached",
+    it("Query CHARACTER AvA RANK-NAME from the SYSTEM, when not cached",
     function()
         given_that_GetAvARankName_returns("General")
             and_cached_character_ava_rank_name_is_not_set()
@@ -623,7 +623,7 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query CHARACHER AvA RANK-NAME from the CACHE",
+    it("Query CHARACTER AvA RANK-NAME from the CACHE",
     function()
         given_that_cached_character_ava_rank_name_is("Novice")
             and_GetAvARankName_returns("General")
@@ -918,6 +918,17 @@ describe("Test character information getters", function()
 
         then_the_returned_character_rank_points_was(0)
             and_GetUnitAvARankPoints_was_not_called()
+    end)
+
+    it("Query CHARACTER AvA-RANK POINTS MAX from the SYSTEM, when not chached",
+    function()
+        given_that_GetAvARankProgress_returns(nil, nil, nil, 20)
+            and_cached_character_rank_points_max_is_not_set()
+
+        when_get_character_rank_points_max_is_called_with_(10)
+
+        then_the_returned_character_rank_points_max_was(20)
+            and_the_cached_character_rank_points_max_became(20)
     end)
 end)
 
