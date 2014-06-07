@@ -166,4 +166,10 @@ function pinfo.get_character_rank_points_max(character_info)
     end
 end
 
+function pinfo.get_character_rank_points_percent(character_info)
+    local rank_points_max = pinfo.get_character_rank_points_max(character_info)
+    local rank_points = pinfo.get_character_rank_points(character_info)
+    return rank_points * 100 / rank_points_max
+end
+
 return pinfo

@@ -993,6 +993,44 @@ describe("Test character information getters", function()
             and_GetAvARankProgress_was_not_called()
             and_get_character_rank_points_was_not_called()
     end)
+
+    -- {{{
+    local function given_that_get_character_rank_points_returns(rank_points)
+        mock_function(pinfo, "get_character_rank_points", rank_points)
+    end
+
+    local function and_that_get_character_rank_points_max_returns(rank_points_max)
+        mock_function(pinfo, "get_character_rank_points_max", rank_points_max)
+    end
+
+    local function when_get_character_rank_points_percent_is_called_with_character_info()
+        results.rank_points_percent = pinfo.get_character_rank_points_percent(character_info)
+    end
+
+    local function then_the_returned_rank_points_percent_was(rank_points_percent)
+        assert.is.equal(rank_points_percent, results.rank_points_percent)
+    end
+
+    local function and_get_character_rank_points_was_called_with_character_info()
+        assert.spy(pinfo.get_character_rank_points).was.called_with(character_info)
+    end
+
+    local function and_get_character_rank_points_max_was_called_with_character_info()
+        assert.spy(pinfo.get_character_rank_points_max).was.called_with(character_info)
+    end
+    -- }}}
+
+    it("Query CHARACTER LEVEL-XP PERCENT",
+    function()
+        given_that_get_character_rank_points_returns(82)
+            and_that_get_character_rank_points_max_returns(500)
+
+        when_get_character_rank_points_percent_is_called_with_character_info()
+
+        then_the_returned_rank_points_percent_was(16.4)
+            and_get_character_rank_points_was_called_with_character_info()
+            and_get_character_rank_points_max_was_called_with_character_info()
+    end)
 end)
 
 -- vim:fdm=marker
