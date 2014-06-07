@@ -920,15 +920,78 @@ describe("Test character information getters", function()
             and_GetUnitAvARankPoints_was_not_called()
     end)
 
+    -- {{{
+    local function given_that_GetAvARankProgress_returns(rank_points_max)
+        mock_function(GLOBAL, "GetAvARankProgress", nil, nil, nil, rank_points_max)
+    end
+
+    local function and_cached_character_rank_points_max_is_not_set()
+        character_info.rank_points_max = nil
+    end
+
+    local function and_get_character_rank_points_return(rank_points)
+        mock_function(pinfo, "get_character_rank_points", rank_points)
+    end
+
+    local function when_get_character_rank_points_max_is_called_with_character_info()
+        results.rank_points_max = pinfo.get_character_rank_points_max(character_info)
+    end
+
+    local function then_the_returned_character_rank_points_max_was(rank_points_max)
+        assert.is.equal(rank_points_max, results.rank_points_max)
+    end
+
+    local function and_GetAvARankProgress_was_called_once_with(rank_points)
+        assert.spy(GLOBAL.GetAvARankProgress).was.called_with(rank_points)
+    end
+
+    local function and_the_cached_character_rank_points_max_became(rank_points_max)
+        assert.is.equal(rank_points_max, character_info.rank_points_max)
+    end
+    -- }}}
+
     it("Query CHARACTER AvA-RANK POINTS MAX from the SYSTEM, when not chached",
     function()
-        given_that_GetAvARankProgress_returns(nil, nil, nil, 20)
+        given_that_GetAvARankProgress_returns(20)
             and_cached_character_rank_points_max_is_not_set()
+            and_get_character_rank_points_return(10)
 
-        when_get_character_rank_points_max_is_called_with_(10)
+        when_get_character_rank_points_max_is_called_with_character_info()
 
         then_the_returned_character_rank_points_max_was(20)
+            and_GetAvARankProgress_was_called_once_with(10)
             and_the_cached_character_rank_points_max_became(20)
+    end)
+
+    -- {{{
+    local function given_that_cached_character_rank_points_max_is(rank_points_max)
+        character_info.rank_points_max = rank_points_max
+    end
+
+    local function and_GetAvARankProgress_returns(rank_points_max)
+        mock_function(GLOBAL, "GetAvARankProgress", nil, nil, nil, rank_points_max)
+    end
+
+    local function and_GetAvARankProgress_was_not_called()
+        assert.spy(GLOBAL.GetAvARankProgress).was_not.called()
+    end
+
+    local function and_get_character_rank_points_was_not_called()
+        assert.spy(pinfo.get_character_rank_points).was_not.called()
+    end
+    -- }}}
+
+    it("Query CHARACTER AvA-RANK POINTS from the cache",
+    function()
+        given_that_cached_character_rank_points_max_is(10)
+            and_GetAvARankProgress_returns(20)
+            and_get_character_rank_points_return(15)
+
+        when_get_character_rank_points_max_is_called_with_character_info()
+
+        then_the_returned_character_rank_points_max_was(10)
+            and_GetAvARankProgress_was_not_called()
+            and_get_character_rank_points_was_not_called()
     end)
 end)
 

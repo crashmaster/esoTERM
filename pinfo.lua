@@ -155,4 +155,15 @@ function pinfo.get_character_rank_points(character_info)
     end
 end
 
+function pinfo.get_character_rank_points_max(character_info)
+    if character_info.rank_points_max ~= nil then
+        return character_info.rank_points_max
+    else
+        local rank_points = pinfo.get_character_rank_points(character_info)
+        local sRSA, nSRA, rSA, rank_points_max = GetAvARankProgress(rank_points)
+        character_info.rank_points_max = rank_points_max
+        return rank_points_max
+    end
+end
+
 return pinfo
