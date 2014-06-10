@@ -12,6 +12,9 @@ REPO_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 all: test
 
 test:
+	@echo "Test unit test helper:"
+	@/usr/local/bin/busted $(REPO_DIR)/test_ut_helper.lua
+	@echo "Test pinfo:"
 	@/usr/local/bin/busted $(REPO_DIR)/test_pinfo.lua
 
 install:
