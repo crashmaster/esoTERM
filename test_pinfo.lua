@@ -2,7 +2,7 @@ pinfo = require("pinfo")
 
 local GLOBAL = _G
 local ORIGINAL_FUNCTIONS = {}
-local MOCKED_FUNCTIONS = {}
+local REPLACED_FUNCTIONS = {}
 
 local function update_function(scope, function_name, function_object)
     ORIGINAL_FUNCTIONS[function_name] = scope[function_name]
@@ -17,12 +17,12 @@ local function engage_spy_on_function(scope, function_name)
     spy.on(scope, function_name)
 end
 
-local function mock_function(scope, function_name, ...)
+local function replace_function(scope, function_name, ...)
     local return_value = {...}
     local function_object = function(arg) return unpack(return_value) end
     update_function(scope, function_name, function_object)
     engage_spy_on_function(scope, function_name)
-    MOCKED_FUNCTIONS[scope] = function_name
+    REPLACED_FUNCTIONS[#REPLACED_FUNCTIONS+1] = {s = scope, f = function_name}
 end
 
 local function recall_spy_from_function(scope, function_name)
@@ -30,11 +30,11 @@ local function recall_spy_from_function(scope, function_name)
 end
 
 local function restore_fake_functions()
-    for scope, function_name in pairs(MOCKED_FUNCTIONS) do
-        recall_spy_from_function(scope, function_name)
-        restore_function(scope, function_name)
+    for index, value in ipairs(REPLACED_FUNCTIONS) do
+        recall_spy_from_function(value.s, value.f)
+        restore_function(value.s, value.f)
     end
-    MOCKED_FUNCTIONS = {}
+    REPLACED_FUNCTIONS = {}
 end
 
 describe("Test character information getters", function()
@@ -57,7 +57,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_GetUnitName_returns(name)
-        mock_function(GLOBAL, "GetUnitName", name)
+        replace_function(GLOBAL, "GetUnitName", name)
     end
 
     local function and_cached_character_name_is_not_set()
@@ -99,7 +99,7 @@ describe("Test character information getters", function()
     end
 
     local function and_GetUnitName_returns(name)
-        mock_function(GLOBAL, "GetUnitName", name)
+        replace_function(GLOBAL, "GetUnitName", name)
     end
 
     local function and_GetUnitName_was_not_called()
@@ -120,7 +120,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_IsUnitVeteran_returns(veteranness)
-        mock_function(GLOBAL, "IsUnitVeteran", veteranness)
+        replace_function(GLOBAL, "IsUnitVeteran", veteranness)
     end
 
     local function and_cached_character_veteranness_is_not_set()
@@ -162,7 +162,7 @@ describe("Test character information getters", function()
     end
 
     local function and_IsUnitVeteran_returns(veteranness)
-        mock_function(GLOBAL, "IsUnitVeteran", veteranness)
+        replace_function(GLOBAL, "IsUnitVeteran", veteranness)
     end
 
     local function and_IsUnitVeteran_was_not_called()
@@ -183,7 +183,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_GetUnitXP_returns(level_xp)
-        mock_function(GLOBAL, "GetUnitXP", level_xp)
+        replace_function(GLOBAL, "GetUnitXP", level_xp)
     end
 
     local function and_cached_character_level_xp_is_not_set()
@@ -191,7 +191,7 @@ describe("Test character information getters", function()
     end
 
     local function and_is_character_veteran_returns(veteranness)
-        mock_function(pinfo, "is_character_veteran", veteranness)
+        replace_function(pinfo, "is_character_veteran", veteranness)
     end
 
     local function when_get_character_level_xp_is_called_with_character_info()
@@ -231,7 +231,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_GetUnitVeteranPoints_returns(level_xp)
-        mock_function(GLOBAL, "GetUnitVeteranPoints", level_xp)
+        replace_function(GLOBAL, "GetUnitVeteranPoints", level_xp)
     end
 
     local function and_GetUnitVeteranPoints_was_called_once_with_player()
@@ -259,7 +259,7 @@ describe("Test character information getters", function()
     end
 
     local function and_GetUnitXP_returns(level_xp)
-        mock_function(GLOBAL, "GetUnitXP", level_xp)
+        replace_function(GLOBAL, "GetUnitXP", level_xp)
     end
 
     local function and_is_character_veteran_was_not_called()
@@ -286,7 +286,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function and_GetUnitVeteranPoints_returns(level_xp)
-        mock_function(GLOBAL, "GetUnitVeteranPoints", level_xp)
+        replace_function(GLOBAL, "GetUnitVeteranPoints", level_xp)
     end
 
     local function and_GetUnitVeteranPoints_was_not_called()
@@ -309,7 +309,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_GetUnitLevel_returns(level)
-        mock_function(GLOBAL, "GetUnitLevel", level)
+        replace_function(GLOBAL, "GetUnitLevel", level)
     end
 
     local function and_cached_character_level_is_not_set()
@@ -343,7 +343,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_GetUnitVeteranRank_returns(level)
-        mock_function(GLOBAL, "GetUnitVeteranRank", level)
+        replace_function(GLOBAL, "GetUnitVeteranRank", level)
     end
 
     local function and_GetUnitVeteranRank_was_called_once_with_player()
@@ -369,7 +369,7 @@ describe("Test character information getters", function()
     end
 
     local function and_GetUnitLevel_returns(lvl)
-        mock_function(GLOBAL, "GetUnitLevel", lvl)
+        replace_function(GLOBAL, "GetUnitLevel", lvl)
     end
 
     local function and_GetUnitLevel_was_not_called()
@@ -392,7 +392,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function and_GetUnitVeteranRank_returns(lvl)
-        mock_function(GLOBAL, "GetUnitVeteranRank", lvl)
+        replace_function(GLOBAL, "GetUnitVeteranRank", lvl)
     end
 
     local function and_GetUnitVeteranRank_was_not_called()
@@ -415,7 +415,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_GetUnitGender_returns(gender)
-        mock_function(GLOBAL, "GetUnitGender", gender)
+        replace_function(GLOBAL, "GetUnitGender", gender)
     end
 
     local function and_cached_character_gender_is_not_set()
@@ -457,7 +457,7 @@ describe("Test character information getters", function()
     end
 
     local function and_GetUnitGender_returns(gender)
-        mock_function(GLOBAL, "GetUnitGender", gender)
+        replace_function(GLOBAL, "GetUnitGender", gender)
     end
 
     local function and_GetUnitGender_was_not_called()
@@ -478,7 +478,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_GetUnitAvARank_returns(rank, sub_rank)
-        mock_function(GLOBAL, "GetUnitAvARank", rank, sub_rank)
+        replace_function(GLOBAL, "GetUnitAvARank", rank, sub_rank)
     end
 
     local function and_cached_character_ava_rank_is_not_set()
@@ -524,7 +524,7 @@ describe("Test character information getters", function()
     end
 
     local function and_GetUnitAvARank_returns(rank, sub_rank)
-        mock_function(GLOBAL, "GetUnitAvARank", rank, sub_rank)
+        replace_function(GLOBAL, "GetUnitAvARank", rank, sub_rank)
     end
 
     local function and_GetUnitAvARank_was_not_called()
@@ -545,7 +545,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_GetAvARankName_returns(name)
-        mock_function(GLOBAL, "GetAvARankName", name)
+        replace_function(GLOBAL, "GetAvARankName", name)
     end
 
     local function and_cached_character_ava_rank_name_is_not_set()
@@ -553,11 +553,11 @@ describe("Test character information getters", function()
     end
 
     local function and_get_character_gender_returns(gender)
-        mock_function(pinfo, "get_character_gender", gender)
+        replace_function(pinfo, "get_character_gender", gender)
     end
 
     local function and_get_character_ava_rank_returns(rank, sub_rank)
-        mock_function(pinfo, "get_character_ava_rank", rank, sub_rank)
+        replace_function(pinfo, "get_character_ava_rank", rank, sub_rank)
     end
 
     local function when_get_character_ava_rank_name_is_called_with_character_info()
@@ -607,7 +607,7 @@ describe("Test character information getters", function()
     end
 
     local function and_GetAvARankName_returns(name)
-        mock_function(GLOBAL, "GetAvARankName", name)
+        replace_function(GLOBAL, "GetAvARankName", name)
     end
 
     local function and_GetAvARankName_was_not_called()
@@ -640,7 +640,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_GetUnitClass_returns(class)
-        mock_function(GLOBAL, "GetUnitClass", class)
+        replace_function(GLOBAL, "GetUnitClass", class)
     end
 
     local function and_cached_character_class_is_not_set()
@@ -682,7 +682,7 @@ describe("Test character information getters", function()
     end
 
     local function and_GetUnitClass_returns(class)
-        mock_function(GLOBAL, "GetUnitClass", class)
+        replace_function(GLOBAL, "GetUnitClass", class)
     end
 
     local function and_GetUnitClass_was_not_called()
@@ -703,7 +703,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_GetUnitXPMax_returns(level_xp_max)
-        mock_function(GLOBAL, "GetUnitXPMax", level_xp_max)
+        replace_function(GLOBAL, "GetUnitXPMax", level_xp_max)
     end
 
     local function and_cached_character_level_xp_max_is_not_set()
@@ -747,7 +747,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_GetUnitVeteranPointsMax_returns(level_xp_max)
-        mock_function(GLOBAL, "GetUnitVeteranPointsMax", level_xp_max)
+        replace_function(GLOBAL, "GetUnitVeteranPointsMax", level_xp_max)
     end
 
     local function and_GetUnitVeteranPointsMax_was_called_once_with_player()
@@ -775,7 +775,7 @@ describe("Test character information getters", function()
     end
 
     local function and_GetUnitXPMax_returns(level_xp_max)
-        mock_function(GLOBAL, "GetUnitXPMax", level_xp_max)
+        replace_function(GLOBAL, "GetUnitXPMax", level_xp_max)
     end
 
     local function and_GetUnitXPMax_was_not_called()
@@ -798,7 +798,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function and_GetUnitVeteranPointsMax_returns(level_xp_max)
-        mock_function(GLOBAL, "GetUnitVeteranPointsMax", level_xp_max)
+        replace_function(GLOBAL, "GetUnitVeteranPointsMax", level_xp_max)
     end
 
     local function and_GetUnitVeteranPointsMax_was_not_called()
@@ -821,11 +821,11 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_get_character_level_xp_returns(level_xp)
-        mock_function(pinfo, "get_character_level_xp", level_xp)
+        replace_function(pinfo, "get_character_level_xp", level_xp)
     end
 
     local function and_that_get_character_level_xp_max_returns(level_xp_max)
-        mock_function(pinfo, "get_character_level_xp_max", level_xp_max)
+        replace_function(pinfo, "get_character_level_xp_max", level_xp_max)
     end
 
     local function when_get_character_level_xp_percent_is_called_with_character_info()
@@ -859,7 +859,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_GetUnitAvARankPoints_returns(rank_points)
-        mock_function(GLOBAL, "GetUnitAvARankPoints", rank_points)
+        replace_function(GLOBAL, "GetUnitAvARankPoints", rank_points)
     end
 
     local function and_cached_character_rank_points_is_not_set()
@@ -901,7 +901,7 @@ describe("Test character information getters", function()
     end
 
     local function and_GetUnitAvARankPoints_returns(rank_points)
-        mock_function(GLOBAL, "GetUnitAvARankPoints", rank_points)
+        replace_function(GLOBAL, "GetUnitAvARankPoints", rank_points)
     end
 
     local function and_GetUnitAvARankPoints_was_not_called()
@@ -922,7 +922,7 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_GetAvARankProgress_returns(rank_points_max)
-        mock_function(GLOBAL, "GetAvARankProgress", nil, nil, nil, rank_points_max)
+        replace_function(GLOBAL, "GetAvARankProgress", nil, nil, nil, rank_points_max)
     end
 
     local function and_cached_character_rank_points_max_is_not_set()
@@ -930,7 +930,7 @@ describe("Test character information getters", function()
     end
 
     local function and_get_character_rank_points_return(rank_points)
-        mock_function(pinfo, "get_character_rank_points", rank_points)
+        replace_function(pinfo, "get_character_rank_points", rank_points)
     end
 
     local function when_get_character_rank_points_max_is_called_with_character_info()
@@ -969,7 +969,7 @@ describe("Test character information getters", function()
     end
 
     local function and_GetAvARankProgress_returns(rank_points_max)
-        mock_function(GLOBAL, "GetAvARankProgress", nil, nil, nil, rank_points_max)
+        replace_function(GLOBAL, "GetAvARankProgress", nil, nil, nil, rank_points_max)
     end
 
     local function and_GetAvARankProgress_was_not_called()
@@ -996,11 +996,11 @@ describe("Test character information getters", function()
 
     -- {{{
     local function given_that_get_character_rank_points_returns(rank_points)
-        mock_function(pinfo, "get_character_rank_points", rank_points)
+        replace_function(pinfo, "get_character_rank_points", rank_points)
     end
 
     local function and_that_get_character_rank_points_max_returns(rank_points_max)
-        mock_function(pinfo, "get_character_rank_points_max", rank_points_max)
+        replace_function(pinfo, "get_character_rank_points_max", rank_points_max)
     end
 
     local function when_get_character_rank_points_percent_is_called_with_character_info()
