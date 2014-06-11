@@ -31,12 +31,12 @@ function ut_helper.recall_spy_from_function(scope, function_name)
     scope[function_name]:revert()
 end
 
-function ut_helper.restore_fake_functions()
+function ut_helper.restore_stub_functions()
     for index, value in ipairs(ut_helper.REPLACED_FUNCTIONS) do
         ut_helper.recall_spy_from_function(value.scope, value.function_name)
         ut_helper.restore_function(value.scope, value.function_name)
+        ut_helper[index] = nil
     end
-    ut_helper.REPLACED_FUNCTIONS = {}
 end
 
 return ut_helper
