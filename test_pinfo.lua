@@ -45,7 +45,7 @@ describe("Test character information getters", function()
     end)
 
     -- {{{
-    local function given_that_GetUnitName_returns(name)
+    local function given_that_eso_GetUnitName_returns(name)
         ut_helper.stub_function(GLOBAL, "GetUnitName", name)
     end
 
@@ -61,7 +61,7 @@ describe("Test character information getters", function()
         assert.is.equal(name, results.name)
     end
 
-    local function and_GetUnitName_was_called_once_with_player()
+    local function and_eso_GetUnitName_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitName).was.called_with("player")
     end
 
@@ -72,13 +72,13 @@ describe("Test character information getters", function()
 
     it("Query CHARACTER NAME from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitName_returns("Hank")
+        given_that_eso_GetUnitName_returns("Hank")
             and_cached_character_name_is_not_set()
 
         when_get_character_name_is_called_with_character_info()
 
         then_the_returned_character_name_was("Hank")
-            and_GetUnitName_was_called_once_with_player()
+            and_eso_GetUnitName_was_called_once_with_player()
             and_the_cached_character_name_became("Hank")
     end)
 
@@ -87,11 +87,11 @@ describe("Test character information getters", function()
         character_info.name = name
     end
 
-    local function and_GetUnitName_returns(name)
+    local function and_eso_GetUnitName_returns(name)
         ut_helper.stub_function(GLOBAL, "GetUnitName", name)
     end
 
-    local function and_GetUnitName_was_not_called()
+    local function and_eso_GetUnitName_was_not_called()
         assert.spy(GLOBAL.GetUnitName).was_not.called()
     end
     -- }}}
@@ -99,12 +99,12 @@ describe("Test character information getters", function()
     it("Query CHARACTER NAME from the CACHE",
     function()
         given_that_cached_character_name_is("Jeff")
-            and_GetUnitName_returns("Hank")
+            and_eso_GetUnitName_returns("Hank")
 
         when_get_character_name_is_called_with_character_info()
 
         then_the_returned_character_name_was("Jeff")
-            and_GetUnitName_was_not_called()
+            and_eso_GetUnitName_was_not_called()
     end)
 
     -- {{{
@@ -171,7 +171,7 @@ describe("Test character information getters", function()
     end)
 
     -- {{{
-    local function given_that_GetUnitXP_returns(level_xp)
+    local function given_that_eso_GetUnitXP_returns(level_xp)
         ut_helper.stub_function(GLOBAL, "GetUnitXP", level_xp)
     end
 
@@ -195,7 +195,7 @@ describe("Test character information getters", function()
         assert.spy(pinfo.is_character_veteran).was.called_with(character_info)
     end
 
-    local function and_GetUnitXP_was_called_once_with_player()
+    local function and_eso_GetUnitXP_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitXP).was.called_with("player")
     end
 
@@ -206,7 +206,7 @@ describe("Test character information getters", function()
 
     it("Query NON-VETERAN CHARACTER LEVEL-XP from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitXP_returns(1)
+        given_that_eso_GetUnitXP_returns(1)
             and_cached_character_level_xp_is_not_set()
             and_is_character_veteran_returns(false)
 
@@ -214,23 +214,23 @@ describe("Test character information getters", function()
 
         then_the_returned_level_xp_was(1)
             and_is_character_veteran_was_called_with_character_info()
-            and_GetUnitXP_was_called_once_with_player()
+            and_eso_GetUnitXP_was_called_once_with_player()
             and_the_cached_character_level_xp_became(1)
     end)
 
     -- {{{
-    local function given_that_GetUnitVeteranPoints_returns(level_xp)
+    local function given_that_eso_GetUnitVeteranPoints_returns(level_xp)
         ut_helper.stub_function(GLOBAL, "GetUnitVeteranPoints", level_xp)
     end
 
-    local function and_GetUnitVeteranPoints_was_called_once_with_player()
+    local function and_eso_GetUnitVeteranPoints_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitVeteranPoints).was.called_with("player")
     end
     -- }}}
 
     it("Query VETERAN CHARACTER LEVEL-XP from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitVeteranPoints_returns(1)
+        given_that_eso_GetUnitVeteranPoints_returns(1)
             and_cached_character_level_xp_is_not_set()
             and_is_character_veteran_returns(true)
 
@@ -238,7 +238,7 @@ describe("Test character information getters", function()
 
         then_the_returned_level_xp_was(1)
             and_is_character_veteran_was_called_with_character_info()
-            and_GetUnitVeteranPoints_was_called_once_with_player()
+            and_eso_GetUnitVeteranPoints_was_called_once_with_player()
             and_the_cached_character_level_xp_became(1)
     end)
 
@@ -247,7 +247,7 @@ describe("Test character information getters", function()
         character_info.level_xp = level_xp
     end
 
-    local function and_GetUnitXP_returns(level_xp)
+    local function and_eso_GetUnitXP_returns(level_xp)
         ut_helper.stub_function(GLOBAL, "GetUnitXP", level_xp)
     end
 
@@ -255,7 +255,7 @@ describe("Test character information getters", function()
         assert.spy(pinfo.is_character_veteran).was_not.called()
     end
 
-    local function and_GetUnitXP_was_not_called()
+    local function and_eso_GetUnitXP_was_not_called()
         assert.spy(GLOBAL.GetUnitXP).was_not.called()
     end
     -- }}}
@@ -263,22 +263,22 @@ describe("Test character information getters", function()
     it("Query NON-VETERAN CHARACTER LEVEL-XP from the CACHE",
     function()
         given_that_cached_character_level_xp_is(0)
-            and_GetUnitXP_returns(1)
+            and_eso_GetUnitXP_returns(1)
             and_is_character_veteran_returns(false)
 
         when_get_character_level_xp_is_called_with_character_info()
 
         then_the_returned_level_xp_was(0)
             and_is_character_veteran_was_not_called()
-            and_GetUnitXP_was_not_called()
+            and_eso_GetUnitXP_was_not_called()
     end)
 
     -- {{{
-    local function and_GetUnitVeteranPoints_returns(level_xp)
+    local function and_eso_GetUnitVeteranPoints_returns(level_xp)
         ut_helper.stub_function(GLOBAL, "GetUnitVeteranPoints", level_xp)
     end
 
-    local function and_GetUnitVeteranPoints_was_not_called()
+    local function and_eso_GetUnitVeteranPoints_was_not_called()
         assert.spy(GLOBAL.GetUnitVeteranPoints).was_not.called()
     end
     -- }}}
@@ -286,18 +286,18 @@ describe("Test character information getters", function()
     it("Query VETERAN CHARACTER LEVEL-XP from the CACHE",
     function()
         given_that_cached_character_level_xp_is(0)
-            and_GetUnitVeteranPoints_returns(1)
+            and_eso_GetUnitVeteranPoints_returns(1)
             and_is_character_veteran_returns(true)
 
         when_get_character_level_xp_is_called_with_character_info()
 
         then_the_returned_level_xp_was(0)
             and_is_character_veteran_was_not_called()
-            and_GetUnitVeteranPoints_was_not_called()
+            and_eso_GetUnitVeteranPoints_was_not_called()
     end)
 
     -- {{{
-    local function given_that_GetUnitLevel_returns(level)
+    local function given_that_eso_GetUnitLevel_returns(level)
         ut_helper.stub_function(GLOBAL, "GetUnitLevel", level)
     end
 
@@ -313,43 +313,43 @@ describe("Test character information getters", function()
         assert.is.equal(level, results.level)
     end
 
-    local function and_GetUnitLevel_was_called_once_with_player()
+    local function and_eso_GetUnitLevel_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitLevel).was.called_with("player")
     end
     -- }}}
 
     it("Query NON-VETERAN CHARACTER LEVEL from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitLevel_returns(1)
+        given_that_eso_GetUnitLevel_returns(1)
             and_cached_character_level_is_not_set()
             and_is_character_veteran_returns(false)
 
         when_get_character_level_is_called_with_character_info()
 
         then_the_returned_level_was(1)
-            and_GetUnitLevel_was_called_once_with_player()
+            and_eso_GetUnitLevel_was_called_once_with_player()
     end)
 
     -- {{{
-    local function given_that_GetUnitVeteranRank_returns(level)
+    local function given_that_eso_GetUnitVeteranRank_returns(level)
         ut_helper.stub_function(GLOBAL, "GetUnitVeteranRank", level)
     end
 
-    local function and_GetUnitVeteranRank_was_called_once_with_player()
+    local function and_eso_GetUnitVeteranRank_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitVeteranRank).was.called_with("player")
     end
     -- }}}
 
     it("Query VETERAN CHARACTER LEVEL from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitVeteranRank_returns(1)
+        given_that_eso_GetUnitVeteranRank_returns(1)
             and_cached_character_level_is_not_set()
             and_is_character_veteran_returns(true)
 
         when_get_character_level_is_called_with_character_info()
 
         then_the_returned_level_was(1)
-            and_GetUnitVeteranRank_was_called_once_with_player()
+            and_eso_GetUnitVeteranRank_was_called_once_with_player()
     end)
 
     -- {{{
@@ -357,11 +357,11 @@ describe("Test character information getters", function()
         character_info.level = lvl
     end
 
-    local function and_GetUnitLevel_returns(lvl)
+    local function and_eso_GetUnitLevel_returns(lvl)
         ut_helper.stub_function(GLOBAL, "GetUnitLevel", lvl)
     end
 
-    local function and_GetUnitLevel_was_not_called()
+    local function and_eso_GetUnitLevel_was_not_called()
         assert.spy(GLOBAL.GetUnitLevel).was_not.called()
     end
     -- }}}
@@ -369,22 +369,22 @@ describe("Test character information getters", function()
     it("Query NON-VETERAN CHARACTER LEVEL from the CACHE",
     function()
         given_that_cached_character_level_is(0)
-            and_GetUnitLevel_returns(1)
+            and_eso_GetUnitLevel_returns(1)
             and_is_character_veteran_returns(false)
 
         when_get_character_level_is_called_with_character_info()
 
         then_the_returned_level_was(0)
             and_is_character_veteran_was_not_called()
-            and_GetUnitLevel_was_not_called()
+            and_eso_GetUnitLevel_was_not_called()
     end)
 
     -- {{{
-    local function and_GetUnitVeteranRank_returns(lvl)
+    local function and_eso_GetUnitVeteranRank_returns(lvl)
         ut_helper.stub_function(GLOBAL, "GetUnitVeteranRank", lvl)
     end
 
-    local function and_GetUnitVeteranRank_was_not_called()
+    local function and_eso_GetUnitVeteranRank_was_not_called()
         assert.spy(GLOBAL.GetUnitVeteranRank).was_not.called()
     end
     -- }}}
@@ -392,18 +392,18 @@ describe("Test character information getters", function()
     it("Query VETERAN CHARACTER LEVEL from the CACHE",
     function()
         given_that_cached_character_level_is(0)
-            and_GetUnitVeteranRank_returns(1)
+            and_eso_GetUnitVeteranRank_returns(1)
             and_is_character_veteran_returns(true)
 
         when_get_character_level_is_called_with_character_info()
 
         then_the_returned_level_was(0)
             and_is_character_veteran_was_not_called()
-            and_GetUnitVeteranRank_was_not_called()
+            and_eso_GetUnitVeteranRank_was_not_called()
     end)
 
     -- {{{
-    local function given_that_GetUnitGender_returns(gender)
+    local function given_that_eso_GetUnitGender_returns(gender)
         ut_helper.stub_function(GLOBAL, "GetUnitGender", gender)
     end
 
@@ -419,7 +419,7 @@ describe("Test character information getters", function()
         assert.is.equal(gender, results.gender)
     end
 
-    local function and_GetUnitGender_was_called_once_with_player()
+    local function and_eso_GetUnitGender_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitGender).was.called_with("player")
     end
 
@@ -430,13 +430,13 @@ describe("Test character information getters", function()
 
     it("Query CHARACTER GENDER from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitGender_returns(1)
+        given_that_eso_GetUnitGender_returns(1)
             and_cached_character_gender_is_not_set()
 
         when_get_character_gender_is_called_with_character_info()
 
         then_the_returned_character_gender_was(1)
-            and_GetUnitGender_was_called_once_with_player()
+            and_eso_GetUnitGender_was_called_once_with_player()
             and_the_cached_character_gender_became(1)
     end)
 
@@ -445,11 +445,11 @@ describe("Test character information getters", function()
         character_info.gender = gender
     end
 
-    local function and_GetUnitGender_returns(gender)
+    local function and_eso_GetUnitGender_returns(gender)
         ut_helper.stub_function(GLOBAL, "GetUnitGender", gender)
     end
 
-    local function and_GetUnitGender_was_not_called()
+    local function and_eso_GetUnitGender_was_not_called()
         assert.spy(GLOBAL.GetUnitGender).was_not.called()
     end
     -- }}}
@@ -457,16 +457,16 @@ describe("Test character information getters", function()
     it("Query CHARACTER GENDER from the CACHE",
     function()
         given_that_cached_character_gender_is(0)
-            and_GetUnitGender_returns(1)
+            and_eso_GetUnitGender_returns(1)
 
         when_get_character_gender_is_called_with_character_info()
 
         then_the_returned_character_gender_was(0)
-            and_GetUnitGender_was_not_called()
+            and_eso_GetUnitGender_was_not_called()
     end)
 
     -- {{{
-    local function given_that_GetUnitAvARank_returns(rank, sub_rank)
+    local function given_that_eso_GetUnitAvARank_returns(rank, sub_rank)
         ut_helper.stub_function(GLOBAL, "GetUnitAvARank", rank, sub_rank)
     end
 
@@ -484,7 +484,7 @@ describe("Test character information getters", function()
         assert.is.equal(sub_rank, results.ava_sub_rank)
     end
 
-    local function and_GetUnitAvARank_was_called_once_with_player()
+    local function and_eso_GetUnitAvARank_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitAvARank).was.called_with("player")
     end
 
@@ -496,13 +496,13 @@ describe("Test character information getters", function()
 
     it("Query CHARACTER AvA RANK from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitAvARank_returns(1, 1)
+        given_that_eso_GetUnitAvARank_returns(1, 1)
             and_cached_character_ava_rank_is_not_set()
 
         when_get_character_ava_rank_is_called_with_character_info()
 
         then_the_returned_character_ava_rank_was(1, 1)
-            and_GetUnitAvARank_was_called_once_with_player()
+            and_eso_GetUnitAvARank_was_called_once_with_player()
             and_the_cached_character_ava_rank_became(1, 1)
     end)
 
@@ -512,11 +512,11 @@ describe("Test character information getters", function()
         character_info.ava_sub_rank = sub_rank
     end
 
-    local function and_GetUnitAvARank_returns(rank, sub_rank)
+    local function and_eso_GetUnitAvARank_returns(rank, sub_rank)
         ut_helper.stub_function(GLOBAL, "GetUnitAvARank", rank, sub_rank)
     end
 
-    local function and_GetUnitAvARank_was_not_called()
+    local function and_eso_GetUnitAvARank_was_not_called()
         assert.spy(GLOBAL.GetUnitAvARank).was_not.called()
     end
     -- }}}
@@ -524,16 +524,16 @@ describe("Test character information getters", function()
     it("Query CHARACTER AvA RANK from the CACHE",
     function()
         given_that_cached_character_ava_rank_is(0)
-            and_GetUnitAvARank_returns(1, 1)
+            and_eso_GetUnitAvARank_returns(1, 1)
 
         when_get_character_ava_rank_is_called_with_character_info()
 
         then_the_returned_character_ava_rank_was(0)
-            and_GetUnitAvARank_was_not_called()
+            and_eso_GetUnitAvARank_was_not_called()
     end)
 
     -- {{{
-    local function given_that_GetAvARankName_returns(name)
+    local function given_that_eso_GetAvARankName_returns(name)
         ut_helper.stub_function(GLOBAL, "GetAvARankName", name)
     end
 
@@ -557,7 +557,7 @@ describe("Test character information getters", function()
         assert.is.equal(rank, results.ava_rank_name)
     end
 
-    local function and_GetAvARankName_was_called_once_with(gender, rank)
+    local function and_eso_GetAvARankName_was_called_once_with(gender, rank)
         assert.spy(GLOBAL.GetAvARankName).was.called_with(gender, rank)
     end
 
@@ -576,7 +576,7 @@ describe("Test character information getters", function()
 
     it("Query CHARACTER AvA RANK-NAME from the SYSTEM, when not cached",
     function()
-        given_that_GetAvARankName_returns("General")
+        given_that_eso_GetAvARankName_returns("General")
             and_cached_character_ava_rank_name_is_not_set()
             and_get_character_gender_returns(0)
             and_get_character_ava_rank_returns(0, 0)
@@ -584,7 +584,7 @@ describe("Test character information getters", function()
         when_get_character_ava_rank_name_is_called_with_character_info()
 
         then_the_returned_character_ava_rank_name_was("General")
-            and_GetAvARankName_was_called_once_with(0, 0)
+            and_eso_GetAvARankName_was_called_once_with(0, 0)
             and_get_character_gender_was_called_once_with_character_info()
             and_get_character_ava_rank_was_called_once_with_character_info()
             and_the_cached_character_ava_rank_name_became("General")
@@ -595,11 +595,11 @@ describe("Test character information getters", function()
         character_info.ava_rank_name = name
     end
 
-    local function and_GetAvARankName_returns(name)
+    local function and_eso_GetAvARankName_returns(name)
         ut_helper.stub_function(GLOBAL, "GetAvARankName", name)
     end
 
-    local function and_GetAvARankName_was_not_called()
+    local function and_eso_GetAvARankName_was_not_called()
         assert.spy(GLOBAL.GetAvARankName).was_not.called()
     end
 
@@ -615,20 +615,20 @@ describe("Test character information getters", function()
     it("Query CHARACTER AvA RANK-NAME from the CACHE",
     function()
         given_that_cached_character_ava_rank_name_is("Novice")
-            and_GetAvARankName_returns("General")
+            and_eso_GetAvARankName_returns("General")
             and_get_character_gender_returns(0)
             and_get_character_ava_rank_returns(0, 0)
 
         when_get_character_ava_rank_name_is_called_with_character_info()
 
         then_the_returned_character_ava_rank_name_was("Novice")
-            and_GetAvARankName_was_not_called()
+            and_eso_GetAvARankName_was_not_called()
             and_get_character_gender_was_not_called()
             and_get_character_ava_rank_was_not_called()
     end)
 
     -- {{{
-    local function given_that_GetUnitClass_returns(class)
+    local function given_that_eso_GetUnitClass_returns(class)
         ut_helper.stub_function(GLOBAL, "GetUnitClass", class)
     end
 
@@ -644,7 +644,7 @@ describe("Test character information getters", function()
         assert.is.equal(class, results.class)
     end
 
-    local function and_GetUnitClass_was_called_once_with_player()
+    local function and_eso_GetUnitClass_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitClass).was.called_with("player")
     end
 
@@ -655,13 +655,13 @@ describe("Test character information getters", function()
 
     it("Query CHARACTER CLASS from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitClass_returns("Mage")
+        given_that_eso_GetUnitClass_returns("Mage")
             and_cached_character_class_is_not_set()
 
         when_get_character_class_is_called_with_character_info()
 
         then_the_returned_character_class_was("Mage")
-            and_GetUnitClass_was_called_once_with_player()
+            and_eso_GetUnitClass_was_called_once_with_player()
             and_the_cached_character_class_became("Mage")
     end)
 
@@ -670,11 +670,11 @@ describe("Test character information getters", function()
         character_info.class = class
     end
 
-    local function and_GetUnitClass_returns(class)
+    local function and_eso_GetUnitClass_returns(class)
         ut_helper.stub_function(GLOBAL, "GetUnitClass", class)
     end
 
-    local function and_GetUnitClass_was_not_called()
+    local function and_eso_GetUnitClass_was_not_called()
         assert.spy(GLOBAL.GetUnitClass).was_not.called()
     end
     -- }}}
@@ -682,16 +682,16 @@ describe("Test character information getters", function()
     it("Query CHARACTER CLASS from the CACHE",
     function()
         given_that_cached_character_class_is("Warrior")
-            and_GetUnitClass_returns("Mage")
+            and_eso_GetUnitClass_returns("Mage")
 
         when_get_character_class_is_called_with_character_info()
 
         then_the_returned_character_class_was("Warrior")
-            and_GetUnitClass_was_not_called()
+            and_eso_GetUnitClass_was_not_called()
     end)
 
     -- {{{
-    local function given_that_GetUnitXPMax_returns(level_xp_max)
+    local function given_that_eso_GetUnitXPMax_returns(level_xp_max)
         ut_helper.stub_function(GLOBAL, "GetUnitXPMax", level_xp_max)
     end
 
@@ -711,7 +711,7 @@ describe("Test character information getters", function()
         assert.spy(pinfo.is_character_veteran).was.called_with(character_info)
     end
 
-    local function and_GetUnitXPMax_was_called_once_with_player()
+    local function and_eso_GetUnitXPMax_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitXPMax).was.called_with("player")
     end
 
@@ -722,7 +722,7 @@ describe("Test character information getters", function()
 
     it("Query NON-VETERAN CHARACTER LEVEL-XP MAX from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitXPMax_returns(1)
+        given_that_eso_GetUnitXPMax_returns(1)
             and_cached_character_level_xp_max_is_not_set()
             and_is_character_veteran_returns(false)
 
@@ -730,23 +730,23 @@ describe("Test character information getters", function()
 
         then_the_returned_level_xp_max_was(1)
             and_is_character_veteran_was_called_with_character_info()
-            and_GetUnitXPMax_was_called_once_with_player()
+            and_eso_GetUnitXPMax_was_called_once_with_player()
             and_the_cached_character_level_xp_max_became(1)
     end)
 
     -- {{{
-    local function given_that_GetUnitVeteranPointsMax_returns(level_xp_max)
+    local function given_that_eso_GetUnitVeteranPointsMax_returns(level_xp_max)
         ut_helper.stub_function(GLOBAL, "GetUnitVeteranPointsMax", level_xp_max)
     end
 
-    local function and_GetUnitVeteranPointsMax_was_called_once_with_player()
+    local function and_eso_GetUnitVeteranPointsMax_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitVeteranPointsMax).was.called_with("player")
     end
     -- }}}
 
     it("Query VETERAN CHARACTER LEVEL-XP MAX from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitVeteranPointsMax_returns(1)
+        given_that_eso_GetUnitVeteranPointsMax_returns(1)
             and_cached_character_level_xp_max_is_not_set()
             and_is_character_veteran_returns(true)
 
@@ -754,7 +754,7 @@ describe("Test character information getters", function()
 
         then_the_returned_level_xp_max_was(1)
             and_is_character_veteran_was_called_with_character_info()
-            and_GetUnitVeteranPointsMax_was_called_once_with_player()
+            and_eso_GetUnitVeteranPointsMax_was_called_once_with_player()
             and_the_cached_character_level_xp_max_became(1)
     end)
 
@@ -763,11 +763,11 @@ describe("Test character information getters", function()
         character_info.level_xp_max = level_xp_max
     end
 
-    local function and_GetUnitXPMax_returns(level_xp_max)
+    local function and_eso_GetUnitXPMax_returns(level_xp_max)
         ut_helper.stub_function(GLOBAL, "GetUnitXPMax", level_xp_max)
     end
 
-    local function and_GetUnitXPMax_was_not_called()
+    local function and_eso_GetUnitXPMax_was_not_called()
         assert.spy(GLOBAL.GetUnitXPMax).was_not.called()
     end
     -- }}}
@@ -775,22 +775,22 @@ describe("Test character information getters", function()
     it("Query NON-VETERAN CHARACTER LEVEL-XP MAX from the CACHE",
     function()
         given_that_cached_character_level_xp_max_is(0)
-            and_GetUnitXPMax_returns(1)
+            and_eso_GetUnitXPMax_returns(1)
             and_is_character_veteran_returns(false)
 
         when_get_character_level_xp_max_is_called_with_character_info()
 
         then_the_returned_level_xp_max_was(0)
             and_is_character_veteran_was_not_called()
-            and_GetUnitXPMax_was_not_called()
+            and_eso_GetUnitXPMax_was_not_called()
     end)
 
     -- {{{
-    local function and_GetUnitVeteranPointsMax_returns(level_xp_max)
+    local function and_eso_GetUnitVeteranPointsMax_returns(level_xp_max)
         ut_helper.stub_function(GLOBAL, "GetUnitVeteranPointsMax", level_xp_max)
     end
 
-    local function and_GetUnitVeteranPointsMax_was_not_called()
+    local function and_eso_GetUnitVeteranPointsMax_was_not_called()
         assert.spy(GLOBAL.GetUnitVeteranPointsMax).was_not.called()
     end
     -- }}}
@@ -798,14 +798,14 @@ describe("Test character information getters", function()
     it("Query VETERAN CHARACTER LEVEL-XP MAX from the CACHE",
     function()
         given_that_cached_character_level_xp_max_is(0)
-            and_GetUnitVeteranPointsMax_returns(1)
+            and_eso_GetUnitVeteranPointsMax_returns(1)
             and_is_character_veteran_returns(true)
 
         when_get_character_level_xp_max_is_called_with_character_info()
 
         then_the_returned_level_xp_max_was(0)
             and_is_character_veteran_was_not_called()
-            and_GetUnitVeteranPointsMax_was_not_called()
+            and_eso_GetUnitVeteranPointsMax_was_not_called()
     end)
 
     -- {{{
@@ -847,7 +847,7 @@ describe("Test character information getters", function()
     end)
 
     -- {{{
-    local function given_that_GetUnitAvARankPoints_returns(rank_points)
+    local function given_that_eso_GetUnitAvARankPoints_returns(rank_points)
         ut_helper.stub_function(GLOBAL, "GetUnitAvARankPoints", rank_points)
     end
 
@@ -863,7 +863,7 @@ describe("Test character information getters", function()
         assert.is.equal(rank_points, results.rank_points)
     end
 
-    local function and_GetUnitAvARankPoints_was_called_once_with_player()
+    local function and_eso_GetUnitAvARankPoints_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitAvARankPoints).was.called_with("player")
     end
 
@@ -874,13 +874,13 @@ describe("Test character information getters", function()
 
     it("Query CHARACTER AvA-RANK POINTS from the SYSTEM, when not cached",
     function()
-        given_that_GetUnitAvARankPoints_returns(1)
+        given_that_eso_GetUnitAvARankPoints_returns(1)
             and_cached_character_rank_points_is_not_set()
 
         when_get_character_rank_points_is_called_with_character_info()
 
         then_the_returned_character_rank_points_was(1)
-            and_GetUnitAvARankPoints_was_called_once_with_player()
+            and_eso_GetUnitAvARankPoints_was_called_once_with_player()
             and_the_cached_character_rank_points_became(1)
     end)
 
@@ -889,11 +889,11 @@ describe("Test character information getters", function()
         character_info.rank_points = rank_points
     end
 
-    local function and_GetUnitAvARankPoints_returns(rank_points)
+    local function and_eso_GetUnitAvARankPoints_returns(rank_points)
         ut_helper.stub_function(GLOBAL, "GetUnitAvARankPoints", rank_points)
     end
 
-    local function and_GetUnitAvARankPoints_was_not_called()
+    local function and_eso_GetUnitAvARankPoints_was_not_called()
         assert.spy(GLOBAL.GetUnitAvARankPoints).was_not.called()
     end
     -- }}}
@@ -901,16 +901,16 @@ describe("Test character information getters", function()
     it("Query CHARACTER AvA-RANK POINTS from the cache",
     function()
         given_that_cached_character_rank_points_is(0)
-            and_GetUnitAvARankPoints_returns(1)
+            and_eso_GetUnitAvARankPoints_returns(1)
 
         when_get_character_rank_points_is_called_with_character_info()
 
         then_the_returned_character_rank_points_was(0)
-            and_GetUnitAvARankPoints_was_not_called()
+            and_eso_GetUnitAvARankPoints_was_not_called()
     end)
 
     -- {{{
-    local function given_that_GetAvARankProgress_returns(rank_points_max)
+    local function given_that_eso_GetAvARankProgress_returns(rank_points_max)
         ut_helper.stub_function(GLOBAL, "GetAvARankProgress", nil, nil, nil, rank_points_max)
     end
 
@@ -930,7 +930,7 @@ describe("Test character information getters", function()
         assert.is.equal(rank_points_max, results.rank_points_max)
     end
 
-    local function and_GetAvARankProgress_was_called_once_with(rank_points)
+    local function and_eso_GetAvARankProgress_was_called_once_with(rank_points)
         assert.spy(GLOBAL.GetAvARankProgress).was.called_with(rank_points)
     end
 
@@ -941,14 +941,14 @@ describe("Test character information getters", function()
 
     it("Query CHARACTER AvA-RANK POINTS MAX from the SYSTEM, when not chached",
     function()
-        given_that_GetAvARankProgress_returns(20)
+        given_that_eso_GetAvARankProgress_returns(20)
             and_cached_character_rank_points_max_is_not_set()
             and_get_character_rank_points_return(10)
 
         when_get_character_rank_points_max_is_called_with_character_info()
 
         then_the_returned_character_rank_points_max_was(20)
-            and_GetAvARankProgress_was_called_once_with(10)
+            and_eso_GetAvARankProgress_was_called_once_with(10)
             and_the_cached_character_rank_points_max_became(20)
     end)
 
@@ -957,11 +957,11 @@ describe("Test character information getters", function()
         character_info.rank_points_max = rank_points_max
     end
 
-    local function and_GetAvARankProgress_returns(rank_points_max)
+    local function and_eso_GetAvARankProgress_returns(rank_points_max)
         ut_helper.stub_function(GLOBAL, "GetAvARankProgress", nil, nil, nil, rank_points_max)
     end
 
-    local function and_GetAvARankProgress_was_not_called()
+    local function and_eso_GetAvARankProgress_was_not_called()
         assert.spy(GLOBAL.GetAvARankProgress).was_not.called()
     end
 
@@ -973,13 +973,13 @@ describe("Test character information getters", function()
     it("Query CHARACTER AvA-RANK POINTS from the cache",
     function()
         given_that_cached_character_rank_points_max_is(10)
-            and_GetAvARankProgress_returns(20)
+            and_eso_GetAvARankProgress_returns(20)
             and_get_character_rank_points_return(15)
 
         when_get_character_rank_points_max_is_called_with_character_info()
 
         then_the_returned_character_rank_points_max_was(10)
-            and_GetAvARankProgress_was_not_called()
+            and_eso_GetAvARankProgress_was_not_called()
             and_get_character_rank_points_was_not_called()
     end)
 
