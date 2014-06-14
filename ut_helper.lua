@@ -1,8 +1,13 @@
-local original_functions = {}
-local replaced_functions = {}
+local ORIGINAL_FUNCTIONS = {}
+local REPLACED_FUNCTIONS = {}
+
+local function _get_function_id(scope, function_name)
+    return string.format("%s,%s", tostring(scope), function_name)
+end
 
 local function _update_function(scope, function_name, new_function)
-    original_functions[function_name] = scope[function_name]
+    local key = _get_function_id(scope, function_name)
+    ORIGINAL_FUNCTIONS[key] = scope[function_name]
     scope[function_name] = new_function
 end
 
@@ -10,13 +15,9 @@ local function _engage_spy_on_function(scope, function_name)
     spy.on(scope, function_name)
 end
 
-local function _get_function_id(scope, function_name)
-    return string.format("%s,%s", tostring(scope), function_name)
-end
-
 local function _register_replaced_function(scope, function_name)
     local key = _get_function_id(scope, function_name)
-    replaced_functions[key] = { scope = scope, function_name = function_name }
+    REPLACED_FUNCTIONS[key] = { scope = scope, function_name = function_name }
 end
 
 local function stub_function(scope, function_name, ...)
@@ -32,12 +33,13 @@ local function _recall_spy_from_function(scope, function_name)
 end
 
 local function _restore_function(scope, function_name)
-    scope[function_name] = original_functions[function_name]
+    local key = _get_function_id(scope, function_name)
+    scope[function_name] = ORIGINAL_FUNCTIONS[key]
 end
 
 local function _unregister_replaced_function(scope, function_name)
     local key = _get_function_id(scope, function_name)
-    replaced_functions[key] = nil
+    REPLACED_FUNCTIONS[key] = nil
 end
 
 local function restore_stubbed_function(scope, function_name)
@@ -47,7 +49,7 @@ local function restore_stubbed_function(scope, function_name)
 end
 
 local function restore_stubbed_functions()
-    for index, value in pairs(replaced_functions) do
+    for index, value in pairs(REPLACED_FUNCTIONS) do
         restore_stubbed_function(value.scope, value.function_name)
     end
 end
