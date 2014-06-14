@@ -1,42 +1,61 @@
-local ut_helper = {}
+local original_functions = {}
+local replaced_functions = {}
 
-ut_helper.ORIGINAL_FUNCTIONS = {}
-ut_helper.REPLACED_FUNCTIONS = {}
-
-function ut_helper.update_function(scope, function_name, function_object)
-    ut_helper.ORIGINAL_FUNCTIONS[function_name] = scope[function_name]
-    scope[function_name] = function_object
+local function _update_function(scope, function_name, new_function)
+    original_functions[function_name] = scope[function_name]
+    scope[function_name] = new_function
 end
 
-function ut_helper.restore_function(scope, function_name)
-    scope[function_name] = ut_helper.ORIGINAL_FUNCTIONS[function_name]
-end
-
-function ut_helper.engage_spy_on_function(scope, function_name)
+local function _engage_spy_on_function(scope, function_name)
     spy.on(scope, function_name)
 end
 
-function ut_helper.replace_function(scope, function_name, ...)
-    local return_value = {...}
-    local function_object = function(arg) return unpack(return_value) end
-    ut_helper.update_function(scope, function_name, function_object)
-    ut_helper.engage_spy_on_function(scope, function_name)
-    ut_helper.REPLACED_FUNCTIONS[#ut_helper.REPLACED_FUNCTIONS+1] = {
-        scope = scope,
-        function_name = function_name
-    }
+local function _get_function_id(scope, function_name)
+    return string.format("%s,%s", tostring(scope), function_name)
 end
 
-function ut_helper.recall_spy_from_function(scope, function_name)
+local function _register_replaced_function(scope, function_name)
+    local key = _get_function_id(scope, function_name)
+    replaced_functions[key] = { scope = scope, function_name = function_name }
+end
+
+local function stub_function(scope, function_name, ...)
+    local return_value = {...}
+    local new_function = function(arg) return unpack(return_value) end
+    _update_function(scope, function_name, new_function)
+    _engage_spy_on_function(scope, function_name)
+    _register_replaced_function(scope, function_name)
+end
+
+local function _recall_spy_from_function(scope, function_name)
     scope[function_name]:revert()
 end
 
-function ut_helper.restore_stub_functions()
-    for index, value in ipairs(ut_helper.REPLACED_FUNCTIONS) do
-        ut_helper.recall_spy_from_function(value.scope, value.function_name)
-        ut_helper.restore_function(value.scope, value.function_name)
-        ut_helper[index] = nil
+local function _restore_function(scope, function_name)
+    scope[function_name] = original_functions[function_name]
+end
+
+local function _unregister_replaced_function(scope, function_name)
+    local key = _get_function_id(scope, function_name)
+    replaced_functions[key] = nil
+end
+
+local function restore_stubbed_function(scope, function_name)
+    _recall_spy_from_function(scope, function_name)
+    _restore_function(scope, function_name)
+    _unregister_replaced_function(scope, function_name)
+end
+
+local function restore_stubbed_functions()
+    for index, value in pairs(replaced_functions) do
+        restore_stubbed_function(value.scope, value.function_name)
     end
 end
+
+local ut_helper = {
+    stub_function = stub_function,
+    restore_stubbed_function = restore_stubbed_function,
+    restore_stubbed_functions = restore_stubbed_functions
+}
 
 return ut_helper

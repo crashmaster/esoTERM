@@ -4,70 +4,93 @@ function function_1(argument)
     return argument*2
 end
 
-function function_to_be_replaced_2(argument)
+function function_2(argument)
     return argument*3
 end
 
 describe("Test unit test helpers", function()
     after_each(function()
-        ut_helper.restore_stub_functions()
+        ut_helper.restore_stubbed_functions()
     end)
 
     -- {{{
-    local function given_that_function_1_returns_4_on_2()
-        assert.is.equal(4, function_1(2))
+    local function given_that_function_1_works_as_originally_defined()
+        assert.is.equal(2, function_1(1))
     end
 
-    local function when_function_1_is_replaced_with_a_stub_that_returns_2()
-        ut_helper.replace_function(_G, "function_1", 2)
+    local function when_function_1_is_replaced_with_a_stub_that_returns(value)
+        ut_helper.stub_function(_G, "function_1", value)
     end
 
-    local function then_function_1_returns_2_on_4()
-        assert.is.equal(2, function_1(4))
+    local function then_function_1_called_with_anything_returns()
+        assert.is.equal(2, function_1(nil))
+    end
+
+    local function and_stubbed_function_1_was_called_once_with(value)
+        assert.spy(_G.function_1).was.called_with(nil)
     end
     -- }}}
 
-    it("Function replaced with stub.",
+    it("Replace a function with a stub.",
     function()
-        given_that_function_1_returns_4_on_2()
-        when_function_1_is_replaced_with_a_stub_that_returns_2()
-        then_function_1_returns_2_on_4()
+        given_that_function_1_works_as_originally_defined()
+
+        when_function_1_is_replaced_with_a_stub_that_returns(2)
+
+        then_function_1_called_with_anything_returns(2)
+            and_stubbed_function_1_was_called_once_with(nil)
     end)
 
---  -- {{{
---  local function given_that_function_1_is_replaced_with_a_stub_returning_3()
---      ut_helper.replace_function(_G, "function_1", 3)
---      assert.is.equal(3, function_1(0))
---  end
+    -- {{{
+    local function given_that_stubbed_function_1_returns(value)
+        ut_helper.stub_function(_G, "function_1", value)
+        assert.is.equal(value, function_1(nil))
+    end
 
---  local function when_function_1_is_restored()
---      ut_helper.restore_stub_function("function_1")
---  end
+    local function when_function_1_is_restored()
+        ut_helper.restore_stubbed_function(_G, "function_1")
+    end
 
---  local function then_funtion_1_returns_8_on_4()
---      assert.is.equal(8, function_1(4))
---  end
---  -- }}}
+    local function then_function_1_works_as_originally_defined()
+        assert.is.equal(2, function_1(1))
+    end
+    -- }}}
 
---  it("Restore stubbed function.",
---  function()
---      given_that_function_1_is_replaced_with_a_fake_returning_3()
---      when_function_1_is_restored()
---      then_funtion_1_returns_8_on_4()
---  end)
+    it("Restore a stubbed function.",
+    function()
+        given_that_stubbed_function_1_returns(3)
 
---  it("Two global functions replaced and reverted.",
---  function()
---      assert.is.equal(4, function_1(2))
---      assert.is.equal(6, function_to_be_replaced_2(2))
---      ut_helper.replace_function(_G, "function_1", 2)
---      ut_helper.replace_function(_G, "function_to_be_replaced_2", 3)
---      assert.is.equal(2, function_1(2))
---      assert.is.equal(3, function_to_be_replaced_2(2))
---      ut_helper.restore_fake_functions()
---      assert.is.equal(2, function_1(1))
---      assert.is.equal(9, function_to_be_replaced_2(3))
---  end)
+        when_function_1_is_restored()
+
+        then_function_1_works_as_originally_defined()
+    end)
+
+    -- {{{
+    local function and_that_stubbed_function_2_returns(value)
+        ut_helper.stub_function(_G, "function_2", value)
+        assert.is.equal(value, function_2(nil))
+    end
+
+    local function when_function_1_and_function_2_are_restored()
+        ut_helper.restore_stubbed_function(_G, "function_1")
+        ut_helper.restore_stubbed_function(_G, "function_2")
+    end
+
+    local function and_function_2_works_as_originally_defined()
+        assert.is.equal(3, function_2(1))
+    end
+    -- }}}
+
+    it("Restore two stubbed functions.",
+    function()
+        given_that_stubbed_function_1_returns(1)
+            and_that_stubbed_function_2_returns(2)
+
+        when_function_1_and_function_2_are_restored()
+
+        then_function_1_works_as_originally_defined()
+            and_function_2_works_as_originally_defined()
+    end)
 end)
 
 -- vim:fdm=marker
