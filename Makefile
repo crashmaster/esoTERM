@@ -16,6 +16,7 @@ test:
 	@/usr/local/bin/busted $(REPO_DIR)/test_ut_helper.lua
 	@echo "Test pinfo:"
 	@/usr/local/bin/busted $(REPO_DIR)/test_pinfo.lua
+	@/usr/local/bin/busted $(REPO_DIR)/test_pinfo_char.lua
 
 install:
 	@$(MKDIR) $(PINFO_DIR)
