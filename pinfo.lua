@@ -22,6 +22,13 @@ local pinfo = {}
 
 pinfo.PLAYER_UNIT_TAG = "player"
 
+function pinfo.initialize()
+end
+
+function pinfo.on_addon_loaded(event, addon_name)
+    pinfo.initialize()
+end
+
 function pinfo.get_character_name(character_info)
     if character_info.name ~= nil then
         return character_info.name

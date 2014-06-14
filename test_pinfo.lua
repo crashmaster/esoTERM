@@ -3,6 +3,29 @@ ut_helper = require("ut_helper")
 
 local GLOBAL = _G
 
+describe("Test EVENT_ADD_ON_LOADED event handling", function()
+    local function given_that_pinfo_initialize_is_stubbed()
+        ut_helper.stub_function(pinfo, "initialize", nil)
+    end
+
+    local function when_pinfo_on_addon_loaded_is_called_by_eso_with(event, name)
+        pinfo.on_addon_loaded(event, name)
+    end
+
+    local function then_pinfo_initialize_was_called_once()
+        assert.spy(pinfo.initialize).was.called_with()
+    end
+
+    it("Addon loaded event received for pinfo",
+    function()
+        given_that_pinfo_initialize_is_stubbed()
+
+        when_pinfo_on_addon_loaded_is_called_by_eso_with(nil, "pinfo")
+
+        then_pinfo_initialize_was_called_once()
+    end)
+end)
+
 describe("Test character information getters", function()
     local character_info = nil
     local results = nil
