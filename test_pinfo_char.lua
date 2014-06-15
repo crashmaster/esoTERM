@@ -1,5 +1,5 @@
-pinfo = require("pinfo_char")
-ut_helper = require("ut_helper")
+local pinfo = require("pinfo_char")
+local ut_helper = require("ut_helper")
 
 local GLOBAL = _G
 
