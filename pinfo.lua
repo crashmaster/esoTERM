@@ -16,15 +16,23 @@
 --  #10 - Actual AvA. Experience per cent (e.g.: 44,6%)
 --
 -- Not applicable information is skipped.
---
 
-pinfo = {}
+local pinfo = {}
 
-function pinfo.initialize()
+pinfo.addon_name = "pinfo"
+
+function pinfo.on_player_combat_state(event, inCombat)
+    d("on_player_combat_state")
 end
 
 function pinfo.on_addon_loaded(event, addon_name)
-    pinfo.initialize()
+    if addon_name == pinfo.addon_name then
+        EVENT_MANAGER:RegisterForEvent(pinfo.addon_name,
+                                       EVENT_PLAYER_COMBAT_STATE,
+                                       pinfo.on_player_combat_state)
+    end
 end
 
-return pinfo
+EVENT_MANAGER:RegisterForEvent(pinfo.addon_name,
+                               EVENT_ADD_ON_LOADED,
+                               pinfo.on_addon_loaded)

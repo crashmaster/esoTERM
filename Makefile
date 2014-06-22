@@ -1,10 +1,10 @@
 MKDIR := mkdir -p
-UNIX2DOS := unix2dos --quiet --newfile
+UNIX2DOS := unix2dos --quiet --newfile -1252
 RM := rm -rf
 
 USER_DOCUMENTS_DIR := C:/Users/$(USER)/Documents
 ESO_ADDONS_DIR := $(USER_DOCUMENTS_DIR)/Elder\ Scrolls\ Online/liveeu/AddOns
-PINFO_DIR := $(ESO_ADDONS_DIR)/pinfo_dev
+PINFO_DIR := $(ESO_ADDONS_DIR)/pinfo
 REPO_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
 .PHONY: all test install uninstall
@@ -15,7 +15,7 @@ test:
 	@echo "Test unit test helper:"
 	@/usr/local/bin/busted $(REPO_DIR)/test_ut_helper.lua
 	@echo "Test pinfo:"
-	@/usr/local/bin/busted $(REPO_DIR)/test_pinfo.lua
+	@/usr/local/bin/busted $(REPO_DIR)/test_pinfo_init.lua
 	@/usr/local/bin/busted $(REPO_DIR)/test_pinfo_char.lua
 
 install:

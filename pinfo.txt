@@ -1,5 +1,4 @@
-## Title: Player Information
+## Title: Player Information (IN DEV!)
 ## APIVersion: 100004
 
 pinfo.lua
-pinfo.xml
