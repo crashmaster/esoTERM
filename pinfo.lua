@@ -18,20 +18,36 @@
 -- Not applicable information is skipped.
 
 local pinfo = {}
+local character_info = {}
 
 pinfo.addon_name = "pinfo"
 
-function pinfo.on_player_combat_state(event, inCombat)
-    d("on_player_combat_state")
+
+function pinfo.on_experience_update(event, unit_tag, current_xp, max_xp, reason)
+    if ((unit_tag ~= "player") or (reason < 0) or (max_xp == 0)) then
+        return
+    end
+    d(string.format("+%s+ +%s+ +%d+ +%s+ +%.2f+",
+                    pinfo_char.get_character_ava_rank_name(character_info),
+                    pinfo_char.get_character_name(character_info),
+                    pinfo_char.get_character_level(character_info),
+                    pinfo_char.get_character_class(character_info),
+                    current_xp * 100 / max_xp))
 end
+
 
 function pinfo.on_addon_loaded(event, addon_name)
     if addon_name == pinfo.addon_name then
         EVENT_MANAGER:RegisterForEvent(pinfo.addon_name,
-                                       EVENT_PLAYER_COMBAT_STATE,
-                                       pinfo.on_player_combat_state)
+                                       EVENT_VETERAN_POINTS_UPDATE,
+                                       pinfo.on_experience_update)
+
+        EVENT_MANAGER:RegisterForEvent(pinfo.addon_name,
+                                       EVENT_EXPERIENCE_UPDATE,
+                                       pinfo.on_experience_update)
     end
 end
+
 
 EVENT_MANAGER:RegisterForEvent(pinfo.addon_name,
                                EVENT_ADD_ON_LOADED,

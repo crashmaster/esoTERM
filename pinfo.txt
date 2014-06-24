@@ -2,3 +2,4 @@
 ## APIVersion: 100004
 
 pinfo.lua
+pinfo_char.lua

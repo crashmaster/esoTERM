@@ -22,6 +22,7 @@ install:
 	@$(MKDIR) $(PINFO_DIR)
 	@$(UNIX2DOS) $(REPO_DIR)/pinfo.txt $(PINFO_DIR)/pinfo.txt
 	@$(UNIX2DOS) $(REPO_DIR)/pinfo.lua $(PINFO_DIR)/pinfo.lua
+	@$(UNIX2DOS) $(REPO_DIR)/pinfo_char.lua $(PINFO_DIR)/pinfo_char.lua
 	@echo "pinfo installed to:"
 	@echo $(PINFO_DIR)
 
