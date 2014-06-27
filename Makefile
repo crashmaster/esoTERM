@@ -1,6 +1,7 @@
 MKDIR := mkdir -p
 UNIX2DOS := unix2dos --quiet --newfile -1252
 RM := rm -rf
+BUSTED := $(shell which busted)
 
 USER_DOCUMENTS_DIR := C:/Users/$(USER)/Documents
 ESO_ADDONS_DIR := $(USER_DOCUMENTS_DIR)/Elder\ Scrolls\ Online/liveeu/AddOns
@@ -13,10 +14,10 @@ all: test
 
 test:
 	@echo "Test unit test helper:"
-	@/usr/local/bin/busted $(REPO_DIR)/test_ut_helper.lua
+	@$(BUSTED) $(REPO_DIR)/test_ut_helper.lua
 	@echo "Test pinfo:"
-	@/usr/local/bin/busted $(REPO_DIR)/test_pinfo_init.lua
-	@/usr/local/bin/busted $(REPO_DIR)/test_pinfo_char.lua
+	@$(BUSTED) $(REPO_DIR)/test_pinfo_init.lua
+	@$(BUSTED) $(REPO_DIR)/test_pinfo_char.lua
 
 install:
 	@$(MKDIR) $(PINFO_DIR)

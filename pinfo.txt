@@ -1,5 +1,5 @@
 ## Title: Player Information (IN DEV!)
-## APIVersion: 100004
+## APIVersion: 100007
 
 pinfo.lua
 pinfo_char.lua
