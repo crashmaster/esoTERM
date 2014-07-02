@@ -27,7 +27,7 @@ function pinfo.on_experience_update(event, unit_tag, current_xp, max_xp, reason)
     if ((unit_tag ~= "player") or (reason < 0) or (max_xp == 0)) then
         return
     end
-    d(string.format("+%s+ +%s+ +%d+ +%s+ +%.2f+",
+    d(string.format("+%s+ +%s+ +%d+ +%s+ +%.2f%%+",
                     pinfo_char.get_character_ava_rank_name(character_info),
                     pinfo_char.get_character_name(character_info),
                     pinfo_char.get_character_level(character_info),
@@ -45,6 +45,9 @@ function pinfo.on_addon_loaded(event, addon_name)
         EVENT_MANAGER:RegisterForEvent(pinfo.addon_name,
                                        EVENT_EXPERIENCE_UPDATE,
                                        pinfo.on_experience_update)
+
+        EVENT_MANAGER:UnregisterForEvent(REGISTER_FOR,
+                                         EVENT_ADD_ON_LOADED)
     end
 end
 
