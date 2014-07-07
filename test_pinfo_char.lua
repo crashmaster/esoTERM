@@ -37,6 +37,7 @@ local AVA_RANK_POINTS_MAX_2 = B_VALUE
 local AVA_RANK_POINTS_PERCENT_1 = A_VALUE
 local AVA_RANK_POINTS_PERCENT_2 = B_VALUE
 
+
 describe("Test character information getters", function()
     local cache = nil
     local results = nil

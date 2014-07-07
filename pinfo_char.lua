@@ -1,6 +1,6 @@
-pinfo_char = {}
-
 local PLAYER_UNIT_TAG = "player"
+
+pinfo_char = {}
 
 function pinfo_char.is_character_veteran(cache)
     if cache.veteran ~= nil then

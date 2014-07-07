@@ -13,21 +13,27 @@ REPO_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 all: test
 
 test:
-	@echo "Test unit test helper:"
+	@printf "test_ut_helper:"
 	@$(BUSTED) $(REPO_DIR)/test_ut_helper.lua
-	@echo "Test pinfo:"
+	@printf "test_pinfo_init:"
 	@$(BUSTED) $(REPO_DIR)/test_pinfo_init.lua
+	@printf "test_pinfo_char:"
 	@$(BUSTED) $(REPO_DIR)/test_pinfo_char.lua
+	@printf "test_pinfo_event_handler:"
+	@$(BUSTED) $(REPO_DIR)/test_pinfo_event_handler.lua
 
 install:
 	@$(MKDIR) $(PINFO_DIR)
 	@$(UNIX2DOS) $(REPO_DIR)/pinfo.txt $(PINFO_DIR)/pinfo.txt
 	@$(UNIX2DOS) $(REPO_DIR)/pinfo.lua $(PINFO_DIR)/pinfo.lua
 	@$(UNIX2DOS) $(REPO_DIR)/pinfo_char.lua $(PINFO_DIR)/pinfo_char.lua
-	@echo "pinfo installed to:"
-	@echo $(PINFO_DIR)
+	@$(UNIX2DOS) $(REPO_DIR)/pinfo_event_handler.lua $(PINFO_DIR)/pinfo_event_handler.lua
+	@$(UNIX2DOS) $(REPO_DIR)/pinfo_init.lua $(PINFO_DIR)/pinfo_init.lua
+	@$(UNIX2DOS) $(REPO_DIR)/pinfo_output.lua $(PINFO_DIR)/pinfo_output.lua
+	@printf "pinfo installed to:\n"
+	@printf "%s\n" $(PINFO_DIR)
 
 uninstall:
 	@$(RM) $(PINFO_DIR)
-	@echo "pinfo uninstalled from:"
-	@echo $(PINFO_DIR)
+	@printf "pinfo uninstalled from:\n"
+	@printf "%s\n" $(PINFO_DIR)

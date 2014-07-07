@@ -18,40 +18,14 @@
 -- Not applicable information is skipped.
 
 local pinfo = {}
-local character_info = {}
 
-pinfo.addon_name = "pinfo"
-
-
-function pinfo.on_experience_update(event, unit_tag, current_xp, max_xp, reason)
-    if ((unit_tag ~= "player") or (reason < 0) or (max_xp == 0)) then
-        return
-    end
-    d(string.format("+%s+ +%s+ +%d+ +%s+ +%.2f%%+",
-                    pinfo_char.get_character_ava_rank_name(character_info),
-                    pinfo_char.get_character_name(character_info),
-                    pinfo_char.get_character_level(character_info),
-                    pinfo_char.get_character_class(character_info),
-                    current_xp * 100 / max_xp))
-end
-
+pinfo.ADDON_NAME = "pinfo"
+pinfo.CHARACTER_INFO = {}
 
 function pinfo.on_addon_loaded(event, addon_name)
-    if addon_name == pinfo.addon_name then
-        EVENT_MANAGER:RegisterForEvent(pinfo.addon_name,
-                                       EVENT_VETERAN_POINTS_UPDATE,
-                                       pinfo.on_experience_update)
-
-        EVENT_MANAGER:RegisterForEvent(pinfo.addon_name,
-                                       EVENT_EXPERIENCE_UPDATE,
-                                       pinfo.on_experience_update)
-
-        EVENT_MANAGER:UnregisterForEvent(REGISTER_FOR,
-                                         EVENT_ADD_ON_LOADED)
-    end
+    pinfo_init.initialize(addon_name, pinfo)
 end
 
-
-EVENT_MANAGER:RegisterForEvent(pinfo.addon_name,
+EVENT_MANAGER:RegisterForEvent(pinfo.ADDON_NAME,
                                EVENT_ADD_ON_LOADED,
                                pinfo.on_addon_loaded)
