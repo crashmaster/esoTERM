@@ -7,20 +7,17 @@ USER_DOCUMENTS_DIR := C:/Users/$(USER)/Documents
 ESO_ADDONS_DIR := $(USER_DOCUMENTS_DIR)/Elder\ Scrolls\ Online/liveeu/AddOns
 PINFO_DIR := $(ESO_ADDONS_DIR)/pinfo
 REPO_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+UNIT_TESTS := $(shell find $(REPO_DIR) -name "test_*.lua")
 
-.PHONY: all test install uninstall
+.PHONY: all test install uninstall test2
 
 all: test
 
 test:
-	@printf "test_ut_helper:"
-	@$(BUSTED) $(REPO_DIR)/test_ut_helper.lua
-	@printf "test_pinfo_init:"
-	@$(BUSTED) $(REPO_DIR)/test_pinfo_init.lua
-	@printf "test_pinfo_char:"
-	@$(BUSTED) $(REPO_DIR)/test_pinfo_char.lua
-	@printf "test_pinfo_event_handler:"
-	@$(BUSTED) $(REPO_DIR)/test_pinfo_event_handler.lua
+	@for test in $(UNIT_TESTS); do \
+		printf "%s:" $$test; \
+		$(BUSTED) $$test; \
+	done
 
 install:
 	@$(MKDIR) $(PINFO_DIR)
