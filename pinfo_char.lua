@@ -138,7 +138,7 @@ function pinfo_char.get_character_ava_rank_points_percent(cache)
     end
 end
 
-function pinfo_char.update(cache)
+function pinfo_char.initialize(cache)
     cache.veteran = pinfo_char.is_character_veteran(cache)
     cache.gender = pinfo_char.get_character_gender(cache)
     cache.class = pinfo_char.get_character_class(cache)

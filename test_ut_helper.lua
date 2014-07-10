@@ -22,8 +22,8 @@ describe("Test unit test helpers", function()
         ut_helper.stub_function(_G, "function_1", value)
     end
 
-    local function then_function_1_called_with_anything_returns()
-        assert.is.equal(2, function_1(nil))
+    local function then_function_1_called_with_anything_returns(value)
+        assert.is.equal(value, function_1(nil))
     end
 
     local function and_stubbed_function_1_was_called_once_with(value)

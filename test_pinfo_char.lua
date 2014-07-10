@@ -119,8 +119,8 @@ describe("Test character information getters", function()
         ut_helper.stub_function(pinfo, "get_character_class", class)
     end
 
-    local function when_update_is_called_with_cache()
-        pinfo.update(cache)
+    local function when_initialize_is_called_with_cache()
+        pinfo.initialize(cache)
     end
 
     local function then_cache_is_no_longer_empty()
@@ -250,7 +250,7 @@ describe("Test character information getters", function()
             and_that_get_character_ava_rank_points_max_returns(AVA_RANK_POINTS_MAX_1)
             and_that_get_character_ava_rank_points_percent_returns(AVA_RANK_POINTS_PERCENT_1)
 
-        when_update_is_called_with_cache()
+        when_initialize_is_called_with_cache()
 
         then_cache_is_no_longer_empty()
         and_the_cached_character_veteranness_became(VETERANNESS_1)
