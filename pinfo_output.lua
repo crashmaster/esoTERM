@@ -1,10 +1,4 @@
-local CHARACTER_INFO = nil
-
 pinfo_output = {}
-
-function pinfo_output.initialize(pinfo)
-    CHARACTER_INFO = pinfo.CHARACTER_INFO
-end
 
 function pinfo_output.character_info_to_debug()
     d(string.format("+%s+ +%s+ +%d+ +%s+ +%.2f%%+",
