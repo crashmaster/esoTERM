@@ -1,5 +1,8 @@
 event_manager = {}
 
+REGISTER_FOR = nil
+EVENT_ADD_ON_LOADED = nil
+
 function event_manager:UnregisterForEvent(operation, event)
 end
 
