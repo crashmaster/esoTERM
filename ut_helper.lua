@@ -54,10 +54,17 @@ local function restore_stubbed_functions()
     end
 end
 
+local function table_size(table)
+    local size = 0
+    for _ in pairs(table) do size = size + 1 end
+    return size
+end
+
 local ut_helper = {
     stub_function = stub_function,
     restore_stubbed_function = restore_stubbed_function,
-    restore_stubbed_functions = restore_stubbed_functions
+    restore_stubbed_functions = restore_stubbed_functions,
+    table_size = table_size
 }
 
 return ut_helper

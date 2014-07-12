@@ -8,7 +8,7 @@ function function_2(argument)
     return argument*3
 end
 
-describe("Test unit test helpers", function()
+describe("Test stubbing related unit test helpers", function()
     after_each(function()
         ut_helper.restore_stubbed_functions()
     end)
@@ -90,6 +90,48 @@ describe("Test unit test helpers", function()
 
         then_function_1_works_as_originally_defined()
             and_function_2_works_as_originally_defined()
+    end)
+end)
+
+describe("Test various unit test helpers", function()
+    local n = 3
+    local result = -1
+    local test_table = nil
+
+    before_each(function()
+        test_table = {}
+    end)
+
+    after_each(function()
+        result = -1
+        test_table = nil
+    end)
+
+    -- {{{
+    local function given_that_the_number_of_entries_in_the_test_table_is(n)
+        local i = 0
+        while i < n do
+            test_table[string.format("entry_%s", i)] = i
+            i = i + 1
+        end
+    end
+
+    local function when_table_size_on_test_table_is_called()
+        result = ut_helper.table_size(test_table)
+    end
+
+    local function then_the_returned_number_of_entires_was(n)
+        assert.is.equal(n, result)
+    end
+    -- }}}
+
+    it("Get table size.",
+    function()
+        given_that_the_number_of_entries_in_the_test_table_is(n)
+
+        when_table_size_on_test_table_is_called()
+
+        then_the_returned_number_of_entires_was(n)
     end)
 end)
 

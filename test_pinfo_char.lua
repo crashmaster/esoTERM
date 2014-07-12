@@ -57,14 +57,8 @@ describe("Test character information getters", function()
     end)
 
     -- {{{
-    local function table_size(table)
-        local size = 0
-        for _ in pairs(table) do size = size + 1 end
-        return size
-    end
-
     local function given_that_cache_is_empty()
-        assert.is.equal(0, table_size(cache))
+        assert.is.equal(0, ut_helper.table_size(cache))
     end
 
     local function and_that_get_character_name_returns(name)
@@ -124,7 +118,7 @@ describe("Test character information getters", function()
     end
 
     local function then_cache_is_no_longer_empty()
-        assert.is_not.equal(0, table_size(cache))
+        assert.is_not.equal(0, ut_helper.table_size(cache))
     end
 
     local function and_get_character_name_was_called_once_with_cache()
