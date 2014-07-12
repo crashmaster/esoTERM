@@ -1,8 +1,9 @@
 local ut_helper = require("ut_helper")
 local requires_for_tests = require("requires_for_tests")
 
+local ADDON_NAME = "addon_name"
+
 describe("Test event handler initialization", function()
-    local ADDON_NAME = "addon_name"
     local pinfo = nil
     local expected_register_params = nil
 
@@ -10,6 +11,10 @@ describe("Test event handler initialization", function()
         pinfo = {}
         pinfo.ADDON_NAME = ADDON_NAME
         expected_register_params = {}
+    end)
+
+    after_each(function()
+        ut_helper.restore_stubbed_functions()
     end)
 
     teardown(function()
@@ -39,7 +44,7 @@ describe("Test event handler initialization", function()
         }
     end
 
-    local function when_pinfo_event_handler_initialize_is_called_with(addon)
+    local function when_initialize_is_called_with(addon)
         pinfo_event_handler.initialize(addon)
     end
 
@@ -62,13 +67,116 @@ describe("Test event handler initialization", function()
             and_pinfo_event_handler_on_experience_update_is_stubbed()
             and_expected_register_event_parameters_is_set_up()
 
-        when_pinfo_event_handler_initialize_is_called_with(pinfo)
+        when_initialize_is_called_with(pinfo)
 
         than_event_manager_RegisterForEvent_was_called_with(expected_register_params)
     end)
 end)
 
-describe("Test event handlers", function()
+describe("Test the on experience update event handler", function()
+    local EVENT = -1
+    local UNIT = "player"
+    local REASON = 0
+
+    local OLD_XP = 100
+    local OLD_XP_MAX = 1000
+    local OLD_XP_PCT = OLD_XP * 100 / OLD_XP_MAX
+    local NEW_XP = 100
+    local NEW_XP_MAX = 1000
+    local NEW_XP_PCT = NEW_XP * 100 / NEW_XP_MAX
+
+    local pinfo = nil
+    local character_info = nil
+
+    before_each(function()
+        pinfo = {}
+        pinfo.ADDON_NAME = ADDON_NAME
+        character_info = {
+            level_xp = OLD_XP,
+            level_xp_max = OLD_XP_MAX,
+            level_xp_percent = OLD_XP_PCT
+        }
+        pinfo.CHARACTER_INFO = character_info
+        pinfo_event_handler.initialize(pinfo)
+    end)
+
+    after_each(function()
+        ut_helper.restore_stubbed_functions()
+        character_info = nil
+        pinfo = nil
+    end)
+
+    -- {{{
+    local function given_that_pinfo_output_character_info_to_debug_is_stubbed()
+        ut_helper.stub_function(pinfo_output, "character_info_to_debug", nil)
+    end
+
+    local function when_on_experience_update_is_called_with(event, unit, xp, xp_max, reason)
+        pinfo_event_handler.on_experience_update(event, unit, xp, xp_max, reason)
+    end
+
+    local function then_the_xp_properties_in_character_info_where_updated()
+        assert.is.equal(NEW_XP, character_info.level_xp)
+        assert.is.equal(NEW_XP_MAX, character_info.level_xp_max)
+        assert.is.equal(NEW_XP_PCT, character_info.level_xp_percent)
+    end
+
+    local function and_pinfo_output_character_info_to_debug_was_called_once()
+        assert.spy(pinfo_output.character_info_to_debug).was.called_with()
+    end
+    -- }}}
+
+    it("On experience update, happy flow",
+    function()
+        given_that_pinfo_output_character_info_to_debug_is_stubbed()
+
+        when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, NEW_XP_MAX, REASON)
+
+        then_the_xp_properties_in_character_info_where_updated()
+            and_pinfo_output_character_info_to_debug_was_called_once()
+    end)
+
+    -- {{{
+    local function then_the_xp_properties_in_character_info_where_not_updated()
+        assert.is.equal(OLD_XP, character_info.level_xp)
+        assert.is.equal(OLD_XP_MAX, character_info.level_xp_max)
+        assert.is.equal(OLD_XP_PCT, character_info.level_xp_percent)
+    end
+
+    local function and_pinfo_output_character_info_to_debug_was_not_called()
+        assert.spy(pinfo_output.character_info_to_debug).was_not.called()
+    end
+    -- }}}
+
+    it("On experience update, incorrect unit",
+    function()
+        given_that_pinfo_output_character_info_to_debug_is_stubbed()
+
+        when_on_experience_update_is_called_with(EVENT, "foo", NEW_XP, NEW_XP_MAX, REASON)
+
+        then_the_xp_properties_in_character_info_where_not_updated()
+            and_pinfo_output_character_info_to_debug_was_not_called()
+    end)
+
+    it("On experience update, incorrect reason",
+    function()
+        given_that_pinfo_output_character_info_to_debug_is_stubbed()
+
+        when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, NEW_XP_MAX, -1)
+
+        then_the_xp_properties_in_character_info_where_not_updated()
+            and_pinfo_output_character_info_to_debug_was_not_called()
+    end)
+
+    it("On experience update, total maximum xp reached",
+    function()
+        given_that_pinfo_output_character_info_to_debug_is_stubbed()
+
+        when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, 0, REASON)
+
+        then_the_xp_properties_in_character_info_where_not_updated()
+            and_pinfo_output_character_info_to_debug_was_not_called()
+    end)
 end)
 
 -- vim:fdm=marker
