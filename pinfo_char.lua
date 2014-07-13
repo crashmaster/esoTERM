@@ -1,4 +1,5 @@
 local PLAYER_UNIT_TAG = "player"
+local CACHE = pinfo.CHARACTER_INFO
 
 pinfo_char = {}
 
@@ -147,21 +148,21 @@ function pinfo_char.get_character_ava_rank_points_percent(cache)
     end
 end
 
-function pinfo_char.initialize(cache)
-    cache.veteran = pinfo_char.is_character_veteran(cache)
-    cache.gender = pinfo_char.get_character_gender(cache)
-    cache.class = pinfo_char.get_character_class(cache)
-    cache.name = pinfo_char.get_character_name(cache)
-    cache.level = pinfo_char.get_character_level(cache)
-    cache.level_xp = pinfo_char.get_character_level_xp(cache)
-    cache.level_xp_max = pinfo_char.get_character_level_xp_max(cache)
-    cache.level_xp_percent = pinfo_char.get_character_level_xp_percent(cache)
-    cache.xp_gain = pinfo_char.get_character_xp_gain(cache)
-    cache.ava_rank, cache.ava_sub_rank = pinfo_char.get_character_ava_rank(cache)
-    cache.ava_rank_name = pinfo_char.get_character_ava_rank_name(cache)
-    cache.ava_rank_points = pinfo_char.get_character_ava_rank_points(cache)
-    cache.ava_rank_points_max = pinfo_char.get_character_ava_rank_points_max(cache)
-    cache.ava_rank_points_percent = pinfo_char.get_character_ava_rank_points_percent(cache)
+function pinfo_char.initialize()
+    CACHE.veteran = pinfo_char.is_character_veteran(CACHE)
+    CACHE.gender = pinfo_char.get_character_gender(CACHE)
+    CACHE.class = pinfo_char.get_character_class(CACHE)
+    CACHE.name = pinfo_char.get_character_name(CACHE)
+    CACHE.level = pinfo_char.get_character_level(CACHE)
+    CACHE.level_xp = pinfo_char.get_character_level_xp(CACHE)
+    CACHE.level_xp_max = pinfo_char.get_character_level_xp_max(CACHE)
+    CACHE.level_xp_percent = pinfo_char.get_character_level_xp_percent(CACHE)
+    CACHE.xp_gain = pinfo_char.get_character_xp_gain(CACHE)
+    CACHE.ava_rank, CACHE.ava_sub_rank = pinfo_char.get_character_ava_rank(CACHE)
+    CACHE.ava_rank_name = pinfo_char.get_character_ava_rank_name(CACHE)
+    CACHE.ava_rank_points = pinfo_char.get_character_ava_rank_points(CACHE)
+    CACHE.ava_rank_points_max = pinfo_char.get_character_ava_rank_points_max(CACHE)
+    CACHE.ava_rank_points_percent = pinfo_char.get_character_ava_rank_points_percent(CACHE)
 end
 
 return pinfo_char

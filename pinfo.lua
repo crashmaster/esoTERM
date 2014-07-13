@@ -17,8 +17,7 @@
 --
 -- Not applicable information is skipped.
 
-local pinfo = {}
-
+pinfo = {}
 pinfo.ADDON_NAME = "pinfo"
 pinfo.CHARACTER_INFO = {}
 
