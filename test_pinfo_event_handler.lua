@@ -81,8 +81,9 @@ describe("Test the on experience update event handler", function()
     local OLD_XP = 100
     local OLD_XP_MAX = 1000
     local OLD_XP_PCT = OLD_XP * 100 / OLD_XP_MAX
-    local NEW_XP = 100
-    local NEW_XP_MAX = 1000
+    local OLD_XP_GAIN = 0
+    local NEW_XP = 200
+    local NEW_XP_MAX = 2000
     local NEW_XP_PCT = NEW_XP * 100 / NEW_XP_MAX
 
     local pinfo = nil
@@ -94,7 +95,8 @@ describe("Test the on experience update event handler", function()
         character_info = {
             level_xp = OLD_XP,
             level_xp_max = OLD_XP_MAX,
-            level_xp_percent = OLD_XP_PCT
+            level_xp_percent = OLD_XP_PCT,
+            xp_gain = OLD_XP_GAIN
         }
         pinfo.CHARACTER_INFO = character_info
         pinfo_event_handler.initialize(pinfo)
@@ -119,6 +121,7 @@ describe("Test the on experience update event handler", function()
         assert.is.equal(NEW_XP, character_info.level_xp)
         assert.is.equal(NEW_XP_MAX, character_info.level_xp_max)
         assert.is.equal(NEW_XP_PCT, character_info.level_xp_percent)
+        assert.is.equal(NEW_XP - OLD_XP, character_info.xp_gain)
     end
 
     local function and_pinfo_output_character_info_to_debug_was_called_once()

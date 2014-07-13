@@ -92,6 +92,15 @@ function pinfo_char.get_character_level_xp_percent(cache)
     end
 end
 
+function pinfo_char.get_character_xp_gain(cache)
+    if cache.xp_gain ~= nil then
+        return cache.xp_gain
+    else
+        return 0
+    end
+end
+
+
 function pinfo_char.get_character_ava_rank(cache)
     if cache.ava_rank ~= nil then
         return cache.ava_rank, cache.ava_sub_rank
@@ -147,6 +156,7 @@ function pinfo_char.initialize(cache)
     cache.level_xp = pinfo_char.get_character_level_xp(cache)
     cache.level_xp_max = pinfo_char.get_character_level_xp_max(cache)
     cache.level_xp_percent = pinfo_char.get_character_level_xp_percent(cache)
+    cache.xp_gain = pinfo_char.get_character_xp_gain(cache)
     cache.ava_rank, cache.ava_sub_rank = pinfo_char.get_character_ava_rank(cache)
     cache.ava_rank_name = pinfo_char.get_character_ava_rank_name(cache)
     cache.ava_rank_points = pinfo_char.get_character_ava_rank_points(cache)

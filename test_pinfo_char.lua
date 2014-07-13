@@ -22,8 +22,8 @@ local LEVEL_XP_1 = A_VALUE
 local LEVEL_XP_2 = B_VALUE
 local LEVEL_XP_MAX_1 = A_VALUE
 local LEVEL_XP_MAX_2 = B_VALUE
-local LEVEL_XP_PERCENT_1 = A_VALUE
-local LEVEL_XP_PERCENT_2 = B_VALUE
+local LEVEL_XP_PERCENT = A_VALUE
+local LEVEL_XP_GAIN = A_VALUE
 local AVA_RANK_1 = A_VALUE
 local AVA_RANK_2 = B_VALUE
 local AVA_SUB_RANK_1 = A_VALUE
@@ -79,6 +79,10 @@ describe("Test character information getters", function()
 
     local function and_that_get_character_level_xp_percent_returns(percent)
         ut_helper.stub_function(pinfo, "get_character_level_xp_percent", percent)
+    end
+
+    local function and_that_get_character_xp_gain_returns(xp)
+        ut_helper.stub_function(pinfo, "get_character_xp_gain", xp)
     end
 
     local function and_that_get_character_level_returns(level)
@@ -161,6 +165,14 @@ describe("Test character information getters", function()
         assert.is.equal(percent, cache.level_xp_percent)
     end
 
+    local function and_the_cached_character_level_xp_gain_became(xp)
+        assert.is.equal(xp, cache.xp_gain)
+    end
+
+    local function and_get_character_xp_gain_was_called_once_with_cache()
+        assert.spy(pinfo.get_character_xp_gain).was.called_with(cache)
+    end
+
     local function and_get_character_level_was_called_once_with_cache()
         assert.spy(pinfo.get_character_level).was.called_with(cache)
     end
@@ -237,7 +249,8 @@ describe("Test character information getters", function()
             and_that_get_character_level_returns(LEVEL_1)
             and_that_get_character_level_xp_returns(LEVEL_XP_1)
             and_that_get_character_level_xp_max_returns(LEVEL_XP_MAX_1)
-            and_that_get_character_level_xp_percent_returns(LEVEL_XP_PERCENT_1)
+            and_that_get_character_level_xp_percent_returns(LEVEL_XP_PERCENT)
+            and_that_get_character_xp_gain_returns(LEVEL_XP_GAIN)
             and_that_get_character_ava_rank_returns(AVA_RANK_1, AVA_SUB_RANK_1)
             and_that_get_character_ava_rank_name_returns(AVA_RANK_NAME_1)
             and_that_get_character_ava_rank_points_returns(AVA_RANK_POINTS_1)
@@ -261,8 +274,10 @@ describe("Test character information getters", function()
             and_get_character_level_xp_was_called_once_with_cache()
         and_the_cached_character_level_xp_max_became(LEVEL_XP_MAX_1)
             and_get_character_level_xp_max_was_called_once_with_cache()
-        and_the_cached_character_level_xp_percent_became(LEVEL_XP_PERCENT_1)
+        and_the_cached_character_level_xp_percent_became(LEVEL_XP_PERCENT)
             and_get_character_level_xp_percent_was_called_once_with_cache()
+        and_the_cached_character_level_xp_gain_became(LEVEL_XP_GAIN)
+            and_get_character_xp_gain_was_called_once_with_cache()
         and_the_cached_character_ava_rank_became(AVA_RANK_1, AVA_SUB_RANK_1)
             and_get_character_ava_rank_was_called_once_with_cache()
         and_the_cached_character_ava_rank_name_became(AVA_RANK_NAME_1)
@@ -1067,15 +1082,53 @@ describe("Test character information getters", function()
 
     it("Query CHARACTER LEVEL-XP PERCENT from the CACHE",
     function()
-        given_that_cached_character_level_xp_percent_is(LEVEL_XP_PERCENT_1)
+        given_that_cached_character_level_xp_percent_is(LEVEL_XP_PERCENT)
             and_get_character_level_xp_max_returns(LEVEL_XP_MAX_1)
             and_get_character_level_xp_returns(LEVEL_XP_1)
 
         when_get_character_level_xp_percent_is_called_with_cache()
 
-        then_the_returned_level_xp_percent_was(LEVEL_XP_PERCENT_1)
+        then_the_returned_level_xp_percent_was(LEVEL_XP_PERCENT)
             and_get_character_level_xp_max_was_not_called()
             and_get_character_level_xp_was_not_called()
+    end)
+
+    -- {{{
+    local function given_that_cached_character_level_xp_gain_is_not_set()
+        cache.xp_gain = nil
+    end
+
+    local function when_get_character_xp_gain_is_called_with_cache()
+        results.xp_gain = pinfo.get_character_xp_gain(cache)
+    end
+
+    local function then_the_returned_level_xp_gain_was(gain)
+        assert.is.equal(gain, results.xp_gain)
+    end
+    -- }}}
+
+    it("Query CHARACTER XP-GAIN, when NOT CACHED",
+    function()
+        given_that_cached_character_level_xp_gain_is_not_set()
+
+        when_get_character_xp_gain_is_called_with_cache()
+
+        then_the_returned_level_xp_gain_was(0)
+    end)
+
+    -- {{{
+    local function given_that_cached_character_level_xp_gain_is(gain)
+        cache.xp_gain = gain
+    end
+    -- }}}
+
+    it("Query CHARACTER XP-GAIN from the CACHE",
+    function()
+        given_that_cached_character_level_xp_gain_is(LEVEL_XP_GAIN)
+
+        when_get_character_xp_gain_is_called_with_cache()
+
+        then_the_returned_level_xp_gain_was(LEVEL_XP_GAIN)
     end)
 
     -- {{{
