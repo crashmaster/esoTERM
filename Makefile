@@ -22,7 +22,7 @@ test:
 
 install:
 	@$(MKDIR) $(PINFO_DIR)
-	@$(foreach file,$(SOURCES),$(UNIX2DOS) "$(file)" "$(addprefix $(PINFO_DIR)/,$(notdir $(file)))" || exit $?;)
+	@$(foreach file,$(SOURCES),$(UNIX2DOS) $(file) $(addprefix $(PINFO_DIR)/,$(notdir $(file))) || exit $?;)
 	@printf "pinfo installed to:\n%s\n" $(PINFO_DIR)
 
 uninstall:
