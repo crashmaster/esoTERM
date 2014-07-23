@@ -69,6 +69,8 @@ describe("Test event handler initialization", function()
 end)
 
 describe("Test the on experience update event handler", function()
+    local cache = pinfo.CHARACTER_INFO
+
     local EVENT = -1
     local UNIT = "player"
     local REASON = 0
@@ -82,15 +84,15 @@ describe("Test the on experience update event handler", function()
     local NEW_XP_PCT = NEW_XP * 100 / NEW_XP_MAX
 
     before_each(function()
-        pinfo.CHARACTER_INFO.level_xp = OLD_XP
-        pinfo.CHARACTER_INFO.level_xp_max = OLD_XP_MAX
-        pinfo.CHARACTER_INFO.level_xp_percent = OLD_XP_PCT
-        pinfo.CHARACTER_INFO.xp_gain = OLD_XP_GAIN
+        cache.level_xp = OLD_XP
+        cache.level_xp_max = OLD_XP_MAX
+        cache.level_xp_percent = OLD_XP_PCT
+        cache.xp_gain = OLD_XP_GAIN
         pinfo_event_handler.initialize()
     end)
 
     after_each(function()
-        pinfo.CHARACTER_INFO = {}
+        cache = {}
         ut_helper.restore_stubbed_functions()
     end)
 
@@ -104,10 +106,10 @@ describe("Test the on experience update event handler", function()
     end
 
     local function then_the_xp_properties_in_character_info_where_updated()
-        assert.is.equal(NEW_XP, pinfo.CHARACTER_INFO.level_xp)
-        assert.is.equal(NEW_XP_MAX, pinfo.CHARACTER_INFO.level_xp_max)
-        assert.is.equal(NEW_XP_PCT, pinfo.CHARACTER_INFO.level_xp_percent)
-        assert.is.equal(NEW_XP - OLD_XP, pinfo.CHARACTER_INFO.xp_gain)
+        assert.is.equal(NEW_XP, cache.level_xp)
+        assert.is.equal(NEW_XP_MAX, cache.level_xp_max)
+        assert.is.equal(NEW_XP_PCT, cache.level_xp_percent)
+        assert.is.equal(NEW_XP - OLD_XP, cache.xp_gain)
     end
 
     local function and_pinfo_output_character_info_to_debug_was_called_once()
@@ -127,9 +129,9 @@ describe("Test the on experience update event handler", function()
 
     -- {{{
     local function then_the_xp_properties_in_character_info_where_not_updated()
-        assert.is.equal(OLD_XP, pinfo.CHARACTER_INFO.level_xp)
-        assert.is.equal(OLD_XP_MAX, pinfo.CHARACTER_INFO.level_xp_max)
-        assert.is.equal(OLD_XP_PCT, pinfo.CHARACTER_INFO.level_xp_percent)
+        assert.is.equal(OLD_XP, cache.level_xp)
+        assert.is.equal(OLD_XP_MAX, cache.level_xp_max)
+        assert.is.equal(OLD_XP_PCT, cache.level_xp_percent)
     end
 
     local function and_pinfo_output_character_info_to_debug_was_not_called()
