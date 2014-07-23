@@ -1,5 +1,6 @@
 EVENT_MANAGER = require("fake_event_manager")
 
+pinfo = require("pinfo")
 pinfo_char = require("pinfo_char")
 pinfo_event_handler = require("pinfo_event_handler")
 pinfo_init = require("pinfo_init")

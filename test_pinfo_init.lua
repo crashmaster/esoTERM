@@ -2,16 +2,7 @@ local ut_helper = require("ut_helper")
 local requires_for_tests = require("requires_for_tests")
 
 describe("Test pinfo initialization", function()
-    local pinfo = nil
-
-    setup(function()
-        pinfo = {}
-        pinfo.CHARACTER_INFO = {}
-    end)
-
-    teardown(function()
-        pinfo = nil
-    end)
+    local ADDON_NAME = "blabla"
 
     -- {{{
     local function given_that_pinfo_addon_name_is(name)
@@ -30,16 +21,16 @@ describe("Test pinfo initialization", function()
         ut_helper.stub_function(EVENT_MANAGER, "UnregisterForEvent", nil)
     end
 
-    local function when_pinfo_init_initialize_is_called_with(name, addon)
-        pinfo_init.initialize(name, addon)
+    local function when_pinfo_init_initialize_is_called_with(name)
+        pinfo_init.initialize(name)
     end
 
-    local function then_pinfo_event_handler_initialize_was_called_once_with(param)
-        assert.spy(pinfo_event_handler.initialize).was.called_with(param)
+    local function then_pinfo_event_handler_initialize_was_called_once_with()
+        assert.spy(pinfo_event_handler.initialize).was.called_with()
     end
 
-    local function and_pinfo_char_initialize_was_called_once_with(param)
-        assert.spy(pinfo_char.initialize).was.called_with(param)
+    local function and_pinfo_char_initialize_was_called_once_with()
+        assert.spy(pinfo_char.initialize).was.called_with()
     end
 
     local function and_event_manager_UnregisterForEvent_was_called_with(param1, param2)
@@ -51,15 +42,15 @@ describe("Test pinfo initialization", function()
 
     it("Initialize if called with correct addon name",
     function()
-        given_that_pinfo_addon_name_is("bla")
+        given_that_pinfo_addon_name_is(ADDON_NAME)
             and_pinfo_event_handler_initialize_is_stubbed()
             and_pinfo_char_initialize_is_stubbed()
             and_event_manager_UnregisterForEvent_is_stubbed()
 
-        when_pinfo_init_initialize_is_called_with("bla", pinfo)
+        when_pinfo_init_initialize_is_called_with(ADDON_NAME)
 
-        then_pinfo_event_handler_initialize_was_called_once_with(pinfo)
-            and_pinfo_char_initialize_was_called_once_with(pinfo.CHARACTER_INFO)
+        then_pinfo_event_handler_initialize_was_called_once_with()
+            and_pinfo_char_initialize_was_called_once_with()
             and_event_manager_UnregisterForEvent_was_called_with(REGISTER_FOR,
                                                                  EVENT_ADD_ON_LOADED)
     end)

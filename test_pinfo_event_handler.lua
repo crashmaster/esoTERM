@@ -1,15 +1,11 @@
 local ut_helper = require("ut_helper")
 local requires_for_tests = require("requires_for_tests")
 
-local ADDON_NAME = "addon_name"
 
 describe("Test event handler initialization", function()
-    local pinfo = nil
     local expected_register_params = nil
 
     setup(function()
-        pinfo = {}
-        pinfo.ADDON_NAME = ADDON_NAME
         expected_register_params = {}
     end)
 
@@ -18,7 +14,6 @@ describe("Test event handler initialization", function()
     end)
 
     teardown(function()
-        pinfo = nil
         expected_register_params = nil
     end)
 
@@ -33,19 +28,19 @@ describe("Test event handler initialization", function()
 
     local function and_expected_register_event_parameters_is_set_up()
         expected_register_params.experience_points_update = {
-            addon_name = ADDON_NAME,
+            addon_name = pinfo.ADDON_NAME,
             event = EVENT_EXPERIENCE_UPDATE,
             callback = pinfo_event_handler.on_experience_update
         }
         expected_register_params.veteran_points_update = {
-            addon_name = ADDON_NAME,
+            addon_name = pinfo.ADDON_NAME,
             event = EVENT_VETERAN_POINTS_UPDATE,
             callback = pinfo_event_handler.on_experience_update
         }
     end
 
-    local function when_initialize_is_called_with(addon)
-        pinfo_event_handler.initialize(addon)
+    local function when_initialize_is_called_with()
+        pinfo_event_handler.initialize()
     end
 
     local function than_event_manager_RegisterForEvent_was_called_with(expected_params)
@@ -67,7 +62,7 @@ describe("Test event handler initialization", function()
             and_pinfo_event_handler_on_experience_update_is_stubbed()
             and_expected_register_event_parameters_is_set_up()
 
-        when_initialize_is_called_with(pinfo)
+        when_initialize_is_called_with()
 
         than_event_manager_RegisterForEvent_was_called_with(expected_register_params)
     end)
@@ -86,26 +81,17 @@ describe("Test the on experience update event handler", function()
     local NEW_XP_MAX = 2000
     local NEW_XP_PCT = NEW_XP * 100 / NEW_XP_MAX
 
-    local pinfo = nil
-    local character_info = nil
-
     before_each(function()
-        pinfo = {}
-        pinfo.ADDON_NAME = ADDON_NAME
-        character_info = {
-            level_xp = OLD_XP,
-            level_xp_max = OLD_XP_MAX,
-            level_xp_percent = OLD_XP_PCT,
-            xp_gain = OLD_XP_GAIN
-        }
-        pinfo.CHARACTER_INFO = character_info
-        pinfo_event_handler.initialize(pinfo)
+        pinfo.CHARACTER_INFO.level_xp = OLD_XP
+        pinfo.CHARACTER_INFO.level_xp_max = OLD_XP_MAX
+        pinfo.CHARACTER_INFO.level_xp_percent = OLD_XP_PCT
+        pinfo.CHARACTER_INFO.xp_gain = OLD_XP_GAIN
+        pinfo_event_handler.initialize()
     end)
 
     after_each(function()
+        pinfo.CHARACTER_INFO = {}
         ut_helper.restore_stubbed_functions()
-        character_info = nil
-        pinfo = nil
     end)
 
     -- {{{
@@ -118,10 +104,10 @@ describe("Test the on experience update event handler", function()
     end
 
     local function then_the_xp_properties_in_character_info_where_updated()
-        assert.is.equal(NEW_XP, character_info.level_xp)
-        assert.is.equal(NEW_XP_MAX, character_info.level_xp_max)
-        assert.is.equal(NEW_XP_PCT, character_info.level_xp_percent)
-        assert.is.equal(NEW_XP - OLD_XP, character_info.xp_gain)
+        assert.is.equal(NEW_XP, pinfo.CHARACTER_INFO.level_xp)
+        assert.is.equal(NEW_XP_MAX, pinfo.CHARACTER_INFO.level_xp_max)
+        assert.is.equal(NEW_XP_PCT, pinfo.CHARACTER_INFO.level_xp_percent)
+        assert.is.equal(NEW_XP - OLD_XP, pinfo.CHARACTER_INFO.xp_gain)
     end
 
     local function and_pinfo_output_character_info_to_debug_was_called_once()
@@ -141,9 +127,9 @@ describe("Test the on experience update event handler", function()
 
     -- {{{
     local function then_the_xp_properties_in_character_info_where_not_updated()
-        assert.is.equal(OLD_XP, character_info.level_xp)
-        assert.is.equal(OLD_XP_MAX, character_info.level_xp_max)
-        assert.is.equal(OLD_XP_PCT, character_info.level_xp_percent)
+        assert.is.equal(OLD_XP, pinfo.CHARACTER_INFO.level_xp)
+        assert.is.equal(OLD_XP_MAX, pinfo.CHARACTER_INFO.level_xp_max)
+        assert.is.equal(OLD_XP_PCT, pinfo.CHARACTER_INFO.level_xp_percent)
     end
 
     local function and_pinfo_output_character_info_to_debug_was_not_called()
