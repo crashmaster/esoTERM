@@ -21,15 +21,15 @@ function pinfo_event_handler.initialize()
 
     EVENT_MANAGER:RegisterForEvent(pinfo.ADDON_NAME,
                                    EVENT_ALLIANCE_POINT_UPDATE,
-                                   pinfo_event_handler.on_ava_point_update)
+                                   pinfo_event_handler.on_ava_xp_update)
 end
 
-function pinfo_event_handler.on_ava_point_update(event, point, sound, diff)
+function pinfo_event_handler.on_ava_xp_update(event, point, sound, diff)
 --    ap, bp, cp, dp = GetAvARankProgress(point)
     d(string.format("+%d", diff))
 --    d(string.format("subStart: %d subNext: %d start: %d next: %d", ap, bp, cp, dp))
     CACHE.ava_rank_points_percent = point * 100 / CACHE.ava_rank_points_max
-    CACHE.ava_point_gain = diff
+    CACHE.ava_xp_gain = diff
 end
 
 function pinfo_event_handler.on_experience_update(event, unit, xp, xp_max, reason)

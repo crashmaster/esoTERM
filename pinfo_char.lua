@@ -163,7 +163,7 @@ function pinfo_char.initialize()
     CACHE.ava_rank_points = pinfo_char.get_character_ava_rank_points(CACHE)
     CACHE.ava_rank_points_max = pinfo_char.get_character_ava_rank_points_max(CACHE)
     CACHE.ava_rank_points_percent = pinfo_char.get_character_ava_rank_points_percent(CACHE)
-    CACHE.ava_point_gain = 0
+    CACHE.ava_xp_gain = pinfo_char.get_character_ava_xp_gain(CACHE)
 end
 
 return pinfo_char

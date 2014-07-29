@@ -47,6 +47,11 @@ describe("Test event handler initialization", function()
             event = EVENT_VETERAN_RANK_UPDATE,
             callback = pinfo_event_handler.on_level_update
         }
+        expected_register_params.ava_xp_update = {
+            addon_name = pinfo.ADDON_NAME,
+            event = EVENT_ALLIANCE_POINT_UPDATE,
+            callback = pinfo_event_handler.on_ava_xp_update
+        }
     end
 
     local function when_initialize_is_called_with()
