@@ -101,12 +101,21 @@ function pinfo_char.get_character_xp_gain(cache)
     end
 end
 
-
 function pinfo_char.get_character_ava_rank(cache)
     if cache.ava_rank ~= nil then
-        return cache.ava_rank, cache.ava_sub_rank
+        return cache.ava_rank
     else
-        return GetUnitAvARank(PLAYER_UNIT_TAG)
+        local rank, sub_rank = GetUnitAvARank(PLAYER_UNIT_TAG)
+        return rank
+    end
+end
+
+function pinfo_char.get_character_ava_sub_rank(cache)
+    if cache.ava_sub_rank ~= nil then
+        return cache.ava_sub_rank
+    else
+        local rank, sub_rank = GetUnitAvARank(PLAYER_UNIT_TAG)
+        return sub_rank
     end
 end
 
@@ -158,7 +167,8 @@ function pinfo_char.initialize()
     CACHE.level_xp_max = pinfo_char.get_character_level_xp_max(CACHE)
     CACHE.level_xp_percent = pinfo_char.get_character_level_xp_percent(CACHE)
     CACHE.xp_gain = pinfo_char.get_character_xp_gain(CACHE)
-    CACHE.ava_rank, CACHE.ava_sub_rank = pinfo_char.get_character_ava_rank(CACHE)
+    CACHE.ava_rank = pinfo_char.get_character_ava_rank(CACHE)
+    CACHE.ava_sub_rank = pinfo_char.get_character_ava_sub_rank(CACHE)
     CACHE.ava_rank_name = pinfo_char.get_character_ava_rank_name(CACHE)
     CACHE.ava_rank_points = pinfo_char.get_character_ava_rank_points(CACHE)
     CACHE.ava_rank_points_max = pinfo_char.get_character_ava_rank_points_max(CACHE)

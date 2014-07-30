@@ -41,45 +41,44 @@ local AVA_XP_GAIN = A_VALUE
 describe("Test character information getters", function()
     local results = nil
     local cache = pinfo.CHARACTER_INFO
+    local return_values_of_the_getter_stubs = {
+        is_character_veteran = VETERANNESS_1,
+        get_character_gender = GENDER_1,
+        get_character_class = CLASS_1,
+        get_character_name = NAME_1,
+        get_character_level = LEVEL_1,
+        get_character_level_xp = LEVEL_XP_1,
+        get_character_level_xp_max = LEVEL_XP_MAX_1,
+        get_character_level_xp_percent = LEVEL_XP_PERCENT,
+        get_character_xp_gain = LEVEL_XP_GAIN,
+        get_character_ava_rank = AVA_RANK_1,
+        get_character_ava_sub_rank = AVA_SUB_RANK_1,
+        get_character_ava_rank_name = AVA_RANK_NAME_1,
+        get_character_ava_rank_points = AVA_RANK_POINTS_1,
+        get_character_ava_rank_points_max = AVA_RANK_POINTS_MAX_1,
+        get_character_ava_rank_points_percent = AVA_RANK_POINTS_PERCENT,
+        get_character_ava_xp_gain = AVA_XP_GAIN
+    }
+
+    local function setup_getter_stubs()
+        for getter, return_value in pairs(return_values_of_the_getter_stubs) do
+            ut_helper.stub_function(pinfo_char, getter, return_value)
+        end
+    end
 
     setup(function()
         results = {}
-        ut_helper.stub_function(pinfo_char, "is_character_veteran", VETERANNESS_1)
-        ut_helper.stub_function(pinfo_char, "get_character_gender", GENDER_1)
-        ut_helper.stub_function(pinfo_char, "get_character_class", CLASS_1)
-        ut_helper.stub_function(pinfo_char, "get_character_name", NAME_1)
-        ut_helper.stub_function(pinfo_char, "get_character_level", LEVEL_1)
-        ut_helper.stub_function(pinfo_char, "get_character_level_xp", LEVEL_XP_1)
-        ut_helper.stub_function(pinfo_char, "get_character_level_xp_max", LEVEL_XP_MAX_1)
-        ut_helper.stub_function(pinfo_char, "get_character_level_xp_percent", LEVEL_XP_PERCENT)
-        ut_helper.stub_function(pinfo_char, "get_character_xp_gain", LEVEL_XP_GAIN)
-        ut_helper.stub_function(pinfo_char, "get_character_ava_rank", AVA_RANK_1, AVA_SUB_RANK_1)
-        ut_helper.stub_function(pinfo_char, "get_character_ava_rank_name", AVA_RANK_NAME_1)
-        ut_helper.stub_function(pinfo_char, "get_character_ava_rank_points", AVA_RANK_POINTS_1)
-        ut_helper.stub_function(pinfo_char, "get_character_ava_rank_points_max", AVA_RANK_POINTS_MAX_1)
-        ut_helper.stub_function(pinfo_char, "get_character_ava_rank_points_percent", AVA_RANK_POINTS_PERCENT)
-        ut_helper.stub_function(pinfo_char, "get_character_ava_xp_gain", AVA_XP_GAIN)
-    end)
-
-    after_each(function()
-        cache = {}
-        ut_helper.restore_stubbed_functions()
+        setup_getter_stubs()
     end)
 
     teardown(function()
         results = nil
+        ut_helper.restore_stubbed_functions()
     end)
 
     -- {{{
     local function given_that_cache_is_empty()
         assert.is.equal(0, ut_helper.table_size(cache))
-    end
-
-    local function and_that_get_character_ava_xp_gain_returns(xp)
-        ut_helper.stub_function(pinfo_char, "get_character_ava_xp_gain", xp)
-    end
-
-    local function and_that_get_character_class_returns(class)
     end
 
     local function when_initialize_is_called_with_cache()
@@ -162,13 +161,20 @@ describe("Test character information getters", function()
         assert.is.equal(gender, cache.gender)
     end
 
+    local function and_the_cached_character_ava_rank_became(rank)
+        assert.is.equal(rank, cache.ava_rank)
+    end
+
     local function and_get_character_ava_rank_was_called_once_with_cache()
         assert.spy(pinfo_char.get_character_ava_rank).was.called_with(cache)
     end
 
-    local function and_the_cached_character_ava_rank_became(rank, sub_rank)
-        assert.is.equal(rank, cache.ava_rank)
+    local function and_the_cached_character_ava_sub_rank_became(sub_rank)
         assert.is.equal(sub_rank, cache.ava_sub_rank)
+    end
+
+    local function and_get_character_ava_sub_rank_was_called_once_with_cache()
+        assert.spy(pinfo_char.get_character_ava_sub_rank).was.called_with(cache)
     end
 
     local function and_get_character_ava_rank_name_was_called_once_with_cache()
@@ -237,8 +243,10 @@ describe("Test character information getters", function()
             and_get_character_level_xp_percent_was_called_once_with_cache()
         and_the_cached_character_level_xp_gain_became(LEVEL_XP_GAIN)
             and_get_character_xp_gain_was_called_once_with_cache()
-        and_the_cached_character_ava_rank_became(AVA_RANK_1, AVA_SUB_RANK_1)
+        and_the_cached_character_ava_rank_became(AVA_RANK_1)
             and_get_character_ava_rank_was_called_once_with_cache()
+        and_the_cached_character_ava_sub_rank_became(AVA_SUB_RANK_1)
+            and_get_character_ava_sub_rank_was_called_once_with_cache()
         and_the_cached_character_ava_rank_name_became(AVA_RANK_NAME_1)
             and_get_character_ava_rank_name_was_called_once_with_cache()
         and_the_cached_character_ava_rank_points_became(AVA_RANK_POINTS_1)
@@ -680,16 +688,14 @@ describe("Test character information getters", function()
 
     local function and_cached_character_ava_rank_is_not_set()
         cache.ava_rank = nil
-        cache.ava_sub_rank = nil
     end
 
     local function when_get_character_ava_rank_is_called_with_cache()
-        results.ava_rank, results.ava_sub_rank = pinfo_char.get_character_ava_rank(cache)
+        results.ava_rank = pinfo_char.get_character_ava_rank(cache)
     end
 
-    local function then_the_returned_character_ava_rank_was(rank, sub_rank)
+    local function then_the_returned_character_ava_rank_was(rank)
         assert.is.equal(rank, results.ava_rank)
-        assert.is.equal(sub_rank, results.ava_sub_rank)
     end
 
     local function and_eso_GetUnitAvARank_was_called_once_with_player()
@@ -704,14 +710,13 @@ describe("Test character information getters", function()
 
         when_get_character_ava_rank_is_called_with_cache()
 
-        then_the_returned_character_ava_rank_was(AVA_RANK_1, AVA_SUB_RANK_1)
+        then_the_returned_character_ava_rank_was(AVA_RANK_1)
             and_eso_GetUnitAvARank_was_called_once_with_player()
     end)
 
     -- {{{
-    local function given_that_cached_character_ava_rank_is(rank, sub_rank)
+    local function given_that_cached_character_ava_rank_is(rank)
         cache.ava_rank = rank
-        cache.ava_sub_rank = sub_rank
     end
 
     local function and_eso_GetUnitAvARank_returns(rank, sub_rank)
@@ -725,12 +730,70 @@ describe("Test character information getters", function()
 
     it("Query CHARACTER AvA RANK from the CACHE",
     function()
-        given_that_cached_character_ava_rank_is(AVA_RANK_1, AVA_SUB_RANK_1)
+        given_that_cached_character_ava_rank_is(AVA_RANK_1)
             and_eso_GetUnitAvARank_returns(AVA_RANK_2, AVA_SUB_RANK_2)
 
         when_get_character_ava_rank_is_called_with_cache()
 
-        then_the_returned_character_ava_rank_was(AVA_RANK_1, AVA_SUB_RANK_1)
+        then_the_returned_character_ava_rank_was(AVA_RANK_1)
+            and_eso_GetUnitAvARank_was_not_called()
+    end)
+
+    -- {{{
+    local function given_that_eso_GetUnitAvARank_returns(rank, sub_rank)
+        ut_helper.stub_function(GLOBAL, "GetUnitAvARank", rank, sub_rank)
+    end
+
+    local function and_cached_character_ava_sub_rank_is_not_set()
+        cache.ava_sub_rank = nil
+    end
+
+    local function when_get_character_ava_sub_rank_is_called_with_cache()
+        results.ava_sub_rank = pinfo_char.get_character_ava_sub_rank(cache)
+    end
+
+    local function then_the_returned_character_ava_sub_rank_was(sub_rank)
+        assert.is.equal(sub_rank, results.ava_sub_rank)
+    end
+
+    local function and_eso_GetUnitAvARank_was_called_once_with_player()
+        assert.spy(GLOBAL.GetUnitAvARank).was.called_with(PLAYER)
+    end
+    -- }}}
+
+    it("Query CHARACTER AvA SUB-RANK from the SYSTEM, when NOT CACHED",
+    function()
+        given_that_eso_GetUnitAvARank_returns(AVA_RANK_1, AVA_SUB_RANK_1)
+            and_cached_character_ava_sub_rank_is_not_set()
+
+        when_get_character_ava_sub_rank_is_called_with_cache()
+
+        then_the_returned_character_ava_sub_rank_was(AVA_SUB_RANK_1)
+            and_eso_GetUnitAvARank_was_called_once_with_player()
+    end)
+
+    -- {{{
+    local function given_that_cached_character_ava_sub_rank_is(sub_rank)
+        cache.ava_sub_rank = sub_rank
+    end
+
+    local function and_eso_GetUnitAvARank_returns(rank, sub_rank)
+        ut_helper.stub_function(GLOBAL, "GetUnitAvARank", rank, sub_rank)
+    end
+
+    local function and_eso_GetUnitAvARank_was_not_called()
+        assert.spy(GLOBAL.GetUnitAvARank).was_not.called()
+    end
+    -- }}}
+
+    it("Query CHARACTER AvA SUB-RANK from the CACHE",
+    function()
+        given_that_cached_character_ava_sub_rank_is(AVA_SUB_RANK_1)
+            and_eso_GetUnitAvARank_returns(AVA_RANK_2, AVA_SUB_RANK_2)
+
+        when_get_character_ava_sub_rank_is_called_with_cache()
+
+        then_the_returned_character_ava_sub_rank_was(AVA_SUB_RANK_1)
             and_eso_GetUnitAvARank_was_not_called()
     end)
 
@@ -747,15 +810,15 @@ describe("Test character information getters", function()
         ut_helper.stub_function(pinfo_char, "get_character_gender", gender)
     end
 
-    local function and_get_character_ava_rank_returns(rank, sub_rank)
-        ut_helper.stub_function(pinfo_char, "get_character_ava_rank", rank, sub_rank)
+    local function and_get_character_ava_rank_returns(rank)
+        ut_helper.stub_function(pinfo_char, "get_character_ava_rank", rank)
     end
 
     local function when_get_character_ava_rank_name_is_called_with_cache()
         results.ava_rank_name = pinfo_char.get_character_ava_rank_name(cache)
     end
 
-    local function then_the_returned_character_ava_rank_name_was(rank, sub_rank)
+    local function then_the_returned_character_ava_rank_name_was(rank)
         assert.is.equal(rank, results.ava_rank_name)
     end
 
@@ -777,7 +840,7 @@ describe("Test character information getters", function()
         given_that_eso_GetAvARankName_returns(AVA_RANK_NAME_1)
             and_cached_character_ava_rank_name_is_not_set()
             and_get_character_gender_returns(GENDER_1)
-            and_get_character_ava_rank_returns(AVA_RANK_1, AVA_SUB_RANK_1)
+            and_get_character_ava_rank_returns(AVA_RANK_1)
 
         when_get_character_ava_rank_name_is_called_with_cache()
 
@@ -814,7 +877,7 @@ describe("Test character information getters", function()
         given_that_cached_character_ava_rank_name_is(AVA_RANK_NAME_1)
             and_eso_GetAvARankName_returns(AVA_RANK_NAME_2)
             and_get_character_gender_returns(GENDER_1)
-            and_get_character_ava_rank_returns(AVA_RANK_1, AVA_SUB_RANK_1)
+            and_get_character_ava_rank_returns(AVA_RANK_1)
 
         when_get_character_ava_rank_name_is_called_with_cache()
 
