@@ -59,6 +59,24 @@ describe("Test character information getters", function()
         get_character_ava_rank_points_percent = AVA_RANK_POINTS_PERCENT,
         get_character_ava_xp_gain = AVA_XP_GAIN
     }
+    local expected_cached_values = {
+        veteran = VETERANNESS_1,
+        gender = GENDER_1,
+        class = CLASS_1,
+        name = NAME_1,
+        level = LEVEL_1,
+        level_xp = LEVEL_XP_1,
+        level_xp_max = LEVEL_XP_MAX_1,
+        level_xp_percent = LEVEL_XP_PERCENT,
+        xp_gain = LEVEL_XP_GAIN,
+        ava_rank = AVA_RANK_1,
+        ava_sub_rank = AVA_SUB_RANK_1,
+        ava_rank_name = AVA_RANK_NAME_1,
+        ava_rank_points = AVA_RANK_POINTS_1,
+        ava_rank_points_max = AVA_RANK_POINTS_MAX_1,
+        ava_rank_points_percent = AVA_RANK_POINTS_PERCENT,
+        ava_xp_gain = AVA_XP_GAIN
+    }
 
     local function setup_getter_stubs()
         for getter, return_value in pairs(return_values_of_the_getter_stubs) do
@@ -89,132 +107,16 @@ describe("Test character information getters", function()
         assert.is_not.equal(0, ut_helper.table_size(cache))
     end
 
-    local function and_get_character_name_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_name).was.called_with(cache)
+    local function and_cached_values_became_initialized()
+        for cache_attribute, expected_value in pairs(expected_cached_values) do
+            assert.is.equal(expected_value, cache[cache_attribute])
+        end
     end
 
-    local function and_the_cached_character_name_became(name)
-        assert.is.equal(name, cache.name)
-    end
-
-    local function and_is_character_veteran_was_called_once_with_cache()
-        assert.spy(pinfo_char.is_character_veteran).was.called_with(cache)
-    end
-
-    local function and_the_cached_character_veteranness_became(veteranness)
-        assert.is.equal(veteranness, cache.veteran)
-    end
-
-    local function and_get_character_level_xp_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_level_xp).was.called_with(cache)
-    end
-
-    local function and_the_cached_character_level_xp_became(xp)
-        assert.is.equal(xp, cache.level_xp)
-    end
-
-    local function and_get_character_level_xp_max_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_level_xp_max).was.called_with(cache)
-    end
-
-    local function and_the_cached_character_level_xp_max_became(xp)
-        assert.is.equal(xp, cache.level_xp_max)
-    end
-
-    local function and_get_character_level_xp_percent_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_level_xp_percent).was.called_with(cache)
-    end
-
-    local function and_the_cached_character_level_xp_percent_became(percent)
-        assert.is.equal(percent, cache.level_xp_percent)
-    end
-
-    local function and_the_cached_character_level_xp_gain_became(xp)
-        assert.is.equal(xp, cache.xp_gain)
-    end
-
-    local function and_get_character_xp_gain_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_xp_gain).was.called_with(cache)
-    end
-
-    local function and_get_character_level_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_level).was.called_with(cache)
-    end
-
-    local function and_the_cached_character_level_became(level)
-        assert.is.equal(level, cache.level)
-    end
-
-    local function and_get_character_gender_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_gender).was.called_with(cache)
-    end
-
-    local function and_the_cached_character_class_became(class)
-        assert.is.equal(class, cache.class)
-    end
-
-    local function and_get_character_class_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_class).was.called_with(cache)
-    end
-
-    local function and_the_cached_character_gender_became(gender)
-        assert.is.equal(gender, cache.gender)
-    end
-
-    local function and_the_cached_character_ava_rank_became(rank)
-        assert.is.equal(rank, cache.ava_rank)
-    end
-
-    local function and_get_character_ava_rank_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_ava_rank).was.called_with(cache)
-    end
-
-    local function and_the_cached_character_ava_sub_rank_became(sub_rank)
-        assert.is.equal(sub_rank, cache.ava_sub_rank)
-    end
-
-    local function and_get_character_ava_sub_rank_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_ava_sub_rank).was.called_with(cache)
-    end
-
-    local function and_get_character_ava_rank_name_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_ava_rank_name).was.called_with(cache)
-    end
-
-    local function and_the_cached_character_ava_rank_name_became(rank_name)
-        assert.is.equal(rank_name, cache.ava_rank_name)
-    end
-
-    local function and_get_character_ava_rank_points_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_ava_rank_points).was.called_with(cache)
-    end
-
-    local function and_the_cached_character_ava_rank_points_became(rank_points)
-        assert.is.equal(rank_points, cache.ava_rank_points)
-    end
-
-    local function and_get_character_ava_rank_points_max_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_ava_rank_points_max).was.called_with(cache)
-    end
-
-    local function and_the_cached_character_ava_rank_points_max_became(rank_points)
-        assert.is.equal(rank_points, cache.ava_rank_points_max)
-    end
-
-    local function and_the_cached_character_ava_rank_points_percent_became(percent)
-        assert.is.equal(percent, cache.ava_rank_points_percent)
-    end
-
-    local function and_get_character_ava_rank_points_percent_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_ava_rank_points_percent).was.called_with(cache)
-    end
-
-    local function and_the_cached_character_ava_xp_gain_became(xp)
-        assert.is.equal(xp, cache.ava_xp_gain)
-    end
-
-    local function and_get_character_ava_xp_gain_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_ava_xp_gain).was.called_with(cache)
+    local function and_getter_stubs_were_called_with(param)
+        for getter, _ in pairs(return_values_of_the_getter_stubs) do
+            assert.spy(pinfo_char[getter]).was.called_with(param)
+        end
     end
     -- }}}
 
@@ -225,38 +127,8 @@ describe("Test character information getters", function()
         when_initialize_is_called_with_cache()
 
         then_cache_is_no_longer_empty()
-        and_the_cached_character_veteranness_became(VETERANNESS_1)
-            and_is_character_veteran_was_called_once_with_cache()
-        and_the_cached_character_gender_became(GENDER_1)
-            and_get_character_gender_was_called_once_with_cache()
-        and_the_cached_character_class_became(CLASS_1)
-            and_get_character_class_was_called_once_with_cache()
-        and_the_cached_character_name_became(NAME_1)
-            and_get_character_name_was_called_once_with_cache()
-        and_the_cached_character_level_became(LEVEL_1)
-            and_get_character_level_was_called_once_with_cache()
-        and_the_cached_character_level_xp_became(LEVEL_XP_1)
-            and_get_character_level_xp_was_called_once_with_cache()
-        and_the_cached_character_level_xp_max_became(LEVEL_XP_MAX_1)
-            and_get_character_level_xp_max_was_called_once_with_cache()
-        and_the_cached_character_level_xp_percent_became(LEVEL_XP_PERCENT)
-            and_get_character_level_xp_percent_was_called_once_with_cache()
-        and_the_cached_character_level_xp_gain_became(LEVEL_XP_GAIN)
-            and_get_character_xp_gain_was_called_once_with_cache()
-        and_the_cached_character_ava_rank_became(AVA_RANK_1)
-            and_get_character_ava_rank_was_called_once_with_cache()
-        and_the_cached_character_ava_sub_rank_became(AVA_SUB_RANK_1)
-            and_get_character_ava_sub_rank_was_called_once_with_cache()
-        and_the_cached_character_ava_rank_name_became(AVA_RANK_NAME_1)
-            and_get_character_ava_rank_name_was_called_once_with_cache()
-        and_the_cached_character_ava_rank_points_became(AVA_RANK_POINTS_1)
-            and_get_character_ava_rank_points_was_called_once_with_cache()
-        and_the_cached_character_ava_rank_points_max_became(AVA_RANK_POINTS_MAX_1)
-            and_get_character_ava_rank_points_max_was_called_once_with_cache()
-        and_the_cached_character_ava_rank_points_percent_became(AVA_RANK_POINTS_PERCENT)
-            and_get_character_ava_rank_points_percent_was_called_once_with_cache()
-        and_the_cached_character_ava_xp_gain_became(AVA_XP_GAIN)
-            and_get_character_ava_xp_gain_was_called_once_with_cache()
+            and_cached_values_became_initialized()
+            and_getter_stubs_were_called_with(cache)
     end)
 end)
 
