@@ -35,7 +35,7 @@ local AVA_RANK_POINTS_2 = B_VALUE
 local AVA_RANK_POINTS_MAX_1 = A_VALUE
 local AVA_RANK_POINTS_MAX_2 = B_VALUE
 local AVA_RANK_POINTS_PERCENT = A_VALUE
-local AVA_XP_GAIN = A_VALUE
+local AVA_POINT_GAIN = A_VALUE
 
 
 describe("Test character information getters", function()
@@ -57,7 +57,7 @@ describe("Test character information getters", function()
         get_character_ava_rank_points = AVA_RANK_POINTS_1,
         get_character_ava_rank_points_max = AVA_RANK_POINTS_MAX_1,
         get_character_ava_rank_points_percent = AVA_RANK_POINTS_PERCENT,
-        get_character_ava_xp_gain = AVA_XP_GAIN
+        get_character_ava_point_gain = AVA_POINT_GAIN
     }
     local expected_cached_values = {
         veteran = VETERANNESS_1,
@@ -75,7 +75,7 @@ describe("Test character information getters", function()
         ava_rank_points = AVA_RANK_POINTS_1,
         ava_rank_points_max = AVA_RANK_POINTS_MAX_1,
         ava_rank_points_percent = AVA_RANK_POINTS_PERCENT,
-        ava_xp_gain = AVA_XP_GAIN
+        ava_point_gain = AVA_POINT_GAIN
     }
 
     local function setup_getter_stubs()

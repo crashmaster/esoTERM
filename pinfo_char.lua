@@ -151,8 +151,8 @@ function pinfo_char.get_character_ava_rank_points_percent(cache)
     if cache.ava_rank_points_percent ~= nil then
         return cache.ava_rank_points_percent
     else
-        local rank_points_max = pinfo_char.get_character_ava_rank_points_max(cache)
         local rank_points = pinfo_char.get_character_ava_rank_points(cache)
+        local rank_points_max = pinfo_char.get_character_ava_rank_points_max(cache)
         return rank_points * 100 / rank_points_max
     end
 end
@@ -173,7 +173,7 @@ function pinfo_char.initialize()
     CACHE.ava_rank_points = pinfo_char.get_character_ava_rank_points(CACHE)
     CACHE.ava_rank_points_max = pinfo_char.get_character_ava_rank_points_max(CACHE)
     CACHE.ava_rank_points_percent = pinfo_char.get_character_ava_rank_points_percent(CACHE)
-    CACHE.ava_xp_gain = pinfo_char.get_character_ava_xp_gain(CACHE)
+    CACHE.ava_point_gain = pinfo_char.get_character_ava_point_gain(CACHE)
 end
 
 return pinfo_char

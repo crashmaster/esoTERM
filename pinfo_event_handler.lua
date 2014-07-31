@@ -25,11 +25,10 @@ function pinfo_event_handler.initialize()
 end
 
 function pinfo_event_handler.on_ava_xp_update(event, point, sound, diff)
---    ap, bp, cp, dp = GetAvARankProgress(point)
-    d(string.format("+%d", diff))
---    d(string.format("subStart: %d subNext: %d start: %d next: %d", ap, bp, cp, dp))
-    CACHE.ava_rank_points_percent = point * 100 / CACHE.ava_rank_points_max
-    CACHE.ava_xp_gain = diff
+    CACHE.ava_rank_points = point
+    local point_max = pinfo_char.get_character_ava_rank_points_max(CACHE)
+    CACHE.ava_rank_points_percent = point * 100 / point_max
+    CACHE.ava_point_gain = diff
 end
 
 function pinfo_event_handler.on_experience_update(event, unit, xp, xp_max, reason)
