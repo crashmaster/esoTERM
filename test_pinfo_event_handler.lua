@@ -232,6 +232,20 @@ describe("Test event handlers", function()
             then_the_level_property_in_character_info_was_not_updated()
         end)
     end)
+
+    describe("Test the on level update event handler", function()
+        local cache = pinfo.CHARACTER_INFO
+
+        local OLD_AVA_POINT_GAIN = 0
+
+        before_each(function()
+            cache.ava_point_gain = OLD_AVA_POINT_GAIN
+        end)
+
+        after_each(function()
+            cache = {}
+        end)
+    end)
 end)
 
 -- vim:fdm=marker
