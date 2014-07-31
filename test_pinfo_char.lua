@@ -1249,6 +1249,44 @@ describe("Test character information getters", function()
             and_get_character_ava_rank_points_max_was_not_called()
             and_get_character_ava_rank_points_was_not_called()
     end)
+
+    -- {{{
+    local function given_that_cached_character_ava_point_gain_is_not_set()
+        cache.ava_point_gain = nil
+    end
+
+    local function when_get_character_ava_point_gain_is_called_with_cache()
+        results.ava_point_gain = pinfo_char.get_character_ava_point_gain(cache)
+    end
+
+    local function then_the_returned_ava_point_gain_was(gain)
+        assert.is.equal(gain, results.ava_point_gain)
+    end
+    -- }}}
+
+    it("Query CHARACTER AVA-POINT GAIN, when NOT CACHED",
+    function()
+        given_that_cached_character_ava_point_gain_is_not_set()
+
+        when_get_character_ava_point_gain_is_called_with_cache()
+
+        then_the_returned_ava_point_gain_was(0)
+    end)
+
+    -- {{{
+    local function given_that_cached_character_ava_point_gain_is(gain)
+        cache.ava_point_gain = gain
+    end
+    -- }}}
+
+    it("Query CHARACTER AVA_POINT GAIN from the CACHE",
+    function()
+        given_that_cached_character_ava_point_gain_is(AVA_POINT_GAIN)
+
+        when_get_character_ava_point_gain_is_called_with_cache()
+
+        then_the_returned_ava_point_gain_was(AVA_POINT_GAIN)
+    end)
 end)
 
 -- vim:fdm=marker

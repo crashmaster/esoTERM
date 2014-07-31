@@ -157,6 +157,14 @@ function pinfo_char.get_character_ava_rank_points_percent(cache)
     end
 end
 
+function pinfo_char.get_character_ava_point_gain(cache)
+    if cache.ava_point_gain ~= nil then
+        return cache.ava_point_gain
+    else
+        return 0
+    end
+end
+
 function pinfo_char.initialize()
     CACHE.veteran = pinfo_char.is_character_veteran(CACHE)
     CACHE.gender = pinfo_char.get_character_gender(CACHE)
