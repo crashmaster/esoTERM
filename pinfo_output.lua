@@ -11,7 +11,7 @@ function pinfo_output.character_info_to_debug()
                     pinfo_char.get_character_level_xp_percent(CACHE),
                     pinfo_char.get_character_xp_gain(CACHE),
                     pinfo_char.get_character_ava_rank_points_percent(CACHE),
-                    CACHE.ava_point_gain))
+                    pinfo_char.get_character_ava_point_gain(CACHE)))
 end
 
 return pinfo_output
