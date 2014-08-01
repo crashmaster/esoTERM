@@ -87,8 +87,11 @@ function pinfo_char.get_character_level_xp_percent(cache)
     if cache.level_xp_percent ~= nil then
         return cache.level_xp_percent
     else
-        local level_xp_max = pinfo_char.get_character_level_xp_max(cache)
         local level_xp = pinfo_char.get_character_level_xp(cache)
+        local level_xp_max = pinfo_char.get_character_level_xp_max(cache)
+        if level_xp_max == 0 then
+            return 100
+        end
         return level_xp * 100 / level_xp_max
     end
 end
