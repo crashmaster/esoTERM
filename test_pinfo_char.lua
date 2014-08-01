@@ -980,7 +980,7 @@ describe("Test character information getters", function()
 
         when_get_character_level_xp_percent_is_called_with_cache()
 
-        then_the_returned_level_xp_percent_was(100)
+        then_the_returned_level_xp_percent_was(0)
             and_get_character_level_xp_was_called_with_cache()
             and_get_character_level_xp_max_was_called_with_cache()
     end)
