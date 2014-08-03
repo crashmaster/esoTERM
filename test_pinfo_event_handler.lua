@@ -50,7 +50,7 @@ describe("Test event handler initialization", function()
         expected_register_params.ava_xp_update = {
             addon_name = pinfo.ADDON_NAME,
             event = EVENT_ALLIANCE_POINT_UPDATE,
-            callback = pinfo_event_handler.on_ava_xp_update
+            callback = pinfo_event_handler.on_ava_point_update
         }
     end
 
@@ -88,16 +88,16 @@ describe("Test event handlers", function()
     local UNIT = "player"
 
     -- {{{
-    local function given_that_pinfo_output_character_info_to_debug_is_stubbed()
-        ut_helper.stub_function(pinfo_output, "character_info_to_debug", nil)
+    local function given_that_pinfo_output_xp_to_debug_is_stubbed()
+        ut_helper.stub_function(pinfo_output, "xp_to_debug", nil)
     end
 
-    local function and_pinfo_output_character_info_to_debug_was_called_once()
-        assert.spy(pinfo_output.character_info_to_debug).was.called_with()
+    local function and_pinfo_output_xp_to_debug_was_called_once()
+        assert.spy(pinfo_output.xp_to_debug).was.called_with()
     end
 
-    local function and_pinfo_output_character_info_to_debug_was_not_called()
-        assert.spy(pinfo_output.character_info_to_debug).was_not.called()
+    local function and_pinfo_output_xp_to_debug_was_not_called()
+        assert.spy(pinfo_output.xp_to_debug).was_not.called()
     end
     -- }}}
 
@@ -140,12 +140,12 @@ describe("Test event handlers", function()
 
         it("On experience update, happy flow",
         function()
-            given_that_pinfo_output_character_info_to_debug_is_stubbed()
+            given_that_pinfo_output_xp_to_debug_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, NEW_XP_MAX, REASON)
 
             then_the_xp_properties_in_character_info_where_updated()
-                and_pinfo_output_character_info_to_debug_was_called_once()
+                and_pinfo_output_xp_to_debug_was_called_once()
         end)
 
         -- {{{
@@ -158,32 +158,32 @@ describe("Test event handlers", function()
 
         it("On experience update, incorrect unit",
         function()
-            given_that_pinfo_output_character_info_to_debug_is_stubbed()
+            given_that_pinfo_output_xp_to_debug_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, "foo", NEW_XP, NEW_XP_MAX, REASON)
 
             then_the_xp_properties_in_character_info_where_not_updated()
-                and_pinfo_output_character_info_to_debug_was_not_called()
+                and_pinfo_output_xp_to_debug_was_not_called()
         end)
 
         it("On experience update, incorrect reason",
         function()
-            given_that_pinfo_output_character_info_to_debug_is_stubbed()
+            given_that_pinfo_output_xp_to_debug_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, NEW_XP_MAX, -1)
 
             then_the_xp_properties_in_character_info_where_not_updated()
-                and_pinfo_output_character_info_to_debug_was_not_called()
+                and_pinfo_output_xp_to_debug_was_not_called()
         end)
 
         it("On experience update, total maximum xp reached",
         function()
-            given_that_pinfo_output_character_info_to_debug_is_stubbed()
+            given_that_pinfo_output_xp_to_debug_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, 0, REASON)
 
             then_the_xp_properties_in_character_info_where_not_updated()
-                and_pinfo_output_character_info_to_debug_was_not_called()
+                and_pinfo_output_xp_to_debug_was_not_called()
         end)
     end)
 

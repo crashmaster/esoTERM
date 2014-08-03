@@ -21,16 +21,16 @@ function pinfo_event_handler.initialize()
 
     EVENT_MANAGER:RegisterForEvent(pinfo.ADDON_NAME,
                                    EVENT_ALLIANCE_POINT_UPDATE,
-                                   pinfo_event_handler.on_ava_xp_update)
+                                   pinfo_event_handler.on_ava_point_update)
 end
 
-function pinfo_event_handler.on_ava_xp_update(event, point, sound, diff)
-    CACHE.ava_rank_points = point
+function pinfo_event_handler.on_ava_point_update(event, point, sound, diff)
+    CACHE.ava_rank_points = CACHE.ava_rank_points + diff
     local point_max = pinfo_char.get_character_ava_rank_points_max(CACHE)
-    CACHE.ava_rank_points_percent = point * 100 / point_max
+    CACHE.ava_rank_points_percent = CACHE.ava_rank_points * 100 / point_max
     CACHE.ava_point_gain = diff
 
-    pinfo_output.character_info_to_debug()
+    pinfo_output.ap_to_debug()
 end
 
 function pinfo_event_handler.on_experience_update(event, unit, xp, xp_max, reason)
@@ -46,7 +46,7 @@ function pinfo_event_handler.on_experience_update(event, unit, xp, xp_max, reaso
             CACHE.level_xp_percent = xp * 100 / xp_max
         end
 
-        pinfo_output.character_info_to_debug()
+        pinfo_output.xp_to_debug()
     end
 end
 

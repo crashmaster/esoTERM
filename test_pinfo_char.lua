@@ -1059,7 +1059,15 @@ describe("Test character information getters", function()
     end)
 
     -- {{{
-    local function given_that_eso_GetUnitAvARankPoints_returns(points)
+    local function given_that_pinfo_get_character_ava_rank_returns(rank)
+        ut_helper.stub_function(pinfo_char, "get_character_ava_rank", rank)
+    end
+
+    local function and_that_eso_GetNumPointsNeededForAvARank_returns(points)
+        ut_helper.stub_function(GLOBAL, "GetNumPointsNeededForAvARank", points)
+    end
+
+    local function and_that_eso_GetUnitAvARankPoints_returns(points)
         ut_helper.stub_function(GLOBAL, "GetUnitAvARankPoints", points)
     end
 
@@ -1075,6 +1083,14 @@ describe("Test character information getters", function()
         assert.is.equal(points, results.ava_rank_points)
     end
 
+    local function and_get_character_ava_rank_was_called_once_with_cache()
+        assert.spy(pinfo_char.get_character_ava_rank).was.called_with(cache)
+    end
+
+    local function and_eso_GetNumPointsNeededForAvARank_was_called_once_with(rank)
+        assert.spy(GLOBAL.GetNumPointsNeededForAvARank).was.called_with(rank)
+    end
+
     local function and_eso_GetUnitAvARankPoints_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitAvARankPoints).was.called_with(PLAYER)
     end
@@ -1082,12 +1098,16 @@ describe("Test character information getters", function()
 
     it("Query CHARACTER AvA-RANK POINTS from the SYSTEM, when NOT CACHED",
     function()
-        given_that_eso_GetUnitAvARankPoints_returns(AVA_RANK_POINTS_1)
+        given_that_pinfo_get_character_ava_rank_returns(AVA_RANK_1)
+        and_that_eso_GetNumPointsNeededForAvARank_returns(100)
+        and_that_eso_GetUnitAvARankPoints_returns(150)
             and_cached_character_ava_rank_points_is_not_set()
 
         when_get_character_ava_rank_points_is_called_with_cache()
 
-        then_the_returned_character_ava_rank_points_was(AVA_RANK_POINTS_1)
+        then_the_returned_character_ava_rank_points_was(50)
+            and_get_character_ava_rank_was_called_once_with_cache()
+            and_eso_GetNumPointsNeededForAvARank_was_called_once_with(AVA_RANK_1)
             and_eso_GetUnitAvARankPoints_was_called_once_with_player()
     end)
 
