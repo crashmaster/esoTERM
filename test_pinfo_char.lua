@@ -1312,13 +1312,23 @@ describe("Test character information getters", function()
     end
     -- }}}
 
-    it("Query CHARACTER AVA_POINT GAIN from the CACHE",
+    it("Query CHARACTER AVA-POINT GAIN from the CACHE",
     function()
         given_that_cached_character_ava_point_gain_is(AVA_POINT_GAIN)
 
         when_get_character_ava_point_gain_is_called_with_cache()
 
         then_the_returned_ava_point_gain_was(AVA_POINT_GAIN)
+    end)
+
+    it("Query CHARACTER AVA-RANK LOWER BOUND POINTS, when NOT CACHED",
+    function()
+        given_that_cached_character_ava_rank_lb_points_is_not_set()
+    end)
+
+    it("Query CHARACTER AVA-RANK LOWER BOUND POINTS from the CACHE",
+    function()
+        given_that_cached_character_ava_rank_lb_points_is()
     end)
 end)
 
