@@ -114,6 +114,15 @@ function pinfo_char.get_character_ava_rank(cache)
     end
 end
 
+function pinfo_char.get_character_ava_rank_points_lb(cache)
+    if cache.ava_rank_points_lb ~= nil then
+        return cache.ava_rank_points_lb
+    else
+        local rank = pinfo_char.get_character_ava_rank(cache)
+        return GetNumPointsNeededForAvARank(rank)
+    end
+end
+
 function pinfo_char.get_character_ava_sub_rank(cache)
     if cache.ava_sub_rank ~= nil then
         return cache.ava_sub_rank
@@ -138,8 +147,8 @@ function pinfo_char.get_character_ava_rank_points(cache)
         return cache.ava_rank_points
     else
         local current_rank = pinfo_char.get_character_ava_rank(cache)
-        local rank_points_min = GetNumPointsNeededForAvARank(current_rank)
-        return GetUnitAvARankPoints(PLAYER_UNIT_TAG) - rank_points_min
+        local rank_points_lb = GetNumPointsNeededForAvARank(current_rank)
+        return GetUnitAvARankPoints(PLAYER_UNIT_TAG) - rank_points_lb
     end
 end
 
@@ -148,9 +157,9 @@ function pinfo_char.get_character_ava_rank_points_max(cache)
         return cache.ava_rank_points_max
     else
         local current_rank = pinfo_char.get_character_ava_rank(cache)
-        local rank_points_min = GetNumPointsNeededForAvARank(current_rank)
-        local rank_points_max = GetNumPointsNeededForAvARank(current_rank + 1)
-        return rank_points_max - rank_points_min
+        local rank_points_lb = GetNumPointsNeededForAvARank(current_rank)
+        local rank_points_ub = GetNumPointsNeededForAvARank(current_rank + 1)
+        return rank_points_ub - rank_points_lb
     end
 end
 

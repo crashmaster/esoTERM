@@ -34,6 +34,8 @@ local AVA_RANK_POINTS_1 = A_VALUE
 local AVA_RANK_POINTS_2 = B_VALUE
 local AVA_RANK_POINTS_MAX_1 = A_VALUE
 local AVA_RANK_POINTS_MAX_2 = B_VALUE
+local AVA_RANK_POINTS_LB_1 = A_VALUE
+local AVA_RANK_POINTS_LB_2 = B_VALUE
 local AVA_RANK_POINTS_PERCENT = A_VALUE
 local AVA_POINT_GAIN = A_VALUE
 
@@ -1321,14 +1323,62 @@ describe("Test character information getters", function()
         then_the_returned_ava_point_gain_was(AVA_POINT_GAIN)
     end)
 
+    -- {{{
+    local function given_that_cached_character_ava_rank_points_lb_is_not_set()
+        cache.ava_rank_points_lb = nil
+    end
+
+    local function and_eso_GetNumPointsNeededForAvARank_returns(point)
+        ut_helper.stub_function(GLOBAL, "GetNumPointsNeededForAvARank", point)
+    end
+
+    local function when_get_character_ava_rank_points_lb_is_called_with_cache()
+        results.ava_rank_points_lb = pinfo_char.get_character_ava_rank_points_lb(cache)
+    end
+
+    local function then_the_returned_character_ava_rank_points_lb_was(point)
+        assert.is.equal(point, results.ava_rank_points_lb)
+    end
+
+    local function and_eso_GetNumPointsNeededForAvARank_was_called_once_with(rank)
+        assert.spy(GLOBAL.GetNumPointsNeededForAvARank).was.called_with(rank)
+    end
+    -- }}}
+
     it("Query CHARACTER AVA-RANK LOWER BOUND POINTS, when NOT CACHED",
     function()
-        given_that_cached_character_ava_rank_lb_points_is_not_set()
+        given_that_cached_character_ava_rank_points_lb_is_not_set()
+            and_get_character_ava_rank_returns(AVA_RANK_1)
+            and_eso_GetNumPointsNeededForAvARank_returns(AVA_RANK_POINTS_LB_1)
+
+        when_get_character_ava_rank_points_lb_is_called_with_cache()
+
+        then_the_returned_character_ava_rank_points_lb_was(AVA_RANK_POINTS_LB_1)
+            and_get_character_ava_rank_was_called_once_with_cache()
+            and_eso_GetNumPointsNeededForAvARank_was_called_once_with(AVA_RANK_1)
     end)
+
+    -- {{{
+    local function given_that_cached_character_ava_rank_points_lb_is(point)
+        cache.ava_rank_points_lb = point
+    end
+
+    local function and_eso_GetNumPointsNeededForAvARank_was_not_called()
+        assert.spy(GLOBAL.GetNumPointsNeededForAvARank).was_not.called()
+    end
+    -- }}}
 
     it("Query CHARACTER AVA-RANK LOWER BOUND POINTS from the CACHE",
     function()
-        given_that_cached_character_ava_rank_lb_points_is()
+        given_that_cached_character_ava_rank_points_lb_is(AVA_RANK_POINTS_LB_1)
+            and_get_character_ava_rank_returns(AVA_RANK_1)
+            and_eso_GetNumPointsNeededForAvARank_returns(AVA_RANK_POINTS_LB_2)
+
+        when_get_character_ava_rank_points_lb_is_called_with_cache()
+
+        then_the_returned_character_ava_rank_points_lb_was(AVA_RANK_POINTS_LB_1)
+            and_get_character_ava_rank_was_not_called()
+            and_eso_GetNumPointsNeededForAvARank_was_not_called()
     end)
 end)
 
