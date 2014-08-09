@@ -105,21 +105,21 @@ function pinfo_char.get_character_xp_gain(cache)
     end
 end
 
+function pinfo_char.get_character_ava_points(cache)
+    if cache.ava_points ~= nil then
+        return cache.ava_points
+    else
+        local points = GetUnitAvARankPoints(PLAYER_UNIT_TAG)
+        return points
+    end
+end
+
 function pinfo_char.get_character_ava_rank(cache)
     if cache.ava_rank ~= nil then
         return cache.ava_rank
     else
         local rank, _ = GetUnitAvARank(PLAYER_UNIT_TAG)
         return rank
-    end
-end
-
-function pinfo_char.get_character_ava_rank_points_lb(cache)
-    if cache.ava_rank_points_lb ~= nil then
-        return cache.ava_rank_points_lb
-    else
-        local rank = pinfo_char.get_character_ava_rank(cache)
-        return GetNumPointsNeededForAvARank(rank)
     end
 end
 
@@ -142,13 +142,31 @@ function pinfo_char.get_character_ava_rank_name(cache)
     end
 end
 
+function pinfo_char.get_character_ava_rank_points_lb(cache)
+    if cache.ava_rank_points_lb ~= nil then
+        return cache.ava_rank_points_lb
+    else
+        local rank = pinfo_char.get_character_ava_rank(cache)
+        return GetNumPointsNeededForAvARank(rank)
+    end
+end
+
+function pinfo_char.get_character_ava_rank_points_ub(cache)
+    if cache.ava_rank_points_ub ~= nil then
+        return cache.ava_rank_points_ub
+    else
+        local rank = pinfo_char.get_character_ava_rank(cache)
+        return GetNumPointsNeededForAvARank(rank + 1)
+    end
+end
+
 function pinfo_char.get_character_ava_rank_points(cache)
     if cache.ava_rank_points ~= nil then
         return cache.ava_rank_points
     else
-        local current_rank = pinfo_char.get_character_ava_rank(cache)
-        local rank_points_lb = GetNumPointsNeededForAvARank(current_rank)
-        return GetUnitAvARankPoints(PLAYER_UNIT_TAG) - rank_points_lb
+        local overall_points = pinfo_char.get_character_ava_points(cache)
+        local rank_points_lb = pinfo_char.get_character_ava_rank_points_lb(cache)
+        return overall_points - rank_points_lb
     end
 end
 
@@ -156,9 +174,8 @@ function pinfo_char.get_character_ava_rank_points_max(cache)
     if cache.ava_rank_points_max ~= nil then
         return cache.ava_rank_points_max
     else
-        local current_rank = pinfo_char.get_character_ava_rank(cache)
-        local rank_points_lb = GetNumPointsNeededForAvARank(current_rank)
-        local rank_points_ub = GetNumPointsNeededForAvARank(current_rank + 1)
+        local rank_points_lb = pinfo_char.get_character_ava_rank_points_lb(cache)
+        local rank_points_ub = pinfo_char.get_character_ava_rank_points_ub(cache)
         return rank_points_ub - rank_points_lb
     end
 end
@@ -173,9 +190,9 @@ function pinfo_char.get_character_ava_rank_points_percent(cache)
     end
 end
 
-function pinfo_char.get_character_ava_point_gain(cache)
-    if cache.ava_point_gain ~= nil then
-        return cache.ava_point_gain
+function pinfo_char.get_character_ava_points_gain(cache)
+    if cache.ava_points_gain ~= nil then
+        return cache.ava_points_gain
     else
         return 0
     end
@@ -191,13 +208,16 @@ function pinfo_char.initialize()
     CACHE.level_xp_max = pinfo_char.get_character_level_xp_max(CACHE)
     CACHE.level_xp_percent = pinfo_char.get_character_level_xp_percent(CACHE)
     CACHE.xp_gain = pinfo_char.get_character_xp_gain(CACHE)
+    CACHE.ava_points = pinfo_char.get_character_ava_points(CACHE)
     CACHE.ava_rank = pinfo_char.get_character_ava_rank(CACHE)
     CACHE.ava_sub_rank = pinfo_char.get_character_ava_sub_rank(CACHE)
     CACHE.ava_rank_name = pinfo_char.get_character_ava_rank_name(CACHE)
+    CACHE.ava_rank_points_lb = pinfo_char.get_character_ava_rank_points_lb(CACHE)
+    CACHE.ava_rank_points_ub = pinfo_char.get_character_ava_rank_points_ub(CACHE)
     CACHE.ava_rank_points = pinfo_char.get_character_ava_rank_points(CACHE)
     CACHE.ava_rank_points_max = pinfo_char.get_character_ava_rank_points_max(CACHE)
     CACHE.ava_rank_points_percent = pinfo_char.get_character_ava_rank_points_percent(CACHE)
-    CACHE.ava_point_gain = pinfo_char.get_character_ava_point_gain(CACHE)
+    CACHE.ava_points_gain = pinfo_char.get_character_ava_points_gain(CACHE)
 end
 
 return pinfo_char
