@@ -28,7 +28,7 @@ function pinfo_event_handler.on_ava_point_update(event, point, sound, diff)
     CACHE.ava_rank_points = CACHE.ava_rank_points + diff
     local point_max = pinfo_char.get_character_ava_rank_points_max(CACHE)
     CACHE.ava_rank_points_percent = CACHE.ava_rank_points * 100 / point_max
-    CACHE.ava_point_gain = diff
+    CACHE.ava_points_gain = diff
 
     pinfo_output.ap_to_debug()
 end

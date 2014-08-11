@@ -236,10 +236,10 @@ describe("Test event handlers", function()
     describe("Test the on level update event handler", function()
         local cache = pinfo.CHARACTER_INFO
 
-        local OLD_AVA_POINT_GAIN = 0
+        local OLD_AVA_POINTS_GAIN = 0
 
         before_each(function()
-            cache.ava_point_gain = OLD_AVA_POINT_GAIN
+            cache.ava_points_gain = OLD_AVA_POINTS_GAIN
         end)
 
         after_each(function()
