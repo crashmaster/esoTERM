@@ -157,7 +157,6 @@ describe("Test character information getters", function()
     end)
 
     after_each(function()
-        cache = {}
         ut_helper.restore_stubbed_functions()
     end)
 

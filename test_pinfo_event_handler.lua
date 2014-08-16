@@ -50,7 +50,7 @@ describe("Test event handler initialization", function()
         expected_register_params.ava_xp_update = {
             addon_name = pinfo.ADDON_NAME,
             event = EVENT_ALLIANCE_POINT_UPDATE,
-            callback = pinfo_event_handler.on_ava_point_update
+            callback = pinfo_event_handler.on_ava_points_update
         }
     end
 
@@ -99,6 +99,18 @@ describe("Test event handlers", function()
     local function and_pinfo_output_xp_to_debug_was_not_called()
         assert.spy(pinfo_output.xp_to_debug).was_not.called()
     end
+
+    local function given_that_pinfo_output_ap_to_debug_is_stubbed()
+        ut_helper.stub_function(pinfo_output, "ap_to_debug", nil)
+    end
+
+    local function and_pinfo_output_ap_to_debug_was_called_once()
+        assert.spy(pinfo_output.ap_to_debug).was.called_with()
+    end
+
+    local function and_pinfo_output_ap_to_debug_was_not_called()
+        assert.spy(pinfo_output.ap_to_debug).was_not.called()
+    end
     -- }}}
 
     describe("Test the on experience update event handler", function()
@@ -121,7 +133,6 @@ describe("Test event handlers", function()
         end)
 
         after_each(function()
-            cache = {}
             ut_helper.restore_stubbed_functions()
         end)
 
@@ -198,7 +209,6 @@ describe("Test event handlers", function()
         end)
 
         after_each(function()
-            cache = {}
             ut_helper.restore_stubbed_functions()
         end)
 
@@ -233,17 +243,124 @@ describe("Test event handlers", function()
         end)
     end)
 
-    describe("Test the on level update event handler", function()
+    describe("Test the on AvA points update event handler", function()
         local cache = pinfo.CHARACTER_INFO
 
-        local OLD_AVA_POINTS_GAIN = 0
+        local POINT = nil
+        local SOUND = nil
+        local OLD_RANK = 4
+        local NEW_RANK = 5
+        local OLD_GAIN = 0
+        local NEW_GAIN = 100
+        local GAIN_ZERO = 0
+        local GAIN_NEGATIVE = -10000
+        local GAIN_RANK_UP = 300
+        local OLD_POINTS_MAX = 1000
+        local NEW_POINTS_MAX = 2000
+        local OLD_POINTS = 800
+        local NEW_POINTS = OLD_POINTS + NEW_GAIN
+        local NEW_POINTS_RANK_UP = OLD_POINTS + GAIN_RANK_UP - OLD_POINTS_MAX
+        local OLD_POINTS_PCT = OLD_POINTS * 100 / OLD_POINTS_MAX
+        local NEW_POINTS_PCT = NEW_POINTS * 100 / OLD_POINTS_MAX
+        local NEW_POINTS_PCT_RANK_UP = NEW_POINTS_RANK_UP * 100 / NEW_POINTS_MAX
 
         before_each(function()
-            cache.ava_points_gain = OLD_AVA_POINTS_GAIN
+            cache.ava_rank = OLD_RANK
+            cache.ava_rank_points = OLD_POINTS
+            cache.ava_rank_points_max = OLD_POINTS_MAX
+            cache.ava_rank_points_percent = OLD_POINTS_PCT
+            cache.ava_points_gain = OLD_GAIN
         end)
 
         after_each(function()
-            cache = {}
+            ut_helper.restore_stubbed_functions()
+        end)
+
+        -- {{{
+        local function and_that_get_character_ava_rank_returns(rank)
+            ut_helper.stub_function(pinfo_char, "get_character_ava_rank", rank)
+        end
+
+        local function and_get_character_ava_rank_was_called_once_witch_cache()
+            assert.spy(pinfo_char.get_character_ava_rank).was.called_with(cache)
+        end
+
+        local function and_that_get_character_ava_rank_points_max_returns(points)
+            ut_helper.stub_function(pinfo_char, "get_character_ava_rank_points_max", points)
+        end
+
+        local function and_get_character_ava_rank_points_max_was_called_once_witch_cache()
+            assert.spy(pinfo_char.get_character_ava_rank_points_max).was.called_with(cache)
+        end
+
+        local function when_on_ava_points_update_is_called_with(event, point, sound, diff)
+            pinfo_event_handler.on_ava_points_update(event, point, sound, diff)
+        end
+
+        local function then_the_ava_properties_in_character_info_where_updated_no_rank_up()
+            assert.is.equal(OLD_RANK, cache.ava_rank)
+            assert.is.equal(NEW_POINTS, cache.ava_rank_points)
+            assert.is.equal(NEW_POINTS_PCT, cache.ava_rank_points_percent)
+            assert.is.equal(NEW_GAIN, cache.ava_points_gain)
+        end
+
+        local function then_the_ava_properties_in_character_info_where_not_updated()
+            assert.is.equal(OLD_RANK, cache.ava_rank)
+            assert.is.equal(OLD_POINTS, cache.ava_rank_points)
+            assert.is.equal(OLD_POINTS_PCT, cache.ava_rank_points_percent)
+            assert.is.equal(OLD_GAIN, cache.ava_points_gain)
+        end
+
+        local function then_the_ava_properties_in_character_info_where_updated_rank_up()
+            assert.is.equal(NEW_RANK, cache.ava_rank)
+            assert.is.equal(NEW_POINTS_RANK_UP, cache.ava_rank_points)
+            assert.is.equal(NEW_POINTS_PCT_RANK_UP, cache.ava_rank_points_percent)
+            assert.is.equal(GAIN_RANK_UP, cache.ava_points_gain)
+        end
+        -- }}}
+
+        it("On AvA points update, happy flow",
+        function()
+            given_that_pinfo_output_ap_to_debug_is_stubbed()
+
+            when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, NEW_GAIN)
+
+            then_the_ava_properties_in_character_info_where_updated_no_rank_up()
+                and_pinfo_output_ap_to_debug_was_called_once()
+        end)
+
+        it("On AvA points update, zero gain",
+        function()
+            given_that_pinfo_output_ap_to_debug_is_stubbed()
+
+            when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, GAIN_ZERO)
+
+            then_the_ava_properties_in_character_info_where_not_updated()
+                and_pinfo_output_ap_to_debug_was_not_called()
+        end)
+
+        it("On AvA points update, negative gain",
+        function()
+            given_that_pinfo_output_ap_to_debug_is_stubbed()
+
+            when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, GAIN_NEGATIVE)
+
+            then_the_ava_properties_in_character_info_where_not_updated()
+                and_pinfo_output_ap_to_debug_was_not_called()
+        end)
+
+        it("On AvA points update, gain enough to rank up",
+        function()
+            given_that_pinfo_output_ap_to_debug_is_stubbed()
+                and_that_get_character_ava_rank_returns(NEW_RANK)
+                and_that_get_character_ava_rank_points_max_returns(NEW_POINTS_MAX)
+
+            when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, GAIN_RANK_UP)
+
+            then_the_ava_properties_in_character_info_where_updated_rank_up()
+                and_get_character_ava_rank_was_called_once_witch_cache()
+                and_get_character_ava_rank_points_max_was_called_once_witch_cache()
+                and_pinfo_output_ap_to_debug_was_called_once()
         end)
     end)
 end)
