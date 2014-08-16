@@ -25,8 +25,10 @@ function pinfo_event_handler.initialize()
 end
 
 function pinfo_event_handler.on_experience_update(event, unit, xp, xp_max, reason)
-    if ((unit == "player") and (xp_max ~= 0) and (CACHE.level_xp ~= xp) and (reason > -1)) then
-        CACHE.xp_gain = xp - CACHE.level_xp
+    if ((unit == "player") and (xp_max ~= 0) and (CACHE.level_xp ~= xp)) then
+        if (reason > -1) then
+            CACHE.xp_gain = xp - CACHE.level_xp
+        end
         CACHE.level_xp = xp
         CACHE.level_xp_max = xp_max
         if (xp > xp_max) then
