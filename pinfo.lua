@@ -19,7 +19,7 @@
 
 pinfo = {}
 pinfo.ADDON_NAME = "pinfo"
-pinfo.CHARACTER_INFO = {}
+pinfo.CACHE = {}
 
 function pinfo.on_addon_loaded(event, addon_name)
     pinfo_init.initialize(addon_name)

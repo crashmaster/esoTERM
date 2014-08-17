@@ -1,5 +1,5 @@
 local PLAYER_UNIT_TAG = "player"
-local CACHE = pinfo.CHARACTER_INFO
+local CACHE = pinfo.CACHE
 
 pinfo_char = {}
 

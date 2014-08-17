@@ -114,13 +114,13 @@ describe("Test event handlers", function()
     -- }}}
 
     describe("Test the on experience update event handler", function()
-        local cache = pinfo.CHARACTER_INFO
+        local cache = pinfo.CACHE
 
         local REASON = 0
         local OLD_XP = 100
         local OLD_XP_MAX = 1000
         local OLD_XP_PCT = OLD_XP * 100 / OLD_XP_MAX
-        local OLD_XP_GAIN = 0
+        local OLD_XP_GAIN = 10
         local NEW_XP = 200
         local NEW_XP_MAX = 2000
         local NEW_XP_PCT = NEW_XP * 100 / NEW_XP_MAX
@@ -177,14 +177,22 @@ describe("Test event handlers", function()
                 and_pinfo_output_xp_to_debug_was_not_called()
         end)
 
-        it("On experience update, incorrect reason",
+        -- {{{
+        local function then_the_xp_properties_in_character_info_where_partly_updated()
+            assert.is.equal(NEW_XP, cache.level_xp)
+            assert.is.equal(NEW_XP_MAX, cache.level_xp_max)
+            assert.is.equal(NEW_XP_PCT, cache.level_xp_percent)
+            assert.is.equal(OLD_XP_GAIN, cache.xp_gain)
+        end
+        -- }}}
+        it("On experience update, incorrect reason, level up drift handling",
         function()
             given_that_pinfo_output_xp_to_debug_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, NEW_XP_MAX, -1)
 
-            then_the_xp_properties_in_character_info_where_not_updated()
-                and_pinfo_output_xp_to_debug_was_not_called()
+            then_the_xp_properties_in_character_info_where_partly_updated()
+                and_pinfo_output_xp_to_debug_was_called_once()
         end)
 
         it("On experience update, total maximum xp reached",
@@ -199,7 +207,7 @@ describe("Test event handlers", function()
     end)
 
     describe("Test the on level update event handler", function()
-        local cache = pinfo.CHARACTER_INFO
+        local cache = pinfo.CACHE
 
         local OLD_LEVEL = 1
         local NEW_LEVEL = 2
@@ -244,7 +252,7 @@ describe("Test event handlers", function()
     end)
 
     describe("Test the on AvA points update event handler", function()
-        local cache = pinfo.CHARACTER_INFO
+        local cache = pinfo.CACHE
 
         local POINT = nil
         local SOUND = nil

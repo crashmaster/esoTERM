@@ -50,7 +50,7 @@ local AVA_POINTS_GAIN = A_INTEGER
 
 describe("Test character information getters", function()
     local results = nil
-    local cache = pinfo.CHARACTER_INFO
+    local cache = pinfo.CACHE
     local return_values_of_the_getter_stubs = {
         is_character_veteran = VETERANNESS_1,
         get_character_gender = GENDER_1,
@@ -150,7 +150,7 @@ end)
 
 describe("Test character information getters", function()
     local results = nil
-    local cache = pinfo.CHARACTER_INFO
+    local cache = pinfo.CACHE
 
     setup(function()
         results = {}
