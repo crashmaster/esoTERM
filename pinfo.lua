@@ -25,6 +25,19 @@ function pinfo.on_addon_loaded(event, addon_name)
     pinfo_init.initialize(addon_name)
 end
 
+SLASH_COMMANDS[string.format("/%s", pinfo.ADDON_NAME)] = function(command)
+    if command == "" then
+        d(string.format("%s: running", pinfo.ADDON_NAME))
+    elseif string.lower(command) == "help" then
+        d(string.format("%s: use /%s <number> to set output chat tab", pinfo.ADDON_NAME, pinfo.ADDON_NAME))
+    elseif tonumber(command) ~= nil then
+        pinfo_output.set_n_th_chat_tab_as_output(tonumber(command))
+    else
+        d(string.format("%s: invalid command", pinfo.ADDON_NAME))
+    end
+end
+
+
 EVENT_MANAGER:RegisterForEvent(pinfo.ADDON_NAME,
                                EVENT_ADD_ON_LOADED,
                                pinfo.on_addon_loaded)
