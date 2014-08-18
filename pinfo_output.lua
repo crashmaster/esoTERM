@@ -25,8 +25,6 @@ end
 function pinfo_output.on_player_activated(event)
     pinfo_output.chat_tab = ZO_ChatWindowTemplate1["buffer"]
     pinfo_output.chat_tab_name = ZO_ChatWindowTabTemplate1Text:GetText()
-    d("pinfo: hello")
-    d(string.format("pinfo: output chat tab is: %s", pinfo_output.chat_tab_name))
 end
 
 function pinfo_output.xp_to_debug()
