@@ -1,7 +1,7 @@
 local CACHE = pinfo.CACHE
 
 pinfo_output = {}
-pinfo_output.PROMPT = "[pinfo] $ "
+pinfo_output.PROMPT = "[pinfo]  "
 pinfo_output.default_settings = {chat_tab_number = 1}
 
 
