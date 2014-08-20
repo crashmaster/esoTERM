@@ -37,7 +37,7 @@ function pinfo_event_handler.on_experience_update(event, unit, xp, xp_max, reaso
             CACHE.level_xp_percent = xp * 100 / xp_max
         end
 
-        pinfo_output.xp_to_debug()
+        pinfo_output.xp_to_chat_tab()
     end
 end
 
@@ -63,7 +63,7 @@ function pinfo_event_handler.on_ava_points_update(event, point, sound, diff)
         CACHE.ava_rank_points_percent = new_rank_points * 100 / CACHE.ava_rank_points_max
         CACHE.ava_points_gain = diff
 
-        pinfo_output.ap_to_debug()
+        pinfo_output.ap_to_chat_tab()
     end
 end
 

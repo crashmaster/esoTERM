@@ -1,7 +1,10 @@
 EVENT_MANAGER = require("fake_event_manager")
+SLASH_STUFF = require("fake_slash_stuff")
+ZO_SavedVars = require("fake_zo_saved_vars")
 
 pinfo = require("pinfo")
 pinfo_char = require("pinfo_char")
 pinfo_event_handler = require("pinfo_event_handler")
 pinfo_init = require("pinfo_init")
 pinfo_output = require("pinfo_output")
+pinfo_slash = require("pinfo_slash")

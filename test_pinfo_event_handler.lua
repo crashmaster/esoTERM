@@ -88,28 +88,28 @@ describe("Test event handlers", function()
     local UNIT = "player"
 
     -- {{{
-    local function given_that_pinfo_output_xp_to_debug_is_stubbed()
-        ut_helper.stub_function(pinfo_output, "xp_to_debug", nil)
+    local function given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
+        ut_helper.stub_function(pinfo_output, "xp_to_chat_tab", nil)
     end
 
-    local function and_pinfo_output_xp_to_debug_was_called_once()
-        assert.spy(pinfo_output.xp_to_debug).was.called_with()
+    local function and_pinfo_output_xp_to_chat_tab_was_called_once()
+        assert.spy(pinfo_output.xp_to_chat_tab).was.called_with()
     end
 
-    local function and_pinfo_output_xp_to_debug_was_not_called()
-        assert.spy(pinfo_output.xp_to_debug).was_not.called()
+    local function and_pinfo_output_xp_to_chat_tab_was_not_called()
+        assert.spy(pinfo_output.xp_to_chat_tab).was_not.called()
     end
 
-    local function given_that_pinfo_output_ap_to_debug_is_stubbed()
-        ut_helper.stub_function(pinfo_output, "ap_to_debug", nil)
+    local function given_that_pinfo_output_ap_to_chat_tab_is_stubbed()
+        ut_helper.stub_function(pinfo_output, "ap_to_chat_tab", nil)
     end
 
-    local function and_pinfo_output_ap_to_debug_was_called_once()
-        assert.spy(pinfo_output.ap_to_debug).was.called_with()
+    local function and_pinfo_output_ap_to_chat_tab_was_called_once()
+        assert.spy(pinfo_output.ap_to_chat_tab).was.called_with()
     end
 
-    local function and_pinfo_output_ap_to_debug_was_not_called()
-        assert.spy(pinfo_output.ap_to_debug).was_not.called()
+    local function and_pinfo_output_ap_to_chat_tab_was_not_called()
+        assert.spy(pinfo_output.ap_to_chat_tab).was_not.called()
     end
     -- }}}
 
@@ -151,12 +151,12 @@ describe("Test event handlers", function()
 
         it("On experience update, happy flow",
         function()
-            given_that_pinfo_output_xp_to_debug_is_stubbed()
+            given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, NEW_XP_MAX, REASON)
 
             then_the_xp_properties_in_character_info_where_updated()
-                and_pinfo_output_xp_to_debug_was_called_once()
+                and_pinfo_output_xp_to_chat_tab_was_called_once()
         end)
 
         -- {{{
@@ -169,12 +169,12 @@ describe("Test event handlers", function()
 
         it("On experience update, incorrect unit",
         function()
-            given_that_pinfo_output_xp_to_debug_is_stubbed()
+            given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, "foo", NEW_XP, NEW_XP_MAX, REASON)
 
             then_the_xp_properties_in_character_info_where_not_updated()
-                and_pinfo_output_xp_to_debug_was_not_called()
+                and_pinfo_output_xp_to_chat_tab_was_not_called()
         end)
 
         -- {{{
@@ -187,22 +187,22 @@ describe("Test event handlers", function()
         -- }}}
         it("On experience update, incorrect reason, level up drift handling",
         function()
-            given_that_pinfo_output_xp_to_debug_is_stubbed()
+            given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, NEW_XP_MAX, -1)
 
             then_the_xp_properties_in_character_info_where_partly_updated()
-                and_pinfo_output_xp_to_debug_was_called_once()
+                and_pinfo_output_xp_to_chat_tab_was_called_once()
         end)
 
         it("On experience update, total maximum xp reached",
         function()
-            given_that_pinfo_output_xp_to_debug_is_stubbed()
+            given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, 0, REASON)
 
             then_the_xp_properties_in_character_info_where_not_updated()
-                and_pinfo_output_xp_to_debug_was_not_called()
+                and_pinfo_output_xp_to_chat_tab_was_not_called()
         end)
     end)
 
@@ -329,37 +329,37 @@ describe("Test event handlers", function()
 
         it("On AvA points update, happy flow",
         function()
-            given_that_pinfo_output_ap_to_debug_is_stubbed()
+            given_that_pinfo_output_ap_to_chat_tab_is_stubbed()
 
             when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, NEW_GAIN)
 
             then_the_ava_properties_in_character_info_where_updated_no_rank_up()
-                and_pinfo_output_ap_to_debug_was_called_once()
+                and_pinfo_output_ap_to_chat_tab_was_called_once()
         end)
 
         it("On AvA points update, zero gain",
         function()
-            given_that_pinfo_output_ap_to_debug_is_stubbed()
+            given_that_pinfo_output_ap_to_chat_tab_is_stubbed()
 
             when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, GAIN_ZERO)
 
             then_the_ava_properties_in_character_info_where_not_updated()
-                and_pinfo_output_ap_to_debug_was_not_called()
+                and_pinfo_output_ap_to_chat_tab_was_not_called()
         end)
 
         it("On AvA points update, negative gain",
         function()
-            given_that_pinfo_output_ap_to_debug_is_stubbed()
+            given_that_pinfo_output_ap_to_chat_tab_is_stubbed()
 
             when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, GAIN_NEGATIVE)
 
             then_the_ava_properties_in_character_info_where_not_updated()
-                and_pinfo_output_ap_to_debug_was_not_called()
+                and_pinfo_output_ap_to_chat_tab_was_not_called()
         end)
 
         it("On AvA points update, gain enough to rank up",
         function()
-            given_that_pinfo_output_ap_to_debug_is_stubbed()
+            given_that_pinfo_output_ap_to_chat_tab_is_stubbed()
                 and_that_get_character_ava_rank_returns(NEW_RANK)
                 and_that_get_character_ava_rank_points_max_returns(NEW_POINTS_MAX)
 
@@ -368,7 +368,7 @@ describe("Test event handlers", function()
             then_the_ava_properties_in_character_info_where_updated_rank_up()
                 and_get_character_ava_rank_was_called_once_witch_cache()
                 and_get_character_ava_rank_points_max_was_called_once_witch_cache()
-                and_pinfo_output_ap_to_debug_was_called_once()
+                and_pinfo_output_ap_to_chat_tab_was_called_once()
         end)
     end)
 end)
