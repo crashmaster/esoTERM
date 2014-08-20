@@ -1,7 +1,7 @@
 local CACHE = pinfo.CACHE
 
 pinfo_output = {}
-pinfo_output.PROMPT = "[pinfo]  "
+pinfo_output.PROMPT = "[pinfo] "
 pinfo_output.default_settings = {chat_tab_number = 1}
 
 
@@ -24,7 +24,7 @@ function pinfo_output.set_n_th_chat_tab_as_output(chat_tab_number)
     if chat_tab_number ~= pinfo_output.settings.chat_tab_number then
         pinfo_output.settings.chat_tab_number = chat_tab_number
     end
-    pinfo_output.system_message("output chat tab is: " .. pinfo_output.chat_tab_name)
+    pinfo_output.system_message("Output chat tab is: " .. pinfo_output.chat_tab_name)
 end
 
 function pinfo_output.on_player_activated(event)
