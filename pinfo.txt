@@ -7,3 +7,4 @@ pinfo_char.lua
 pinfo_event_handler.lua
 pinfo_init.lua
 pinfo_output.lua
+pinfo_slash.lua
