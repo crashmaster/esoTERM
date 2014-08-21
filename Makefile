@@ -3,7 +3,7 @@ UNIX2DOS := unix2dos --quiet --newfile -1252
 RM := rm -rf
 CP := cp -f
 ZIP := zip --to-crlf --verbose --recurse-paths
-BUSTED := $(shell which busted)
+BUSTED := busted
 
 ADDON_NAME := pinfo
 USER_DOCUMENTS_DIR := C:/Users/$(USER)/Documents
