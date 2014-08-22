@@ -1,12 +1,9 @@
 ut_helper = require("ut_helper")
 
-function function_1(argument)
-    return argument*2
-end
-
-function function_2(argument)
-    return argument*3
-end
+local test_functions = {
+    function_1 = function(argument) return argument*2 end,
+    function_2 = function (argument) return argument*3 end
+}
 
 describe("Test stubbing related unit test helpers", function()
     after_each(function()
@@ -15,19 +12,19 @@ describe("Test stubbing related unit test helpers", function()
 
     -- {{{
     local function given_that_function_1_works_as_originally_defined()
-        assert.is.equal(2, function_1(1))
+        assert.is.equal(2, test_functions.function_1(1))
     end
 
     local function when_function_1_is_replaced_with_a_stub_that_returns(value)
-        ut_helper.stub_function(_G, "function_1", value)
+        ut_helper.stub_function(test_functions, "function_1", value)
     end
 
     local function then_function_1_called_with_anything_returns(value)
-        assert.is.equal(value, function_1(nil))
+        assert.is.equal(value, test_functions.function_1(nil))
     end
 
     local function and_stubbed_function_1_was_called_once_with(value)
-        assert.spy(_G.function_1).was.called_with(nil)
+        assert.spy(test_functions.function_1).was.called_with(nil)
     end
     -- }}}
 
@@ -43,16 +40,16 @@ describe("Test stubbing related unit test helpers", function()
 
     -- {{{
     local function given_that_stubbed_function_1_returns(value)
-        ut_helper.stub_function(_G, "function_1", value)
-        assert.is.equal(value, function_1(nil))
+        ut_helper.stub_function(test_functions, "function_1", value)
+        assert.is.equal(value, test_functions.function_1(nil))
     end
 
     local function when_function_1_is_restored()
-        ut_helper.restore_stubbed_function(_G, "function_1")
+        ut_helper.restore_stubbed_function(test_functions, "function_1")
     end
 
     local function then_function_1_works_as_originally_defined()
-        assert.is.equal(2, function_1(1))
+        assert.is.equal(2, test_functions.function_1(1))
     end
     -- }}}
 
@@ -67,17 +64,17 @@ describe("Test stubbing related unit test helpers", function()
 
     -- {{{
     local function and_that_stubbed_function_2_returns(value)
-        ut_helper.stub_function(_G, "function_2", value)
-        assert.is.equal(value, function_2(nil))
+        ut_helper.stub_function(test_functions, "function_2", value)
+        assert.is.equal(value, test_functions.function_2(nil))
     end
 
     local function when_function_1_and_function_2_are_restored()
-        ut_helper.restore_stubbed_function(_G, "function_1")
-        ut_helper.restore_stubbed_function(_G, "function_2")
+        ut_helper.restore_stubbed_function(test_functions, "function_1")
+        ut_helper.restore_stubbed_function(test_functions, "function_2")
     end
 
     local function and_function_2_works_as_originally_defined()
-        assert.is.equal(3, function_2(1))
+        assert.is.equal(3, test_functions.function_2(1))
     end
     -- }}}
 
