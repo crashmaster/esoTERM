@@ -1,0 +1,17 @@
+return {
+    -- File name to store stats collected.
+    ["statsfile"] = "luacov.stats.out",
+    -- Filename to store report.
+    ["reportfile"] = "luacov.report.out",
+    -- Delete stats file after reporting.
+    deletestats = true,
+    -- Patterns for files to include when reporting.
+    ["include"] = {
+        "ut_helper",
+        "test_ut_helper"
+    },
+    ["exclude"] = {
+    },
+}
+
+-- vim:ft=lua
