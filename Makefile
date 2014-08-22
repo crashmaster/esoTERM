@@ -3,7 +3,8 @@ UNIX2DOS := unix2dos --quiet --newfile -1252
 RM := rm -rf
 CP := cp -f
 ZIP := zip --to-crlf --verbose --recurse-paths
-BUSTED := busted
+BUSTED := busted --coverage
+LUACOV := luacov --config .luacov
 
 ADDON_NAME := pinfo
 USER_DOCUMENTS_DIR := C:/Users/$(USER)/Documents
@@ -25,6 +26,8 @@ all: test
 
 test:
 	@$(foreach file,$(TESTS),printf "%s:" $(notdir $(file)) && $(BUSTED) $(file) || exit $?;)
+	@echo
+	@$(LUACOV) && sed -n '/Summary/,$$p' luacov.report.out && rm ./luacov.report.out
 
 install:
 	@$(MKDIR) $(PINFO_DIR)

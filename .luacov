@@ -8,9 +8,12 @@ return {
     -- Patterns for files to include when reporting.
     ["include"] = {
         "ut_helper",
-        "test_ut_helper"
+        "pinfo_char",
+        "test_ut_helper",
+        "test_pinfo_char",
     },
     ["exclude"] = {
+        "luacov",
     },
 }
 
