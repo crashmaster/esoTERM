@@ -22,6 +22,10 @@ function pinfo_event_handler.initialize()
     EVENT_MANAGER:RegisterForEvent(pinfo.ADDON_NAME,
                                    EVENT_ALLIANCE_POINT_UPDATE,
                                    pinfo_event_handler.on_ava_points_update)
+
+    EVENT_MANAGER:RegisterForEvent(pinfo.ADDON_NAME,
+                                   EVENT_LOOT_RECEIVED,
+                                   pinfo_event_handler.on_loot_received)
 end
 
 function pinfo_event_handler.on_experience_update(event, unit, xp, xp_max, reason)
@@ -64,6 +68,18 @@ function pinfo_event_handler.on_ava_points_update(event, point, sound, diff)
         CACHE.ava_points_gain = diff
 
         pinfo_output.ap_to_chat_tab()
+    end
+end
+
+function pinfo_event_handler.on_loot_received(eventCode,
+                                              lootedBy,
+                                              itemName,
+                                              quantity,
+                                              itemSound,
+                                              lootType,
+                                              self)
+    if self then
+        pinfo_output.item_to_chat_tab(itemName, quantity)
     end
 end
 

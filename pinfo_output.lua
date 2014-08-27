@@ -88,6 +88,11 @@ function pinfo_output.on_player_activated(event)
     pinfo_output.ap_to_chat_tab = print_ap_message
 end
 
+function pinfo_output.item_to_chat_tab(item_name, quantity)
+    formatted_item = zo_strformat("<<t:1>>", item_name)
+    pinfo_output.chat_tab:AddMessage(string.format("+Received+ +%d+ +%s+", quantity, formatted_item))
+end
+
 function pinfo_output.system_message(message)
     d(pinfo_output.PROMPT .. message)
 end
