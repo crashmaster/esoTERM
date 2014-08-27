@@ -27,7 +27,7 @@ all: test
 test:
 	@$(foreach file,$(TESTS),printf "%s:" $(notdir $(file)) && $(BUSTED) $(file) || exit $?;)
 	@echo
-	@$(LUACOV) && sed -n '/Summary/,$$p' luacov.report.out && rm ./luacov.report.out
+	@$(LUACOV) && sed -n '/Summary/,$$p' luacov.report.out
 
 install:
 	@$(MKDIR) $(PINFO_DIR)
