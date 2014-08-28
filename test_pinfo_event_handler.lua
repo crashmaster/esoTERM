@@ -52,6 +52,11 @@ describe("Test event handler initialization", function()
             event = EVENT_ALLIANCE_POINT_UPDATE,
             callback = pinfo_event_handler.on_ava_points_update
         }
+        expected_register_params.loot_received_update = {
+            addon_name = pinfo.ADDON_NAME,
+            event = EVENT_LOOT_RECEIVED,
+            callback = pinfo_event_handler.on_loot_received
+        }
     end
 
     local function when_initialize_is_called_with()
