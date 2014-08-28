@@ -33,11 +33,14 @@ for line in io.lines("luacov.report.out") do
         IN_BANNER = false
         IN_CAPTURE = true
     elseif IN_BANNER then
-        SECTION = line
+        SECTION = string.match(line, ".*/(.*)")
+        print(SECTION)
         NO_COV_TO_FILE[SECTION] = {}
     elseif IN_CAPTURE then
         if line_is_not_covered(line) then
-            table.insert(NO_COV_TO_FILE[SECTION], trim(string.sub(line, NO_COV_INDICATOR_LEN + 1)))
+            local array = NO_COV_TO_FILE[SECTION]
+            local value = trim(string.sub(line, NO_COV_INDICATOR_LEN + 1))
+            table.insert(array, value)
         end
     end
 end
