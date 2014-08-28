@@ -3,6 +3,7 @@ UNIX2DOS := unix2dos --quiet --newfile -1252
 RM := rm -rf
 CP := cp -f
 ZIP := zip --to-crlf --verbose --recurse-paths
+LUA := lua
 BUSTED := busted --coverage
 LUACOV := luacov --config .luacov
 
@@ -13,6 +14,8 @@ PINFO_DIR := $(ESO_ADDONS_DIR)/$(ADDON_NAME)
 
 THIS_FILE := $(abspath $(lastword $(MAKEFILE_LIST)))
 REPO_DIR := $(patsubst %/,%,$(dir $(THIS_FILE)))
+TOOLS_DIR := $(REPO_DIR)/tools
+LUACOV_PARSER := $(TOOLS_DIR)/parse_luacov_report.lua
 TESTS := $(foreach dir,$(REPO_DIR),$(wildcard $(dir)/test_*.lua))
 SOURCES := $(foreach dir,$(REPO_DIR),$(wildcard $(dir)/pinfo*))
 BUILD_DIR := $(REPO_DIR)/build
@@ -27,7 +30,7 @@ all: test
 test:
 	@$(foreach file,$(TESTS),printf "%s:" $(notdir $(file)) && $(BUSTED) $(file) || exit $?;)
 	@echo
-	@$(LUACOV) && sed -n '/Summary/,$$p' luacov.report.out
+	@$(LUACOV) && $(LUA) $(LUACOV_PARSER) && $(RM) luacov.report.out
 
 install:
 	@$(MKDIR) $(PINFO_DIR)

@@ -9,8 +9,14 @@ return {
     ["include"] = {
         "ut_helper",
         "pinfo_char",
+        "pinfo_event_handler",
+        "pinfo_init",
+        "pinfo_output",
         "test_ut_helper",
         "test_pinfo_char",
+        "test_pinfo_event_handler",
+        "test_pinfo_init",
+        "test_pinfo_output"
     },
     ["exclude"] = {
         "luacov",
