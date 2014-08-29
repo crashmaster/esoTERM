@@ -31,7 +31,9 @@ all: test
 test:
 	@$(foreach file,$(TESTS),printf "%s:" $(notdir $(file)) && $(BUSTED) $(file) || exit $?;)
 	@echo
-	@$(LUACOV) && $(LUA) $(LUACOV_PARSER) $(LUACOV_REPORT) && $(RM) $(LUACOV_REPORT)
+	@$(LUACOV)
+	@$(LUA) $(LUACOV_PARSER) $(LUACOV_REPORT)
+	@$(RM) $(LUACOV_REPORT)
 
 install:
 	@$(MKDIR) $(PINFO_DIR)

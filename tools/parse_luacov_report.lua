@@ -1,6 +1,6 @@
 local SECTION_DELIMITER = string.rep("=", 78)
 local NO_COV_INDICATOR = "^\*+0%s*(.*)$"
-local MAX_CODE_LEN = 55
+local MAX_CODE_LEN = 65
 
 local SECTION = ""
 local IN_BANNER = false
@@ -106,8 +106,11 @@ local function print_output()
     print(string.format("%s\n%s", "Coverage report", SECTION_DELIMITER))
     for k, v in pairs(SUMMARY) do
         print(string.format("%7s  %s", v, k))
-        for _, s in ipairs(NO_COV_TO_FILE[k]) do
-            print(string.format("    NOT covered: %s", s))
+        if #NO_COV_TO_FILE[k] > 0 then
+            print("    NOT covered lines:")
+            for _, s in ipairs(NO_COV_TO_FILE[k]) do
+                print(string.format("     %s", s))
+            end
         end
     end
 end
