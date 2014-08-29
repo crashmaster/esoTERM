@@ -1,5 +1,6 @@
 local SECTION_DELIMITER = string.rep("=", 78)
 local NO_COV_INDICATOR = "^\*+0%s*(.*)$"
+local MAX_CODE_LEN = 55
 
 local SECTION = ""
 local IN_BANNER = false
@@ -51,9 +52,16 @@ local function file_summary_found(line)
     return string.match(line, "^%d+%s+%d+%s+[%d%p]+%s+[%w%p]+$")
 end
 
+local function truncate_if_long(string)
+    if #string < MAX_CODE_LEN then
+        return string
+    end
+    return string.sub(string, 0, MAX_CODE_LEN - 3) .. "..."
+end
+
 local function store_not_covered_line(line_nr, line)
     local array = NO_COV_TO_FILE[SECTION]
-    local code = trim(string.match(line, NO_COV_INDICATOR))
+    local code = truncate_if_long(trim(string.match(line, NO_COV_INDICATOR)))
     local value = string.format("%5d %s", line_nr, code)
     table.insert(array, value)
 end

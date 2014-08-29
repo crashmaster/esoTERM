@@ -3,11 +3,7 @@ local requires_for_tests = require("requires_for_tests")
 
 
 describe("Test event handler initialization", function()
-    local expected_register_params = nil
-
-    setup(function()
-        expected_register_params = {}
-    end)
+    local expected_register_params = {}
 
     after_each(function()
         ut_helper.restore_stubbed_functions()
@@ -89,7 +85,7 @@ describe("Test event handler initialization", function()
 end)
 
 describe("Test event handlers", function()
-    local EVENT = nil
+    local EVENT = "event"
     local UNIT = "player"
 
     -- {{{
@@ -259,8 +255,8 @@ describe("Test event handlers", function()
     describe("Test the on AvA points update event handler", function()
         local cache = pinfo.CACHE
 
-        local POINT = nil
-        local SOUND = nil
+        local POINT = 0
+        local SOUND = 0
         local OLD_RANK = 4
         local NEW_RANK = 5
         local OLD_GAIN = 0

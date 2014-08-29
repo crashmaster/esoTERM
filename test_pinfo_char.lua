@@ -49,7 +49,7 @@ local AVA_POINTS_GAIN = A_INTEGER
 
 
 describe("Test character information getters", function()
-    local results = nil
+    local results = {}
     local cache = pinfo.CACHE
     local return_values_of_the_getter_stubs = {
         is_character_veteran = VETERANNESS_1,
@@ -101,7 +101,6 @@ describe("Test character information getters", function()
     end
 
     setup(function()
-        results = {}
         setup_getter_stubs()
     end)
 
@@ -149,12 +148,8 @@ describe("Test character information getters", function()
 end)
 
 describe("Test character information getters", function()
-    local results = nil
+    local results = {}
     local cache = pinfo.CACHE
-
-    setup(function()
-        results = {}
-    end)
 
     after_each(function()
         ut_helper.restore_stubbed_functions()
@@ -604,10 +599,6 @@ describe("Test character information getters", function()
     -- {{{
     local function given_that_cached_character_ava_points_is(points)
         cache.ava_points = points
-    end
-
-    local function and_that_eso_GetUnitAvARankPoints_returns(points)
-        ut_helper.stub_function(GLOBAL, "GetUnitAvARankPoints", points)
     end
 
     local function and_eso_GetUnitAvARankPoints_was_not_called()
@@ -1183,10 +1174,6 @@ describe("Test character information getters", function()
     -- {{{
     local function given_that_cached_character_ava_rank_points_is(points)
         cache.ava_rank_points = points
-    end
-
-    local function and_that_eso_GetUnitAvARankPoints_returns(points)
-        ut_helper.stub_function(GLOBAL, "GetUnitAvARankPoints", points)
     end
 
     local function and_get_character_ava_points_was_not_called()
