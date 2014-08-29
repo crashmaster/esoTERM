@@ -72,38 +72,53 @@ local function store_file_summary(line)
     SUMMARY[file_name] = percent
 end
 
-for line in io.lines("luacov.report.out") do
-    if banner_head_found(line) then
-        IN_BANNER = true
-        IN_CAPTURE = false
-        IN_FILE_SCETION = false
-        IN_SUMMARY_SECTION = false
-        LINE_COUNTER = 0
-    elseif file_section_found(line) then
-        IN_FILE_SCETION = true
-        SECTION = basename(line)
-        NO_COV_TO_FILE[SECTION] = {}
-    elseif summary_section_found(line) then
-        IN_SUMMARY_SECTION = true
-    elseif banner_tail_found(line) then
-        IN_BANNER = false
-        IN_CAPTURE = true
-    elseif in_file_content_section() then
-        LINE_COUNTER = LINE_COUNTER + 1
-        if line_is_not_covered(line) then
-            store_not_covered_line(LINE_COUNTER, line)
-        end
-    elseif in_summary_content_section() then
-        if file_summary_found(line) then
-            store_file_summary(line)
+local function parse_luacov_report_file(file)
+    for line in io.lines(file) do
+        if banner_head_found(line) then
+            IN_BANNER = true
+            IN_CAPTURE = false
+            IN_FILE_SCETION = false
+            IN_SUMMARY_SECTION = false
+            LINE_COUNTER = 0
+        elseif file_section_found(line) then
+            IN_FILE_SCETION = true
+            SECTION = basename(line)
+            NO_COV_TO_FILE[SECTION] = {}
+        elseif summary_section_found(line) then
+            IN_SUMMARY_SECTION = true
+        elseif banner_tail_found(line) then
+            IN_BANNER = false
+            IN_CAPTURE = true
+        elseif in_file_content_section() then
+            LINE_COUNTER = LINE_COUNTER + 1
+            if line_is_not_covered(line) then
+                store_not_covered_line(LINE_COUNTER, line)
+            end
+        elseif in_summary_content_section() then
+            if file_summary_found(line) then
+                store_file_summary(line)
+            end
         end
     end
 end
 
-print(string.format("%s\n%s", "Coverage report", SECTION_DELIMITER))
-for k, v in pairs(SUMMARY) do
-    print(string.format("%7s  %s", v, k))
-    for _, s in ipairs(NO_COV_TO_FILE[k]) do
-        print(string.format("    NOT covered: %s", s))
+local function print_output()
+    print(string.format("%s\n%s", "Coverage report", SECTION_DELIMITER))
+    for k, v in pairs(SUMMARY) do
+        print(string.format("%7s  %s", v, k))
+        for _, s in ipairs(NO_COV_TO_FILE[k]) do
+            print(string.format("    NOT covered: %s", s))
+        end
     end
+end
+
+local function main(luacov_report_file)
+    parse_luacov_report_file(luacov_report_file)
+    print_output()
+end
+
+if arg[1] then
+    main(arg[1])
+else
+    io.stderr:write("No luacov report file given!\n")
 end

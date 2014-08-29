@@ -6,6 +6,7 @@ ZIP := zip --to-crlf --verbose --recurse-paths
 LUA := lua
 BUSTED := busted --coverage
 LUACOV := luacov --config .luacov
+LUACOV_REPORT := luacov.report.out
 
 ADDON_NAME := pinfo
 USER_DOCUMENTS_DIR := C:/Users/$(USER)/Documents
@@ -30,7 +31,7 @@ all: test
 test:
 	@$(foreach file,$(TESTS),printf "%s:" $(notdir $(file)) && $(BUSTED) $(file) || exit $?;)
 	@echo
-	@$(LUACOV) && $(LUA) $(LUACOV_PARSER) && $(RM) luacov.report.out
+	@$(LUACOV) && $(LUA) $(LUACOV_PARSER) $(LUACOV_REPORT) && $(RM) $(LUACOV_REPORT)
 
 install:
 	@$(MKDIR) $(PINFO_DIR)
