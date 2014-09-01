@@ -123,6 +123,7 @@ describe("Test event handlers", function()
         local OLD_XP_PCT = OLD_XP * 100 / OLD_XP_MAX
         local OLD_XP_GAIN = 10
         local NEW_XP = 200
+        local NEW_XP_LVL_UP = 1100
         local NEW_XP_MAX = 2000
         local NEW_XP_PCT = NEW_XP * 100 / NEW_XP_MAX
 
@@ -157,6 +158,25 @@ describe("Test event handlers", function()
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, NEW_XP_MAX, REASON)
 
             then_the_xp_properties_in_character_info_where_updated()
+                and_pinfo_output_xp_to_chat_tab_was_called_once()
+        end)
+
+        -- {{{
+        local function then_the_xp_properties_in_character_info_where_updated_to_lvl_up()
+            assert.is.equal(NEW_XP_LVL_UP, cache.level_xp)
+            assert.is.equal(OLD_XP_MAX, cache.level_xp_max)
+            assert.is.equal(100, cache.level_xp_percent)
+            assert.is.equal(NEW_XP_LVL_UP - OLD_XP, cache.xp_gain)
+        end
+        -- }}}
+
+        it("On experience update, xp > level xp maximum, then 100%",
+        function()
+            given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
+
+            when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP_LVL_UP, OLD_XP_MAX, REASON)
+
+            then_the_xp_properties_in_character_info_where_updated_to_lvl_up()
                 and_pinfo_output_xp_to_chat_tab_was_called_once()
         end)
 
