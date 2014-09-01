@@ -26,11 +26,12 @@ PKG_NAME := $(ADDON_NAME)_$(shell date --iso-8601).zip
 
 .PHONY: all test install uninstall build
 
-all: test
+all: test coverage
 
 test:
 	@$(foreach file,$(TESTS),printf "%s:" $(notdir $(file)) && $(BUSTED) $(file) || exit $?;)
-	@echo
+
+coverage: test
 	@$(LUACOV)
 	@$(LUA) $(LUACOV_PARSER) $(LUACOV_REPORT)
 	@$(RM) $(LUACOV_REPORT)
