@@ -1,6 +1,8 @@
-EVENT_MANAGER = require("fake_event_manager")
-SLASH_STUFF = require("fake_slash_stuff")
-ZO_SavedVars = require("fake_zo_saved_vars")
+EVENT_MANAGER = require("tests/fake_event_manager")
+SLASH_STUFF = require("tests/fake_slash_stuff")
+ZO_SavedVars = require("tests/fake_zo_saved_vars")
+
+ut_helper = require("tests/ut_helper")
 
 pinfo = require("pinfo")
 pinfo_char = require("pinfo_char")

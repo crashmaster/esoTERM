@@ -1,4 +1,4 @@
-ut_helper = require("ut_helper")
+local ut_helper = require("tests/ut_helper")
 
 local test_functions = {
     function_1 = function(argument) return argument*2 end,

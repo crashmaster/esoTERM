@@ -1,5 +1,4 @@
-ut_helper = require("ut_helper")
-requires_for_tests = require("requires_for_tests")
+local requires_for_tests = require("tests/requires_for_tests")
 
 describe("Test pinfo output", function()
     it("Character information is dumped to the first chat window",

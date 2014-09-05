@@ -1,5 +1,4 @@
-local ut_helper = require("ut_helper")
-local requires_for_tests = require("requires_for_tests")
+local requires_for_tests = require("tests/requires_for_tests")
 
 describe("Test pinfo initialization", function()
     local ADDON_NAME = "blabla"
