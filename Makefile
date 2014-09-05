@@ -15,9 +15,10 @@ PINFO_DIR := $(ESO_ADDONS_DIR)/$(ADDON_NAME)
 
 THIS_FILE := $(abspath $(lastword $(MAKEFILE_LIST)))
 REPO_DIR := $(patsubst %/,%,$(dir $(THIS_FILE)))
+TESTS_DIR := $(REPO_DIR)/tests
 TOOLS_DIR := $(REPO_DIR)/tools
 LUACOV_PARSER := $(TOOLS_DIR)/parse_luacov_report.lua
-TESTS := $(foreach dir,$(REPO_DIR),$(wildcard $(dir)/test_*.lua))
+TESTS := $(foreach dir,$(TESTS_DIR),$(wildcard $(dir)/test_*.lua))
 SOURCES := $(foreach dir,$(REPO_DIR),$(wildcard $(dir)/pinfo*))
 BUILD_DIR := $(REPO_DIR)/build
 BUILD_PKG_DIR := $(BUILD_DIR)/$(ADDON_NAME)
