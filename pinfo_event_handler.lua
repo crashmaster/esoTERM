@@ -71,8 +71,7 @@ function pinfo_event_handler.on_ava_points_update(event, point, sound, diff)
     end
 end
 
-function pinfo_event_handler.on_loot_received(event, looted_by, item, quantity,
-                                              sound, loot_type, self)
+function pinfo_event_handler.on_loot_received(event, by, item, quantity, sound, loot_type, self)
     if self then
         pinfo_output.item_to_chat_tab(item, quantity)
     end

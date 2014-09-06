@@ -58,7 +58,7 @@ describe("Test event handler initialization", function()
         pinfo_event_handler.initialize()
     end
 
-    local function than_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_params)
+    local function then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_params)
         assert.spy(EVENT_MANAGER.RegisterForEvent).was.called(ut_helper.table_size(expected_params))
         for param in pairs(expected_params) do
             assert.spy(EVENT_MANAGER.RegisterForEvent).was.called_with(
@@ -79,7 +79,7 @@ describe("Test event handler initialization", function()
 
         when_initialize_is_called()
 
-        than_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_register_params)
+        then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_register_params)
     end)
 end)
 
@@ -390,6 +390,39 @@ describe("Test event handlers", function()
                 and_get_character_ava_rank_points_max_was_called_once_witch_cache()
                 and_pinfo_output_ap_to_chat_tab_was_called_once()
         end)
+    end)
+
+    describe("Test the on loot received event handler", function()
+        local BY = "by"
+        local ITEM = "item"
+        local QUANTITY = 1
+        local SOUND = "sound"
+        local LOOT_TYPE = "loot_type"
+
+        -- {{{
+        local function given_that_pinfo_output_item_to_chat_tab_is_stubbed()
+            ut_helper.stub_function(pinfo_output, "item_to_chat_tab", nil)
+        end
+
+        local function when_on_loot_received_is_called_with(event, by, item, quantity, sound, loot_type, self)
+            pinfo_event_handler.on_loot_received(event, by, item, quantity, sound, loot_type, self)
+        end
+
+        local function then_pinfo_output_item_to_chat_tab_was_called_with(item, quantity)
+            assert.spy(pinfo_output.item_to_chat_tab).was.called_with(item, quantity)
+        end
+        -- }}}
+
+        it("On loot received, happy flow",
+        function()
+            given_that_pinfo_output_item_to_chat_tab_is_stubbed()
+
+            when_on_loot_received_is_called_with(EVENT, BY, ITEM, QUANTITY, SOUND, LOOT_TYPE, true)
+
+            then_pinfo_output_item_to_chat_tab_was_called_with(ITEM, QUANTITY)
+        end)
+
+
     end)
 end)
 
