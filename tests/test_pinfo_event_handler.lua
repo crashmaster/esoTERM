@@ -13,7 +13,7 @@ describe("Test event handler initialization", function()
     end)
 
     -- {{{
-    local function given_that_event_manager_RegisterForEvent_is_stubbed()
+    local function given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
         ut_helper.stub_function(EVENT_MANAGER, "RegisterForEvent", nil)
     end
 
@@ -21,7 +21,7 @@ describe("Test event handler initialization", function()
         ut_helper.stub_function(pinfo_event_handler, "on_experience_update", nil)
     end
 
-    local function and_expected_register_event_parameters_is_set_up()
+    local function and_expected_register_event_parameters_are_set_up()
         expected_register_params.experience_points_update = {
             addon_name = pinfo.ADDON_NAME,
             event = EVENT_EXPERIENCE_UPDATE,
@@ -54,11 +54,11 @@ describe("Test event handler initialization", function()
         }
     end
 
-    local function when_initialize_is_called_with()
+    local function when_initialize_is_called()
         pinfo_event_handler.initialize()
     end
 
-    local function than_event_manager_RegisterForEvent_was_called_with(expected_params)
+    local function than_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_params)
         assert.spy(EVENT_MANAGER.RegisterForEvent).was.called(ut_helper.table_size(expected_params))
         for param in pairs(expected_params) do
             assert.spy(EVENT_MANAGER.RegisterForEvent).was.called_with(
@@ -73,13 +73,13 @@ describe("Test event handler initialization", function()
 
     it("Register for events",
     function()
-        given_that_event_manager_RegisterForEvent_is_stubbed()
+        given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
             and_pinfo_event_handler_on_experience_update_is_stubbed()
-            and_expected_register_event_parameters_is_set_up()
+            and_expected_register_event_parameters_are_set_up()
 
-        when_initialize_is_called_with()
+        when_initialize_is_called()
 
-        than_event_manager_RegisterForEvent_was_called_with(expected_register_params)
+        than_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_register_params)
     end)
 end)
 

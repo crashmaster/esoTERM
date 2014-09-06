@@ -5,6 +5,7 @@ REGISTER_FOR = nil
 EVENT_ADD_ON_LOADED = 0
 EVENT_EXPERIENCE_UPDATE = 1
 EVENT_VETERAN_POINTS_UPDATE = 2
+EVENT_PLAYER_ACTIVATED = 3
 
 function event_manager:UnregisterForEvent(operation, event)
 end
