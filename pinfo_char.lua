@@ -198,6 +198,38 @@ function pinfo_char.get_character_ava_points_gain(cache)
     end
 end
 
+function pinfo_char.is_character_in_combat(cache)
+    if cache.in_combat ~= nil then
+        return cache.in_combat
+    else
+        return IsUnitInCombat(PLAYER_UNIT_TAG)
+    end
+end
+
+function pinfo_char.get_combat_time_start(cache)
+    if cache.combat_time_start ~= nil then
+        return cache.combat_time_start
+    else
+        return 0
+    end
+end
+
+function pinfo_char.get_combat_time_end(cache)
+    if cache.combat_time_end ~= nil then
+        return cache.combat_time_end
+    else
+        return 0
+    end
+end
+
+function pinfo_char.get_combat_time_lenght(cache)
+    if cache.combat_time_lenght ~= nil and cache.combat_time_lenght > 0 then
+        return cache.combat_time_lenght
+    else
+        return 0
+    end
+end
+
 function pinfo_char.initialize()
     CACHE.veteran = pinfo_char.is_character_veteran(CACHE)
     CACHE.gender = pinfo_char.get_character_gender(CACHE)
@@ -218,6 +250,10 @@ function pinfo_char.initialize()
     CACHE.ava_rank_points_max = pinfo_char.get_character_ava_rank_points_max(CACHE)
     CACHE.ava_rank_points_percent = pinfo_char.get_character_ava_rank_points_percent(CACHE)
     CACHE.ava_points_gain = pinfo_char.get_character_ava_points_gain(CACHE)
+    CACHE.in_combat = pinfo_char.is_character_in_combat(CACHE)
+    CACHE.combat_time_start = pinfo_char.get_combat_time_start(CACHE)
+    CACHE.combat_time_end = pinfo_char.get_combat_time_end(CACHE)
+    CACHE.combat_time_lenght = pinfo_char.get_combat_time_lenght(CACHE)
 end
 
 return pinfo_char

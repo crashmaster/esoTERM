@@ -2,6 +2,7 @@ local requires_for_tests = require("tests/requires_for_tests")
 
 
 describe("Test event handler initialization", function()
+    local addon_name = "pinfo"
     local expected_register_params = {}
 
     after_each(function()
@@ -23,34 +24,39 @@ describe("Test event handler initialization", function()
 
     local function and_expected_register_event_parameters_are_set_up()
         expected_register_params.experience_points_update = {
-            addon_name = pinfo.ADDON_NAME,
-            event = EVENT_EXPERIENCE_UPDATE,
+            addon_name = addon_name,
+            event = 2,
             callback = pinfo_event_handler.on_experience_update
         }
         expected_register_params.veteran_points_update = {
-            addon_name = pinfo.ADDON_NAME,
-            event = EVENT_VETERAN_POINTS_UPDATE,
+            addon_name = addon_name,
+            event = 3,
             callback = pinfo_event_handler.on_experience_update
         }
         expected_register_params.level_update = {
-            addon_name = pinfo.ADDON_NAME,
-            event = EVENT_LEVEL_UPDATE,
+            addon_name = addon_name,
+            event = 4,
             callback = pinfo_event_handler.on_level_update
         }
         expected_register_params.veteran_rank_update = {
-            addon_name = pinfo.ADDON_NAME,
-            event = EVENT_VETERAN_RANK_UPDATE,
+            addon_name = addon_name,
+            event = 5,
             callback = pinfo_event_handler.on_level_update
         }
         expected_register_params.ava_xp_update = {
-            addon_name = pinfo.ADDON_NAME,
-            event = EVENT_ALLIANCE_POINT_UPDATE,
+            addon_name = addon_name,
+            event = 6,
             callback = pinfo_event_handler.on_ava_points_update
         }
         expected_register_params.loot_received_update = {
-            addon_name = pinfo.ADDON_NAME,
-            event = EVENT_LOOT_RECEIVED,
+            addon_name = addon_name,
+            event = 7,
             callback = pinfo_event_handler.on_loot_received
+        }
+        expected_register_params.combat_state_update = {
+            addon_name = addon_name,
+            event = 8,
+            callback = pinfo_event_handler.on_combat_state_update
         }
     end
 
@@ -86,6 +92,10 @@ end)
 describe("Test event handlers", function()
     local EVENT = "event"
     local UNIT = "player"
+
+    after_each(function()
+        ut_helper.restore_stubbed_functions()
+    end)
 
     -- {{{
     local function given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
@@ -131,10 +141,6 @@ describe("Test event handlers", function()
             cache.level_xp_max = OLD_XP_MAX
             cache.level_xp_percent = OLD_XP_PCT
             cache.xp_gain = OLD_XP_GAIN
-        end)
-
-        after_each(function()
-            ut_helper.restore_stubbed_functions()
         end)
 
         -- {{{
@@ -236,10 +242,6 @@ describe("Test event handlers", function()
             cache.level = OLD_LEVEL
         end)
 
-        after_each(function()
-            ut_helper.restore_stubbed_functions()
-        end)
-
         -- {{{
         local function when_on_level_update_is_called_with(event, unit, level)
             pinfo_event_handler.on_level_update(event, unit, level)
@@ -298,10 +300,6 @@ describe("Test event handlers", function()
             cache.ava_rank_points_max = OLD_POINTS_MAX
             cache.ava_rank_points_percent = OLD_POINTS_PCT
             cache.ava_points_gain = OLD_GAIN
-        end)
-
-        after_each(function()
-            ut_helper.restore_stubbed_functions()
         end)
 
         -- {{{
@@ -422,7 +420,87 @@ describe("Test event handlers", function()
             then_pinfo_output_item_to_chat_tab_was_called_with(ITEM, QUANTITY)
         end)
 
+        -- {{{
+        local function then_pinfo_output_item_to_chat_tab_was_not_called()
+            assert.spy(pinfo_output.item_to_chat_tab).was_not.called()
+        end
+        -- }}}
 
+        it("On loot received, not self",
+        function()
+            given_that_pinfo_output_item_to_chat_tab_is_stubbed()
+
+            when_on_loot_received_is_called_with(EVENT, BY, ITEM, QUANTITY, SOUND, LOOT_TYPE, false)
+
+            then_pinfo_output_item_to_chat_tab_was_not_called()
+        end)
+    end)
+
+    describe("Test the on player combat state event handler", function()
+        local cache = pinfo.CACHE
+
+        local OUTER_COMBAT = "foo"
+        local IN_COMBAT = "bar"
+
+        before_each(function()
+            cache.in_combat = OUTER_COMBAT
+        end)
+
+        -- {{{
+        local function given_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
+            ut_helper.stub_function(pinfo_output, "combat_state_to_chat_tab", nil)
+        end
+
+        local function when_on_combat_state_update_is_called_with(event, in_combat)
+            pinfo_event_handler.on_combat_state_update(event, in_combat)
+        end
+
+        local function then_pinfo_output_combat_state_to_chat_tab_was_called_with(in_combat)
+            assert.spy(pinfo_output.combat_state_to_chat_tab).was.called_with(in_combat)
+        end
+        -- }}}
+
+        it("Combat state is printed",
+        function()
+            given_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
+
+            when_on_combat_state_update_is_called_with(EVENT, IN_COMBAT)
+
+            then_pinfo_output_combat_state_to_chat_tab_was_called_with(IN_COMBAT)
+        end)
+
+        -- {{{
+        local function and_current_combat_state_is(combat_state)
+            assert.is.equal(combat_state, cache.in_combat)
+        end
+        -- }}}
+
+        it("Combat state is updated",
+        function()
+            given_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
+                and_current_combat_state_is(OUTER_COMBAT)
+
+            when_on_combat_state_update_is_called_with(EVENT, IN_COMBAT)
+
+            then_pinfo_output_combat_state_to_chat_tab_was_called_with(IN_COMBAT)
+                and_current_combat_state_is(IN_COMBAT)
+        end)
+
+        -- {{{
+        local function then_pinfo_output_combat_state_to_chat_tab_was_not_called()
+            assert.spy(pinfo_output.combat_state_to_chat_tab).was_not.called()
+        end
+        -- }}}
+        it("Combat state change skipped, when already having that state",
+        function()
+            given_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
+                and_current_combat_state_is(OUTER_COMBAT)
+
+            when_on_combat_state_update_is_called_with(EVENT, OUTER_COMBAT)
+
+            then_pinfo_output_combat_state_to_chat_tab_was_not_called()
+                and_current_combat_state_is(OUTER_COMBAT)
+        end)
     end)
 end)
 

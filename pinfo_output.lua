@@ -90,7 +90,23 @@ end
 
 function pinfo_output.item_to_chat_tab(item_name, quantity)
     formatted_item = zo_strformat("<<t:1>>", item_name)
-    pinfo_output.chat_tab:AddMessage(string.format("+Received+ +%d+ +%s+", quantity, formatted_item))
+    pinfo_output.chat_tab:AddMessage(string.format("+%s+ receives +%d+ +%s+",
+                                                   pinfo_char.get_character_name(CACHE),
+                                                   quantity,
+                                                   formatted_item))
+end
+
+function pinfo_output.combat_state_to_chat_tab(in_combat)
+    local message
+    if in_combat then
+        message = string.format("+%s+ enters the fight",
+                                pinfo_char.get_character_name(CACHE))
+    else
+        message = string.format("+%s+ leaves the fight (lasted: %.2f s)",
+                                pinfo_char.get_character_name(CACHE),
+                                pinfo_char.get_combat_time_lenght(CACHE) / 1000)
+    end
+    pinfo_output.chat_tab:AddMessage(message)
 end
 
 function pinfo_output.system_message(message)

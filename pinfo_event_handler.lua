@@ -26,6 +26,10 @@ function pinfo_event_handler.initialize()
     EVENT_MANAGER:RegisterForEvent(pinfo.ADDON_NAME,
                                    EVENT_LOOT_RECEIVED,
                                    pinfo_event_handler.on_loot_received)
+
+    EVENT_MANAGER:RegisterForEvent(pinfo.ADDON_NAME,
+                                   EVENT_PLAYER_COMBAT_STATE,
+                                   pinfo_event_handler.on_combat_state_update)
 end
 
 function pinfo_event_handler.on_experience_update(event, unit, xp, xp_max, reason)
@@ -74,6 +78,18 @@ end
 function pinfo_event_handler.on_loot_received(event, by, item, quantity, sound, loot_type, self)
     if self then
         pinfo_output.item_to_chat_tab(item, quantity)
+    end
+end
+
+function pinfo_event_handler.on_combat_state_update(event, in_combat)
+    if CACHE.in_combat ~= in_combat then
+        CACHE.in_combat = in_combat
+        if in_combat then
+            CACHE.combat_time_start = GetGameTimeMilliseconds()
+        else
+            CACHE.combat_time_lenght = GetGameTimeMilliseconds() - CACHE.combat_time_start
+        end
+        pinfo_output.combat_state_to_chat_tab(in_combat)
     end
 end
 
