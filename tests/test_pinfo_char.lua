@@ -45,11 +45,10 @@ local AVA_RANK_POINTS_UB_1 = A_INTEGER
 local AVA_RANK_POINTS_UB_2 = B_INTEGER
 local AVA_RANK_POINTS_PERCENT = A_INTEGER
 local AVA_POINTS_GAIN = A_INTEGER
-local IN_COMBAT_1 = A_BOOL
-local IN_COMBAT_2 = B_BOOL
-local COMBAT_TIME_START = A_INTEGER
-local COMBAT_TIME_END = A_INTEGER
-local COMBAT_TIME_LENGHT = A_INTEGER
+local COMBAT_STATE_1 = A_BOOL
+local COMBAT_STATE_2 = B_BOOL
+local COMBAT_START_TIME = A_INTEGER
+local COMBAT_LENGHT = A_INTEGER
 
 
 describe("Test character information getters", function()
@@ -75,10 +74,9 @@ describe("Test character information getters", function()
         get_character_ava_rank_points_max = AVA_RANK_POINTS_MAX_1,
         get_character_ava_rank_points_percent = AVA_RANK_POINTS_PERCENT,
         get_character_ava_points_gain = AVA_POINTS_GAIN,
-        is_character_in_combat = IN_COMBAT_1,
-        get_combat_time_start = COMBAT_TIME_START,
-        get_combat_time_end = COMBAT_TIME_END,
-        get_combat_time_lenght = COMBAT_TIME_LENGHT
+        get_character_combat_state = COMBAT_STATE_1,
+        get_combat_start_time = COMBAT_START_TIME,
+        get_combat_lenght = COMBAT_LENGHT
     }
     local expected_cached_values = {
         veteran = VETERANNESS_1,
@@ -100,10 +98,9 @@ describe("Test character information getters", function()
         ava_rank_points_max = AVA_RANK_POINTS_MAX_1,
         ava_rank_points_percent = AVA_RANK_POINTS_PERCENT,
         ava_points_gain = AVA_POINTS_GAIN,
-        in_combat = IN_COMBAT_1,
-        combat_time_start = COMBAT_TIME_START,
-        combat_time_end = COMBAT_TIME_END,
-        combat_time_lenght = COMBAT_TIME_LENGHT
+        combat_state = COMBAT_STATE_1,
+        combat_start_time = COMBAT_START_TIME,
+        combat_lenght = COMBAT_LENGHT
     }
 
     local function setup_getter_stubs()
@@ -1507,20 +1504,20 @@ describe("Test character information getters", function()
     end)
 
     -- {{{
-    local function given_that_cached_character_in_combat_is_not_set()
-        cache.in_combat = nil
+    local function given_that_cached_character_combat_state_is_not_set()
+        cache.combat_state = nil
     end
 
-    local function and_that_IsUnitInCombat_returns(in_combat)
-        ut_helper.stub_function(GLOBAL, "IsUnitInCombat", in_combat)
+    local function and_that_IsUnitInCombat_returns(combat_state)
+        ut_helper.stub_function(GLOBAL, "IsUnitInCombat", combat_state)
     end
 
-    local function when_is_character_in_combat_is_called_with_cache()
-        results.in_combat = pinfo_char.is_character_in_combat(cache)
+    local function when_get_character_combat_state_is_called_with_cache()
+        results.combat_state = pinfo_char.get_character_combat_state(cache)
     end
 
-    local function then_the_returned_character_in_combat_was(in_combat)
-        assert.is.equal(in_combat, results.in_combat)
+    local function then_the_returned_character_combat_state_was(combat_state)
+        assert.is.equal(combat_state, results.combat_state)
     end
 
     local function and_IsUnitInCombat_was_called_once_with_player()
@@ -1530,22 +1527,22 @@ describe("Test character information getters", function()
 
     it("Query CHARACTER IN-COMBAT-NESS from the SYSTEM, when NOT CACHED",
     function()
-        given_that_cached_character_in_combat_is_not_set()
-            and_that_IsUnitInCombat_returns(IN_COMBAT_1)
+        given_that_cached_character_combat_state_is_not_set()
+            and_that_IsUnitInCombat_returns(COMBAT_STATE_1)
 
-        when_is_character_in_combat_is_called_with_cache()
+        when_get_character_combat_state_is_called_with_cache()
 
-        then_the_returned_character_in_combat_was(IN_COMBAT_1)
+        then_the_returned_character_combat_state_was(COMBAT_STATE_1)
             and_IsUnitInCombat_was_called_once_with_player()
     end)
 
     -- {{{
-    local function given_that_cached_character_in_combat_is(in_combat)
-        cache.in_combat = in_combat
+    local function given_that_cached_character_combat_state_is(combat_state)
+        cache.combat_state = combat_state
     end
 
-    local function and_that_IsUnitInCombat_returns(in_combat)
-        ut_helper.stub_function(GLOBAL, "IsUnitInCombat", in_combat)
+    local function and_that_IsUnitInCombat_returns(combat_state)
+        ut_helper.stub_function(GLOBAL, "IsUnitInCombat", combat_state)
     end
 
     local function and_IsUnitInCombat_was_not_called()
@@ -1555,142 +1552,104 @@ describe("Test character information getters", function()
 
     it("Query CHARACTER IN-COMBAT-NESS from the CACHE",
     function()
-        given_that_cached_character_in_combat_is(IN_COMBAT_1)
-            and_that_IsUnitInCombat_returns(IN_COMBAT_2)
+        given_that_cached_character_combat_state_is(COMBAT_STATE_1)
+            and_that_IsUnitInCombat_returns(COMBAT_STATE_2)
 
-        when_is_character_in_combat_is_called_with_cache()
+        when_get_character_combat_state_is_called_with_cache()
 
-        then_the_returned_character_in_combat_was(IN_COMBAT_1)
+        then_the_returned_character_combat_state_was(COMBAT_STATE_1)
             and_IsUnitInCombat_was_not_called()
     end)
 
     -- {{{
-    local function given_that_cached_combat_time_start_is_not_set()
-        cache.combat_time_start = nil
+    local function given_that_cached_combat_start_time_is_not_set()
+        cache.combat_start_time = nil
     end
 
-    local function when_get_combat_time_start_is_called_with_cache()
-        results.combat_time_start = pinfo_char.get_combat_time_start(cache)
+    local function when_get_combat_start_time_is_called_with_cache()
+        results.combat_start_time = pinfo_char.get_combat_start_time(cache)
     end
 
-    local function then_the_returned_combat_time_start_was(start_time)
-        assert.is.equal(start_time, results.combat_time_start)
+    local function then_the_returned_combat_start_time_was(start_time)
+        assert.is.equal(start_time, results.combat_start_time)
     end
     -- }}}
 
     it("Query COMBAT TIME START, when NOT CACHED",
     function()
-        given_that_cached_combat_time_start_is_not_set()
+        given_that_cached_combat_start_time_is_not_set()
 
-        when_get_combat_time_start_is_called_with_cache()
+        when_get_combat_start_time_is_called_with_cache()
 
-        then_the_returned_combat_time_start_was(0)
+        then_the_returned_combat_start_time_was(0)
     end)
 
     -- {{{
-    local function given_that_cached_combat_time_start_is(start_time)
-        cache.combat_time_start = start_time
+    local function given_that_cached_combat_start_time_is(start_time)
+        cache.combat_start_time = start_time
     end
     -- }}}
 
     it("Query COMBAT TIME START from the CACHE",
     function()
-        given_that_cached_combat_time_start_is(COMBAT_TIME_START)
+        given_that_cached_combat_start_time_is(COMBAT_START_TIME)
 
-        when_get_combat_time_start_is_called_with_cache()
+        when_get_combat_start_time_is_called_with_cache()
 
-        then_the_returned_combat_time_start_was(COMBAT_TIME_START)
+        then_the_returned_combat_start_time_was(COMBAT_START_TIME)
     end)
 
     -- {{{
-    local function given_that_cached_combat_time_end_is_not_set()
-        cache.combat_time_end = nil
+    local function given_that_cached_combat_lenght_is_not_set()
+        cache.combat_lenght = nil
     end
 
-    local function when_get_combat_time_end_is_called_with_cache()
-        results.combat_time_end = pinfo_char.get_combat_time_end(cache)
+    local function when_get_combat_lenght_is_called_with_cache()
+        results.combat_lenght = pinfo_char.get_combat_lenght(cache)
     end
 
-    local function then_the_returned_combat_time_end_was(end_time)
-        assert.is.equal(end_time, results.combat_time_end)
-    end
-    -- }}}
-
-    it("Query COMBAT TIME END, when NOT CACHED",
-    function()
-        given_that_cached_combat_time_end_is_not_set()
-
-        when_get_combat_time_end_is_called_with_cache()
-
-        then_the_returned_combat_time_end_was(0)
-    end)
-
-    -- {{{
-    local function given_that_cached_combat_time_end_is(end_time)
-        cache.combat_time_end = end_time
-    end
-    -- }}}
-
-    it("Query COMBAT TIME END from the CACHE",
-    function()
-        given_that_cached_combat_time_end_is(COMBAT_TIME_END)
-
-        when_get_combat_time_end_is_called_with_cache()
-
-        then_the_returned_combat_time_end_was(COMBAT_TIME_END)
-    end)
-
-    -- {{{
-    local function given_that_cached_combat_time_lenght_is_not_set()
-        cache.combat_time_lenght = nil
-    end
-
-    local function when_get_combat_time_lenght_is_called_with_cache()
-        results.combat_time_lenght = pinfo_char.get_combat_time_lenght(cache)
-    end
-
-    local function then_the_returned_combat_time_lenght_was(lenght)
-        assert.is.equal(lenght, results.combat_time_lenght)
+    local function then_the_returned_combat_lenght_was(lenght)
+        assert.is.equal(lenght, results.combat_lenght)
     end
     -- }}}
 
     it("Query COMBAT TIME LENGHT, when NOT CACHED",
     function()
-        given_that_cached_combat_time_lenght_is_not_set()
+        given_that_cached_combat_lenght_is_not_set()
 
-        when_get_combat_time_lenght_is_called_with_cache()
+        when_get_combat_lenght_is_called_with_cache()
 
-        then_the_returned_combat_time_lenght_was(0)
+        then_the_returned_combat_lenght_was(0)
     end)
 
     -- {{{
-    local function given_that_cached_combat_time_lenght_is(lenght)
-        cache.combat_time_lenght = lenght
+    local function given_that_cached_combat_lenght_is(lenght)
+        cache.combat_lenght = lenght
     end
     -- }}}
 
     it("Query COMBAT TIME LENGHT, when NOT POSITIVE",
     function()
-        given_that_cached_combat_time_lenght_is(-1)
+        given_that_cached_combat_lenght_is(-1)
 
-        when_get_combat_time_lenght_is_called_with_cache()
+        when_get_combat_lenght_is_called_with_cache()
 
-        then_the_returned_combat_time_lenght_was(0)
+        then_the_returned_combat_lenght_was(0)
     end)
 
     -- {{{
-    local function given_that_cached_combat_time_lenght_is(lenght)
-        cache.combat_time_lenght = lenght
+    local function given_that_cached_combat_lenght_is(lenght)
+        cache.combat_lenght = lenght
     end
     -- }}}
 
     it("Query COMBAT TIME LENGHT from the CACHE",
     function()
-        given_that_cached_combat_time_lenght_is(COMBAT_TIME_LENGHT)
+        given_that_cached_combat_lenght_is(COMBAT_LENGHT)
 
-        when_get_combat_time_lenght_is_called_with_cache()
+        when_get_combat_lenght_is_called_with_cache()
 
-        then_the_returned_combat_time_lenght_was(COMBAT_TIME_LENGHT)
+        then_the_returned_combat_lenght_was(COMBAT_LENGHT)
     end)
 end)
 

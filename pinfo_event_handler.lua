@@ -81,15 +81,26 @@ function pinfo_event_handler.on_loot_received(event, by, item, quantity, sound, 
     end
 end
 
-function pinfo_event_handler.on_combat_state_update(event, in_combat)
-    if CACHE.in_combat ~= in_combat then
-        CACHE.in_combat = in_combat
-        if in_combat then
-            CACHE.combat_time_start = GetGameTimeMilliseconds()
+function pinfo_event_handler.on_combat_state_update(event, combat_state)
+    if combat_state then
+        pinfo_output.chat_tab:AddMessage("IN FIGHT!")
+    else
+        pinfo_output.chat_tab:AddMessage("OUT OF FIGHT!")
+    end
+    if pinfo_char.get_character_combat_state(CACHE) ~= combat_state then
+        CACHE.combat_state = combat_state
+        if combat_state then
+            CACHE.combat_start_time = GetGameTimeMilliseconds()
         else
-            CACHE.combat_time_lenght = GetGameTimeMilliseconds() - CACHE.combat_time_start
+            local combat_start_time = pinfo_char.get_combat_start_time(CACHE)
+            if combat_start_time > 0 then
+                CACHE.combat_lenght = GetGameTimeMilliseconds() - combat_start_time
+            else
+                CACHE.combat_lenght = -1
+            end
+            CACHE.combat_start_time = 0
         end
-        pinfo_output.combat_state_to_chat_tab(in_combat)
+        pinfo_output.combat_state_to_chat_tab()
     end
 end
 

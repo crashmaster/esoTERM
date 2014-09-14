@@ -1,5 +1,7 @@
 local requires_for_tests = require("tests/requires_for_tests")
 
+local GLOBAL = _G
+
 
 describe("Test event handler initialization", function()
     local addon_name = "pinfo"
@@ -439,67 +441,126 @@ describe("Test event handlers", function()
     describe("Test the on player combat state event handler", function()
         local cache = pinfo.CACHE
 
-        local OUTER_COMBAT = "foo"
-        local IN_COMBAT = "bar"
+        local OUTER_COMBAT = false
+        local IN_COMBAT = true
+        local ENTER_TIME = 10
+        local EXIT_TIME = 50
 
-        before_each(function()
-            cache.in_combat = OUTER_COMBAT
+        after_each(function()
+            cache.combat_state = nil
+            cache.combat_start_time = 0
+            cache.combat_lenght = 0
         end)
 
         -- {{{
-        local function given_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
+        local function given_that_get_character_combat_state_returns(combat_state)
+            ut_helper.stub_function(pinfo_char, "get_character_combat_state", combat_state)
+        end
+
+        local function and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
             ut_helper.stub_function(pinfo_output, "combat_state_to_chat_tab", nil)
         end
 
-        local function when_on_combat_state_update_is_called_with(event, in_combat)
-            pinfo_event_handler.on_combat_state_update(event, in_combat)
+        local function and_that_eso_GetGameTimeMilliseconds_returns(time)
+            ut_helper.stub_function(GLOBAL, "GetGameTimeMilliseconds", time)
         end
 
-        local function then_pinfo_output_combat_state_to_chat_tab_was_called_with(in_combat)
-            assert.spy(pinfo_output.combat_state_to_chat_tab).was.called_with(in_combat)
+        local function when_on_combat_state_update_is_called_with(event, combat_state)
+            pinfo_event_handler.on_combat_state_update(event, combat_state)
+        end
+
+        local function and_pinfo_output_combat_state_to_chat_tab_was_called()
+            assert.spy(pinfo_output.combat_state_to_chat_tab).was.called()
+        end
+
+        local function then_the_and_cached_combat_state_became(comat_state)
+            assert.is.equal(comat_state, cache.combat_state)
+        end
+
+        local function and_cached_combat_start_time_became(start_time)
+            assert.is.equal(start_time, cache.combat_start_time)
         end
         -- }}}
 
-        it("Combat state is printed",
+        it("Combat state change from out of combat to in combat",
         function()
-            given_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
+            given_that_get_character_combat_state_returns(OUTER_COMBAT)
+                and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
+                and_that_eso_GetGameTimeMilliseconds_returns(ENTER_TIME)
 
             when_on_combat_state_update_is_called_with(EVENT, IN_COMBAT)
 
-            then_pinfo_output_combat_state_to_chat_tab_was_called_with(IN_COMBAT)
+            then_the_and_cached_combat_state_became(IN_COMBAT)
+                and_pinfo_output_combat_state_to_chat_tab_was_called()
+                and_cached_combat_start_time_became(ENTER_TIME)
         end)
 
         -- {{{
-        local function and_current_combat_state_is(combat_state)
-            assert.is.equal(combat_state, cache.in_combat)
+        local function and_that_get_combat_start_time_returns(time)
+            ut_helper.stub_function(pinfo_char, "get_combat_start_time", time)
+        end
+
+        local function and_get_combat_start_time_was_called_once_with_cache()
+            assert.spy(pinfo_char.get_combat_start_time).was.called_with(cache)
+        end
+
+        local function and_cached_combat_lenght_became(lenght)
+            assert.is.equal(lenght, cache.combat_lenght)
         end
         -- }}}
 
-        it("Combat state is updated",
+        it("Combat state change from in combat to out of combat",
         function()
-            given_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
-                and_current_combat_state_is(OUTER_COMBAT)
+            given_that_get_character_combat_state_returns(IN_COMBAT)
+                and_that_get_combat_start_time_returns(ENTER_TIME)
+                and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
+                and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME)
 
-            when_on_combat_state_update_is_called_with(EVENT, IN_COMBAT)
+            when_on_combat_state_update_is_called_with(EVENT, OUTER_COMBAT)
 
-            then_pinfo_output_combat_state_to_chat_tab_was_called_with(IN_COMBAT)
-                and_current_combat_state_is(IN_COMBAT)
+            then_the_and_cached_combat_state_became(OUTER_COMBAT)
+                and_get_combat_start_time_was_called_once_with_cache()
+                and_cached_combat_lenght_became(EXIT_TIME - ENTER_TIME)
+                and_cached_combat_start_time_became(0)
+                and_pinfo_output_combat_state_to_chat_tab_was_called()
+        end)
+
+        it("Combat length when combat start time is invalid",
+        function()
+            given_that_get_character_combat_state_returns(IN_COMBAT)
+                and_that_get_combat_start_time_returns(0)
+                and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
+                and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME)
+
+            when_on_combat_state_update_is_called_with(EVENT, OUTER_COMBAT)
+
+            then_the_and_cached_combat_state_became(OUTER_COMBAT)
+                and_get_combat_start_time_was_called_once_with_cache()
+                and_cached_combat_lenght_became(-1)
+                and_cached_combat_start_time_became(0)
+                and_pinfo_output_combat_state_to_chat_tab_was_called()
         end)
 
         -- {{{
         local function then_pinfo_output_combat_state_to_chat_tab_was_not_called()
             assert.spy(pinfo_output.combat_state_to_chat_tab).was_not.called()
         end
+
+        local function and_eso_GetGameTimeMilliseconds_was_not_called()
+            assert.spy(GLOBAL.GetGameTimeMilliseconds).was_not.called()
+        end
         -- }}}
+
         it("Combat state change skipped, when already having that state",
         function()
-            given_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
-                and_current_combat_state_is(OUTER_COMBAT)
+            given_that_get_character_combat_state_returns(OUTER_COMBAT)
+                and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
+                and_that_eso_GetGameTimeMilliseconds_returns(nil)
 
             when_on_combat_state_update_is_called_with(EVENT, OUTER_COMBAT)
 
             then_pinfo_output_combat_state_to_chat_tab_was_not_called()
-                and_current_combat_state_is(OUTER_COMBAT)
+                and_eso_GetGameTimeMilliseconds_was_not_called()
         end)
     end)
 end)

@@ -96,15 +96,15 @@ function pinfo_output.item_to_chat_tab(item_name, quantity)
                                                    formatted_item))
 end
 
-function pinfo_output.combat_state_to_chat_tab(in_combat)
+function pinfo_output.combat_state_to_chat_tab()
     local message
-    if in_combat then
+    if pinfo_char.get_character_combat_state(CACHE) then
         message = string.format("+%s+ enters the fight",
                                 pinfo_char.get_character_name(CACHE))
     else
         message = string.format("+%s+ leaves the fight (lasted: %.2f s)",
                                 pinfo_char.get_character_name(CACHE),
-                                pinfo_char.get_combat_time_lenght(CACHE) / 1000)
+                                pinfo_char.get_combat_lenght(CACHE) / 1000)
     end
     pinfo_output.chat_tab:AddMessage(message)
 end
