@@ -82,11 +82,6 @@ function pinfo_event_handler.on_loot_received(event, by, item, quantity, sound, 
 end
 
 function pinfo_event_handler.on_combat_state_update(event, combat_state)
-    if combat_state then
-        pinfo_output.chat_tab:AddMessage("IN FIGHT!")
-    else
-        pinfo_output.chat_tab:AddMessage("OUT OF FIGHT!")
-    end
     if pinfo_char.get_character_combat_state(CACHE) ~= combat_state then
         CACHE.combat_state = combat_state
         if combat_state then
