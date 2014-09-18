@@ -1,5 +1,5 @@
 ## Title: Player Information (IN DEV!)
-## APIVersion: 100008
+## APIVersion: 100009
 ## SavedVariables: pinfo_saved_variables
 
 pinfo.lua
