@@ -3,9 +3,8 @@ local CACHE = pinfo.CACHE
 pinfo_output = {}
 pinfo_output.PROMPT = "[pinfo] "
 pinfo_output.default_settings = {chat_tab_number = 1}
-
-local xp_message_buffer = {}
-local ap_message_buffer = {}
+pinfo_output.xp_message_buffer = {}
+pinfo_output.ap_message_buffer = {}
 
 function pinfo_output.initialize()
     pinfo_output.settings = ZO_SavedVars:New("pinfo_saved_variables",
@@ -48,7 +47,7 @@ local function ap_message_to_print()
 end
 
 local function store_xp_message_before_player_activated()
-    table.insert(xp_message_buffer, xp_message_to_print())
+    table.insert(pinfo_output.xp_message_buffer, xp_message_to_print())
 end
 
 local function print_xp_message()
@@ -56,7 +55,7 @@ local function print_xp_message()
 end
 
 local function store_ap_message_before_player_activated()
-    table.insert(ap_message_buffer, ap_message_to_print())
+    table.insert(pinfo_output.ap_message_buffer, ap_message_to_print())
 end
 
 local function print_ap_message()
@@ -81,10 +80,10 @@ function pinfo_output.on_player_activated(event)
 
     pinfo_output.set_n_th_chat_tab_as_output(chat_tab_number)
 
-    print_message_buffer(xp_message_buffer)
+    print_message_buffer(pinfo_output.xp_message_buffer)
     pinfo_output.xp_to_chat_tab = print_xp_message
 
-    print_message_buffer(ap_message_buffer)
+    print_message_buffer(pinfo_output.ap_message_buffer)
     pinfo_output.ap_to_chat_tab = print_ap_message
 end
 
