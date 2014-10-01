@@ -61,10 +61,10 @@ function pinfo_event_handler.on_ava_points_update(event, point, sound, diff)
 
         if new_rank_points > CACHE.ava_rank_points_max then
             CACHE.ava_rank = nil
-            CACHE.ava_rank = pinfo_char.get_character_ava_rank(CACHE)
+            CACHE.ava_rank = pinfo_char.get_ava_rank(CACHE)
             new_rank_points = new_rank_points - CACHE.ava_rank_points_max
             CACHE.ava_rank_points_max = nil
-            CACHE.ava_rank_points_max = pinfo_char.get_character_ava_rank_points_max(CACHE)
+            CACHE.ava_rank_points_max = pinfo_char.get_ava_rank_points_max(CACHE)
         end
 
         CACHE.ava_rank_points = new_rank_points
@@ -82,7 +82,7 @@ function pinfo_event_handler.on_loot_received(event, by, item, quantity, sound, 
 end
 
 function pinfo_event_handler.on_combat_state_update(event, combat_state)
-    if pinfo_char.get_character_combat_state(CACHE) ~= combat_state then
+    if pinfo_char.get_combat_state(CACHE) ~= combat_state then
         CACHE.combat_state = combat_state
         if combat_state then
             CACHE.combat_start_time = GetGameTimeMilliseconds()

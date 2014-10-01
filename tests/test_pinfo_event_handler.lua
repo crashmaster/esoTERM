@@ -305,20 +305,20 @@ describe("Test event handlers", function()
         end)
 
         -- {{{
-        local function and_that_get_character_ava_rank_returns(rank)
-            ut_helper.stub_function(pinfo_char, "get_character_ava_rank", rank)
+        local function and_that_get_ava_rank_returns(rank)
+            ut_helper.stub_function(pinfo_char, "get_ava_rank", rank)
         end
 
-        local function and_get_character_ava_rank_was_called_once_witch_cache()
-            assert.spy(pinfo_char.get_character_ava_rank).was.called_with(cache)
+        local function and_get_ava_rank_was_called_once_witch_cache()
+            assert.spy(pinfo_char.get_ava_rank).was.called_with(cache)
         end
 
-        local function and_that_get_character_ava_rank_points_max_returns(points)
-            ut_helper.stub_function(pinfo_char, "get_character_ava_rank_points_max", points)
+        local function and_that_get_ava_rank_points_max_returns(points)
+            ut_helper.stub_function(pinfo_char, "get_ava_rank_points_max", points)
         end
 
-        local function and_get_character_ava_rank_points_max_was_called_once_witch_cache()
-            assert.spy(pinfo_char.get_character_ava_rank_points_max).was.called_with(cache)
+        local function and_get_ava_rank_points_max_was_called_once_witch_cache()
+            assert.spy(pinfo_char.get_ava_rank_points_max).was.called_with(cache)
         end
 
         local function when_on_ava_points_update_is_called_with(event, point, sound, diff)
@@ -380,14 +380,14 @@ describe("Test event handlers", function()
         it("On AvA points update, gain enough to rank up",
         function()
             given_that_pinfo_output_ap_to_chat_tab_is_stubbed()
-                and_that_get_character_ava_rank_returns(NEW_RANK)
-                and_that_get_character_ava_rank_points_max_returns(NEW_POINTS_MAX)
+                and_that_get_ava_rank_returns(NEW_RANK)
+                and_that_get_ava_rank_points_max_returns(NEW_POINTS_MAX)
 
             when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, GAIN_RANK_UP)
 
             then_the_ava_properties_in_character_info_where_updated_rank_up()
-                and_get_character_ava_rank_was_called_once_witch_cache()
-                and_get_character_ava_rank_points_max_was_called_once_witch_cache()
+                and_get_ava_rank_was_called_once_witch_cache()
+                and_get_ava_rank_points_max_was_called_once_witch_cache()
                 and_pinfo_output_ap_to_chat_tab_was_called_once()
         end)
     end)
@@ -453,8 +453,8 @@ describe("Test event handlers", function()
         end)
 
         -- {{{
-        local function given_that_get_character_combat_state_returns(combat_state)
-            ut_helper.stub_function(pinfo_char, "get_character_combat_state", combat_state)
+        local function given_that_get_combat_state_returns(combat_state)
+            ut_helper.stub_function(pinfo_char, "get_combat_state", combat_state)
         end
 
         local function and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
@@ -484,7 +484,7 @@ describe("Test event handlers", function()
 
         it("Combat state change from out of combat to in combat",
         function()
-            given_that_get_character_combat_state_returns(OUTER_COMBAT)
+            given_that_get_combat_state_returns(OUTER_COMBAT)
                 and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
                 and_that_eso_GetGameTimeMilliseconds_returns(ENTER_TIME)
 
@@ -511,7 +511,7 @@ describe("Test event handlers", function()
 
         it("Combat state change from in combat to out of combat",
         function()
-            given_that_get_character_combat_state_returns(IN_COMBAT)
+            given_that_get_combat_state_returns(IN_COMBAT)
                 and_that_get_combat_start_time_returns(ENTER_TIME)
                 and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
                 and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME)
@@ -527,7 +527,7 @@ describe("Test event handlers", function()
 
         it("Combat length when combat start time is invalid",
         function()
-            given_that_get_character_combat_state_returns(IN_COMBAT)
+            given_that_get_combat_state_returns(IN_COMBAT)
                 and_that_get_combat_start_time_returns(0)
                 and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
                 and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME)
@@ -553,7 +553,7 @@ describe("Test event handlers", function()
 
         it("Combat state change skipped, when already having that state",
         function()
-            given_that_get_character_combat_state_returns(OUTER_COMBAT)
+            given_that_get_combat_state_returns(OUTER_COMBAT)
                 and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
                 and_that_eso_GetGameTimeMilliseconds_returns(nil)
 

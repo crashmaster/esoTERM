@@ -42,32 +42,32 @@ end
 
 local function xp_message_to_print()
     return string.format("%s gained %d XP (%.2f%%)",
-                pinfo_char.get_character_name(CACHE),
-                pinfo_char.get_character_xp_gain(CACHE),
-                pinfo_char.get_character_level_xp_percent(CACHE))
+                pinfo_char.get_name(CACHE),
+                pinfo_char.get_xp_gain(CACHE),
+                pinfo_char.get_level_xp_percent(CACHE))
 end
 
 local function ap_message_to_print()
     return string.format("%s gained %d AP (%.2f%%)",
-                pinfo_char.get_character_name(CACHE),
-                pinfo_char.get_character_ava_points_gain(CACHE),
-                pinfo_char.get_character_ava_rank_points_percent(CACHE))
+                pinfo_char.get_name(CACHE),
+                pinfo_char.get_ava_points_gain(CACHE),
+                pinfo_char.get_ava_rank_points_percent(CACHE))
 end
 
 local function loot_message_to_print()
     return string.format("%s received %d %s",
-                         pinfo_char.get_character_name(CACHE),
+                         pinfo_char.get_name(CACHE),
                          quantity,
                          zo_strformat("<<t:1>>", item_name))
 end
 
 local function combat_state_message_to_print()
-    if pinfo_char.get_character_combat_state(CACHE) then
+    if pinfo_char.get_combat_state(CACHE) then
         return string.format("%s entered combat",
-                             pinfo_char.get_character_name(CACHE))
+                             pinfo_char.get_name(CACHE))
     else
         return string.format("%s left combat (lasted: %.2f s)",
-                             pinfo_char.get_character_name(CACHE),
+                             pinfo_char.get_name(CACHE),
                              pinfo_char.get_combat_lenght(CACHE) / 1000)
     end
 end

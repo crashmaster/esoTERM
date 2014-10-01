@@ -111,36 +111,36 @@ describe("Test output", function()
     end)
 
     -- {{{
-    local function get_character_name_returns(name)
-        ut_helper.stub_function(pinfo_char, "get_character_name", name)
+    local function get_name_returns(name)
+        ut_helper.stub_function(pinfo_char, "get_name", name)
     end
 
-    local function get_character_level_xp_percent_returns(percent)
-        ut_helper.stub_function(pinfo_char, "get_character_level_xp_percent", percent)
+    local function get_level_xp_percent_returns(percent)
+        ut_helper.stub_function(pinfo_char, "get_level_xp_percent", percent)
     end
 
-    local function get_character_xp_gain_returns(gain)
-        ut_helper.stub_function(pinfo_char, "get_character_xp_gain", gain)
+    local function get_xp_gain_returns(gain)
+        ut_helper.stub_function(pinfo_char, "get_xp_gain", gain)
     end
 
-    local function get_character_name_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_name).was.called_with(cache)
+    local function get_name_was_called_once_with_cache()
+        assert.spy(pinfo_char.get_name).was.called_with(cache)
     end
 
-    local function get_character_level_xp_percent_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_level_xp_percent).was.called_with(cache)
+    local function get_level_xp_percent_was_called_once_with_cache()
+        assert.spy(pinfo_char.get_level_xp_percent).was.called_with(cache)
     end
 
-    local function get_character_xp_gain_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_xp_gain).was.called_with(cache)
+    local function get_xp_gain_was_called_once_with_cache()
+        assert.spy(pinfo_char.get_xp_gain).was.called_with(cache)
     end
     -- }}}
 
     it("Experience point update put into message buffer",
     function()
-        get_character_name_returns(NAME)
-        get_character_level_xp_percent_returns(LEVEL_XP_PERCENT)
-        get_character_xp_gain_returns(XP_GAIN)
+        get_name_returns(NAME)
+        get_level_xp_percent_returns(LEVEL_XP_PERCENT)
+        get_xp_gain_returns(XP_GAIN)
 
         pinfo_output.xp_to_chat_tab()
         str = string.format("%s gained %d XP (%.2f%%)",
@@ -149,34 +149,34 @@ describe("Test output", function()
                             LEVEL_XP_PERCENT)
         assert.is.equal(str, pinfo_output.message_buffers.xp_messages[1])
 
-        get_character_name_was_called_once_with_cache()
-        get_character_xp_gain_was_called_once_with_cache()
-        get_character_level_xp_percent_was_called_once_with_cache()
+        get_name_was_called_once_with_cache()
+        get_xp_gain_was_called_once_with_cache()
+        get_level_xp_percent_was_called_once_with_cache()
     end)
 
     -- {{{
-    local function get_character_ava_rank_points_percent_returns(percent)
-        ut_helper.stub_function(pinfo_char, "get_character_ava_rank_points_percent", percent)
+    local function get_ava_rank_points_percent_returns(percent)
+        ut_helper.stub_function(pinfo_char, "get_ava_rank_points_percent", percent)
     end
 
-    local function get_character_ava_points_returns(gain)
-        ut_helper.stub_function(pinfo_char, "get_character_ava_points_gain", gain)
+    local function get_ava_points_returns(gain)
+        ut_helper.stub_function(pinfo_char, "get_ava_points_gain", gain)
     end
 
-    local function get_character_ava_rank_points_percent_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_ava_rank_points_percent).was.called_with(cache)
+    local function get_ava_rank_points_percent_was_called_once_with_cache()
+        assert.spy(pinfo_char.get_ava_rank_points_percent).was.called_with(cache)
     end
 
-    local function get_character_ava_points_gain_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_character_ava_points_gain).was.called_with(cache)
+    local function get_ava_points_gain_was_called_once_with_cache()
+        assert.spy(pinfo_char.get_ava_points_gain).was.called_with(cache)
     end
     -- }}}
 
     it("Alliance point update put into message buffer",
     function()
-        get_character_name_returns(NAME)
-        get_character_ava_points_returns(AP_GAIN)
-        get_character_ava_rank_points_percent_returns(LEVEL_AP_PERCENT)
+        get_name_returns(NAME)
+        get_ava_points_returns(AP_GAIN)
+        get_ava_rank_points_percent_returns(LEVEL_AP_PERCENT)
 
         pinfo_output.ap_to_chat_tab()
         str = string.format("%s gained %d AP (%.2f%%)",
@@ -185,9 +185,9 @@ describe("Test output", function()
                             LEVEL_AP_PERCENT)
         assert.is.equal(str, pinfo_output.message_buffers.ap_messages[1])
 
-        get_character_name_was_called_once_with_cache()
-        get_character_ava_points_gain_was_called_once_with_cache()
-        get_character_ava_rank_points_percent_was_called_once_with_cache()
+        get_name_was_called_once_with_cache()
+        get_ava_points_gain_was_called_once_with_cache()
+        get_ava_rank_points_percent_was_called_once_with_cache()
     end)
 end)
 
