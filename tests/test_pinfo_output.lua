@@ -1,7 +1,6 @@
 local requires_for_tests = require("tests/requires_for_tests")
 
 local GLOBAL = _G
-local PLAYER = "player"
 
 describe("Test output initialization", function()
     local expected_register_params = {}
@@ -100,6 +99,14 @@ describe("Test output initialization", function()
 end)
 
 describe("Test output", function()
+    local NAME = "Hank"
+    local AVA_RANK_NAME = "General"
+    local LEVEL = 123
+    local CLASS = "Writer"
+    local LEVEL_XP_PERCENT = 12.34
+    local XP_GAIN = 1000
+    local LEVEL_AP_PERCENT = 43.21
+    local AP_GAIN = 2000
     local cache = pinfo.CACHE
 
     after_each(function()
@@ -150,20 +157,20 @@ describe("Test output", function()
 
     it("Experience point update put into message buffer",
     function()
-        get_character_name_returns("boo")
-        get_character_level_returns(33)
-        get_character_class_returns("a")
-        get_character_level_xp_percent_returns(12.34)
-        get_character_xp_gain_returns(100)
+        get_character_name_returns(NAME)
+        get_character_level_returns(LEVEL)
+        get_character_class_returns(CLASS)
+        get_character_level_xp_percent_returns(LEVEL_XP_PERCENT)
+        get_character_xp_gain_returns(XP_GAIN)
 
         pinfo_output.xp_to_chat_tab()
         str = string.format("+%s+ +%d+ +%s+ +%.2f%%+ (+%d XP)",
-                            "boo",
-                            33,
-                            "a",
-                            12.34,
-                            100)
-        assert.is.equal(str, pinfo_output.xp_message_buffer[1])
+                            NAME,
+                            LEVEL,
+                            CLASS,
+                            LEVEL_XP_PERCENT,
+                            XP_GAIN)
+        assert.is.equal(str, pinfo_output.message_buffers.xp_messages[1])
 
         get_character_name_was_called_once_with_cache()
         get_character_level_was_called_once_with_cache()
@@ -200,20 +207,20 @@ describe("Test output", function()
 
     it("Alliance point update put into message buffer",
     function()
-        get_character_ava_rank_name_returns("baa")
-        get_character_name_returns("boo")
-        get_character_class_returns("a")
-        get_character_ava_rank_points_percent_returns(12.34)
-        get_character_ava_points_returns(200)
+        get_character_name_returns(NAME)
+        get_character_ava_rank_name_returns(AVA_RANK_NAME)
+        get_character_class_returns(CLASS)
+        get_character_ava_rank_points_percent_returns(LEVEL_AP_PERCENT)
+        get_character_ava_points_returns(AP_GAIN)
 
         pinfo_output.ap_to_chat_tab()
         str = string.format("+%s+ +%s+ +%s+ +%.2f%%+ (+%d AP)",
-                            "baa",
-                            "boo",
-                            "a",
-                            12.34,
-                            200)
-        assert.is.equal(str, pinfo_output.ap_message_buffer[1])
+                            NAME,
+                            AVA_RANK_NAME,
+                            CLASS,
+                            LEVEL_AP_PERCENT,
+                            AP_GAIN)
+        assert.is.equal(str, pinfo_output.message_buffers.ap_messages[1])
 
         get_character_ava_rank_name_was_called_once_with_cache()
         get_character_name_was_called_once_with_cache()
