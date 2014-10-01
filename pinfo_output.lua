@@ -35,7 +35,7 @@ function pinfo_output.set_n_th_chat_tab_as_output(chat_tab_number)
     if chat_tab_number ~= pinfo_output.settings.chat_tab_number then
         pinfo_output.settings.chat_tab_number = chat_tab_number
     end
-    pinfo_output.system_message("Output chat tab is: " .. pinfo_output.chat_tab_name)
+    pinfo_output.system_print("Output chat tab is: " .. pinfo_output.chat_tab_name)
 end
 
 local function xp_message_to_print()
@@ -61,7 +61,7 @@ local function store_xp_message_before_player_activated()
 end
 
 local function print_xp_message()
-    pinfo_output.chat_tab:AddMessage(xp_message_to_print())
+    pinfo_output.normal_print(xp_message_to_print())
 end
 
 local function store_ap_message_before_player_activated()
@@ -69,7 +69,7 @@ local function store_ap_message_before_player_activated()
 end
 
 local function print_ap_message()
-    pinfo_output.chat_tab:AddMessage(ap_message_to_print())
+    pinfo_output.normal_print(ap_message_to_print())
 end
 
 pinfo_output.xp_to_chat_tab = store_xp_message_before_player_activated
@@ -78,7 +78,7 @@ pinfo_output.ap_to_chat_tab = store_ap_message_before_player_activated
 local function print_message_buffers()
     for _, buffer in pairs(pinfo_output.message_buffers) do
         for _, message in ipairs(buffer) do
-            pinfo_output.chat_tab:AddMessage(message)
+            pinfo_output.normal_print(message)
         end
     end
 end
@@ -100,10 +100,10 @@ end
 
 function pinfo_output.item_to_chat_tab(item_name, quantity)
     formatted_item = zo_strformat("<<t:1>>", item_name)
-    pinfo_output.chat_tab:AddMessage(string.format("+%s+ receives +%d+ +%s+",
-                                                   pinfo_char.get_character_name(CACHE),
-                                                   quantity,
-                                                   formatted_item))
+    pinfo_output.normal_print(string.format("+%s+ receives +%d+ +%s+",
+                                            pinfo_char.get_character_name(CACHE),
+                                            quantity,
+                                            formatted_item))
 end
 
 function pinfo_output.combat_state_to_chat_tab()
@@ -116,10 +116,14 @@ function pinfo_output.combat_state_to_chat_tab()
                                 pinfo_char.get_character_name(CACHE),
                                 pinfo_char.get_combat_lenght(CACHE) / 1000)
     end
+    pinfo_output.normal_print(message)
+end
+
+function pinfo_output.normal_print(message)
     pinfo_output.chat_tab:AddMessage(message)
 end
 
-function pinfo_output.system_message(message)
+function pinfo_output.system_print(message)
     d(pinfo_output.PROMPT .. message)
 end
 
