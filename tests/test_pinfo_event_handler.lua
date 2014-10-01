@@ -400,41 +400,41 @@ describe("Test event handlers", function()
         local LOOT_TYPE = "loot_type"
 
         -- {{{
-        local function given_that_pinfo_output_item_to_chat_tab_is_stubbed()
-            ut_helper.stub_function(pinfo_output, "item_to_chat_tab", nil)
+        local function given_that_pinfo_output_loot_to_chat_tab_is_stubbed()
+            ut_helper.stub_function(pinfo_output, "loot_to_chat_tab", nil)
         end
 
         local function when_on_loot_received_is_called_with(event, by, item, quantity, sound, loot_type, self)
             pinfo_event_handler.on_loot_received(event, by, item, quantity, sound, loot_type, self)
         end
 
-        local function then_pinfo_output_item_to_chat_tab_was_called_with(item, quantity)
-            assert.spy(pinfo_output.item_to_chat_tab).was.called_with(item, quantity)
+        local function then_pinfo_output_loot_to_chat_tab_was_called_with(item, quantity)
+            assert.spy(pinfo_output.loot_to_chat_tab).was.called_with(item, quantity)
         end
         -- }}}
 
         it("On loot received, happy flow",
         function()
-            given_that_pinfo_output_item_to_chat_tab_is_stubbed()
+            given_that_pinfo_output_loot_to_chat_tab_is_stubbed()
 
             when_on_loot_received_is_called_with(EVENT, BY, ITEM, QUANTITY, SOUND, LOOT_TYPE, true)
 
-            then_pinfo_output_item_to_chat_tab_was_called_with(ITEM, QUANTITY)
+            then_pinfo_output_loot_to_chat_tab_was_called_with(ITEM, QUANTITY)
         end)
 
         -- {{{
-        local function then_pinfo_output_item_to_chat_tab_was_not_called()
-            assert.spy(pinfo_output.item_to_chat_tab).was_not.called()
+        local function then_pinfo_output_loot_to_chat_tab_was_not_called()
+            assert.spy(pinfo_output.loot_to_chat_tab).was_not.called()
         end
         -- }}}
 
         it("On loot received, not self",
         function()
-            given_that_pinfo_output_item_to_chat_tab_is_stubbed()
+            given_that_pinfo_output_loot_to_chat_tab_is_stubbed()
 
             when_on_loot_received_is_called_with(EVENT, BY, ITEM, QUANTITY, SOUND, LOOT_TYPE, false)
 
-            then_pinfo_output_item_to_chat_tab_was_not_called()
+            then_pinfo_output_loot_to_chat_tab_was_not_called()
         end)
     end)
 

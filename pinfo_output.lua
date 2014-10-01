@@ -19,6 +19,8 @@ end
 function pinfo_output.initialize_message_buffers()
     pinfo_output.message_buffers.xp_messages = {}
     pinfo_output.message_buffers.ap_messages = {}
+    pinfo_output.message_buffers.loot_messages = {}
+    pinfo_output.message_buffers.combat_state_messages = {}
 end
 
 function pinfo_output.set_n_th_chat_tab_as_output(chat_tab_number)
@@ -26,34 +28,48 @@ function pinfo_output.set_n_th_chat_tab_as_output(chat_tab_number)
     local chat_tab_name = string.format("ZO_ChatWindowTabTemplate%dText", chat_tab_number)
 
     if _G[chat_tab] == nil or _G[chat_tab_name] == nil then
-        pinfo_output.chat_tab = _G["ZO_ChatWindowTemplate1"].buffer
+        pinfo_output.text_box = _G["ZO_ChatWindowTemplate1"].buffer
         pinfo_output.chat_tab_name = _G["ZO_ChatWindowTabTemplate1Text"]:GetText()
     else
-        pinfo_output.chat_tab = _G[chat_tab].buffer
+        pinfo_output.text_box = _G[chat_tab].buffer
         pinfo_output.chat_tab_name = _G[chat_tab_name]:GetText()
     end
     if chat_tab_number ~= pinfo_output.settings.chat_tab_number then
         pinfo_output.settings.chat_tab_number = chat_tab_number
+        pinfo_output.system_print("Output chat tab set to: " .. pinfo_output.chat_tab_name)
     end
-    pinfo_output.system_print("Output chat tab is: " .. pinfo_output.chat_tab_name)
 end
 
 local function xp_message_to_print()
-    return string.format("+%s+ +%d+ +%s+ +%.2f%%+ (+%d XP)",
+    return string.format("%s gained %d XP (%.2f%%)",
                 pinfo_char.get_character_name(CACHE),
-                pinfo_char.get_character_level(CACHE),
-                pinfo_char.get_character_class(CACHE),
-                pinfo_char.get_character_level_xp_percent(CACHE),
-                pinfo_char.get_character_xp_gain(CACHE))
+                pinfo_char.get_character_xp_gain(CACHE),
+                pinfo_char.get_character_level_xp_percent(CACHE))
 end
 
 local function ap_message_to_print()
-    return string.format("+%s+ +%s+ +%s+ +%.2f%%+ (+%d AP)",
+    return string.format("%s gained %d AP (%.2f%%)",
                 pinfo_char.get_character_name(CACHE),
-                pinfo_char.get_character_ava_rank_name(CACHE),
-                pinfo_char.get_character_class(CACHE),
-                pinfo_char.get_character_ava_rank_points_percent(CACHE),
-                pinfo_char.get_character_ava_points_gain(CACHE))
+                pinfo_char.get_character_ava_points_gain(CACHE),
+                pinfo_char.get_character_ava_rank_points_percent(CACHE))
+end
+
+local function loot_message_to_print()
+    return string.format("%s received %d %s",
+                         pinfo_char.get_character_name(CACHE),
+                         quantity,
+                         zo_strformat("<<t:1>>", item_name))
+end
+
+local function combat_state_message_to_print()
+    if pinfo_char.get_character_combat_state(CACHE) then
+        return string.format("%s entered combat",
+                             pinfo_char.get_character_name(CACHE))
+    else
+        return string.format("%s left combat (lasted: %.2f s)",
+                             pinfo_char.get_character_name(CACHE),
+                             pinfo_char.get_combat_lenght(CACHE) / 1000)
+    end
 end
 
 local function store_xp_message_before_player_activated()
@@ -72,8 +88,26 @@ local function print_ap_message()
     pinfo_output.normal_print(ap_message_to_print())
 end
 
+local function store_loot_message_before_player_activated()
+    table.insert(pinfo_output.message_buffers.loot_messages, loot_message_to_print())
+end
+
+local function print_loot_message()
+    pinfo_output.normal_print(loot_message_to_print())
+end
+
+local function store_combat_state_message_before_player_activated()
+    table.insert(pinfo_output.message_buffers.combat_state_messages, combat_state_message_to_print())
+end
+
+local function print_combat_state_message()
+    pinfo_output.normal_print(combat_state_message_to_print())
+end
+
 pinfo_output.xp_to_chat_tab = store_xp_message_before_player_activated
 pinfo_output.ap_to_chat_tab = store_ap_message_before_player_activated
+pinfo_output.loot_to_chat_tab = store_loot_message_before_player_activated
+pinfo_output.combat_state_to_chat_tab = store_combat_state_message_before_player_activated
 
 local function print_message_buffers()
     for _, buffer in pairs(pinfo_output.message_buffers) do
@@ -94,33 +128,14 @@ function pinfo_output.on_player_activated(event)
 
     pinfo_output.xp_to_chat_tab = print_xp_message
     pinfo_output.ap_to_chat_tab = print_ap_message
+    pinfo_output.loot_to_chat_tab = print_loot_message
+    pinfo_output.combat_state_to_chat_tab = print_combat_state_message
 
     print_message_buffers()
 end
 
-function pinfo_output.item_to_chat_tab(item_name, quantity)
-    formatted_item = zo_strformat("<<t:1>>", item_name)
-    pinfo_output.normal_print(string.format("+%s+ receives +%d+ +%s+",
-                                            pinfo_char.get_character_name(CACHE),
-                                            quantity,
-                                            formatted_item))
-end
-
-function pinfo_output.combat_state_to_chat_tab()
-    local message
-    if pinfo_char.get_character_combat_state(CACHE) then
-        message = string.format("+%s+ enters the fight",
-                                pinfo_char.get_character_name(CACHE))
-    else
-        message = string.format("+%s+ leaves the fight (lasted: %.2f s)",
-                                pinfo_char.get_character_name(CACHE),
-                                pinfo_char.get_combat_lenght(CACHE) / 1000)
-    end
-    pinfo_output.normal_print(message)
-end
-
 function pinfo_output.normal_print(message)
-    pinfo_output.chat_tab:AddMessage(message)
+    pinfo_output.text_box:AddMessage(message)
 end
 
 function pinfo_output.system_print(message)

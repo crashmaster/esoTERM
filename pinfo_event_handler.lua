@@ -77,7 +77,7 @@ end
 
 function pinfo_event_handler.on_loot_received(event, by, item, quantity, sound, loot_type, self)
     if self then
-        pinfo_output.item_to_chat_tab(item, quantity)
+        pinfo_output.loot_to_chat_tab(item, quantity)
     end
 end
 
