@@ -35,7 +35,7 @@ describe("Test output initialization", function()
         pinfo_output.initialize()
     end
 
-    local function than_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_params)
+    local function then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_params)
         assert.spy(EVENT_MANAGER.RegisterForEvent).was.called(ut_helper.table_size(expected_params))
         for param in pairs(expected_params) do
             assert.spy(EVENT_MANAGER.RegisterForEvent).was.called_with(
@@ -56,7 +56,7 @@ describe("Test output initialization", function()
 
         when_initialize_is_called()
 
-        than_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_register_params)
+        then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_register_params)
     end)
 
     -- {{{
@@ -73,7 +73,7 @@ describe("Test output initialization", function()
         }
     end
 
-    local function than_ZO_SavedVars_New_was_called_with(expected_params)
+    local function then_ZO_SavedVars_New_was_called_with(expected_params)
         assert.spy(ZO_SavedVars.New).was.called(ut_helper.table_size(expected_params))
         for param in pairs(expected_params) do
             assert.spy(ZO_SavedVars.New).was.called_with(
@@ -94,7 +94,7 @@ describe("Test output initialization", function()
 
         when_initialize_is_called()
 
-        than_ZO_SavedVars_New_was_called_with(expected_new_params)
+        then_ZO_SavedVars_New_was_called_with(expected_new_params)
     end)
 end)
 
