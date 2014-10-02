@@ -2,13 +2,13 @@ pinfo_slash = {}
 
 function pinfo_slash.slash_command_handler(command)
     if command == "" then
-        pinfo_output.system_print("Running")
+        pinfo_output.sysout("Running")
     elseif string.lower(command) == "help" then
-        pinfo_output.system_print("Use /" .. pinfo.ADDON_NAME .. " <number> to set output chat tab")
+        pinfo_output.sysout("Use /" .. pinfo.ADDON_NAME .. " <number> to set output chat tab")
     elseif tonumber(command) ~= nil then
         pinfo_output.set_n_th_chat_tab_as_output(tonumber(command))
     else
-        pinfo_output.system_print("Invalid command")
+        pinfo_output.sysout("Invalid command")
     end
 end
 

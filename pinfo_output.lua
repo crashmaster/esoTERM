@@ -36,7 +36,7 @@ function pinfo_output.set_n_th_chat_tab_as_output(chat_tab_number)
     end
     if chat_tab_number ~= pinfo_output.settings.chat_tab_number then
         pinfo_output.settings.chat_tab_number = chat_tab_number
-        pinfo_output.system_print("Output chat tab set to: " .. pinfo_output.chat_tab_name)
+        pinfo_output.sysout("Output chat tab set to: " .. pinfo_output.chat_tab_name)
     end
 end
 
@@ -77,7 +77,7 @@ local function store_xp_message_before_player_activated()
 end
 
 local function print_xp_message()
-    pinfo_output.normal_print(xp_message_to_print())
+    pinfo_output.stdout(xp_message_to_print())
 end
 
 local function store_ap_message_before_player_activated()
@@ -85,7 +85,7 @@ local function store_ap_message_before_player_activated()
 end
 
 local function print_ap_message()
-    pinfo_output.normal_print(ap_message_to_print())
+    pinfo_output.stdout(ap_message_to_print())
 end
 
 local function store_loot_message_before_player_activated()
@@ -93,7 +93,7 @@ local function store_loot_message_before_player_activated()
 end
 
 local function print_loot_message()
-    pinfo_output.normal_print(loot_message_to_print())
+    pinfo_output.stdout(loot_message_to_print())
 end
 
 local function store_combat_state_message_before_player_activated()
@@ -101,7 +101,7 @@ local function store_combat_state_message_before_player_activated()
 end
 
 local function print_combat_state_message()
-    pinfo_output.normal_print(combat_state_message_to_print())
+    pinfo_output.stdout(combat_state_message_to_print())
 end
 
 pinfo_output.xp_to_chat_tab = store_xp_message_before_player_activated
@@ -112,7 +112,7 @@ pinfo_output.combat_state_to_chat_tab = store_combat_state_message_before_player
 local function print_message_buffers()
     for _, buffer in pairs(pinfo_output.message_buffers) do
         for _, message in ipairs(buffer) do
-            pinfo_output.normal_print(message)
+            pinfo_output.stdout(message)
         end
     end
 end
@@ -134,11 +134,11 @@ function pinfo_output.on_player_activated(event)
     print_message_buffers()
 end
 
-function pinfo_output.normal_print(message)
+function pinfo_output.stdout(message)
     pinfo_output.text_box:AddMessage(message)
 end
 
-function pinfo_output.system_print(message)
+function pinfo_output.sysout(message)
     d(pinfo_output.PROMPT .. message)
 end
 
