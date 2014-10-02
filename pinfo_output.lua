@@ -50,7 +50,7 @@ end
 local function ap_message_to_print()
     return string.format("%s gained %d AP (%.2f%%)",
                 pinfo_char.get_name(CACHE),
-                pinfo_char.get_ava_points_gain(CACHE),
+                pinfo_char.get_ap_gain(CACHE),
                 pinfo_char.get_ava_rank_points_percent(CACHE))
 end
 

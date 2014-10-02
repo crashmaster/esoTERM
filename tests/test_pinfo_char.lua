@@ -73,7 +73,7 @@ describe("Test character information getters", function()
         get_ava_rank_points = AVA_RANK_POINTS_1,
         get_ava_rank_points_max = AVA_RANK_POINTS_MAX_1,
         get_ava_rank_points_percent = AVA_RANK_POINTS_PERCENT,
-        get_ava_points_gain = AVA_POINTS_GAIN,
+        get_ap_gain = AVA_POINTS_GAIN,
         get_combat_state = COMBAT_STATE_1,
         get_combat_start_time = COMBAT_START_TIME,
         get_combat_lenght = COMBAT_LENGHT
@@ -97,7 +97,7 @@ describe("Test character information getters", function()
         ava_rank_points = AVA_RANK_POINTS_1,
         ava_rank_points_max = AVA_RANK_POINTS_MAX_1,
         ava_rank_points_percent = AVA_RANK_POINTS_PERCENT,
-        ava_points_gain = AVA_POINTS_GAIN,
+        ap_gain = AVA_POINTS_GAIN,
         combat_state = COMBAT_STATE_1,
         combat_start_time = COMBAT_START_TIME,
         combat_lenght = COMBAT_LENGHT
@@ -1350,41 +1350,41 @@ describe("Test character information getters", function()
     end)
 
     -- {{{
-    local function given_that_cached_character_ava_points_gain_is_not_set()
-        cache.ava_points_gain = nil
+    local function given_that_cached_character_ap_gain_is_not_set()
+        cache.ap_gain = nil
     end
 
-    local function when_get_ava_points_gain_is_called_with_cache()
-        results.ava_points_gain = pinfo_char.get_ava_points_gain(cache)
+    local function when_get_ap_gain_is_called_with_cache()
+        results.ap_gain = pinfo_char.get_ap_gain(cache)
     end
 
-    local function then_the_returned_ava_points_gain_was(gain)
-        assert.is.equal(gain, results.ava_points_gain)
+    local function then_the_returned_ap_gain_was(gain)
+        assert.is.equal(gain, results.ap_gain)
     end
     -- }}}
 
     it("Query CHARACTER AVA-POINTS GAIN, when NOT CACHED",
     function()
-        given_that_cached_character_ava_points_gain_is_not_set()
+        given_that_cached_character_ap_gain_is_not_set()
 
-        when_get_ava_points_gain_is_called_with_cache()
+        when_get_ap_gain_is_called_with_cache()
 
-        then_the_returned_ava_points_gain_was(0)
+        then_the_returned_ap_gain_was(0)
     end)
 
     -- {{{
-    local function given_that_cached_character_ava_points_gain_is(gain)
-        cache.ava_points_gain = gain
+    local function given_that_cached_character_ap_gain_is(gain)
+        cache.ap_gain = gain
     end
     -- }}}
 
     it("Query CHARACTER AVA-POINTS GAIN from the CACHE",
     function()
-        given_that_cached_character_ava_points_gain_is(AVA_POINTS_GAIN)
+        given_that_cached_character_ap_gain_is(AVA_POINTS_GAIN)
 
-        when_get_ava_points_gain_is_called_with_cache()
+        when_get_ap_gain_is_called_with_cache()
 
-        then_the_returned_ava_points_gain_was(AVA_POINTS_GAIN)
+        then_the_returned_ap_gain_was(AVA_POINTS_GAIN)
     end)
 
     -- {{{

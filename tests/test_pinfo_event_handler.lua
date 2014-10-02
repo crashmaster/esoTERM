@@ -301,7 +301,7 @@ describe("Test event handlers", function()
             cache.ava_rank_points = OLD_POINTS
             cache.ava_rank_points_max = OLD_POINTS_MAX
             cache.ava_rank_points_percent = OLD_POINTS_PCT
-            cache.ava_points_gain = OLD_GAIN
+            cache.ap_gain = OLD_GAIN
         end)
 
         -- {{{
@@ -329,21 +329,21 @@ describe("Test event handlers", function()
             assert.is.equal(OLD_RANK, cache.ava_rank)
             assert.is.equal(NEW_POINTS, cache.ava_rank_points)
             assert.is.equal(NEW_POINTS_PCT, cache.ava_rank_points_percent)
-            assert.is.equal(NEW_GAIN, cache.ava_points_gain)
+            assert.is.equal(NEW_GAIN, cache.ap_gain)
         end
 
         local function then_the_ava_properties_in_character_info_where_not_updated()
             assert.is.equal(OLD_RANK, cache.ava_rank)
             assert.is.equal(OLD_POINTS, cache.ava_rank_points)
             assert.is.equal(OLD_POINTS_PCT, cache.ava_rank_points_percent)
-            assert.is.equal(OLD_GAIN, cache.ava_points_gain)
+            assert.is.equal(OLD_GAIN, cache.ap_gain)
         end
 
         local function then_the_ava_properties_in_character_info_where_updated_rank_up()
             assert.is.equal(NEW_RANK, cache.ava_rank)
             assert.is.equal(NEW_POINTS_RANK_UP, cache.ava_rank_points)
             assert.is.equal(NEW_POINTS_PCT_RANK_UP, cache.ava_rank_points_percent)
-            assert.is.equal(GAIN_RANK_UP, cache.ava_points_gain)
+            assert.is.equal(GAIN_RANK_UP, cache.ap_gain)
         end
         -- }}}
 

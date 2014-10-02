@@ -190,9 +190,9 @@ function pinfo_char.get_ava_rank_points_percent(cache)
     end
 end
 
-function pinfo_char.get_ava_points_gain(cache)
-    if cache.ava_points_gain ~= nil then
-        return cache.ava_points_gain
+function pinfo_char.get_ap_gain(cache)
+    if cache.ap_gain ~= nil then
+        return cache.ap_gain
     else
         return 0
     end
@@ -241,7 +241,7 @@ function pinfo_char.initialize()
     CACHE.ava_rank_points = pinfo_char.get_ava_rank_points(CACHE)
     CACHE.ava_rank_points_max = pinfo_char.get_ava_rank_points_max(CACHE)
     CACHE.ava_rank_points_percent = pinfo_char.get_ava_rank_points_percent(CACHE)
-    CACHE.ava_points_gain = pinfo_char.get_ava_points_gain(CACHE)
+    CACHE.ap_gain = pinfo_char.get_ap_gain(CACHE)
     CACHE.combat_state = pinfo_char.get_combat_state(CACHE)
     CACHE.combat_start_time = pinfo_char.get_combat_start_time(CACHE)
     CACHE.combat_lenght = pinfo_char.get_combat_lenght(CACHE)

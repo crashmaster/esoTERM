@@ -69,7 +69,7 @@ function pinfo_event_handler.on_ava_points_update(event, point, sound, diff)
 
         CACHE.ava_rank_points = new_rank_points
         CACHE.ava_rank_points_percent = new_rank_points * 100 / CACHE.ava_rank_points_max
-        CACHE.ava_points_gain = diff
+        CACHE.ap_gain = diff
 
         pinfo_output.ap_to_chat_tab()
     end

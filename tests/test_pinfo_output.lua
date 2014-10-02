@@ -160,15 +160,15 @@ describe("Test output", function()
     end
 
     local function get_ava_points_returns(gain)
-        ut_helper.stub_function(pinfo_char, "get_ava_points_gain", gain)
+        ut_helper.stub_function(pinfo_char, "get_ap_gain", gain)
     end
 
     local function get_ava_rank_points_percent_was_called_once_with_cache()
         assert.spy(pinfo_char.get_ava_rank_points_percent).was.called_with(cache)
     end
 
-    local function get_ava_points_gain_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_ava_points_gain).was.called_with(cache)
+    local function get_ap_gain_was_called_once_with_cache()
+        assert.spy(pinfo_char.get_ap_gain).was.called_with(cache)
     end
     -- }}}
 
@@ -186,7 +186,7 @@ describe("Test output", function()
         assert.is.equal(str, pinfo_output.message_buffers.ap_messages[1])
 
         get_name_was_called_once_with_cache()
-        get_ava_points_gain_was_called_once_with_cache()
+        get_ap_gain_was_called_once_with_cache()
         get_ava_rank_points_percent_was_called_once_with_cache()
     end)
 end)
