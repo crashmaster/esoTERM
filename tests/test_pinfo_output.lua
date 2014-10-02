@@ -105,89 +105,175 @@ describe("Test output", function()
     local LEVEL_AP_PERCENT = 43.21
     local AP_GAIN = 2000
     local cache = pinfo.CACHE
+    local ITEM = "Mighty Sword"
+    local QUANTITY = 1
+    local IN_COMBAT = true
+    local OUT_OF_COMBAT = false
+
+    before_each(function()
+        pinfo_output.initialize()
+    end)
 
     after_each(function()
         ut_helper.restore_stubbed_functions()
     end)
 
     -- {{{
-    local function get_name_returns(name)
+    local function given_that_get_name_returns(name)
         ut_helper.stub_function(pinfo_char, "get_name", name)
     end
 
-    local function get_level_xp_percent_returns(percent)
-        ut_helper.stub_function(pinfo_char, "get_level_xp_percent", percent)
-    end
-
-    local function get_xp_gain_returns(gain)
-        ut_helper.stub_function(pinfo_char, "get_xp_gain", gain)
-    end
-
-    local function get_name_was_called_once_with_cache()
+    local function and_get_name_was_called_once_with_cache()
         assert.spy(pinfo_char.get_name).was.called_with(cache)
     end
 
-    local function get_level_xp_percent_was_called_once_with_cache()
+    local function and_get_level_xp_percent_returns(percent)
+        ut_helper.stub_function(pinfo_char, "get_level_xp_percent", percent)
+    end
+
+    local function and_get_level_xp_percent_was_called_once_with_cache()
         assert.spy(pinfo_char.get_level_xp_percent).was.called_with(cache)
     end
 
-    local function get_xp_gain_was_called_once_with_cache()
+    local function and_get_xp_gain_returns(gain)
+        ut_helper.stub_function(pinfo_char, "get_xp_gain", gain)
+    end
+
+    local function and_get_xp_gain_was_called_once_with_cache()
         assert.spy(pinfo_char.get_xp_gain).was.called_with(cache)
     end
-    -- }}}
 
-    it("Experience point update put into message buffer",
-    function()
-        get_name_returns(NAME)
-        get_level_xp_percent_returns(LEVEL_XP_PERCENT)
-        get_xp_gain_returns(XP_GAIN)
-
+    local function when_xp_to_chat_tab_is_called()
         pinfo_output.xp_to_chat_tab()
+    end
+
+    local function then_xp_message_buffer_contains_the_expected_entry()
         str = string.format("%s gained %d XP (%.2f%%)",
                             NAME,
                             XP_GAIN,
                             LEVEL_XP_PERCENT)
         assert.is.equal(str, pinfo_output.message_buffers.xp_messages[1])
-
-        get_name_was_called_once_with_cache()
-        get_xp_gain_was_called_once_with_cache()
-        get_level_xp_percent_was_called_once_with_cache()
-    end)
-
-    -- {{{
-    local function get_ava_rank_points_percent_returns(percent)
-        ut_helper.stub_function(pinfo_char, "get_ava_rank_points_percent", percent)
-    end
-
-    local function get_ava_points_returns(gain)
-        ut_helper.stub_function(pinfo_char, "get_ap_gain", gain)
-    end
-
-    local function get_ava_rank_points_percent_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_ava_rank_points_percent).was.called_with(cache)
-    end
-
-    local function get_ap_gain_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_ap_gain).was.called_with(cache)
     end
     -- }}}
 
-    it("Alliance point update put into message buffer",
+    it("Experience point update put into message buffer",
     function()
-        get_name_returns(NAME)
-        get_ava_points_returns(AP_GAIN)
-        get_ava_rank_points_percent_returns(LEVEL_AP_PERCENT)
+        given_that_get_name_returns(NAME)
+            and_get_level_xp_percent_returns(LEVEL_XP_PERCENT)
+            and_get_xp_gain_returns(XP_GAIN)
 
+        when_xp_to_chat_tab_is_called()
+
+        then_xp_message_buffer_contains_the_expected_entry()
+            and_get_name_was_called_once_with_cache()
+            and_get_xp_gain_was_called_once_with_cache()
+            and_get_level_xp_percent_was_called_once_with_cache()
+    end)
+
+    -- {{{
+    local function and_get_ava_rank_points_percent_returns(percent)
+        ut_helper.stub_function(pinfo_char, "get_ava_rank_points_percent", percent)
+    end
+
+    local function and_get_ava_rank_points_percent_was_called_once_with_cache()
+        assert.spy(pinfo_char.get_ava_rank_points_percent).was.called_with(cache)
+    end
+
+    local function and_get_ava_points_returns(gain)
+        ut_helper.stub_function(pinfo_char, "get_ap_gain", gain)
+    end
+
+    local function and_get_ap_gain_was_called_once_with_cache()
+        assert.spy(pinfo_char.get_ap_gain).was.called_with(cache)
+    end
+
+    local function when_ap_to_chat_tab_is_called()
         pinfo_output.ap_to_chat_tab()
+    end
+
+    local function then_ap_message_buffer_contains_the_expected_entry()
         str = string.format("%s gained %d AP (%.2f%%)",
                             NAME,
                             AP_GAIN,
                             LEVEL_AP_PERCENT)
         assert.is.equal(str, pinfo_output.message_buffers.ap_messages[1])
+    end
+    -- }}}
 
-        get_name_was_called_once_with_cache()
-        get_ap_gain_was_called_once_with_cache()
-        get_ava_rank_points_percent_was_called_once_with_cache()
+    it("Alliance point update put into message buffer",
+    function()
+        given_that_get_name_returns(NAME)
+            and_get_ava_points_returns(AP_GAIN)
+            and_get_ava_rank_points_percent_returns(LEVEL_AP_PERCENT)
+
+        when_ap_to_chat_tab_is_called()
+
+        then_ap_message_buffer_contains_the_expected_entry()
+            and_get_name_was_called_once_with_cache()
+            and_get_ap_gain_was_called_once_with_cache()
+            and_get_ava_rank_points_percent_was_called_once_with_cache()
+    end)
+
+    -- {{{
+    local function and_zo_strformat_returns(item)
+        ut_helper.stub_function(GLOBAL, "zo_strformat", "[" .. item .. "]")
+    end
+
+    local function and_zo_strformat_was_called_once_with(format, item)
+        assert.spy(GLOBAL.zo_strformat).was.called_with(format, item)
+    end
+
+    local function when_loot_to_chat_tab_is_called()
+        pinfo_output.loot_to_chat_tab(ITEM, QUANTITY)
+    end
+
+    local function then_loot_message_buffer_contains_the_expected_entry()
+        str = string.format("%s received %d [%s]", NAME, QUANTITY, ITEM)
+        assert.is.equal(str, pinfo_output.message_buffers.loot_messages[1])
+    end
+    -- }}}
+
+    it("Loot received update put into message buffer",
+    function()
+        given_that_get_name_returns(NAME)
+            and_zo_strformat_returns(ITEM)
+
+        when_loot_to_chat_tab_is_called()
+
+        then_loot_message_buffer_contains_the_expected_entry()
+            and_get_name_was_called_once_with_cache()
+            and_zo_strformat_was_called_once_with("<<t:1>>", ITEM)
+    end)
+
+    -- {{{
+    local function and_get_combat_state_returns(state)
+        ut_helper.stub_function(pinfo_char, "get_combat_state", state)
+    end
+
+    local function and_get_combat_state_was_called_once_with_cache()
+        assert.spy(pinfo_char.get_combat_state).was.called_with(cache)
+    end
+
+    local function when_combat_state_to_chat_tab_is_called()
+        pinfo_output.combat_state_to_chat_tab()
+    end
+
+    local function then_combat_state_message_buffer_contains_the_expected_entry()
+        str = string.format("%s entered combat", NAME)
+        assert.is.equal(str, pinfo_output.message_buffers.combat_state_messages[1])
+    end
+    -- }}}
+
+    it("Combat enter update put into message buffer",
+    function()
+        given_that_get_name_returns(NAME)
+            and_get_combat_state_returns(IN_COMBAT)
+
+        when_combat_state_to_chat_tab_is_called()
+
+        then_combat_state_message_buffer_contains_the_expected_entry()
+            and_get_name_was_called_once_with_cache()
+            and_get_combat_state_was_called_once_with_cache()
     end)
 end)
 
