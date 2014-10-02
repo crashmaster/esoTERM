@@ -109,6 +109,7 @@ describe("Test output", function()
     local QUANTITY = 1
     local IN_COMBAT = true
     local OUT_OF_COMBAT = false
+    local COMBAT_LENGHT = 34563
 
     before_each(function()
         pinfo_output.initialize()
@@ -148,10 +149,10 @@ describe("Test output", function()
     end
 
     local function then_xp_message_buffer_contains_the_expected_entry()
-        str = string.format("%s gained %d XP (%.2f%%)",
-                            NAME,
-                            XP_GAIN,
-                            LEVEL_XP_PERCENT)
+        local str = string.format("%s gained %d XP (%.2f%%)",
+                                  NAME,
+                                  XP_GAIN,
+                                  LEVEL_XP_PERCENT)
         assert.is.equal(str, pinfo_output.message_buffers.xp_messages[1])
     end
     -- }}}
@@ -192,10 +193,10 @@ describe("Test output", function()
     end
 
     local function then_ap_message_buffer_contains_the_expected_entry()
-        str = string.format("%s gained %d AP (%.2f%%)",
-                            NAME,
-                            AP_GAIN,
-                            LEVEL_AP_PERCENT)
+        local str = string.format("%s gained %d AP (%.2f%%)",
+                                  NAME,
+                                  AP_GAIN,
+                                  LEVEL_AP_PERCENT)
         assert.is.equal(str, pinfo_output.message_buffers.ap_messages[1])
     end
     -- }}}
@@ -228,7 +229,7 @@ describe("Test output", function()
     end
 
     local function then_loot_message_buffer_contains_the_expected_entry()
-        str = string.format("%s received %d [%s]", NAME, QUANTITY, ITEM)
+        local str = string.format("%s received %d [%s]", NAME, QUANTITY, ITEM)
         assert.is.equal(str, pinfo_output.message_buffers.loot_messages[1])
     end
     -- }}}
@@ -258,8 +259,15 @@ describe("Test output", function()
         pinfo_output.combat_state_to_chat_tab()
     end
 
-    local function then_combat_state_message_buffer_contains_the_expected_entry()
-        str = string.format("%s entered combat", NAME)
+    local function then_combat_state_message_buffer_contains_the_expected_entry(state)
+        local str = ""
+        if state == IN_COMBAT then
+            str = string.format("%s entered combat", NAME)
+        else
+            str = string.format("%s left combat (lasted: %.2f s)",
+                                NAME,
+                                COMBAT_LENGHT / 1000)
+        end
         assert.is.equal(str, pinfo_output.message_buffers.combat_state_messages[1])
     end
     -- }}}
@@ -271,9 +279,33 @@ describe("Test output", function()
 
         when_combat_state_to_chat_tab_is_called()
 
-        then_combat_state_message_buffer_contains_the_expected_entry()
+        then_combat_state_message_buffer_contains_the_expected_entry(IN_COMBAT)
             and_get_name_was_called_once_with_cache()
             and_get_combat_state_was_called_once_with_cache()
+    end)
+
+    -- {{{
+    local function and_get_combat_length_returns(length)
+        ut_helper.stub_function(pinfo_char, "get_combat_lenght", length)
+    end
+
+    local function and_get_combat_length_was_called_once_with_cache()
+        assert.spy(pinfo_char.get_combat_lenght).was.called_with(cache)
+    end
+    -- }}}
+
+    it("Combat exit update put into message buffer",
+    function()
+        given_that_get_name_returns(NAME)
+            and_get_combat_state_returns(OUT_OF_COMBAT)
+            and_get_combat_length_returns(COMBAT_LENGHT)
+
+        when_combat_state_to_chat_tab_is_called()
+
+        then_combat_state_message_buffer_contains_the_expected_entry(OUT_OF_COMBAT)
+            and_get_name_was_called_once_with_cache()
+            and_get_combat_state_was_called_once_with_cache()
+            and_get_combat_length_was_called_once_with_cache()
     end)
 end)
 
