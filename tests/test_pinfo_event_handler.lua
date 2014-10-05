@@ -445,11 +445,13 @@ describe("Test event handlers", function()
         local IN_COMBAT = true
         local ENTER_TIME = 10
         local EXIT_TIME = 50
+        local DAMAGE = 80
 
         after_each(function()
             cache.combat_state = nil
-            cache.combat_start_time = 0
+            cache.combat_start_time = -1
             cache.combat_lenght = 0
+            cache.combat_damage = -1
         end)
 
         -- {{{
@@ -463,6 +465,23 @@ describe("Test event handlers", function()
 
         local function and_that_eso_GetGameTimeMilliseconds_returns(time)
             ut_helper.stub_function(GLOBAL, "GetGameTimeMilliseconds", time)
+        end
+
+        local function and_eso_GetGameTimeMilliseconds_was_called()
+            assert.spy(GLOBAL.GetGameTimeMilliseconds).was.called()
+        end
+
+        local function and_that_event_manager_RegisterForEvent_is_stubbed()
+            ut_helper.stub_function(EVENT_MANAGER, "RegisterForEvent", nil)
+        end
+
+        local function and_event_manager_RegisterForEvent_was_called()
+            assert.spy(EVENT_MANAGER.RegisterForEvent).was.called_with(
+                EVENT_MANAGER,
+                pinfo.ADDON_NAME,
+                EVENT_COMBAT_EVENT,
+                pinfo_event_handler.on_combat_event_update
+            )
         end
 
         local function when_on_combat_state_update_is_called_with(event, combat_state)
@@ -480,19 +499,27 @@ describe("Test event handlers", function()
         local function and_cached_combat_start_time_became(start_time)
             assert.is.equal(start_time, cache.combat_start_time)
         end
+
+        local function and_cached_combat_damage_became(damage)
+            assert.is.equal(damage, cache.combat_damage)
+        end
         -- }}}
 
         it("Combat state change from out of combat to in combat",
         function()
             given_that_get_combat_state_returns(OUTER_COMBAT)
-                and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
                 and_that_eso_GetGameTimeMilliseconds_returns(ENTER_TIME)
+                and_that_event_manager_RegisterForEvent_is_stubbed()
+                and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
 
             when_on_combat_state_update_is_called_with(EVENT, IN_COMBAT)
 
             then_the_and_cached_combat_state_became(IN_COMBAT)
-                and_pinfo_output_combat_state_to_chat_tab_was_called()
+                and_eso_GetGameTimeMilliseconds_was_called()
                 and_cached_combat_start_time_became(ENTER_TIME)
+                and_cached_combat_damage_became(0)
+                and_event_manager_RegisterForEvent_was_called()
+                and_pinfo_output_combat_state_to_chat_tab_was_called()
         end)
 
         -- {{{
@@ -504,6 +531,26 @@ describe("Test event handlers", function()
             assert.spy(pinfo_char.get_combat_start_time).was.called_with(cache)
         end
 
+        local function and_that_event_manager_UnregisterForEvent_is_stubbed()
+            ut_helper.stub_function(EVENT_MANAGER, "UnregisterForEvent", nil)
+        end
+
+        local function and_that_cached_combat_start_time_is(time)
+            cache.combat_start_time = time
+        end
+
+        local function and_that_cached_combat_damage_is(damage)
+            cache.combat_damage = damage
+        end
+
+        local function and_event_manager_UnregisterForEvent_was_called()
+            assert.spy(EVENT_MANAGER.UnregisterForEvent).was.called_with(
+                EVENT_MANAGER,
+                pinfo.ADDON_NAME,
+                EVENT_COMBAT_EVENT
+            )
+        end
+
         local function and_cached_combat_lenght_became(lenght)
             assert.is.equal(lenght, cache.combat_lenght)
         end
@@ -513,15 +560,20 @@ describe("Test event handlers", function()
         function()
             given_that_get_combat_state_returns(IN_COMBAT)
                 and_that_get_combat_start_time_returns(ENTER_TIME)
-                and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
                 and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME)
+                and_that_event_manager_UnregisterForEvent_is_stubbed()
+                and_that_cached_combat_start_time_is(ENTER_TIME)
+                and_that_cached_combat_damage_is(DAMAGE)
+                and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
 
             when_on_combat_state_update_is_called_with(EVENT, OUTER_COMBAT)
 
             then_the_and_cached_combat_state_became(OUTER_COMBAT)
                 and_get_combat_start_time_was_called_once_with_cache()
                 and_cached_combat_lenght_became(EXIT_TIME - ENTER_TIME)
+                and_event_manager_UnregisterForEvent_was_called()
                 and_cached_combat_start_time_became(0)
+                and_cached_combat_damage_became(0)
                 and_pinfo_output_combat_state_to_chat_tab_was_called()
         end)
 
@@ -529,15 +581,18 @@ describe("Test event handlers", function()
         function()
             given_that_get_combat_state_returns(IN_COMBAT)
                 and_that_get_combat_start_time_returns(0)
-                and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
                 and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME)
+                and_that_event_manager_UnregisterForEvent_is_stubbed()
+                and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
 
             when_on_combat_state_update_is_called_with(EVENT, OUTER_COMBAT)
 
             then_the_and_cached_combat_state_became(OUTER_COMBAT)
                 and_get_combat_start_time_was_called_once_with_cache()
                 and_cached_combat_lenght_became(-1)
+                and_event_manager_UnregisterForEvent_was_called()
                 and_cached_combat_start_time_became(0)
+                and_cached_combat_damage_became(0)
                 and_pinfo_output_combat_state_to_chat_tab_was_called()
         end)
 

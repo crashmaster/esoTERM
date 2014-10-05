@@ -70,7 +70,7 @@ local function _loot_message(item, quantity)
     return string.format("%s received %d %s",
                          pinfo_char.get_name(CACHE),
                          quantity,
-                         zo_strformat("<<t:1>>", item))
+                         zo_strformat(SI_TOOLTIP_ITEM_NAME, item))
 end
 
 local function _combat_enter_message()
@@ -79,9 +79,12 @@ local function _combat_enter_message()
 end
 
 local function _combat_left_message()
-    return string.format("%s left combat (lasted: %.2f s)",
-                         pinfo_char.get_name(CACHE),
-                         pinfo_char.get_combat_lenght(CACHE) / 1000)
+    return string.format(
+        "%s left combat (lasted: %.2fs, dps: %.2f)",
+        pinfo_char.get_name(CACHE),
+        pinfo_char.get_combat_lenght(CACHE) / 1000,
+        -- TODO: consider the zo_callLater delay
+        pinfo_char.get_combat_damage(CACHE) * 1000 / pinfo_char.get_combat_lenght(CACHE))
 end
 
 local function _combat_state_message()
@@ -92,35 +95,35 @@ local function _combat_state_message()
     end
 end
 
-local function store_xp_message_before_player_activated()
+function store_xp_message_before_player_activated()
     table.insert(pinfo_output.message_buffers.xp_messages, _xp_message())
 end
 
-local function print_xp_message()
+function print_xp_message()
     pinfo_output.stdout(_xp_message())
 end
 
-local function store_ap_message_before_player_activated()
+function store_ap_message_before_player_activated()
     table.insert(pinfo_output.message_buffers.ap_messages, _ap_message())
 end
 
-local function print_ap_message()
+function print_ap_message()
     pinfo_output.stdout(_ap_message())
 end
 
-local function store_loot_message_before_player_activated(item, quantity)
+function store_loot_message_before_player_activated(item, quantity)
     table.insert(pinfo_output.message_buffers.loot_messages, _loot_message(item, quantity))
 end
 
-local function print_loot_message(item, quantity)
+function print_loot_message(item, quantity)
     pinfo_output.stdout(_loot_message(item, quantity))
 end
 
-local function store_combat_state_message_before_player_activated()
+function store_combat_state_message_before_player_activated()
     table.insert(pinfo_output.message_buffers.combat_state_messages, _combat_state_message())
 end
 
-local function print_combat_state_message()
+function print_combat_state_message()
     pinfo_output.stdout(_combat_state_message())
 end
 

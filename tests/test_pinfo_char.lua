@@ -49,6 +49,7 @@ local COMBAT_STATE_1 = A_BOOL
 local COMBAT_STATE_2 = B_BOOL
 local COMBAT_START_TIME = A_INTEGER
 local COMBAT_LENGHT = A_INTEGER
+local COMBAT_DAMAGE = A_INTEGER
 
 
 describe("Test character information getters", function()
@@ -76,7 +77,8 @@ describe("Test character information getters", function()
         get_ap_gain = AVA_POINTS_GAIN,
         get_combat_state = COMBAT_STATE_1,
         get_combat_start_time = COMBAT_START_TIME,
-        get_combat_lenght = COMBAT_LENGHT
+        get_combat_lenght = COMBAT_LENGHT,
+        get_combat_damage = COMBAT_DAMAGE
     }
     local expected_cached_values = {
         veteran = VETERANNESS_1,
@@ -100,7 +102,8 @@ describe("Test character information getters", function()
         ap_gain = AVA_POINTS_GAIN,
         combat_state = COMBAT_STATE_1,
         combat_start_time = COMBAT_START_TIME,
-        combat_lenght = COMBAT_LENGHT
+        combat_lenght = COMBAT_LENGHT,
+        combat_damage = COMBAT_DAMAGE
     }
 
     local function setup_getter_stubs()
@@ -1650,6 +1653,44 @@ describe("Test character information getters", function()
         when_get_combat_lenght_is_called_with_cache()
 
         then_the_returned_combat_lenght_was(COMBAT_LENGHT)
+    end)
+
+    -- {{{
+    local function given_that_cached_combat_damage_is_not_set()
+        cache.combat_damage = nil
+    end
+
+    local function when_get_combat_damage_is_called_with_cache()
+        results.combat_damage = pinfo_char.get_combat_damage(cache)
+    end
+
+    local function then_the_returned_combat_damage_was(start_time)
+        assert.is.equal(start_time, results.combat_damage)
+    end
+    -- }}}
+
+    it("Query COMBAT DAMAGE, when NOT CACHED",
+    function()
+        given_that_cached_combat_damage_is_not_set()
+
+        when_get_combat_damage_is_called_with_cache()
+
+        then_the_returned_combat_damage_was(0)
+    end)
+
+    -- {{{
+    local function given_that_cached_combat_damage_is(start_time)
+        cache.combat_damage = start_time
+    end
+    -- }}}
+
+    it("Query COMBAT DAMAGE from the CACHE",
+    function()
+        given_that_cached_combat_damage_is(COMBAT_DAMAGE)
+
+        when_get_combat_damage_is_called_with_cache()
+
+        then_the_returned_combat_damage_was(COMBAT_DAMAGE)
     end)
 end)
 

@@ -50,7 +50,7 @@ describe("Test pinfo initialization", function()
 
         then_pinfo_event_handler_initialize_was_called_once_with()
             and_pinfo_char_initialize_was_called_once_with()
-            and_event_manager_UnregisterForEvent_was_called_with(REGISTER_FOR,
+            and_event_manager_UnregisterForEvent_was_called_with(pinfo.ADDON_NAME,
                                                                  EVENT_ADD_ON_LOADED)
     end)
 end)

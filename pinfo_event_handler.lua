@@ -81,21 +81,94 @@ function pinfo_event_handler.on_loot_received(event, by, item, quantity, sound, 
     end
 end
 
+function pinfo_event_handler.on_combat_event_update(eventCode,
+                                                    result,
+                                                    isError,
+                                                    abilityName,
+                                                    abilityGraphic,
+                                                    abilityActionSlotType,
+                                                    sourceName,
+                                                    sourceType,
+                                                    targetName,
+                                                    targetType,
+                                                    hitValue,
+                                                    powerType,
+                                                    damageType,
+                                                    log)
+    if sourceName == "" then return end
+    local unhandled = false
+    if abilityActionSlotType == 0 and
+       sourceName == targetName and
+       damageType == 1 and
+       hitValue > 0 then
+        -- TODO: figure out what is going on here...
+        -- local message = string.format("%s is healed for: %d",
+        --                               pinfo_char.get_name(CACHE),
+        --                               hitValue)
+        -- pinfo_output.stdout(message)
+    elseif sourceName ~= targetName and hitValue > 0 then
+        if abilityActionSlotType == 0 or
+           abilityActionSlotType == 5 or
+           abilityActionSlotType == 6 then
+            if damageType > 0 then
+                CACHE.combat_damage = CACHE.combat_damage + hitValue
+                local message = string.format("%s deals damage with %s for: %d",
+                                              pinfo_char.get_name(CACHE),
+                                              abilityName,
+                                              hitValue)
+                pinfo_output.stdout(message)
+            else
+                unhandled = true
+            end
+        else
+            unhandled = true
+        end
+    else
+        unhandled = true
+    end
+    if unhandled and hitValue > 0 then
+        local message = string.format("UNHANDLED -> an:%s at:%d s:%s t:%s h:%d p:%d d:%d)",
+                                      abilityName,
+                                      abilityActionSlotType,
+                                      sourceName,
+                                      targetName,
+                                      hitValue,
+                                      powerType,
+                                      damageType)
+        pinfo_output.stdout(message)
+    end
+end
+
+function pinfo_event_handler.enter_combat()
+    CACHE.combat_start_time = GetGameTimeMilliseconds()
+    CACHE.combat_damage = 0
+    EVENT_MANAGER:RegisterForEvent(pinfo.ADDON_NAME,
+                                   EVENT_COMBAT_EVENT,
+                                   pinfo_event_handler.on_combat_event_update)
+    pinfo_output.combat_state_to_chat_tab()
+end
+
+function pinfo_event_handler.exit_combat()
+    local combat_start_time = pinfo_char.get_combat_start_time(CACHE)
+    if combat_start_time > 0 then
+        CACHE.combat_lenght = GetGameTimeMilliseconds() - combat_start_time
+    else
+        CACHE.combat_lenght = -1
+    end
+    EVENT_MANAGER:UnregisterForEvent(pinfo.ADDON_NAME, EVENT_COMBAT_EVENT)
+    pinfo_output.combat_state_to_chat_tab()
+    CACHE.combat_start_time = 0
+    CACHE.combat_damage = 0
+end
+
 function pinfo_event_handler.on_combat_state_update(event, combat_state)
     if pinfo_char.get_combat_state(CACHE) ~= combat_state then
         CACHE.combat_state = combat_state
         if combat_state then
-            CACHE.combat_start_time = GetGameTimeMilliseconds()
+            pinfo_event_handler.enter_combat()
         else
-            local combat_start_time = pinfo_char.get_combat_start_time(CACHE)
-            if combat_start_time > 0 then
-                CACHE.combat_lenght = GetGameTimeMilliseconds() - combat_start_time
-            else
-                CACHE.combat_lenght = -1
-            end
-            CACHE.combat_start_time = 0
+            zo_callLater(pinfo_event_handler.exit_combat, 500)
         end
-        pinfo_output.combat_state_to_chat_tab()
     end
 end
 

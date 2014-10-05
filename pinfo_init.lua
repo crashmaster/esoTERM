@@ -7,7 +7,7 @@ function pinfo_init.initialize(addon_name)
         pinfo_char.initialize()
         pinfo_output.initialize()
 
-        EVENT_MANAGER:UnregisterForEvent(REGISTER_FOR, EVENT_ADD_ON_LOADED)
+        EVENT_MANAGER:UnregisterForEvent(pinfo.ADDON_NAME, EVENT_ADD_ON_LOADED)
     end
 end
 

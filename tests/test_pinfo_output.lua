@@ -110,6 +110,7 @@ describe("Test output", function()
     local IN_COMBAT = true
     local OUT_OF_COMBAT = false
     local COMBAT_LENGHT = 34563
+    local DAMAGE = 103689
 
     before_each(function()
         pinfo_output.initialize()
@@ -243,7 +244,7 @@ describe("Test output", function()
 
         then_loot_message_buffer_contains_the_expected_entry()
             and_get_name_was_called_once_with_cache()
-            and_zo_strformat_was_called_once_with("<<t:1>>", ITEM)
+            and_zo_strformat_was_called_once_with(SI_TOOLTIP_ITEM_NAME, ITEM)
     end)
 
     -- {{{
@@ -264,9 +265,10 @@ describe("Test output", function()
         if state == IN_COMBAT then
             str = string.format("%s entered combat", NAME)
         else
-            str = string.format("%s left combat (lasted: %.2f s)",
+            str = string.format("%s left combat (lasted: %.2fs, dps: %.2f)",
                                 NAME,
-                                COMBAT_LENGHT / 1000)
+                                COMBAT_LENGHT / 1000,
+                                DAMAGE * 1000 / COMBAT_LENGHT)
         end
         assert.is.equal(str, pinfo_output.message_buffers.combat_state_messages[1])
     end
@@ -292,6 +294,14 @@ describe("Test output", function()
     local function and_get_combat_length_was_called_once_with_cache()
         assert.spy(pinfo_char.get_combat_lenght).was.called_with(cache)
     end
+
+    local function and_get_combat_damage_returns(damage)
+        ut_helper.stub_function(pinfo_char, "get_combat_damage", damage)
+    end
+
+    local function and_get_combat_damage_was_called_once_with_cache()
+        assert.spy(pinfo_char.get_combat_damage).was.called_with(cache)
+    end
     -- }}}
 
     it("Combat exit update put into message buffer",
@@ -299,6 +309,7 @@ describe("Test output", function()
         given_that_get_name_returns(NAME)
             and_get_combat_state_returns(OUT_OF_COMBAT)
             and_get_combat_length_returns(COMBAT_LENGHT)
+            and_get_combat_damage_returns(DAMAGE)
 
         when_combat_state_to_chat_tab_is_called()
 
@@ -306,6 +317,7 @@ describe("Test output", function()
             and_get_name_was_called_once_with_cache()
             and_get_combat_state_was_called_once_with_cache()
             and_get_combat_length_was_called_once_with_cache()
+            and_get_combat_damage_was_called_once_with_cache()
     end)
 end)
 

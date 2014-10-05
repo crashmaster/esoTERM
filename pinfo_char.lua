@@ -222,6 +222,14 @@ function pinfo_char.get_combat_lenght(cache)
     end
 end
 
+function pinfo_char.get_combat_damage(cache)
+    if cache.combat_damage ~= nil then
+        return cache.combat_damage
+    else
+        return 0
+    end
+end
+
 function pinfo_char.initialize()
     CACHE.veteran = pinfo_char.is_veteran(CACHE)
     CACHE.gender = pinfo_char.get_gender(CACHE)
@@ -245,6 +253,7 @@ function pinfo_char.initialize()
     CACHE.combat_state = pinfo_char.get_combat_state(CACHE)
     CACHE.combat_start_time = pinfo_char.get_combat_start_time(CACHE)
     CACHE.combat_lenght = pinfo_char.get_combat_lenght(CACHE)
+    CACHE.combat_damage = pinfo_char.get_combat_damage(CACHE)
 end
 
 return pinfo_char
