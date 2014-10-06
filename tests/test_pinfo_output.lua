@@ -98,7 +98,13 @@ describe("Test output initialization", function()
     end)
 end)
 
-describe("Test output", function()
+describe("Test print functions", function()
+    it("Sysout...",
+    function()
+    end)
+end)
+
+describe("Test output messages", function()
     local NAME = "Hank"
     local LEVEL_XP_PERCENT = 12.34
     local XP_GAIN = 1000
@@ -158,7 +164,7 @@ describe("Test output", function()
     end
     -- }}}
 
-    it("Experience point update put into message buffer",
+    it("Experience point update message entry is put into message buffer",
     function()
         given_that_get_name_returns(NAME)
             and_get_level_xp_percent_returns(LEVEL_XP_PERCENT)
@@ -202,7 +208,7 @@ describe("Test output", function()
     end
     -- }}}
 
-    it("Alliance point update put into message buffer",
+    it("Alliance point update message entry is put into message buffer",
     function()
         given_that_get_name_returns(NAME)
             and_get_ava_points_returns(AP_GAIN)
@@ -235,7 +241,7 @@ describe("Test output", function()
     end
     -- }}}
 
-    it("Loot received update put into message buffer",
+    it("Loot received update message entry is put into message buffer",
     function()
         given_that_get_name_returns(NAME)
             and_zo_strformat_returns(ITEM)
@@ -274,7 +280,7 @@ describe("Test output", function()
     end
     -- }}}
 
-    it("Combat enter update put into message buffer",
+    it("Combat enter update message entry is put into message buffer",
     function()
         given_that_get_name_returns(NAME)
             and_get_combat_state_returns(IN_COMBAT)
@@ -304,7 +310,7 @@ describe("Test output", function()
     end
     -- }}}
 
-    it("Combat exit update put into message buffer",
+    it("Combat exit update message entry is put into message buffer",
     function()
         given_that_get_name_returns(NAME)
             and_get_combat_state_returns(OUT_OF_COMBAT)

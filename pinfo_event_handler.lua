@@ -95,18 +95,12 @@ function pinfo_event_handler.on_combat_event_update(eventCode,
                                                     powerType,
                                                     damageType,
                                                     log)
+
     if sourceName == "" then return end
+    if sourceName == targetName then return end
+
     local unhandled = false
-    if abilityActionSlotType == 0 and
-       sourceName == targetName and
-       damageType == 1 and
-       hitValue > 0 then
-        -- TODO: figure out what is going on here...
-        -- local message = string.format("%s is healed for: %d",
-        --                               pinfo_char.get_name(CACHE),
-        --                               hitValue)
-        -- pinfo_output.stdout(message)
-    elseif sourceName ~= targetName and hitValue > 0 then
+    if sourceName ~= targetName and hitValue > 0 then
         if abilityActionSlotType == 0 or
            abilityActionSlotType == 5 or
            abilityActionSlotType == 6 then
@@ -126,15 +120,23 @@ function pinfo_event_handler.on_combat_event_update(eventCode,
     else
         unhandled = true
     end
+
     if unhandled and hitValue > 0 then
-        local message = string.format("UNHANDLED -> an:%s at:%d s:%s t:%s h:%d p:%d d:%d)",
-                                      abilityName,
-                                      abilityActionSlotType,
-                                      sourceName,
-                                      targetName,
-                                      hitValue,
-                                      powerType,
-                                      damageType)
+        local message = string.format(
+            "UNHANDLED -> r:%d|e:%t|an:%s|ag:%d|at:%d|s:%s|st:%d|t:%s|tt:%d|h:%d|p:%d|d:%d)",
+            result,
+            isError,
+            abilityName,
+            abilityGraphic,
+            abilityActionSlotType,
+            sourceName,
+            sourceType,
+            targetName,
+            targetType,
+            hitValue,
+            powerType,
+            damageType
+        )
         pinfo_output.stdout(message)
     end
 end
