@@ -81,64 +81,63 @@ function pinfo_event_handler.on_loot_received(event, by, item, quantity, sound, 
     end
 end
 
-function pinfo_event_handler.on_combat_event_update(eventCode,
+function pinfo_event_handler.on_combat_event_update(event,
                                                     result,
-                                                    isError,
-                                                    abilityName,
-                                                    abilityGraphic,
-                                                    abilityActionSlotType,
-                                                    sourceName,
-                                                    sourceType,
-                                                    targetName,
-                                                    targetType,
-                                                    hitValue,
-                                                    powerType,
-                                                    damageType,
+                                                    event_not_ok,
+                                                    ability_name,
+                                                    ability_graphic,
+                                                    action_slot_type,
+                                                    source_name,
+                                                    source_type,
+                                                    target_name,
+                                                    target_type,
+                                                    hit_value,
+                                                    power_type,
+                                                    damage_type,
                                                     log)
 
-    if sourceName == "" then return end
-    if sourceName == targetName then return end
+    local result_not_ok = result ~= ACTION_RESULT_DAMAGE and
+                          result ~= ACTION_RESULT_CRITICAL_DAMAGE
+    local source_name_not_ok = source_name == ""
+    local target_name_not_ok = target_name == ""
+    local source_type_not_ok = source_type ~= COMBAT_UNIT_TYPE_PLAYER and
+                               source_type ~= COMBAT_UNIT_TYPE_PLAYER_PET
+    local target_type_not_ok = target_type ~= COMBAT_UNIT_TYPE_PLAYER and
+                               target_type ~= COMBAT_UNIT_TYPE_PLAYER_PET and
+                               target_type ~= COMBAT_UNIT_TYPE_OTHER
+    local endpoint_not_ok = source_name_not_ok or
+                            target_name_not_ok or
+                            source_type_not_ok or
+                            target_type_not_ok
+    local discard = result_not_ok or event_not_ok or endpoint_not_ok
 
-    local unhandled = false
-    if sourceName ~= targetName and hitValue > 0 then
-        if abilityActionSlotType == 0 or
-           abilityActionSlotType == 5 or
-           abilityActionSlotType == 6 then
-            if damageType > 0 then
-                CACHE.combat_damage = CACHE.combat_damage + hitValue
-                local message = string.format("%s deals damage with %s for: %d",
-                                              pinfo_char.get_name(CACHE),
-                                              abilityName,
-                                              hitValue)
-                pinfo_output.stdout(message)
-            else
-                unhandled = true
-            end
-        else
-            unhandled = true
-        end
-    else
-        unhandled = true
+    if discard then
+        return
     end
 
-    if unhandled and hitValue > 0 then
-        local message = string.format(
-            "UNHANDLED -> r:%d|e:%t|an:%s|ag:%d|at:%d|s:%s|st:%d|t:%s|tt:%d|h:%d|p:%d|d:%d)",
-            result,
-            isError,
-            abilityName,
-            abilityGraphic,
-            abilityActionSlotType,
-            sourceName,
-            sourceType,
-            targetName,
-            targetType,
-            hitValue,
-            powerType,
-            damageType
-        )
-        pinfo_output.stdout(message)
-    end
+    CACHE.combat_damage = CACHE.combat_damage + hit_value
+    local message = string.format("%s deals damage with %s for: %d",
+                                  pinfo_char.get_name(CACHE),
+                                  ability_name,
+                                  hit_value)
+    pinfo_output.stdout(message)
+
+--  local message = string.format(
+--      "EVENT -> r:%d|e:%s|an:%s|ag:%d|at:%d|s:%s|st:%d|t:%s|tt:%d|h:%d|p:%d|d:%d)",
+--      result,
+--      tostring(event_not_ok),
+--      ability_name,
+--      ability_graphic,
+--      action_slot_type,
+--      source_name,
+--      source_type,
+--      target_name,
+--      target_type,
+--      hit_value,
+--      power_type,
+--      damage_type
+--  )
+--  pinfo_output.stdout(message)
 end
 
 function pinfo_event_handler.enter_combat()

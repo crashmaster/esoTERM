@@ -618,6 +618,146 @@ describe("Test event handlers", function()
                 and_eso_GetGameTimeMilliseconds_was_not_called()
         end)
     end)
+
+    describe("Test on combat event handler counts dealt damage", function()
+        local NAME = "Hank"
+
+        local EVENT_ID = 1
+        local RESULT = 2
+        local EVENT_NOT_OK = 3
+        local ABILITY_NAME = 4
+        local ABILITY_GRAPHIC = 5
+        local ACTION_SLOT_TYPE = 6
+        local SOURCE_NAME = 7
+        local SOURCE_TYPE = 8
+        local TARGET_NAME = 9
+        local TARGET_TYPE = 10
+        local HIT_VALUE = 11
+        local POWER_TYPE = 12
+        local DAMAGE_TYPE = 13
+        local LOG = 14
+
+        local parameter_values = {}
+
+        -- {{{
+        local function reset_event_parameters()
+            parameter_values = {
+                0,                              --  1 -> event_id
+                ACTION_RESULT_DAMAGE,           --  2 -> result
+                false,                          --  3 -> event_not_ok
+                "ability",                      --  4 -> ability_name
+                0,                              --  5 -> ability_graphic
+                ACTION_SLOT_TYPE_LIGHT_ATTACK,  --  6 -> action_slot_type
+                "source",                       --  7 -> source_name
+                COMBAT_UNIT_TYPE_PLAYER,        --  8 -> source_type
+                "target",                       --  9 -> target_name
+                COMBAT_UNIT_TYPE_PLAYER,        -- 10 -> target_type
+                3,                              -- 11 -> hit_value
+                POWERTYPE_MAGICKA,              -- 12 -> power_type
+                DAMAGE_TYPE_FIRE,               -- 13 -> damage_type
+                false                           -- 14 -> log
+            }
+        end
+        -- }}}
+
+        before_each(function()
+            reset_event_parameters()
+        end)
+
+        -- {{{
+        local function given_that_parameter_value_is(parameter, value)
+            parameter_values[parameter] = value
+        end
+
+        local function and_that_pinfo_char_get_name_returns(name)
+            ut_helper.stub_function(pinfo_char, "get_name", name)
+        end
+
+        local function then_pinfo_char_get_name_was_called()
+            assert.spy(pinfo_char.get_name).was.called()
+        end
+
+        local function then_pinfo_char_get_name_was_not_called()
+            assert.spy(pinfo_char.get_name).was_not.called()
+        end
+
+        local function and_that_pinfo_output_stdout_is_stubbed()
+            ut_helper.stub_function(pinfo_output, "stdout", nil)
+        end
+
+        local function and_pinfo_output_stdout_was_called()
+            assert.spy(pinfo_output.stdout).was.called()
+        end
+
+        local function and_pinfo_output_stdout_was_not_called()
+            assert.spy(pinfo_output.stdout).was_not.called()
+        end
+
+        local function when_on_combat_event_update_is_called()
+            pinfo_event_handler.on_combat_event_update(unpack(parameter_values))
+        end
+        -- }}}
+
+        it("Discard if result is not damage related",
+        function()
+            given_that_parameter_value_is(RESULT, 1234567890)
+                and_that_pinfo_char_get_name_returns(NAME)
+                and_that_pinfo_output_stdout_is_stubbed()
+
+            when_on_combat_event_update_is_called()
+
+            then_pinfo_char_get_name_was_not_called()
+                and_pinfo_output_stdout_was_not_called()
+        end)
+
+        it("Discard if event is erroneous",
+        function()
+            given_that_parameter_value_is(EVENT_NOT_OK, true)
+                and_that_pinfo_char_get_name_returns(NAME)
+                and_that_pinfo_output_stdout_is_stubbed()
+
+            when_on_combat_event_update_is_called()
+
+            then_pinfo_char_get_name_was_not_called()
+                and_pinfo_output_stdout_was_not_called()
+        end)
+
+        it("Discard if source name is invalid",
+        function()
+            given_that_parameter_value_is(SOURCE_NAME, "")
+                and_that_pinfo_char_get_name_returns(NAME)
+                and_that_pinfo_output_stdout_is_stubbed()
+
+            when_on_combat_event_update_is_called()
+
+            then_pinfo_char_get_name_was_not_called()
+                and_pinfo_output_stdout_was_not_called()
+        end)
+
+        it("Discard if parameter is invalid or not damage related",
+        function()
+            local test_parameters = {
+                [RESULT] = 1234567890,
+                [EVENT_NOT_OK] = true,
+                [SOURCE_NAME] = "",
+                [SOURCE_TYPE] = 1234567890,
+                [TARGET_NAME] = "",
+                [TARGET_TYPE] = 1234567890,
+            }
+            for parameter, value in pairs(test_parameters) do
+                given_that_parameter_value_is(parameter, value)
+                    and_that_pinfo_char_get_name_returns(NAME)
+                    and_that_pinfo_output_stdout_is_stubbed()
+
+                when_on_combat_event_update_is_called()
+
+                then_pinfo_char_get_name_was_not_called()
+                    and_pinfo_output_stdout_was_not_called()
+
+                reset_event_parameters()
+            end
+        end)
+    end)
 end)
 
 -- vim:fdm=marker
