@@ -3,7 +3,7 @@ local requires_for_tests = require("tests/requires_for_tests")
 local GLOBAL = _G
 
 
-describe("Test event handler initialization", function()
+describe("Test event handler initialization.", function()
     local addon_name = "pinfo"
     local expected_register_params = {}
 
@@ -91,7 +91,7 @@ describe("Test event handler initialization", function()
     end)
 end)
 
-describe("Test event handlers", function()
+describe("Test the event handlers.", function()
     local EVENT = "event"
     local UNIT = "player"
 
@@ -125,7 +125,7 @@ describe("Test event handlers", function()
     end
     -- }}}
 
-    describe("Test the on experience update event handler", function()
+    describe("The on experience update event handler.", function()
         local cache = pinfo.CACHE
 
         local REASON = 0
@@ -158,8 +158,7 @@ describe("Test event handlers", function()
         end
         -- }}}
 
-        it("On experience update, happy flow",
-        function()
+        it("Happy flow.", function()
             given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, NEW_XP_MAX, REASON)
@@ -177,8 +176,7 @@ describe("Test event handlers", function()
         end
         -- }}}
 
-        it("On experience update, xp > level xp maximum, then 100%",
-        function()
+        it("If xp > level xp maximum, then 100%.", function()
             given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP_LVL_UP, OLD_XP_MAX, REASON)
@@ -195,8 +193,7 @@ describe("Test event handlers", function()
         end
         -- }}}
 
-        it("On experience update, incorrect unit",
-        function()
+        it("If unit is incorrect.", function()
             given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, "foo", NEW_XP, NEW_XP_MAX, REASON)
@@ -213,8 +210,7 @@ describe("Test event handlers", function()
             assert.is.equal(OLD_XP_GAIN, cache.xp_gain)
         end
         -- }}}
-        it("On experience update, incorrect reason, level up drift handling",
-        function()
+        it("If reason is incorrect (level up drift handling).", function()
             given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, NEW_XP_MAX, -1)
@@ -223,8 +219,7 @@ describe("Test event handlers", function()
                 and_pinfo_output_xp_to_chat_tab_was_called_once()
         end)
 
-        it("On experience update, total maximum xp reached",
-        function()
+        it("If total maximum xp reached.", function()
             given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, 0, REASON)
@@ -234,7 +229,7 @@ describe("Test event handlers", function()
         end)
     end)
 
-    describe("Test the on level update event handler", function()
+    describe("The on level update event handler.", function()
         local cache = pinfo.CACHE
 
         local OLD_LEVEL = 1
@@ -254,8 +249,7 @@ describe("Test event handlers", function()
         end
         -- }}}
 
-        it("On level update, happy flow",
-        function()
+        it("Happy flow.", function()
             when_on_level_update_is_called_with(EVENT, UNIT, NEW_LEVEL)
 
             then_the_level_property_in_character_info_was_updated()
@@ -267,15 +261,14 @@ describe("Test event handlers", function()
         end
         -- }}}
 
-        it("On level update, incorrect unit",
-        function()
+        it("If unit incorrect.", function()
             when_on_level_update_is_called_with(EVENT, "foo", NEW_LEVEL)
 
             then_the_level_property_in_character_info_was_not_updated()
         end)
     end)
 
-    describe("Test the on AvA points update event handler", function()
+    describe("The on AvA points update event handler.", function()
         local cache = pinfo.CACHE
 
         local POINT = 0
@@ -347,8 +340,7 @@ describe("Test event handlers", function()
         end
         -- }}}
 
-        it("On AvA points update, happy flow",
-        function()
+        it("Happy flow.", function()
             given_that_pinfo_output_ap_to_chat_tab_is_stubbed()
 
             when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, NEW_GAIN)
@@ -357,8 +349,7 @@ describe("Test event handlers", function()
                 and_pinfo_output_ap_to_chat_tab_was_called_once()
         end)
 
-        it("On AvA points update, zero gain",
-        function()
+        it("Zero gain.", function()
             given_that_pinfo_output_ap_to_chat_tab_is_stubbed()
 
             when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, GAIN_ZERO)
@@ -367,8 +358,7 @@ describe("Test event handlers", function()
                 and_pinfo_output_ap_to_chat_tab_was_not_called()
         end)
 
-        it("On AvA points update, negative gain",
-        function()
+        it("Negative gain.", function()
             given_that_pinfo_output_ap_to_chat_tab_is_stubbed()
 
             when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, GAIN_NEGATIVE)
@@ -377,8 +367,7 @@ describe("Test event handlers", function()
                 and_pinfo_output_ap_to_chat_tab_was_not_called()
         end)
 
-        it("On AvA points update, gain enough to rank up",
-        function()
+        it("Gain enough AP to rank up.", function()
             given_that_pinfo_output_ap_to_chat_tab_is_stubbed()
                 and_that_get_ava_rank_returns(NEW_RANK)
                 and_that_get_ava_rank_points_max_returns(NEW_POINTS_MAX)
@@ -392,7 +381,7 @@ describe("Test event handlers", function()
         end)
     end)
 
-    describe("Test the on loot received event handler", function()
+    describe("The on loot received event handler.", function()
         local BY = "by"
         local ITEM = "item"
         local QUANTITY = 1
@@ -413,8 +402,7 @@ describe("Test event handlers", function()
         end
         -- }}}
 
-        it("On loot received, happy flow",
-        function()
+        it("Happy flow.", function()
             given_that_pinfo_output_loot_to_chat_tab_is_stubbed()
 
             when_on_loot_received_is_called_with(EVENT, BY, ITEM, QUANTITY, SOUND, LOOT_TYPE, true)
@@ -428,8 +416,7 @@ describe("Test event handlers", function()
         end
         -- }}}
 
-        it("On loot received, not self",
-        function()
+        it("If not self.", function()
             given_that_pinfo_output_loot_to_chat_tab_is_stubbed()
 
             when_on_loot_received_is_called_with(EVENT, BY, ITEM, QUANTITY, SOUND, LOOT_TYPE, false)
@@ -438,7 +425,7 @@ describe("Test event handlers", function()
         end)
     end)
 
-    describe("Test the on player combat state event handler", function()
+    describe("The on combat-state-change event handler.", function()
         local cache = pinfo.CACHE
 
         local OUTER_COMBAT = false
@@ -505,8 +492,7 @@ describe("Test event handlers", function()
         end
         -- }}}
 
-        it("Combat state change from out of combat to in combat",
-        function()
+        it("From out of combat to in combat.", function()
             given_that_get_combat_state_returns(OUTER_COMBAT)
                 and_that_eso_GetGameTimeMilliseconds_returns(ENTER_TIME)
                 and_that_event_manager_RegisterForEvent_is_stubbed()
@@ -556,8 +542,7 @@ describe("Test event handlers", function()
         end
         -- }}}
 
-        it("Combat state change from in combat to out of combat",
-        function()
+        it("From in combat to out of combat", function()
             given_that_get_combat_state_returns(IN_COMBAT)
                 and_that_get_combat_start_time_returns(ENTER_TIME)
                 and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME)
@@ -577,8 +562,7 @@ describe("Test event handlers", function()
                 and_pinfo_output_combat_state_to_chat_tab_was_called()
         end)
 
-        it("Combat length when combat start time is invalid",
-        function()
+        it("Combat length when combat start time is invalid", function()
             given_that_get_combat_state_returns(IN_COMBAT)
                 and_that_get_combat_start_time_returns(0)
                 and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME)
@@ -606,8 +590,7 @@ describe("Test event handlers", function()
         end
         -- }}}
 
-        it("Combat state change skipped, when already having that state",
-        function()
+        it("No combat-state-change, when already having that state", function()
             given_that_get_combat_state_returns(OUTER_COMBAT)
                 and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
                 and_that_eso_GetGameTimeMilliseconds_returns(nil)
@@ -619,7 +602,7 @@ describe("Test event handlers", function()
         end)
     end)
 
-    describe("Test on combat event handler counts dealt damage", function()
+    describe("The on combat event handler.", function()
         local NAME = "Hank"
         local ABILITY = "Orbital Strike"
         local ABILITY_HIT = 56789
@@ -700,7 +683,7 @@ describe("Test event handlers", function()
         end
         -- }}}
 
-        it("Discard if parameter is invalid or not damage related",
+        it("Discard event if invalid or not damage related.",
         function()
             local test_parameters = {
                 [RESULT] = 1234567890,
@@ -727,7 +710,7 @@ describe("Test event handlers", function()
             end
         end)
 
-        it("Print damage related message",
+        it("Print damage related message.",
         function()
             given_that_parameter_value_is(HIT_VALUE, ABILITY_HIT)
                 and_that_pinfo_char_get_name_returns(NAME)
