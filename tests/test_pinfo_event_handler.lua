@@ -621,6 +621,8 @@ describe("Test event handlers", function()
 
     describe("Test on combat event handler counts dealt damage", function()
         local NAME = "Hank"
+        local ABILITY = "Orbital Strike"
+        local ABILITY_HIT = 56789
 
         local EVENT_ID = 1
         local RESULT = 2
@@ -645,14 +647,14 @@ describe("Test event handlers", function()
                 0,                              --  1 -> event_id
                 ACTION_RESULT_DAMAGE,           --  2 -> result
                 false,                          --  3 -> event_not_ok
-                "ability",                      --  4 -> ability_name
+                ABILITY,                        --  4 -> ability_name
                 0,                              --  5 -> ability_graphic
                 ACTION_SLOT_TYPE_LIGHT_ATTACK,  --  6 -> action_slot_type
                 "source",                       --  7 -> source_name
                 COMBAT_UNIT_TYPE_PLAYER,        --  8 -> source_type
                 "target",                       --  9 -> target_name
                 COMBAT_UNIT_TYPE_PLAYER,        -- 10 -> target_type
-                3,                              -- 11 -> hit_value
+                ABILITY_HIT,                    -- 11 -> hit_value
                 POWERTYPE_MAGICKA,              -- 12 -> power_type
                 DAMAGE_TYPE_FIRE,               -- 13 -> damage_type
                 false                           -- 14 -> log
@@ -685,8 +687,8 @@ describe("Test event handlers", function()
             ut_helper.stub_function(pinfo_output, "stdout", nil)
         end
 
-        local function and_pinfo_output_stdout_was_called()
-            assert.spy(pinfo_output.stdout).was.called()
+        local function and_pinfo_output_stdout_was_called_with(message)
+            assert.spy(pinfo_output.stdout).was.called_with(message)
         end
 
         local function and_pinfo_output_stdout_was_not_called()
@@ -698,42 +700,6 @@ describe("Test event handlers", function()
         end
         -- }}}
 
-        it("Discard if result is not damage related",
-        function()
-            given_that_parameter_value_is(RESULT, 1234567890)
-                and_that_pinfo_char_get_name_returns(NAME)
-                and_that_pinfo_output_stdout_is_stubbed()
-
-            when_on_combat_event_update_is_called()
-
-            then_pinfo_char_get_name_was_not_called()
-                and_pinfo_output_stdout_was_not_called()
-        end)
-
-        it("Discard if event is erroneous",
-        function()
-            given_that_parameter_value_is(EVENT_NOT_OK, true)
-                and_that_pinfo_char_get_name_returns(NAME)
-                and_that_pinfo_output_stdout_is_stubbed()
-
-            when_on_combat_event_update_is_called()
-
-            then_pinfo_char_get_name_was_not_called()
-                and_pinfo_output_stdout_was_not_called()
-        end)
-
-        it("Discard if source name is invalid",
-        function()
-            given_that_parameter_value_is(SOURCE_NAME, "")
-                and_that_pinfo_char_get_name_returns(NAME)
-                and_that_pinfo_output_stdout_is_stubbed()
-
-            when_on_combat_event_update_is_called()
-
-            then_pinfo_char_get_name_was_not_called()
-                and_pinfo_output_stdout_was_not_called()
-        end)
-
         it("Discard if parameter is invalid or not damage related",
         function()
             local test_parameters = {
@@ -743,6 +709,9 @@ describe("Test event handlers", function()
                 [SOURCE_TYPE] = 1234567890,
                 [TARGET_NAME] = "",
                 [TARGET_TYPE] = 1234567890,
+                [HIT_VALUE] = 0,
+                [POWER_TYPE] = 0,
+                [DAMAGE_TYPE] = 0
             }
             for parameter, value in pairs(test_parameters) do
                 given_that_parameter_value_is(parameter, value)
@@ -756,6 +725,21 @@ describe("Test event handlers", function()
 
                 reset_event_parameters()
             end
+        end)
+
+        it("Print damage related message",
+        function()
+            given_that_parameter_value_is(HIT_VALUE, ABILITY_HIT)
+                and_that_pinfo_char_get_name_returns(NAME)
+                and_that_pinfo_output_stdout_is_stubbed()
+
+            when_on_combat_event_update_is_called()
+
+            then_pinfo_char_get_name_was_called()
+                and_pinfo_output_stdout_was_called_with(
+                    string.format("%s deals damage with %s for: %d",
+                                  NAME, ABILITY, ABILITY_HIT)
+                )
         end)
     end)
 end)
