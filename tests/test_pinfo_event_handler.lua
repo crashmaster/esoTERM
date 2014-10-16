@@ -79,8 +79,7 @@ describe("Test event handler initialization.", function()
     end
     -- }}}
 
-    it("Register for events",
-    function()
+    it("Register for events", function()
         given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
             and_pinfo_event_handler_on_experience_update_is_stubbed()
             and_expected_register_event_parameters_are_set_up()
@@ -683,18 +682,18 @@ describe("Test the event handlers.", function()
         end
         -- }}}
 
-        it("Discard event if invalid or not damage related.",
-        function()
+        it("Discard event if invalid or not damage related.", function()
             local test_parameters = {
                 [RESULT] = 1234567890,
+                [RESULT] = ACTION_RESULT_HEAL,
+                [RESULT] = ACTION_RESULT_CRITICAL_HEAL,
+                [RESULT] = ACTION_RESULT_HOT_TICK,
+                [RESULT] = ACTION_RESULT_HOT_TICK_CRITICAL,
                 [EVENT_NOT_OK] = true,
                 [SOURCE_NAME] = "",
-                [SOURCE_TYPE] = 1234567890,
                 [TARGET_NAME] = "",
-                [TARGET_TYPE] = 1234567890,
                 [HIT_VALUE] = 0,
-                [POWER_TYPE] = 0,
-                [DAMAGE_TYPE] = 0
+                [POWER_TYPE] = POWERTYPE_INVALID,
             }
             for parameter, value in pairs(test_parameters) do
                 given_that_parameter_value_is(parameter, value)
@@ -710,8 +709,42 @@ describe("Test the event handlers.", function()
             end
         end)
 
-        it("Print damage related message.",
-        function()
+        it("Dump events if unsure :)", function()
+            local test_parameters = {
+                [SOURCE_TYPE] = COMBAT_UNIT_TYPE_NONE,
+                [SOURCE_TYPE] = COMBAT_UNIT_TYPE_GROUP,
+                [SOURCE_TYPE] = COMBAT_UNIT_TYPE_OTHER,
+                [DAMAGE_TYPE] = 0
+            }
+            for parameter, value in pairs(test_parameters) do
+                given_that_parameter_value_is(parameter, value)
+                    and_that_pinfo_char_get_name_returns(NAME)
+                    and_that_pinfo_output_stdout_is_stubbed()
+
+                when_on_combat_event_update_is_called()
+
+                then_pinfo_char_get_name_was_not_called()
+                    and_pinfo_output_stdout_was_called_with(
+                        string.format("EVENT -> r:%d+e:%s+an:%s+ag:%d+at:%d+s:%s+st:%d+t:%s+tt:%d+h:%d+p:%d+d:%d)",
+                                      ACTION_RESULT_DAMAGE,
+                                      tostring(false),
+                                      ABILITY,
+                                      0,
+                                      ACTION_SLOT_TYPE_LIGHT_ATTACK,
+                                      "source",
+                                      COMBAT_UNIT_TYPE_PLAYER,
+                                      target_name,
+                                      target_type,
+                                      hit_value,
+                                      power_type,
+                                      damage_type)
+                    )
+
+                reset_event_parameters()
+            end
+        end)
+
+        it("Print damage related message.", function()
             given_that_parameter_value_is(HIT_VALUE, ABILITY_HIT)
                 and_that_pinfo_char_get_name_returns(NAME)
                 and_that_pinfo_output_stdout_is_stubbed()
