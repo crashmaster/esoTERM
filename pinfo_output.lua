@@ -79,12 +79,14 @@ local function _combat_enter_message()
 end
 
 local function _combat_left_message()
+    local length = pinfo_char.get_combat_lenght(CACHE) >= 1000 and
+                   pinfo_char.get_combat_lenght(CACHE) or 1000
     return string.format(
         "%s left combat (lasted: %.2fs, dps: %.2f)",
         pinfo_char.get_name(CACHE),
         pinfo_char.get_combat_lenght(CACHE) / 1000,
         -- TODO: consider the zo_callLater delay
-        pinfo_char.get_combat_damage(CACHE) * 1000 / pinfo_char.get_combat_lenght(CACHE))
+        pinfo_char.get_combat_damage(CACHE) * 1000 / length)
 end
 
 local function _combat_state_message()

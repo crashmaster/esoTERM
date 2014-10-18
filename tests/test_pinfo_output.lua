@@ -266,16 +266,7 @@ describe("Test output messages", function()
         pinfo_output.combat_state_to_chat_tab()
     end
 
-    local function then_combat_state_message_buffer_contains_the_expected_entry(state)
-        local str = ""
-        if state == IN_COMBAT then
-            str = string.format("%s entered combat", NAME)
-        else
-            str = string.format("%s left combat (lasted: %.2fs, dps: %.2f)",
-                                NAME,
-                                COMBAT_LENGHT / 1000,
-                                DAMAGE * 1000 / COMBAT_LENGHT)
-        end
+    local function then_combat_state_message_buffer_is(str)
         assert.is.equal(str, pinfo_output.message_buffers.combat_state_messages[1])
     end
     -- }}}
@@ -287,7 +278,7 @@ describe("Test output messages", function()
 
         when_combat_state_to_chat_tab_is_called()
 
-        then_combat_state_message_buffer_contains_the_expected_entry(IN_COMBAT)
+        then_combat_state_message_buffer_is(NAME .. " entered combat")
             and_get_name_was_called_once_with_cache()
             and_get_combat_state_was_called_once_with_cache()
     end)
@@ -319,7 +310,23 @@ describe("Test output messages", function()
 
         when_combat_state_to_chat_tab_is_called()
 
-        then_combat_state_message_buffer_contains_the_expected_entry(OUT_OF_COMBAT)
+        then_combat_state_message_buffer_is("Hank left combat (lasted: 34.56s, dps: 3000.00)")
+            and_get_name_was_called_once_with_cache()
+            and_get_combat_state_was_called_once_with_cache()
+            and_get_combat_length_was_called_once_with_cache()
+            and_get_combat_damage_was_called_once_with_cache()
+    end)
+
+    it("Lowest denominator is 1 sec when counting dps",
+    function()
+        given_that_get_name_returns(NAME)
+            and_get_combat_state_returns(OUT_OF_COMBAT)
+            and_get_combat_length_returns(567)
+            and_get_combat_damage_returns(DAMAGE)
+
+        when_combat_state_to_chat_tab_is_called()
+
+        then_combat_state_message_buffer_is("Hank left combat (lasted: 0.57s, dps: 103689.00)")
             and_get_name_was_called_once_with_cache()
             and_get_combat_state_was_called_once_with_cache()
             and_get_combat_length_was_called_once_with_cache()
