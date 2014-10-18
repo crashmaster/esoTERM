@@ -81,8 +81,7 @@ function pinfo_event_handler.on_loot_received(event, by, item, quantity, sound, 
     end
 end
 
-function pinfo_event_handler.dump_event(event,
-                                        result,
+function pinfo_event_handler.dump_event(result,
                                         event_not_ok,
                                         ability_name,
                                         ability_graphic,
@@ -108,8 +107,7 @@ function pinfo_event_handler.dump_event(event,
         target_type,
         hit_value,
         power_type,
-        damage_type
-    )
+        damage_type)
     pinfo_output.stdout(message)
 end
 
@@ -144,7 +142,7 @@ function pinfo_event_handler.on_combat_event_update(event,
     local source_type_not_ok = source_type ~= COMBAT_UNIT_TYPE_PLAYER and
                                source_type ~= COMBAT_UNIT_TYPE_PLAYER_PET
     if source_type_not_ok then
-        pinfo_event_handler.dump_event(event, result, event_not_ok, ability_name, ability_graphic, action_slot_type, source_name, source_type, target_name, target_type, hit_value, power_type, damage_type, log)
+        pinfo_event_handler.dump_event(result, event_not_ok, ability_name, ability_graphic, action_slot_type, source_name, source_type, target_name, target_type, hit_value, power_type, damage_type, log)
         return
     end
 
@@ -156,7 +154,7 @@ function pinfo_event_handler.on_combat_event_update(event,
 
     local damage_type_not_ok = damage_type < 1
     if damage_type_not_ok then
-        pinfo_event_handler.dump_event(event, result, event_not_ok, ability_name, ability_graphic, action_slot_type, source_name, source_type, target_name, target_type, hit_value, power_type, damage_type, log)
+        pinfo_event_handler.dump_event(result, event_not_ok, ability_name, ability_graphic, action_slot_type, source_name, source_type, target_name, target_type, hit_value, power_type, damage_type, log)
         return
     end
 

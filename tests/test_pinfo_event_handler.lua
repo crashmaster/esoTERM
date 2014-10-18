@@ -532,8 +532,7 @@ describe("Test the event handlers.", function()
             assert.spy(EVENT_MANAGER.UnregisterForEvent).was.called_with(
                 EVENT_MANAGER,
                 pinfo.ADDON_NAME,
-                EVENT_COMBAT_EVENT
-            )
+                EVENT_COMBAT_EVENT)
         end
 
         local function and_cached_combat_lenght_became(lenght)
@@ -602,6 +601,7 @@ describe("Test the event handlers.", function()
     end)
 
     describe("The on combat event handler.", function()
+        local DUMP_FORMAT = "EVENT -> r:%d+e:%s+an:%s+ag:%d+at:%d+s:%s+st:%d+t:%s+tt:%d+h:%d+p:%d+d:%d)"
         local NAME = "Hank"
         local ABILITY = "Orbital Strike"
         local ABILITY_HIT = 56789
@@ -639,8 +639,7 @@ describe("Test the event handlers.", function()
                 ABILITY_HIT,                    -- 11 -> hit_value
                 POWERTYPE_MAGICKA,              -- 12 -> power_type
                 DAMAGE_TYPE_FIRE,               -- 13 -> damage_type
-                false                           -- 14 -> log
-            }
+                false}                          -- 14 -> log
         end
         -- }}}
 
@@ -709,39 +708,77 @@ describe("Test the event handlers.", function()
             end
         end)
 
-        it("Dump events if unsure :)", function()
-            local test_parameters = {
-                [SOURCE_TYPE] = COMBAT_UNIT_TYPE_NONE,
-                [SOURCE_TYPE] = COMBAT_UNIT_TYPE_GROUP,
-                [SOURCE_TYPE] = COMBAT_UNIT_TYPE_OTHER,
-                [DAMAGE_TYPE] = 0
+        -- {{{
+        local function and_unit_type_dump_was_called_with(unit_type)
+            and_pinfo_output_stdout_was_called_with(
+                string.format(DUMP_FORMAT,
+                              ACTION_RESULT_DAMAGE,
+                              tostring(false),
+                              ABILITY,
+                              0,
+                              ACTION_SLOT_TYPE_LIGHT_ATTACK,
+                              "source",
+                              unit_type,
+                              "target",
+                              COMBAT_UNIT_TYPE_PLAYER,
+                              ABILITY_HIT,
+                              POWERTYPE_MAGICKA,
+                              DAMAGE_TYPE_FIRE)
+            )
+        end
+        -- }}}
+
+        it("Dump events if source combat unit is suspicious :)", function()
+            local source_unit_types = {
+                COMBAT_UNIT_TYPE_NONE,
+                COMBAT_UNIT_TYPE_GROUP,
+                COMBAT_UNIT_TYPE_OTHER,
             }
-            for parameter, value in pairs(test_parameters) do
-                given_that_parameter_value_is(parameter, value)
+            for unit_type in ipairs(source_unit_types) do
+                given_that_parameter_value_is(SOURCE_TYPE, unit_type)
                     and_that_pinfo_char_get_name_returns(NAME)
                     and_that_pinfo_output_stdout_is_stubbed()
 
                 when_on_combat_event_update_is_called()
 
                 then_pinfo_char_get_name_was_not_called()
-                    and_pinfo_output_stdout_was_called_with(
-                        string.format("EVENT -> r:%d+e:%s+an:%s+ag:%d+at:%d+s:%s+st:%d+t:%s+tt:%d+h:%d+p:%d+d:%d)",
-                                      ACTION_RESULT_DAMAGE,
-                                      tostring(false),
-                                      ABILITY,
-                                      0,
-                                      ACTION_SLOT_TYPE_LIGHT_ATTACK,
-                                      "source",
-                                      COMBAT_UNIT_TYPE_PLAYER,
-                                      target_name,
-                                      target_type,
-                                      hit_value,
-                                      power_type,
-                                      damage_type)
-                    )
+                    and_unit_type_dump_was_called_with(unit_type)
 
                 reset_event_parameters()
             end
+        end)
+
+        -- {{{
+        local function and_damage_type_dump_was_called_with(damage_type)
+            and_pinfo_output_stdout_was_called_with(
+                string.format(DUMP_FORMAT,
+                              ACTION_RESULT_DAMAGE,
+                              tostring(false),
+                              ABILITY,
+                              0,
+                              ACTION_SLOT_TYPE_LIGHT_ATTACK,
+                              "source",
+                              COMBAT_UNIT_TYPE_PLAYER,
+                              "target",
+                              COMBAT_UNIT_TYPE_PLAYER,
+                              ABILITY_HIT,
+                              POWERTYPE_MAGICKA,
+                              damage_type)
+            )
+        end
+        -- }}}
+
+        it("Dump events if damage type is suspicious :)", function()
+            given_that_parameter_value_is(DAMAGE_TYPE, 0)
+                and_that_pinfo_char_get_name_returns(NAME)
+                and_that_pinfo_output_stdout_is_stubbed()
+
+                when_on_combat_event_update_is_called()
+
+                then_pinfo_char_get_name_was_not_called()
+                    and_damage_type_dump_was_called_with(0)
+
+                reset_event_parameters()
         end)
 
         it("Print damage related message.", function()
