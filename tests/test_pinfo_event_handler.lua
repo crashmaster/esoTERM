@@ -639,7 +639,8 @@ describe("Test the event handlers.", function()
                 ABILITY_HIT,                    -- 11 -> hit_value
                 POWERTYPE_MAGICKA,              -- 12 -> power_type
                 DAMAGE_TYPE_FIRE,               -- 13 -> damage_type
-                false}                          -- 14 -> log
+                false                           -- 14 -> log
+            }
         end
         -- }}}
 
@@ -708,81 +709,22 @@ describe("Test the event handlers.", function()
             end
         end)
 
-        -- {{{
-        local function and_unit_type_dump_was_called_with(unit_type)
-            and_pinfo_output_stdout_was_called_with(
-                string.format(DUMP_FORMAT,
-                              ACTION_RESULT_DAMAGE,
-                              tostring(false),
-                              ABILITY,
-                              0,
-                              ACTION_SLOT_TYPE_LIGHT_ATTACK,
-                              "source",
-                              unit_type,
-                              "target",
-                              COMBAT_UNIT_TYPE_PLAYER,
-                              ABILITY_HIT,
-                              POWERTYPE_MAGICKA,
-                              DAMAGE_TYPE_FIRE)
-            )
-        end
-        -- }}}
-
-        it("Dump events if source combat unit is suspicious :)", function()
-            local source_unit_types = {
-                COMBAT_UNIT_TYPE_NONE,
-                COMBAT_UNIT_TYPE_GROUP,
-                COMBAT_UNIT_TYPE_OTHER,
-            }
-            for unit_type in ipairs(source_unit_types) do
-                given_that_parameter_value_is(SOURCE_TYPE, unit_type)
-                    and_that_pinfo_char_get_name_returns(NAME)
-                    and_that_pinfo_output_stdout_is_stubbed()
-
-                when_on_combat_event_update_is_called()
-
-                then_pinfo_char_get_name_was_not_called()
-                    and_unit_type_dump_was_called_with(unit_type)
-
-                reset_event_parameters()
-            end
-        end)
-
-        -- {{{
-        local function and_damage_type_dump_was_called_with(damage_type)
-            and_pinfo_output_stdout_was_called_with(
-                string.format(DUMP_FORMAT,
-                              ACTION_RESULT_DAMAGE,
-                              tostring(false),
-                              ABILITY,
-                              0,
-                              ACTION_SLOT_TYPE_LIGHT_ATTACK,
-                              "source",
-                              COMBAT_UNIT_TYPE_PLAYER,
-                              "target",
-                              COMBAT_UNIT_TYPE_PLAYER,
-                              ABILITY_HIT,
-                              POWERTYPE_MAGICKA,
-                              damage_type)
-            )
-        end
-        -- }}}
-
-        it("Dump events if damage type is suspicious :)", function()
-            given_that_parameter_value_is(DAMAGE_TYPE, 0)
+        it("Print message for damage done by player.", function()
+            given_that_parameter_value_is(HIT_VALUE, ABILITY_HIT)
                 and_that_pinfo_char_get_name_returns(NAME)
                 and_that_pinfo_output_stdout_is_stubbed()
 
-                when_on_combat_event_update_is_called()
+            when_on_combat_event_update_is_called()
 
-                then_pinfo_char_get_name_was_not_called()
-                    and_damage_type_dump_was_called_with(0)
-
-                reset_event_parameters()
+            then_pinfo_char_get_name_was_called()
+                and_pinfo_output_stdout_was_called_with(
+                    string.format("%s deals damage with %s for: %d",
+                                  NAME, ABILITY, ABILITY_HIT)
+                )
         end)
 
-        it("Print damage related message.", function()
-            given_that_parameter_value_is(HIT_VALUE, ABILITY_HIT)
+        it("Print message for damage done by pet.", function()
+            given_that_parameter_value_is(SOURCE_TYPE, COMBAT_UNIT_TYPE_PLAYER_PET)
                 and_that_pinfo_char_get_name_returns(NAME)
                 and_that_pinfo_output_stdout_is_stubbed()
 
