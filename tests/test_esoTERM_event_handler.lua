@@ -4,7 +4,7 @@ local GLOBAL = _G
 
 
 describe("Test event handler initialization.", function()
-    local addon_name = "pinfo"
+    local addon_name = "esoTERM"
     local expected_register_params = {}
 
     after_each(function()
@@ -20,50 +20,50 @@ describe("Test event handler initialization.", function()
         ut_helper.stub_function(EVENT_MANAGER, "RegisterForEvent", nil)
     end
 
-    local function and_pinfo_event_handler_on_experience_update_is_stubbed()
-        ut_helper.stub_function(pinfo_event_handler, "on_experience_update", nil)
+    local function and_esoTERM_event_handler_on_experience_update_is_stubbed()
+        ut_helper.stub_function(esoTERM_event_handler, "on_experience_update", nil)
     end
 
     local function and_expected_register_event_parameters_are_set_up()
         expected_register_params.experience_points_update = {
             addon_name = addon_name,
             event = 2,
-            callback = pinfo_event_handler.on_experience_update
+            callback = esoTERM_event_handler.on_experience_update
         }
         expected_register_params.veteran_points_update = {
             addon_name = addon_name,
             event = 3,
-            callback = pinfo_event_handler.on_experience_update
+            callback = esoTERM_event_handler.on_experience_update
         }
         expected_register_params.level_update = {
             addon_name = addon_name,
             event = 4,
-            callback = pinfo_event_handler.on_level_update
+            callback = esoTERM_event_handler.on_level_update
         }
         expected_register_params.veteran_rank_update = {
             addon_name = addon_name,
             event = 5,
-            callback = pinfo_event_handler.on_level_update
+            callback = esoTERM_event_handler.on_level_update
         }
         expected_register_params.ava_xp_update = {
             addon_name = addon_name,
             event = 6,
-            callback = pinfo_event_handler.on_ava_points_update
+            callback = esoTERM_event_handler.on_ava_points_update
         }
         expected_register_params.loot_received_update = {
             addon_name = addon_name,
             event = 7,
-            callback = pinfo_event_handler.on_loot_received
+            callback = esoTERM_event_handler.on_loot_received
         }
         expected_register_params.combat_state_update = {
             addon_name = addon_name,
             event = 8,
-            callback = pinfo_event_handler.on_combat_state_update
+            callback = esoTERM_event_handler.on_combat_state_update
         }
     end
 
     local function when_initialize_is_called()
-        pinfo_event_handler.initialize()
+        esoTERM_event_handler.initialize()
     end
 
     local function then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_params)
@@ -81,7 +81,7 @@ describe("Test event handler initialization.", function()
 
     it("Register for events", function()
         given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
-            and_pinfo_event_handler_on_experience_update_is_stubbed()
+            and_esoTERM_event_handler_on_experience_update_is_stubbed()
             and_expected_register_event_parameters_are_set_up()
 
         when_initialize_is_called()
@@ -99,33 +99,33 @@ describe("Test the event handlers.", function()
     end)
 
     -- {{{
-    local function given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
-        ut_helper.stub_function(pinfo_output, "xp_to_chat_tab", nil)
+    local function given_that_esoTERM_output_xp_to_chat_tab_is_stubbed()
+        ut_helper.stub_function(esoTERM_output, "xp_to_chat_tab", nil)
     end
 
-    local function and_pinfo_output_xp_to_chat_tab_was_called_once()
-        assert.spy(pinfo_output.xp_to_chat_tab).was.called_with()
+    local function and_esoTERM_output_xp_to_chat_tab_was_called_once()
+        assert.spy(esoTERM_output.xp_to_chat_tab).was.called_with()
     end
 
-    local function and_pinfo_output_xp_to_chat_tab_was_not_called()
-        assert.spy(pinfo_output.xp_to_chat_tab).was_not.called()
+    local function and_esoTERM_output_xp_to_chat_tab_was_not_called()
+        assert.spy(esoTERM_output.xp_to_chat_tab).was_not.called()
     end
 
-    local function given_that_pinfo_output_ap_to_chat_tab_is_stubbed()
-        ut_helper.stub_function(pinfo_output, "ap_to_chat_tab", nil)
+    local function given_that_esoTERM_output_ap_to_chat_tab_is_stubbed()
+        ut_helper.stub_function(esoTERM_output, "ap_to_chat_tab", nil)
     end
 
-    local function and_pinfo_output_ap_to_chat_tab_was_called_once()
-        assert.spy(pinfo_output.ap_to_chat_tab).was.called_with()
+    local function and_esoTERM_output_ap_to_chat_tab_was_called_once()
+        assert.spy(esoTERM_output.ap_to_chat_tab).was.called_with()
     end
 
-    local function and_pinfo_output_ap_to_chat_tab_was_not_called()
-        assert.spy(pinfo_output.ap_to_chat_tab).was_not.called()
+    local function and_esoTERM_output_ap_to_chat_tab_was_not_called()
+        assert.spy(esoTERM_output.ap_to_chat_tab).was_not.called()
     end
     -- }}}
 
     describe("The on experience update event handler.", function()
-        local cache = pinfo.CACHE
+        local cache = esoTERM.CACHE
 
         local REASON = 0
         local OLD_XP = 100
@@ -146,7 +146,7 @@ describe("Test the event handlers.", function()
 
         -- {{{
         local function when_on_experience_update_is_called_with(event, unit, xp, xp_max, reason)
-            pinfo_event_handler.on_experience_update(event, unit, xp, xp_max, reason)
+            esoTERM_event_handler.on_experience_update(event, unit, xp, xp_max, reason)
         end
 
         local function then_the_xp_properties_in_character_info_where_updated()
@@ -158,12 +158,12 @@ describe("Test the event handlers.", function()
         -- }}}
 
         it("Happy flow.", function()
-            given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_xp_to_chat_tab_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, NEW_XP_MAX, REASON)
 
             then_the_xp_properties_in_character_info_where_updated()
-                and_pinfo_output_xp_to_chat_tab_was_called_once()
+                and_esoTERM_output_xp_to_chat_tab_was_called_once()
         end)
 
         -- {{{
@@ -176,12 +176,12 @@ describe("Test the event handlers.", function()
         -- }}}
 
         it("If xp > level xp maximum, then 100%.", function()
-            given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_xp_to_chat_tab_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP_LVL_UP, OLD_XP_MAX, REASON)
 
             then_the_xp_properties_in_character_info_where_updated_to_lvl_up()
-                and_pinfo_output_xp_to_chat_tab_was_called_once()
+                and_esoTERM_output_xp_to_chat_tab_was_called_once()
         end)
 
         -- {{{
@@ -193,12 +193,12 @@ describe("Test the event handlers.", function()
         -- }}}
 
         it("If unit is incorrect.", function()
-            given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_xp_to_chat_tab_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, "foo", NEW_XP, NEW_XP_MAX, REASON)
 
             then_the_xp_properties_in_character_info_where_not_updated()
-                and_pinfo_output_xp_to_chat_tab_was_not_called()
+                and_esoTERM_output_xp_to_chat_tab_was_not_called()
         end)
 
         -- {{{
@@ -210,26 +210,26 @@ describe("Test the event handlers.", function()
         end
         -- }}}
         it("If reason is incorrect (level up drift handling).", function()
-            given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_xp_to_chat_tab_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, NEW_XP_MAX, -1)
 
             then_the_xp_properties_in_character_info_where_partly_updated()
-                and_pinfo_output_xp_to_chat_tab_was_called_once()
+                and_esoTERM_output_xp_to_chat_tab_was_called_once()
         end)
 
         it("If total maximum xp reached.", function()
-            given_that_pinfo_output_xp_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_xp_to_chat_tab_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, 0, REASON)
 
             then_the_xp_properties_in_character_info_where_not_updated()
-                and_pinfo_output_xp_to_chat_tab_was_not_called()
+                and_esoTERM_output_xp_to_chat_tab_was_not_called()
         end)
     end)
 
     describe("The on level update event handler.", function()
-        local cache = pinfo.CACHE
+        local cache = esoTERM.CACHE
 
         local OLD_LEVEL = 1
         local NEW_LEVEL = 2
@@ -240,7 +240,7 @@ describe("Test the event handlers.", function()
 
         -- {{{
         local function when_on_level_update_is_called_with(event, unit, level)
-            pinfo_event_handler.on_level_update(event, unit, level)
+            esoTERM_event_handler.on_level_update(event, unit, level)
         end
 
         local function then_the_level_property_in_character_info_was_updated()
@@ -268,7 +268,7 @@ describe("Test the event handlers.", function()
     end)
 
     describe("The on AvA points update event handler.", function()
-        local cache = pinfo.CACHE
+        local cache = esoTERM.CACHE
 
         local POINT = 0
         local SOUND = 0
@@ -298,23 +298,23 @@ describe("Test the event handlers.", function()
 
         -- {{{
         local function and_that_get_ava_rank_returns(rank)
-            ut_helper.stub_function(pinfo_char, "get_ava_rank", rank)
+            ut_helper.stub_function(esoTERM_char, "get_ava_rank", rank)
         end
 
         local function and_get_ava_rank_was_called_once_witch_cache()
-            assert.spy(pinfo_char.get_ava_rank).was.called_with(cache)
+            assert.spy(esoTERM_char.get_ava_rank).was.called_with(cache)
         end
 
         local function and_that_get_ava_rank_points_max_returns(points)
-            ut_helper.stub_function(pinfo_char, "get_ava_rank_points_max", points)
+            ut_helper.stub_function(esoTERM_char, "get_ava_rank_points_max", points)
         end
 
         local function and_get_ava_rank_points_max_was_called_once_witch_cache()
-            assert.spy(pinfo_char.get_ava_rank_points_max).was.called_with(cache)
+            assert.spy(esoTERM_char.get_ava_rank_points_max).was.called_with(cache)
         end
 
         local function when_on_ava_points_update_is_called_with(event, point, sound, diff)
-            pinfo_event_handler.on_ava_points_update(event, point, sound, diff)
+            esoTERM_event_handler.on_ava_points_update(event, point, sound, diff)
         end
 
         local function then_the_ava_properties_in_character_info_where_updated_no_rank_up()
@@ -340,34 +340,34 @@ describe("Test the event handlers.", function()
         -- }}}
 
         it("Happy flow.", function()
-            given_that_pinfo_output_ap_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_ap_to_chat_tab_is_stubbed()
 
             when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, NEW_GAIN)
 
             then_the_ava_properties_in_character_info_where_updated_no_rank_up()
-                and_pinfo_output_ap_to_chat_tab_was_called_once()
+                and_esoTERM_output_ap_to_chat_tab_was_called_once()
         end)
 
         it("Zero gain.", function()
-            given_that_pinfo_output_ap_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_ap_to_chat_tab_is_stubbed()
 
             when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, GAIN_ZERO)
 
             then_the_ava_properties_in_character_info_where_not_updated()
-                and_pinfo_output_ap_to_chat_tab_was_not_called()
+                and_esoTERM_output_ap_to_chat_tab_was_not_called()
         end)
 
         it("Negative gain.", function()
-            given_that_pinfo_output_ap_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_ap_to_chat_tab_is_stubbed()
 
             when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, GAIN_NEGATIVE)
 
             then_the_ava_properties_in_character_info_where_not_updated()
-                and_pinfo_output_ap_to_chat_tab_was_not_called()
+                and_esoTERM_output_ap_to_chat_tab_was_not_called()
         end)
 
         it("Gain enough AP to rank up.", function()
-            given_that_pinfo_output_ap_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_ap_to_chat_tab_is_stubbed()
                 and_that_get_ava_rank_returns(NEW_RANK)
                 and_that_get_ava_rank_points_max_returns(NEW_POINTS_MAX)
 
@@ -376,7 +376,7 @@ describe("Test the event handlers.", function()
             then_the_ava_properties_in_character_info_where_updated_rank_up()
                 and_get_ava_rank_was_called_once_witch_cache()
                 and_get_ava_rank_points_max_was_called_once_witch_cache()
-                and_pinfo_output_ap_to_chat_tab_was_called_once()
+                and_esoTERM_output_ap_to_chat_tab_was_called_once()
         end)
     end)
 
@@ -388,44 +388,44 @@ describe("Test the event handlers.", function()
         local LOOT_TYPE = "loot_type"
 
         -- {{{
-        local function given_that_pinfo_output_loot_to_chat_tab_is_stubbed()
-            ut_helper.stub_function(pinfo_output, "loot_to_chat_tab", nil)
+        local function given_that_esoTERM_output_loot_to_chat_tab_is_stubbed()
+            ut_helper.stub_function(esoTERM_output, "loot_to_chat_tab", nil)
         end
 
         local function when_on_loot_received_is_called_with(event, by, item, quantity, sound, loot_type, self)
-            pinfo_event_handler.on_loot_received(event, by, item, quantity, sound, loot_type, self)
+            esoTERM_event_handler.on_loot_received(event, by, item, quantity, sound, loot_type, self)
         end
 
-        local function then_pinfo_output_loot_to_chat_tab_was_called_with(item, quantity)
-            assert.spy(pinfo_output.loot_to_chat_tab).was.called_with(item, quantity)
+        local function then_esoTERM_output_loot_to_chat_tab_was_called_with(item, quantity)
+            assert.spy(esoTERM_output.loot_to_chat_tab).was.called_with(item, quantity)
         end
         -- }}}
 
         it("Happy flow.", function()
-            given_that_pinfo_output_loot_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_loot_to_chat_tab_is_stubbed()
 
             when_on_loot_received_is_called_with(EVENT, BY, ITEM, QUANTITY, SOUND, LOOT_TYPE, true)
 
-            then_pinfo_output_loot_to_chat_tab_was_called_with(ITEM, QUANTITY)
+            then_esoTERM_output_loot_to_chat_tab_was_called_with(ITEM, QUANTITY)
         end)
 
         -- {{{
-        local function then_pinfo_output_loot_to_chat_tab_was_not_called()
-            assert.spy(pinfo_output.loot_to_chat_tab).was_not.called()
+        local function then_esoTERM_output_loot_to_chat_tab_was_not_called()
+            assert.spy(esoTERM_output.loot_to_chat_tab).was_not.called()
         end
         -- }}}
 
         it("If not self.", function()
-            given_that_pinfo_output_loot_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_loot_to_chat_tab_is_stubbed()
 
             when_on_loot_received_is_called_with(EVENT, BY, ITEM, QUANTITY, SOUND, LOOT_TYPE, false)
 
-            then_pinfo_output_loot_to_chat_tab_was_not_called()
+            then_esoTERM_output_loot_to_chat_tab_was_not_called()
         end)
     end)
 
     describe("The on combat-state-change event handler.", function()
-        local cache = pinfo.CACHE
+        local cache = esoTERM.CACHE
 
         local OUTER_COMBAT = false
         local IN_COMBAT = true
@@ -442,11 +442,11 @@ describe("Test the event handlers.", function()
 
         -- {{{
         local function given_that_get_combat_state_returns(combat_state)
-            ut_helper.stub_function(pinfo_char, "get_combat_state", combat_state)
+            ut_helper.stub_function(esoTERM_char, "get_combat_state", combat_state)
         end
 
-        local function and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
-            ut_helper.stub_function(pinfo_output, "combat_state_to_chat_tab", nil)
+        local function and_that_esoTERM_output_combat_state_to_chat_tab_is_stubbed()
+            ut_helper.stub_function(esoTERM_output, "combat_state_to_chat_tab", nil)
         end
 
         local function and_that_eso_GetGameTimeMilliseconds_returns(time)
@@ -464,18 +464,18 @@ describe("Test the event handlers.", function()
         local function and_event_manager_RegisterForEvent_was_called()
             assert.spy(EVENT_MANAGER.RegisterForEvent).was.called_with(
                 EVENT_MANAGER,
-                pinfo.ADDON_NAME,
+                esoTERM.ADDON_NAME,
                 EVENT_COMBAT_EVENT,
-                pinfo_event_handler.on_combat_event_update
+                esoTERM_event_handler.on_combat_event_update
             )
         end
 
         local function when_on_combat_state_update_is_called_with(event, combat_state)
-            pinfo_event_handler.on_combat_state_update(event, combat_state)
+            esoTERM_event_handler.on_combat_state_update(event, combat_state)
         end
 
-        local function and_pinfo_output_combat_state_to_chat_tab_was_called()
-            assert.spy(pinfo_output.combat_state_to_chat_tab).was.called()
+        local function and_esoTERM_output_combat_state_to_chat_tab_was_called()
+            assert.spy(esoTERM_output.combat_state_to_chat_tab).was.called()
         end
 
         local function then_the_and_cached_combat_state_became(comat_state)
@@ -495,7 +495,7 @@ describe("Test the event handlers.", function()
             given_that_get_combat_state_returns(OUTER_COMBAT)
                 and_that_eso_GetGameTimeMilliseconds_returns(ENTER_TIME)
                 and_that_event_manager_RegisterForEvent_is_stubbed()
-                and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
+                and_that_esoTERM_output_combat_state_to_chat_tab_is_stubbed()
 
             when_on_combat_state_update_is_called_with(EVENT, IN_COMBAT)
 
@@ -504,16 +504,16 @@ describe("Test the event handlers.", function()
                 and_cached_combat_start_time_became(ENTER_TIME)
                 and_cached_combat_damage_became(0)
                 and_event_manager_RegisterForEvent_was_called()
-                and_pinfo_output_combat_state_to_chat_tab_was_called()
+                and_esoTERM_output_combat_state_to_chat_tab_was_called()
         end)
 
         -- {{{
         local function and_that_get_combat_start_time_returns(time)
-            ut_helper.stub_function(pinfo_char, "get_combat_start_time", time)
+            ut_helper.stub_function(esoTERM_char, "get_combat_start_time", time)
         end
 
         local function and_get_combat_start_time_was_called_once_with_cache()
-            assert.spy(pinfo_char.get_combat_start_time).was.called_with(cache)
+            assert.spy(esoTERM_char.get_combat_start_time).was.called_with(cache)
         end
 
         local function and_that_event_manager_UnregisterForEvent_is_stubbed()
@@ -531,7 +531,7 @@ describe("Test the event handlers.", function()
         local function and_event_manager_UnregisterForEvent_was_called()
             assert.spy(EVENT_MANAGER.UnregisterForEvent).was.called_with(
                 EVENT_MANAGER,
-                pinfo.ADDON_NAME,
+                esoTERM.ADDON_NAME,
                 EVENT_COMBAT_EVENT)
         end
 
@@ -547,7 +547,7 @@ describe("Test the event handlers.", function()
                 and_that_event_manager_UnregisterForEvent_is_stubbed()
                 and_that_cached_combat_start_time_is(ENTER_TIME)
                 and_that_cached_combat_damage_is(DAMAGE)
-                and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
+                and_that_esoTERM_output_combat_state_to_chat_tab_is_stubbed()
 
             when_on_combat_state_update_is_called_with(EVENT, OUTER_COMBAT)
 
@@ -557,7 +557,7 @@ describe("Test the event handlers.", function()
                 and_event_manager_UnregisterForEvent_was_called()
                 and_cached_combat_start_time_became(0)
                 and_cached_combat_damage_became(0)
-                and_pinfo_output_combat_state_to_chat_tab_was_called()
+                and_esoTERM_output_combat_state_to_chat_tab_was_called()
         end)
 
         it("Combat length when combat start time is invalid", function()
@@ -565,7 +565,7 @@ describe("Test the event handlers.", function()
                 and_that_get_combat_start_time_returns(0)
                 and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME)
                 and_that_event_manager_UnregisterForEvent_is_stubbed()
-                and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
+                and_that_esoTERM_output_combat_state_to_chat_tab_is_stubbed()
 
             when_on_combat_state_update_is_called_with(EVENT, OUTER_COMBAT)
 
@@ -575,12 +575,12 @@ describe("Test the event handlers.", function()
                 and_event_manager_UnregisterForEvent_was_called()
                 and_cached_combat_start_time_became(0)
                 and_cached_combat_damage_became(0)
-                and_pinfo_output_combat_state_to_chat_tab_was_called()
+                and_esoTERM_output_combat_state_to_chat_tab_was_called()
         end)
 
         -- {{{
-        local function then_pinfo_output_combat_state_to_chat_tab_was_not_called()
-            assert.spy(pinfo_output.combat_state_to_chat_tab).was_not.called()
+        local function then_esoTERM_output_combat_state_to_chat_tab_was_not_called()
+            assert.spy(esoTERM_output.combat_state_to_chat_tab).was_not.called()
         end
 
         local function and_eso_GetGameTimeMilliseconds_was_not_called()
@@ -590,12 +590,12 @@ describe("Test the event handlers.", function()
 
         it("No combat-state-change, when already having that state", function()
             given_that_get_combat_state_returns(OUTER_COMBAT)
-                and_that_pinfo_output_combat_state_to_chat_tab_is_stubbed()
+                and_that_esoTERM_output_combat_state_to_chat_tab_is_stubbed()
                 and_that_eso_GetGameTimeMilliseconds_returns(nil)
 
             when_on_combat_state_update_is_called_with(EVENT, OUTER_COMBAT)
 
-            then_pinfo_output_combat_state_to_chat_tab_was_not_called()
+            then_esoTERM_output_combat_state_to_chat_tab_was_not_called()
                 and_eso_GetGameTimeMilliseconds_was_not_called()
         end)
     end)
@@ -653,32 +653,32 @@ describe("Test the event handlers.", function()
             parameter_values[parameter] = value
         end
 
-        local function and_that_pinfo_char_get_name_returns(name)
-            ut_helper.stub_function(pinfo_char, "get_name", name)
+        local function and_that_esoTERM_char_get_name_returns(name)
+            ut_helper.stub_function(esoTERM_char, "get_name", name)
         end
 
-        local function then_pinfo_char_get_name_was_called()
-            assert.spy(pinfo_char.get_name).was.called()
+        local function then_esoTERM_char_get_name_was_called()
+            assert.spy(esoTERM_char.get_name).was.called()
         end
 
-        local function then_pinfo_char_get_name_was_not_called()
-            assert.spy(pinfo_char.get_name).was_not.called()
+        local function then_esoTERM_char_get_name_was_not_called()
+            assert.spy(esoTERM_char.get_name).was_not.called()
         end
 
-        local function and_that_pinfo_output_stdout_is_stubbed()
-            ut_helper.stub_function(pinfo_output, "stdout", nil)
+        local function and_that_esoTERM_output_stdout_is_stubbed()
+            ut_helper.stub_function(esoTERM_output, "stdout", nil)
         end
 
-        local function and_pinfo_output_stdout_was_called_with(message)
-            assert.spy(pinfo_output.stdout).was.called_with(message)
+        local function and_esoTERM_output_stdout_was_called_with(message)
+            assert.spy(esoTERM_output.stdout).was.called_with(message)
         end
 
-        local function and_pinfo_output_stdout_was_not_called()
-            assert.spy(pinfo_output.stdout).was_not.called()
+        local function and_esoTERM_output_stdout_was_not_called()
+            assert.spy(esoTERM_output.stdout).was_not.called()
         end
 
         local function when_on_combat_event_update_is_called()
-            pinfo_event_handler.on_combat_event_update(unpack(parameter_values))
+            esoTERM_event_handler.on_combat_event_update(unpack(parameter_values))
         end
         -- }}}
 
@@ -697,13 +697,13 @@ describe("Test the event handlers.", function()
             }
             for parameter, value in pairs(test_parameters) do
                 given_that_parameter_value_is(parameter, value)
-                    and_that_pinfo_char_get_name_returns(NAME)
-                    and_that_pinfo_output_stdout_is_stubbed()
+                    and_that_esoTERM_char_get_name_returns(NAME)
+                    and_that_esoTERM_output_stdout_is_stubbed()
 
                 when_on_combat_event_update_is_called()
 
-                then_pinfo_char_get_name_was_not_called()
-                    and_pinfo_output_stdout_was_not_called()
+                then_esoTERM_char_get_name_was_not_called()
+                    and_esoTERM_output_stdout_was_not_called()
 
                 reset_event_parameters()
             end
@@ -711,13 +711,13 @@ describe("Test the event handlers.", function()
 
         it("Print message for damage done by player.", function()
             given_that_parameter_value_is(HIT_VALUE, ABILITY_HIT)
-                and_that_pinfo_char_get_name_returns(NAME)
-                and_that_pinfo_output_stdout_is_stubbed()
+                and_that_esoTERM_char_get_name_returns(NAME)
+                and_that_esoTERM_output_stdout_is_stubbed()
 
             when_on_combat_event_update_is_called()
 
-            then_pinfo_char_get_name_was_called()
-                and_pinfo_output_stdout_was_called_with(
+            then_esoTERM_char_get_name_was_called()
+                and_esoTERM_output_stdout_was_called_with(
                     string.format("%s deals damage with %s for: %d",
                                   NAME, ABILITY, ABILITY_HIT)
                 )
@@ -725,13 +725,13 @@ describe("Test the event handlers.", function()
 
         it("Print message for damage done by pet.", function()
             given_that_parameter_value_is(SOURCE_TYPE, COMBAT_UNIT_TYPE_PLAYER_PET)
-                and_that_pinfo_char_get_name_returns(NAME)
-                and_that_pinfo_output_stdout_is_stubbed()
+                and_that_esoTERM_char_get_name_returns(NAME)
+                and_that_esoTERM_output_stdout_is_stubbed()
 
             when_on_combat_event_update_is_called()
 
-            then_pinfo_char_get_name_was_called()
-                and_pinfo_output_stdout_was_called_with(
+            then_esoTERM_char_get_name_was_called()
+                and_esoTERM_output_stdout_was_called_with(
                     string.format("%s deals damage with %s for: %d",
                                   NAME, ABILITY, ABILITY_HIT)
                 )

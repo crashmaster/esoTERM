@@ -54,7 +54,7 @@ local COMBAT_DAMAGE = A_INTEGER
 
 describe("Test character information getters", function()
     local results = {}
-    local cache = pinfo.CACHE
+    local cache = esoTERM.CACHE
     local return_values_of_the_getter_stubs = {
         is_veteran = VETERANNESS_1,
         get_gender = GENDER_1,
@@ -108,7 +108,7 @@ describe("Test character information getters", function()
 
     local function setup_getter_stubs()
         for getter, return_value in pairs(return_values_of_the_getter_stubs) do
-            ut_helper.stub_function(pinfo_char, getter, return_value)
+            ut_helper.stub_function(esoTERM_char, getter, return_value)
         end
     end
 
@@ -127,7 +127,7 @@ describe("Test character information getters", function()
     end
 
     local function when_initialize_is_called_with_cache()
-        pinfo_char.initialize()
+        esoTERM_char.initialize()
     end
 
     local function then_cache_is_no_longer_empty()
@@ -142,7 +142,7 @@ describe("Test character information getters", function()
 
     local function and_getter_stubs_were_called_with(param)
         for getter, _ in pairs(return_values_of_the_getter_stubs) do
-            assert.spy(pinfo_char[getter]).was.called_with(param)
+            assert.spy(esoTERM_char[getter]).was.called_with(param)
         end
     end
     -- }}}
@@ -161,7 +161,7 @@ end)
 
 describe("Test character information getters", function()
     local results = {}
-    local cache = pinfo.CACHE
+    local cache = esoTERM.CACHE
 
     after_each(function()
         ut_helper.restore_stubbed_functions()
@@ -181,7 +181,7 @@ describe("Test character information getters", function()
     end
 
     local function when_get_name_is_called_with_cache()
-        results.name = pinfo_char.get_name(cache)
+        results.name = esoTERM_char.get_name(cache)
     end
 
     local function then_the_returned_character_name_was(name)
@@ -239,7 +239,7 @@ describe("Test character information getters", function()
     end
 
     local function when_is_veteran_is_called_with_cache()
-        results.veteran = pinfo_char.is_veteran(cache)
+        results.veteran = esoTERM_char.is_veteran(cache)
     end
 
     local function then_the_returned_character_veteranness_was(veteranness)
@@ -297,11 +297,11 @@ describe("Test character information getters", function()
     end
 
     local function and_character_is_not_veteran()
-        ut_helper.stub_function(pinfo_char, "is_veteran", false)
+        ut_helper.stub_function(esoTERM_char, "is_veteran", false)
     end
 
     local function when_get_level_xp_is_called_with_cache()
-        results.level_xp = pinfo_char.get_level_xp(cache)
+        results.level_xp = esoTERM_char.get_level_xp(cache)
     end
 
     local function then_the_returned_level_xp_was(xp)
@@ -309,7 +309,7 @@ describe("Test character information getters", function()
     end
 
     local function and_is_veteran_was_called_with_cache()
-        assert.spy(pinfo_char.is_veteran).was.called_with(cache)
+        assert.spy(esoTERM_char.is_veteran).was.called_with(cache)
     end
 
     local function and_eso_GetUnitXP_was_called_once_with_player()
@@ -336,7 +336,7 @@ describe("Test character information getters", function()
     end
 
     local function and_character_is_veteran()
-        ut_helper.stub_function(pinfo_char, "is_veteran", true)
+        ut_helper.stub_function(esoTERM_char, "is_veteran", true)
     end
 
     local function and_eso_GetUnitVeteranPoints_was_called_once_with_player()
@@ -367,7 +367,7 @@ describe("Test character information getters", function()
     end
 
     local function and_is_veteran_was_not_called()
-        assert.spy(pinfo_char.is_veteran).was_not.called()
+        assert.spy(esoTERM_char.is_veteran).was_not.called()
     end
 
     local function and_eso_GetUnitXP_was_not_called()
@@ -421,7 +421,7 @@ describe("Test character information getters", function()
     end
 
     local function when_get_level_is_called_with_cache()
-        results.level = pinfo_char.get_level(cache)
+        results.level = esoTERM_char.get_level(cache)
     end
 
     local function then_the_returned_level_was(level)
@@ -527,7 +527,7 @@ describe("Test character information getters", function()
     end
 
     local function when_get_gender_is_called_with_cache()
-        results.gender = pinfo_char.get_gender(cache)
+        results.gender = esoTERM_char.get_gender(cache)
     end
 
     local function then_the_returned_character_gender_was(gender)
@@ -585,7 +585,7 @@ describe("Test character information getters", function()
     end
 
     local function when_get_ava_points_is_called_with_cache()
-        results.ava_points = pinfo_char.get_ava_points(cache)
+        results.ava_points = esoTERM_char.get_ava_points(cache)
     end
 
     local function then_the_returned_character_ava_points_was(points)
@@ -641,7 +641,7 @@ describe("Test character information getters", function()
     end
 
     local function when_get_ava_rank_is_called_with_cache()
-        results.ava_rank = pinfo_char.get_ava_rank(cache)
+        results.ava_rank = esoTERM_char.get_ava_rank(cache)
     end
 
     local function then_the_returned_character_ava_rank_was(rank)
@@ -699,7 +699,7 @@ describe("Test character information getters", function()
     end
 
     local function when_get_ava_sub_rank_is_called_with_cache()
-        results.ava_sub_rank = pinfo_char.get_ava_sub_rank(cache)
+        results.ava_sub_rank = esoTERM_char.get_ava_sub_rank(cache)
     end
 
     local function then_the_returned_character_ava_sub_rank_was(sub_rank)
@@ -757,15 +757,15 @@ describe("Test character information getters", function()
     end
 
     local function and_that_get_gender_returns(gender)
-        ut_helper.stub_function(pinfo_char, "get_gender", gender)
+        ut_helper.stub_function(esoTERM_char, "get_gender", gender)
     end
 
     local function and_that_get_ava_rank_returns(rank)
-        ut_helper.stub_function(pinfo_char, "get_ava_rank", rank)
+        ut_helper.stub_function(esoTERM_char, "get_ava_rank", rank)
     end
 
     local function when_get_ava_rank_name_is_called_with_cache()
-        results.ava_rank_name = pinfo_char.get_ava_rank_name(cache)
+        results.ava_rank_name = esoTERM_char.get_ava_rank_name(cache)
     end
 
     local function then_the_returned_character_ava_rank_name_was(rank)
@@ -777,11 +777,11 @@ describe("Test character information getters", function()
     end
 
     local function and_get_gender_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_gender).was.called_with(cache)
+        assert.spy(esoTERM_char.get_gender).was.called_with(cache)
     end
 
     local function and_get_ava_rank_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_ava_rank).was.called_with(cache)
+        assert.spy(esoTERM_char.get_ava_rank).was.called_with(cache)
     end
     -- }}}
 
@@ -814,11 +814,11 @@ describe("Test character information getters", function()
     end
 
     local function and_get_gender_was_not_called()
-        assert.spy(pinfo_char.get_gender).was_not.called()
+        assert.spy(esoTERM_char.get_gender).was_not.called()
     end
 
     local function and_get_ava_rank_was_not_called()
-        assert.spy(pinfo_char.get_ava_rank).was_not.called()
+        assert.spy(esoTERM_char.get_ava_rank).was_not.called()
     end
     -- }}}
 
@@ -847,7 +847,7 @@ describe("Test character information getters", function()
     end
 
     local function when_get_class_is_called_with_cache()
-        results.class = pinfo_char.get_class(cache)
+        results.class = esoTERM_char.get_class(cache)
     end
 
     local function then_the_returned_character_class_was(class)
@@ -905,7 +905,7 @@ describe("Test character information getters", function()
     end
 
     local function when_get_level_xp_max_is_called_with_cache()
-        results.level_xp_max = pinfo_char.get_level_xp_max(cache)
+        results.level_xp_max = esoTERM_char.get_level_xp_max(cache)
     end
 
     local function then_the_returned_level_xp_max_was(xp)
@@ -913,7 +913,7 @@ describe("Test character information getters", function()
     end
 
     local function and_is_veteran_was_called_with_cache()
-        assert.spy(pinfo_char.is_veteran).was.called_with(cache)
+        assert.spy(esoTERM_char.is_veteran).was.called_with(cache)
     end
 
     local function and_eso_GetUnitXPMax_was_called_once_with_player()
@@ -1013,15 +1013,15 @@ describe("Test character information getters", function()
     end
 
     local function and_that_get_level_xp_returns(xp)
-        ut_helper.stub_function(pinfo_char, "get_level_xp", xp)
+        ut_helper.stub_function(esoTERM_char, "get_level_xp", xp)
     end
 
     local function and_that_get_level_xp_max_returns(xp)
-        ut_helper.stub_function(pinfo_char, "get_level_xp_max", xp)
+        ut_helper.stub_function(esoTERM_char, "get_level_xp_max", xp)
     end
 
     local function when_get_level_xp_percent_is_called_with_cache()
-        results.level_xp_percent = pinfo_char.get_level_xp_percent(cache)
+        results.level_xp_percent = esoTERM_char.get_level_xp_percent(cache)
     end
 
     local function then_the_returned_level_xp_percent_was(level_xp_percent)
@@ -1029,11 +1029,11 @@ describe("Test character information getters", function()
     end
 
     local function and_get_level_xp_was_called_with_cache()
-        assert.spy(pinfo_char.get_level_xp).was.called_with(cache)
+        assert.spy(esoTERM_char.get_level_xp).was.called_with(cache)
     end
 
     local function and_get_level_xp_max_was_called_with_cache()
-        assert.spy(pinfo_char.get_level_xp_max).was.called_with(cache)
+        assert.spy(esoTERM_char.get_level_xp_max).was.called_with(cache)
     end
     -- }}}
 
@@ -1069,19 +1069,19 @@ describe("Test character information getters", function()
     end
 
     local function and_that_get_level_xp_max_returns(xp)
-        ut_helper.stub_function(pinfo_char, "get_level_xp_max", xp)
+        ut_helper.stub_function(esoTERM_char, "get_level_xp_max", xp)
     end
 
     local function and_that_get_level_xp_returns(xp)
-        ut_helper.stub_function(pinfo_char, "get_level_xp", xp)
+        ut_helper.stub_function(esoTERM_char, "get_level_xp", xp)
     end
 
     local function and_get_level_xp_max_was_not_called()
-        assert.spy(pinfo_char.get_level_xp_max).was_not.called()
+        assert.spy(esoTERM_char.get_level_xp_max).was_not.called()
     end
 
     local function and_get_level_xp_was_not_called()
-        assert.spy(pinfo_char.get_level_xp).was_not.called()
+        assert.spy(esoTERM_char.get_level_xp).was_not.called()
     end
     -- }}}
 
@@ -1104,7 +1104,7 @@ describe("Test character information getters", function()
     end
 
     local function when_get_xp_gain_is_called_with_cache()
-        results.xp_gain = pinfo_char.get_xp_gain(cache)
+        results.xp_gain = esoTERM_char.get_xp_gain(cache)
     end
 
     local function then_the_returned_level_xp_gain_was(gain)
@@ -1142,15 +1142,15 @@ describe("Test character information getters", function()
     end
 
     local function and_that_get_ava_rank_points_lb_returns(points)
-        ut_helper.stub_function(pinfo_char, "get_ava_rank_points_lb", points)
+        ut_helper.stub_function(esoTERM_char, "get_ava_rank_points_lb", points)
     end
 
     local function and_that_get_ava_points_returns(points)
-        ut_helper.stub_function(pinfo_char, "get_ava_points", points)
+        ut_helper.stub_function(esoTERM_char, "get_ava_points", points)
     end
 
     local function when_get_ava_rank_points_is_called_with_cache()
-        results.ava_rank_points = pinfo_char.get_ava_rank_points(cache)
+        results.ava_rank_points = esoTERM_char.get_ava_rank_points(cache)
     end
 
     local function then_the_returned_character_ava_rank_points_was(points)
@@ -1158,15 +1158,15 @@ describe("Test character information getters", function()
     end
 
     local function and_get_ava_rank_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_ava_rank).was.called_with(cache)
+        assert.spy(esoTERM_char.get_ava_rank).was.called_with(cache)
     end
 
     local function and_get_ava_points_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_ava_points).was.called_with(cache)
+        assert.spy(esoTERM_char.get_ava_points).was.called_with(cache)
     end
 
     local function and_get_ava_rank_points_lb_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_ava_rank_points_lb).was.called_with(cache)
+        assert.spy(esoTERM_char.get_ava_rank_points_lb).was.called_with(cache)
     end
     -- }}}
 
@@ -1189,11 +1189,11 @@ describe("Test character information getters", function()
     end
 
     local function and_get_ava_points_was_not_called()
-        assert.spy(pinfo_char.get_ava_points).was_not.called()
+        assert.spy(esoTERM_char.get_ava_points).was_not.called()
     end
 
     local function and_get_ava_rank_points_lb_was_not_called()
-        assert.spy(pinfo_char.get_ava_rank_points_lb).was_not.called()
+        assert.spy(esoTERM_char.get_ava_rank_points_lb).was_not.called()
     end
     -- }}}
 
@@ -1216,15 +1216,15 @@ describe("Test character information getters", function()
     end
 
     local function and_that_get_ava_rank_points_lb_returns(points)
-        ut_helper.stub_function(pinfo_char, "get_ava_rank_points_lb", points)
+        ut_helper.stub_function(esoTERM_char, "get_ava_rank_points_lb", points)
     end
 
     local function and_that_get_ava_rank_points_ub_returns(points)
-        ut_helper.stub_function(pinfo_char, "get_ava_rank_points_ub", points)
+        ut_helper.stub_function(esoTERM_char, "get_ava_rank_points_ub", points)
     end
 
     local function when_get_ava_rank_points_max_is_called_with_cache()
-        results.ava_rank_points_max = pinfo_char.get_ava_rank_points_max(cache)
+        results.ava_rank_points_max = esoTERM_char.get_ava_rank_points_max(cache)
     end
 
     local function then_the_returned_character_ava_rank_points_max_was(points)
@@ -1232,7 +1232,7 @@ describe("Test character information getters", function()
     end
 
     local function and_get_ava_rank_points_ub_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_ava_rank_points_ub).was.called_with(cache)
+        assert.spy(esoTERM_char.get_ava_rank_points_ub).was.called_with(cache)
     end
     -- }}}
 
@@ -1257,7 +1257,7 @@ describe("Test character information getters", function()
     end
 
     local function and_get_ava_rank_points_ub_was_not_called()
-        assert.spy(pinfo_char.get_ava_rank_points_ub).was_not.called()
+        assert.spy(esoTERM_char.get_ava_rank_points_ub).was_not.called()
     end
     -- }}}
 
@@ -1280,15 +1280,15 @@ describe("Test character information getters", function()
     end
 
     local function and_that_get_ava_rank_points_returns(points)
-        ut_helper.stub_function(pinfo_char, "get_ava_rank_points", points)
+        ut_helper.stub_function(esoTERM_char, "get_ava_rank_points", points)
     end
 
     local function and_that_get_ava_rank_points_max_returns(points)
-        ut_helper.stub_function(pinfo_char, "get_ava_rank_points_max", points)
+        ut_helper.stub_function(esoTERM_char, "get_ava_rank_points_max", points)
     end
 
     local function when_get_ava_rank_points_percent_is_called_with_cache()
-        results.rank_points_percent = pinfo_char.get_ava_rank_points_percent(cache)
+        results.rank_points_percent = esoTERM_char.get_ava_rank_points_percent(cache)
     end
 
     local function then_the_returned_ava_rank_points_percent_was(rank_points_percent)
@@ -1296,11 +1296,11 @@ describe("Test character information getters", function()
     end
 
     local function and_get_ava_rank_points_was_called_with_cache()
-        assert.spy(pinfo_char.get_ava_rank_points).was.called_with(cache)
+        assert.spy(esoTERM_char.get_ava_rank_points).was.called_with(cache)
     end
 
     local function and_get_ava_rank_points_max_was_called_with_cache()
-        assert.spy(pinfo_char.get_ava_rank_points_max).was.called_with(cache)
+        assert.spy(esoTERM_char.get_ava_rank_points_max).was.called_with(cache)
     end
     -- }}}
 
@@ -1323,19 +1323,19 @@ describe("Test character information getters", function()
     end
 
     local function and_that_get_ava_rank_points_max_returns(rank_points)
-        ut_helper.stub_function(pinfo_char, "get_ava_rank_points_max", rank_points)
+        ut_helper.stub_function(esoTERM_char, "get_ava_rank_points_max", rank_points)
     end
 
     local function and_that_get_ava_rank_points_returns(rank_points)
-        ut_helper.stub_function(pinfo_char, "get_ava_rank_points", rank_points)
+        ut_helper.stub_function(esoTERM_char, "get_ava_rank_points", rank_points)
     end
 
     local function and_get_ava_rank_points_max_was_not_called()
-        assert.spy(pinfo_char.get_ava_rank_points_max).was_not.called()
+        assert.spy(esoTERM_char.get_ava_rank_points_max).was_not.called()
     end
 
     local function and_get_ava_rank_points_was_not_called()
-        assert.spy(pinfo_char.get_ava_rank_points).was_not.called()
+        assert.spy(esoTERM_char.get_ava_rank_points).was_not.called()
     end
     -- }}}
 
@@ -1358,7 +1358,7 @@ describe("Test character information getters", function()
     end
 
     local function when_get_ap_gain_is_called_with_cache()
-        results.ap_gain = pinfo_char.get_ap_gain(cache)
+        results.ap_gain = esoTERM_char.get_ap_gain(cache)
     end
 
     local function then_the_returned_ap_gain_was(gain)
@@ -1400,7 +1400,7 @@ describe("Test character information getters", function()
     end
 
     local function when_get_ava_rank_points_lb_is_called_with_cache()
-        results.ava_rank_points_lb = pinfo_char.get_ava_rank_points_lb(cache)
+        results.ava_rank_points_lb = esoTERM_char.get_ava_rank_points_lb(cache)
     end
 
     local function then_the_returned_character_ava_rank_points_lb_was(point)
@@ -1458,7 +1458,7 @@ describe("Test character information getters", function()
     end
 
     local function when_get_ava_rank_points_ub_is_called_with_cache()
-        results.ava_rank_points_ub = pinfo_char.get_ava_rank_points_ub(cache)
+        results.ava_rank_points_ub = esoTERM_char.get_ava_rank_points_ub(cache)
     end
 
     local function then_the_returned_character_ava_rank_points_ub_was(point)
@@ -1516,7 +1516,7 @@ describe("Test character information getters", function()
     end
 
     local function when_get_combat_state_is_called_with_cache()
-        results.combat_state = pinfo_char.get_combat_state(cache)
+        results.combat_state = esoTERM_char.get_combat_state(cache)
     end
 
     local function then_the_returned_character_combat_state_was(combat_state)
@@ -1570,7 +1570,7 @@ describe("Test character information getters", function()
     end
 
     local function when_get_combat_start_time_is_called_with_cache()
-        results.combat_start_time = pinfo_char.get_combat_start_time(cache)
+        results.combat_start_time = esoTERM_char.get_combat_start_time(cache)
     end
 
     local function then_the_returned_combat_start_time_was(start_time)
@@ -1608,7 +1608,7 @@ describe("Test character information getters", function()
     end
 
     local function when_get_combat_lenght_is_called_with_cache()
-        results.combat_lenght = pinfo_char.get_combat_lenght(cache)
+        results.combat_lenght = esoTERM_char.get_combat_lenght(cache)
     end
 
     local function then_the_returned_combat_lenght_was(lenght)
@@ -1661,7 +1661,7 @@ describe("Test character information getters", function()
     end
 
     local function when_get_combat_damage_is_called_with_cache()
-        results.combat_damage = pinfo_char.get_combat_damage(cache)
+        results.combat_damage = esoTERM_char.get_combat_damage(cache)
     end
 
     local function then_the_returned_combat_damage_was(start_time)
