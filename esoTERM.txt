@@ -1,0 +1,12 @@
+## Title: Player Information (IN DEV!)
+## APIVersion: 100009
+## SavedVariables: esoTERM_saved_variables
+
+esoTERM.lua
+esoTERM_char.lua
+esoTERM_pve.lua
+esoTERM_pvp.lua
+esoTERM_loot.lua
+esoTERM_init.lua
+esoTERM_output.lua
+esoTERM_slash.lua

@@ -8,15 +8,17 @@ return {
     -- Patterns for files to include when reporting.
     ["include"] = {
         "ut_helper",
-        "pinfo_char",
-        "pinfo_event_handler",
-        "pinfo_init",
-        "pinfo_output",
+        "esoTERM_char",
+        "esoTERM_pve",
+        "esoTERM_pvp",
+        "esoTERM_loot",
+        "esoTERM_init",
+        "esoTERM_output",
         "test_ut_helper",
-        "test_pinfo_char",
-        "test_pinfo_event_handler",
-        "test_pinfo_init",
-        "test_pinfo_output"
+        "test_esoTERM_char",
+        "test_esoTERM_loot",
+        "test_esoTERM_init",
+        "test_esoTERM_output"
     },
     ["exclude"] = {
         "luacov",

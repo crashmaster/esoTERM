@@ -19,20 +19,20 @@ describe("Test output initialization", function()
         ut_helper.stub_function(EVENT_MANAGER, "RegisterForEvent", nil)
     end
 
-    local function and_pinfo_output_on_player_activated_is_stubbed()
-        ut_helper.stub_function(pinfo_output, "on_player_activated", nil)
+    local function and_esoTERM_output_on_player_activated_is_stubbed()
+        ut_helper.stub_function(esoTERM_output, "on_player_activated", nil)
     end
 
     local function and_expected_register_event_parameter_is_set_up()
         expected_register_params.experience_points_update = {
-            addon_name = pinfo.ADDON_NAME,
+            addon_name = esoTERM.ADDON_NAME,
             event = EVENT_PLAYER_ACTIVATED,
-            callback = pinfo_output.on_player_activated
+            callback = esoTERM_output.on_player_activated
         }
     end
 
     local function when_initialize_is_called()
-        pinfo_output.initialize()
+        esoTERM_output.initialize()
     end
 
     local function then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_params)
@@ -51,7 +51,7 @@ describe("Test output initialization", function()
     it("Register for player activated event",
     function()
         given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
-            and_pinfo_output_on_player_activated_is_stubbed()
+            and_esoTERM_output_on_player_activated_is_stubbed()
             and_expected_register_event_parameter_is_set_up()
 
         when_initialize_is_called()
@@ -66,7 +66,7 @@ describe("Test output initialization", function()
 
     local function and_expected_saved_vars_new_is_set_up()
         expected_new_params.chat_saved_settings = {
-            table_name = "pinfo_saved_variables",
+            table_name = "esoTERM_saved_variables",
             version = 1,
             namespace = nil,
             default = {chat_tab_number = 1}
@@ -110,7 +110,7 @@ describe("Test output messages", function()
     local XP_GAIN = 1000
     local LEVEL_AP_PERCENT = 43.21
     local AP_GAIN = 2000
-    local cache = pinfo.CACHE
+    local cache = esoTERM.CACHE
     local ITEM = "Mighty Sword"
     local QUANTITY = 1
     local IN_COMBAT = true
@@ -119,7 +119,7 @@ describe("Test output messages", function()
     local DAMAGE = 103689
 
     before_each(function()
-        pinfo_output.initialize()
+        esoTERM_output.initialize()
     end)
 
     after_each(function()
@@ -128,31 +128,31 @@ describe("Test output messages", function()
 
     -- {{{
     local function given_that_get_name_returns(name)
-        ut_helper.stub_function(pinfo_char, "get_name", name)
+        ut_helper.stub_function(esoTERM_char, "get_name", name)
     end
 
     local function and_get_name_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_name).was.called_with(cache)
+        assert.spy(esoTERM_char.get_name).was.called_with(cache)
     end
 
     local function and_get_level_xp_percent_returns(percent)
-        ut_helper.stub_function(pinfo_char, "get_level_xp_percent", percent)
+        ut_helper.stub_function(esoTERM_char, "get_level_xp_percent", percent)
     end
 
     local function and_get_level_xp_percent_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_level_xp_percent).was.called_with(cache)
+        assert.spy(esoTERM_char.get_level_xp_percent).was.called_with(cache)
     end
 
     local function and_get_xp_gain_returns(gain)
-        ut_helper.stub_function(pinfo_char, "get_xp_gain", gain)
+        ut_helper.stub_function(esoTERM_char, "get_xp_gain", gain)
     end
 
     local function and_get_xp_gain_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_xp_gain).was.called_with(cache)
+        assert.spy(esoTERM_char.get_xp_gain).was.called_with(cache)
     end
 
     local function when_xp_to_chat_tab_is_called()
-        pinfo_output.xp_to_chat_tab()
+        esoTERM_output.xp_to_chat_tab()
     end
 
     local function then_xp_message_buffer_contains_the_expected_entry()
@@ -160,7 +160,7 @@ describe("Test output messages", function()
                                   NAME,
                                   XP_GAIN,
                                   LEVEL_XP_PERCENT)
-        assert.is.equal(str, pinfo_output.message_buffers.xp_messages[1])
+        assert.is.equal(str, esoTERM_output.message_buffers.xp_messages[1])
     end
     -- }}}
 
@@ -180,23 +180,23 @@ describe("Test output messages", function()
 
     -- {{{
     local function and_get_ava_rank_points_percent_returns(percent)
-        ut_helper.stub_function(pinfo_char, "get_ava_rank_points_percent", percent)
+        ut_helper.stub_function(esoTERM_char, "get_ava_rank_points_percent", percent)
     end
 
     local function and_get_ava_rank_points_percent_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_ava_rank_points_percent).was.called_with(cache)
+        assert.spy(esoTERM_char.get_ava_rank_points_percent).was.called_with(cache)
     end
 
     local function and_get_ava_points_returns(gain)
-        ut_helper.stub_function(pinfo_char, "get_ap_gain", gain)
+        ut_helper.stub_function(esoTERM_char, "get_ap_gain", gain)
     end
 
     local function and_get_ap_gain_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_ap_gain).was.called_with(cache)
+        assert.spy(esoTERM_char.get_ap_gain).was.called_with(cache)
     end
 
     local function when_ap_to_chat_tab_is_called()
-        pinfo_output.ap_to_chat_tab()
+        esoTERM_output.ap_to_chat_tab()
     end
 
     local function then_ap_message_buffer_contains_the_expected_entry()
@@ -204,7 +204,7 @@ describe("Test output messages", function()
                                   NAME,
                                   AP_GAIN,
                                   LEVEL_AP_PERCENT)
-        assert.is.equal(str, pinfo_output.message_buffers.ap_messages[1])
+        assert.is.equal(str, esoTERM_output.message_buffers.ap_messages[1])
     end
     -- }}}
 
@@ -232,12 +232,12 @@ describe("Test output messages", function()
     end
 
     local function when_loot_to_chat_tab_is_called()
-        pinfo_output.loot_to_chat_tab(ITEM, QUANTITY)
+        esoTERM_output.loot_to_chat_tab(ITEM, QUANTITY)
     end
 
     local function then_loot_message_buffer_contains_the_expected_entry()
         local str = string.format("%s received %d [%s]", NAME, QUANTITY, ITEM)
-        assert.is.equal(str, pinfo_output.message_buffers.loot_messages[1])
+        assert.is.equal(str, esoTERM_output.message_buffers.loot_messages[1])
     end
     -- }}}
 
@@ -255,19 +255,19 @@ describe("Test output messages", function()
 
     -- {{{
     local function and_get_combat_state_returns(state)
-        ut_helper.stub_function(pinfo_char, "get_combat_state", state)
+        ut_helper.stub_function(esoTERM_char, "get_combat_state", state)
     end
 
     local function and_get_combat_state_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_combat_state).was.called_with(cache)
+        assert.spy(esoTERM_char.get_combat_state).was.called_with(cache)
     end
 
     local function when_combat_state_to_chat_tab_is_called()
-        pinfo_output.combat_state_to_chat_tab()
+        esoTERM_output.combat_state_to_chat_tab()
     end
 
     local function then_combat_state_message_buffer_is(str)
-        assert.is.equal(str, pinfo_output.message_buffers.combat_state_messages[1])
+        assert.is.equal(str, esoTERM_output.message_buffers.combat_state_messages[1])
     end
     -- }}}
 
@@ -285,19 +285,19 @@ describe("Test output messages", function()
 
     -- {{{
     local function and_get_combat_length_returns(length)
-        ut_helper.stub_function(pinfo_char, "get_combat_lenght", length)
+        ut_helper.stub_function(esoTERM_char, "get_combat_lenght", length)
     end
 
     local function and_get_combat_length_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_combat_lenght).was.called_with(cache)
+        assert.spy(esoTERM_char.get_combat_lenght).was.called_with(cache)
     end
 
     local function and_get_combat_damage_returns(damage)
-        ut_helper.stub_function(pinfo_char, "get_combat_damage", damage)
+        ut_helper.stub_function(esoTERM_char, "get_combat_damage", damage)
     end
 
     local function and_get_combat_damage_was_called_once_with_cache()
-        assert.spy(pinfo_char.get_combat_damage).was.called_with(cache)
+        assert.spy(esoTERM_char.get_combat_damage).was.called_with(cache)
     end
     -- }}}
 

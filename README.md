@@ -1,4 +1,4 @@
-pinfo
-=====
+esoTERM
+=======
 
-Player Information
+Elder Scrolls Online Terminal :)

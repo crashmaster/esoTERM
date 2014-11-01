@@ -1,0 +1,31 @@
+-- function esoTERM_char.dump_event(result,
+--                                  event_not_ok,
+--                                  ability_name,
+--                                  ability_graphic,
+--                                  action_slot_type,
+--                                  source_name,
+--                                  source_type,
+--                                  target_name,
+--                                  target_type,
+--                                  hit_value,
+--                                  power_type,
+--                                  damage_type,
+--                                  log)
+--     local message = string.format(
+--         "EVENT -> r:%d+e:%s+an:%s+ag:%d+at:%d+s:%s+st:%d+t:%s+tt:%d+h:%d+p:%d+d:%d)",
+--         result,
+--         tostring(event_not_ok),
+--         ability_name,
+--         ability_graphic,
+--         action_slot_type,
+--         source_name,
+--         source_type,
+--         target_name,
+--         target_type,
+--         hit_value,
+--         power_type,
+--         damage_type)
+--     esoTERM_output.stdout(message)
+-- end
+
+-- vim: ft=lua
