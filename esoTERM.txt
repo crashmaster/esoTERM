@@ -1,4 +1,4 @@
-## Title: Player Information (IN DEV!)
+## Title: esoTERM (IN DEV!)
 ## APIVersion: 100009
 ## SavedVariables: esoTERM_saved_variables
 
