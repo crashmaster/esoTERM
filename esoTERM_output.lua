@@ -1,4 +1,6 @@
-local CACHE = esoTERM.CACHE
+local CACHE_CHAR = esoTERM_char.cache
+local CACHE_PVE = esoTERM_pve.cache
+local CACHE_PVP = esoTERM_pvp.cache
 
 esoTERM_output = {}
 esoTERM_output.PROMPT = "[esoTERM] "
@@ -12,7 +14,7 @@ local function _initialize_message_buffers()
     esoTERM_output.message_buffers.combat_state_messages = {}
 end
 
-local function _set_n_th_chat_tab_as_output(chat_tab_number)
+function esoTERM_output.set_n_th_chat_tab_as_output(chat_tab_number)
     local chat_tab = string.format("ZO_ChatWindowTemplate%d", chat_tab_number)
     local chat_tab_name = string.format("ZO_ChatWindowTabTemplate%dText", chat_tab_number)
 
@@ -34,7 +36,7 @@ local function _set_output_to_chat_tab()
     if esoTERM_output.settings.chat_tab_number ~= nil then
         chat_tab_number = esoTERM_output.settings.chat_tab_number
     end
-    _set_n_th_chat_tab_as_output(chat_tab_number)
+    esoTERM_output.set_n_th_chat_tab_as_output(chat_tab_number)
 end
 
 local function _activate_real_print_functions()
@@ -54,43 +56,43 @@ end
 
 local function _xp_message()
     return string.format("%s gained %d XP (%.2f%%)",
-                         esoTERM_char.get_name(CACHE),
-                         esoTERM_char.get_xp_gain(CACHE),
-                         esoTERM_char.get_level_xp_percent(CACHE))
+                         esoTERM_char.get_name(CACHE_CHAR),
+                         esoTERM_pve.get_xp_gain(CACHE_PVE),
+                         esoTERM_pve.get_level_xp_percent(CACHE_PVE))
 end
 
 local function _ap_message()
     return string.format("%s gained %d AP (%.2f%%)",
-                         esoTERM_char.get_name(CACHE),
-                         esoTERM_char.get_ap_gain(CACHE),
-                         esoTERM_char.get_ava_rank_points_percent(CACHE))
+                         esoTERM_char.get_name(CACHE_CHAR),
+                         esoTERM_pvp.get_ap_gain(CACHE_PVP),
+                         esoTERM_pvp.get_ava_rank_points_percent(CACHE_PVP))
 end
 
 local function _loot_message(item, quantity)
     return string.format("%s received %d %s",
-                         esoTERM_char.get_name(CACHE),
+                         esoTERM_char.get_name(CACHE_CHAR),
                          quantity,
                          zo_strformat(SI_TOOLTIP_ITEM_NAME, item))
 end
 
 local function _combat_enter_message()
     return string.format("%s entered combat",
-                         esoTERM_char.get_name(CACHE))
+                         esoTERM_char.get_name(CACHE_CHAR))
 end
 
 local function _combat_left_message()
-    local length = esoTERM_char.get_combat_lenght(CACHE) >= 1000 and
-                   esoTERM_char.get_combat_lenght(CACHE) or 1000
+    local length = esoTERM_char.get_combat_lenght(CACHE_CHAR) >= 1000 and
+                   esoTERM_char.get_combat_lenght(CACHE_CHAR) or 1000
     return string.format(
         "%s left combat (lasted: %.2fs, dps: %.2f)",
-        esoTERM_char.get_name(CACHE),
-        esoTERM_char.get_combat_lenght(CACHE) / 1000,
+        esoTERM_char.get_name(CACHE_CHAR),
+        esoTERM_char.get_combat_lenght(CACHE_CHAR) / 1000,
         -- TODO: consider the zo_callLater delay
-        esoTERM_char.get_combat_damage(CACHE) * 1000 / length)
+        esoTERM_char.get_combat_damage(CACHE_CHAR) * 1000 / length)
 end
 
 local function _combat_state_message()
-    if esoTERM_char.get_combat_state(CACHE) then
+    if esoTERM_char.get_combat_state(CACHE_CHAR) then
         return _combat_enter_message()
     else
         return _combat_left_message()
@@ -139,9 +141,9 @@ end
 function esoTERM_output.initialize()
     _initialize_message_buffers()
     esoTERM_output.settings = ZO_SavedVars:New("esoTERM_saved_variables",
-                                             1,
-                                             nil,
-                                             esoTERM_output.default_settings)
+                                               1,
+                                               nil,
+                                               esoTERM_output.default_settings)
     EVENT_MANAGER:RegisterForEvent(esoTERM.ADDON_NAME,
                                    EVENT_PLAYER_ACTIVATED,
                                    esoTERM_output.on_player_activated)

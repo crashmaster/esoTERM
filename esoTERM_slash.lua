@@ -13,7 +13,7 @@ function esoTERM_slash.slash_command_handler(command)
 end
 
 function esoTERM_slash.initialize()
-    SLASH_COMMANDS["/" .. esoTERM.ADDON_NAME] = esoTERM_slash.slash_command_handler
+    SLASH_COMMANDS["/" .. string.lower(esoTERM.ADDON_NAME)] = esoTERM_slash.slash_command_handler
 end
 
 return esoTERM_slash
