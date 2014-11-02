@@ -849,19 +849,19 @@ describe("Test the event handlers.", function()
 
         -- {{{
         local function and_that_get_ava_rank_returns(rank)
-            ut_helper.stub_function(esoTERM_char, "get_ava_rank", rank)
+            ut_helper.stub_function(esoTERM_pvp, "get_ava_rank", rank)
         end
 
         local function and_get_ava_rank_was_called_once_witch_cache()
-            assert.spy(esoTERM_char.get_ava_rank).was.called_with(CACHE)
+            assert.spy(esoTERM_pvp.get_ava_rank).was.called_with(CACHE)
         end
 
         local function and_that_get_ava_rank_points_max_returns(points)
-            ut_helper.stub_function(esoTERM_char, "get_ava_rank_points_max", points)
+            ut_helper.stub_function(esoTERM_pvp, "get_ava_rank_points_max", points)
         end
 
         local function and_get_ava_rank_points_max_was_called_once_witch_cache()
-            assert.spy(esoTERM_char.get_ava_rank_points_max).was.called_with(CACHE)
+            assert.spy(esoTERM_pvp.get_ava_rank_points_max).was.called_with(CACHE)
         end
 
         local function when_on_ava_points_update_is_called_with(event, point, sound, diff)

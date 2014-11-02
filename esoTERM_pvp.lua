@@ -103,10 +103,10 @@ function esoTERM_pvp.on_ava_points_update(event, point, sound, diff)
 
         if new_rank_points > CACHE.ava_rank_points_max then
             CACHE.ava_rank = nil
-            CACHE.ava_rank = esoTERM_char.get_ava_rank(CACHE)
+            CACHE.ava_rank = esoTERM_pvp.get_ava_rank(CACHE)
             new_rank_points = new_rank_points - CACHE.ava_rank_points_max
             CACHE.ava_rank_points_max = nil
-            CACHE.ava_rank_points_max = esoTERM_char.get_ava_rank_points_max(CACHE)
+            CACHE.ava_rank_points_max = esoTERM_pvp.get_ava_rank_points_max(CACHE)
         end
 
         CACHE.ava_rank_points = new_rank_points
