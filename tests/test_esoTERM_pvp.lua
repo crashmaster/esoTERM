@@ -807,16 +807,23 @@ describe("Test the event handlers.", function()
     end)
 
     -- {{{
-    local function given_that_esoTERM_output_ap_to_chat_tab_is_stubbed()
-        ut_helper.stub_function(esoTERM_output, "ap_to_chat_tab", nil)
+    local function given_that_esoTERM_output_stdout_is_stubbed()
+        ut_helper.stub_function(esoTERM_output, "stdout", nil)
     end
 
-    local function and_esoTERM_output_ap_to_chat_tab_was_called_once()
-        assert.spy(esoTERM_output.ap_to_chat_tab).was.called_with()
+    local function get_ap_message()
+        return string.format("Gained %d AP (%.2f%%)",
+                             CACHE.ap_gain,
+                             CACHE.ava_rank_points_percent)
+    end
+
+    local function and_esoTERM_output_stdout_was_called_with_ap_message()
+        local message = get_ap_message()
+        assert.spy(esoTERM_output.stdout).was.called_with(message)
     end
 
     local function and_esoTERM_output_ap_to_chat_tab_was_not_called()
-        assert.spy(esoTERM_output.ap_to_chat_tab).was_not.called()
+        assert.spy(esoTERM_output.stdout).was_not.called()
     end
     -- }}}
 
@@ -891,16 +898,16 @@ describe("Test the event handlers.", function()
         -- }}}
 
         it("Happy flow.", function()
-            given_that_esoTERM_output_ap_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_stdout_is_stubbed()
 
             when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, NEW_GAIN)
 
             then_the_ava_properties_in_character_info_where_updated_no_rank_up()
-                and_esoTERM_output_ap_to_chat_tab_was_called_once()
+                and_esoTERM_output_stdout_was_called_with_ap_message()
         end)
 
         it("Zero gain.", function()
-            given_that_esoTERM_output_ap_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_stdout_is_stubbed()
 
             when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, GAIN_ZERO)
 
@@ -909,7 +916,7 @@ describe("Test the event handlers.", function()
         end)
 
         it("Negative gain.", function()
-            given_that_esoTERM_output_ap_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_stdout_is_stubbed()
 
             when_on_ava_points_update_is_called_with(EVENT, POINT, SOUND, GAIN_NEGATIVE)
 
@@ -918,7 +925,7 @@ describe("Test the event handlers.", function()
         end)
 
         it("Gain enough AP to rank up.", function()
-            given_that_esoTERM_output_ap_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_stdout_is_stubbed()
                 and_that_get_ava_rank_returns(NEW_RANK)
                 and_that_get_ava_rank_points_max_returns(NEW_POINTS_MAX)
 
@@ -927,7 +934,7 @@ describe("Test the event handlers.", function()
             then_the_ava_properties_in_character_info_where_updated_rank_up()
                 and_get_ava_rank_was_called_once_witch_cache()
                 and_get_ava_rank_points_max_was_called_once_witch_cache()
-                and_esoTERM_output_ap_to_chat_tab_was_called_once()
+                and_esoTERM_output_stdout_was_called_with_ap_message()
         end)
     end)
 end)

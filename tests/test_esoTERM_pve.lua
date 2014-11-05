@@ -713,16 +713,23 @@ describe("Test the event handlers.", function()
     end)
 
     -- {{{
-    local function given_that_esoTERM_output_xp_to_chat_tab_is_stubbed()
-        ut_helper.stub_function(esoTERM_output, "xp_to_chat_tab", nil)
+    local function given_that_esoTERM_output_stdout_is_stubbed()
+        ut_helper.stub_function(esoTERM_output, "stdout", nil)
     end
 
-    local function and_esoTERM_output_xp_to_chat_tab_was_called_once()
-        assert.spy(esoTERM_output.xp_to_chat_tab).was.called_with()
+    local function get_xp_message()
+        return string.format("Gained %d XP (%.2f%%)",
+                             CACHE.xp_gain,
+                             CACHE.level_xp_percent)
     end
 
-    local function and_esoTERM_output_xp_to_chat_tab_was_not_called()
-        assert.spy(esoTERM_output.xp_to_chat_tab).was_not.called()
+    local function and_esoTERM_output_stdout_was_called_with_xp_message()
+        local message = get_xp_message()
+        assert.spy(esoTERM_output.stdout).was.called_with(message)
+    end
+
+    local function and_esoTERM_output_stdout_was_not_called()
+        assert.spy(esoTERM_output.stdout).was_not.called()
     end
     -- }}}
 
@@ -758,12 +765,12 @@ describe("Test the event handlers.", function()
         -- }}}
 
         it("Happy flow.", function()
-            given_that_esoTERM_output_xp_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_stdout_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, NEW_XP_MAX, REASON)
 
             then_the_xp_properties_in_character_info_where_updated()
-                and_esoTERM_output_xp_to_chat_tab_was_called_once()
+                and_esoTERM_output_stdout_was_called_with_xp_message()
         end)
 
         -- {{{
@@ -776,12 +783,12 @@ describe("Test the event handlers.", function()
         -- }}}
 
         it("If xp > level xp maximum, then 100%.", function()
-            given_that_esoTERM_output_xp_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_stdout_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP_LVL_UP, OLD_XP_MAX, REASON)
 
             then_the_xp_properties_in_character_info_where_updated_to_lvl_up()
-                and_esoTERM_output_xp_to_chat_tab_was_called_once()
+                and_esoTERM_output_stdout_was_called_with_xp_message()
         end)
 
         -- {{{
@@ -793,12 +800,12 @@ describe("Test the event handlers.", function()
         -- }}}
 
         it("If unit is incorrect.", function()
-            given_that_esoTERM_output_xp_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_stdout_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, "foo", NEW_XP, NEW_XP_MAX, REASON)
 
             then_the_xp_properties_in_character_info_where_not_updated()
-                and_esoTERM_output_xp_to_chat_tab_was_not_called()
+                and_esoTERM_output_stdout_was_not_called()
         end)
 
         -- {{{
@@ -810,21 +817,21 @@ describe("Test the event handlers.", function()
         end
         -- }}}
         it("If reason is incorrect (level up drift handling).", function()
-            given_that_esoTERM_output_xp_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_stdout_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, NEW_XP_MAX, -1)
 
             then_the_xp_properties_in_character_info_where_partly_updated()
-                and_esoTERM_output_xp_to_chat_tab_was_called_once()
+                and_esoTERM_output_stdout_was_called_with_xp_message()
         end)
 
         it("If total maximum xp reached.", function()
-            given_that_esoTERM_output_xp_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_stdout_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, 0, REASON)
 
             then_the_xp_properties_in_character_info_where_not_updated()
-                and_esoTERM_output_xp_to_chat_tab_was_not_called()
+                and_esoTERM_output_stdout_was_not_called()
         end)
     end)
 

@@ -82,6 +82,12 @@ function esoTERM_pve.get_xp_gain(cache)
     end
 end
 
+local function get_xp_message()
+    return string.format("Gained %d XP (%.2f%%)",
+                         esoTERM_pve.get_xp_gain(CACHE),
+                         esoTERM_pve.get_level_xp_percent(CACHE))
+end
+
 function esoTERM_pve.on_experience_update(event, unit, xp, xp_max, reason)
     if unit == PLAYER_UNIT_TAG and xp_max ~= 0 and CACHE.level_xp ~= xp then
         if reason > -1 then
@@ -95,7 +101,7 @@ function esoTERM_pve.on_experience_update(event, unit, xp, xp_max, reason)
             CACHE.level_xp_percent = xp * 100 / xp_max
         end
 
-        esoTERM_output.xp_to_chat_tab()
+        esoTERM_output.stdout(get_xp_message())
     end
 end
 

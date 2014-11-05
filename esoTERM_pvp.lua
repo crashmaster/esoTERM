@@ -97,6 +97,12 @@ function esoTERM_pvp.get_ap_gain(cache)
     end
 end
 
+local function get_ap_message()
+    return string.format("Gained %d AP (%.2f%%)",
+                         esoTERM_pvp.get_ap_gain(CACHE),
+                         esoTERM_pvp.get_ava_rank_points_percent(CACHE))
+end
+
 function esoTERM_pvp.on_ava_points_update(event, point, sound, diff)
     if diff > 0 then
         local new_rank_points = CACHE.ava_rank_points + diff
@@ -113,7 +119,7 @@ function esoTERM_pvp.on_ava_points_update(event, point, sound, diff)
         CACHE.ava_rank_points_percent = new_rank_points * 100 / CACHE.ava_rank_points_max
         CACHE.ap_gain = diff
 
-        esoTERM_output.ap_to_chat_tab()
+        esoTERM_output.stdout(get_ap_message())
     end
 end
 
