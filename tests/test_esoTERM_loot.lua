@@ -2,6 +2,127 @@ local requires_for_tests = require("tests/requires_for_tests")
 
 local GLOBAL = _G
 
+local A_STRING = "aAaAa"
+
+local LOOTED_ITEM = A_STRING
+
+local CACHE = esoTERM_loot.cache
+
+describe("Test Loot module initialization.", function()
+    local results = {}
+
+    local return_values_of_the_getter_stubs = {
+        get_looted_item = LOOTED_ITEM,
+    }
+
+    local expected_cached_values = {
+        looted_item = LOOTED_ITEM,
+    }
+
+    local function setup_getter_stubs()
+        for getter, return_value in pairs(return_values_of_the_getter_stubs) do
+            ut_helper.stub_function(esoTERM_loot, getter, return_value)
+        end
+    end
+
+    setup(function()
+        setup_getter_stubs()
+    end)
+
+    teardown(function()
+        results = nil
+        ut_helper.restore_stubbed_functions()
+    end)
+
+    -- {{{
+    local function given_that_cache_is_empty()
+        assert.is.equal(0, ut_helper.table_size(CACHE))
+    end
+
+    local function when_initialize_is_called()
+        esoTERM_loot.initialize()
+    end
+
+    local function then_cache_is_no_longer_empty()
+        assert.is_not.equal(0, ut_helper.table_size(CACHE))
+    end
+
+    local function and_cached_values_became_initialized()
+        for cache_attribute, expected_value in pairs(expected_cached_values) do
+            assert.is.equal(expected_value, CACHE[cache_attribute])
+        end
+    end
+
+    local function and_getter_stubs_were_called_with_cache()
+        for getter, _ in pairs(return_values_of_the_getter_stubs) do
+            assert.spy(esoTERM_loot[getter]).was.called_with(CACHE)
+        end
+    end
+    -- }}}
+
+    it("Loot related data is initialized at startup.",
+    function()
+        given_that_cache_is_empty()
+
+        when_initialize_is_called()
+
+        then_cache_is_no_longer_empty()
+            and_cached_values_became_initialized()
+            and_getter_stubs_were_called_with_cache()
+    end)
+
+end)
+
+describe("Test Loot related data getters.", function()
+    local results = {}
+
+    after_each(function()
+        ut_helper.restore_stubbed_functions()
+    end)
+
+    teardown(function()
+        results = nil
+    end)
+
+    -- {{{
+    local function given_that_cached_looted_item_is_not_set()
+        CACHE.looted_item = nil
+    end
+
+    local function when_get_looted_item_is_called_with_cache()
+        results.looted_item = esoTERM_loot.get_looted_item(CACHE)
+    end
+
+    local function then_the_returned_looted_item_was(item)
+        assert.is.equal(item, results.looted_item)
+    end
+    -- }}}
+
+    it("Query CHARACTER LOOTED ITEM, when NOT CACHED.",
+    function()
+        given_that_cached_looted_item_is_not_set()
+
+        when_get_looted_item_is_called_with_cache()
+
+        then_the_returned_looted_item_was("N/A")
+    end)
+
+    -- {{{
+    local function given_that_cached_looted_item_is(item)
+        CACHE.looted_item = item
+    end
+    -- }}}
+
+    it("Query CHARACTER LOOTED ITEM, when CACHED.",
+    function()
+        given_that_cached_looted_item_is(LOOTED_ITEM)
+
+        when_get_looted_item_is_called_with_cache()
+
+        then_the_returned_looted_item_was(LOOTED_ITEM)
+    end)
+
+end)
 
 describe("Test event handler initialization.", function()
     local addon_name = "esoTERM"
