@@ -49,3 +49,7 @@ SI_TOOLTIP_ITEM_NAME = "SI_TOOLTIP_ITEM_NAME"
 function zo_callLater(func)
     func()
 end
+
+function zo_strformat(format_string, stuff)
+    return stuff
+end

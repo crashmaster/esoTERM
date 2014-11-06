@@ -10,6 +10,13 @@ function esoTERM_loot.get_looted_item(cache)
     end
 end
 
+local function get_loot_message()
+    return string.format("Received %d %s",
+                         1, -- TODO
+                         zo_strformat(SI_TOOLTIP_ITEM_NAME,
+                                      esoTERM_loot.get_looted_item(CACHE)))
+end
+
 function esoTERM_loot.on_loot_received(event, by, item, quantity, sound, loot_type, self)
     if self then
         esoTERM_output.loot_to_chat_tab(item, quantity)
@@ -18,6 +25,7 @@ end
 
 function esoTERM_loot.initialize()
     CACHE.looted_item = esoTERM_loot.get_looted_item(CACHE)
+
     EVENT_MANAGER:RegisterForEvent(esoTERM.ADDON_NAME,
                                    EVENT_LOOT_RECEIVED,
                                    esoTERM_loot.on_loot_received)

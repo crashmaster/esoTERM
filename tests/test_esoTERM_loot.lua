@@ -192,35 +192,42 @@ describe("Test the event handlers.", function()
         local LOOT_TYPE = "loot_type"
 
         -- {{{
-        local function given_that_esoTERM_output_loot_to_chat_tab_is_stubbed()
-            ut_helper.stub_function(esoTERM_output, "loot_to_chat_tab", nil)
+        local function given_that_esoTERM_output_stdout_is_stubbed()
+            ut_helper.stub_function(esoTERM_output, "sysout", nil)
         end
 
         local function when_on_loot_received_is_called_with(event, by, item, quantity, sound, loot_type, self)
             esoTERM_loot.on_loot_received(event, by, item, quantity, sound, loot_type, self)
         end
 
-        local function then_esoTERM_output_loot_to_chat_tab_was_called_with(item, quantity)
-            assert.spy(esoTERM_output.loot_to_chat_tab).was.called_with(item, quantity)
+        local function get_loot_message()
+            return string.format("Received %d %s",
+                                 QUANTITY,
+                                 zo_strformat(SI_TOOLTIP_ITEM_NAME, ITEM))
+        end
+
+        local function then_esoTERM_output_stdout_was_called_with_loot_message()
+            local message = get_loot_message()
+            assert.spy(esoTERM_output.sysout).was.called_with(message)
         end
         -- }}}
 
         it("Happy flow.", function()
-            given_that_esoTERM_output_loot_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_stdout_is_stubbed()
 
             when_on_loot_received_is_called_with(EVENT, BY, ITEM, QUANTITY, SOUND, LOOT_TYPE, true)
 
-            then_esoTERM_output_loot_to_chat_tab_was_called_with(ITEM, QUANTITY)
+            then_esoTERM_output_stdout_was_called_with_loot_message(ITEM, QUANTITY)
         end)
 
         -- {{{
         local function then_esoTERM_output_loot_to_chat_tab_was_not_called()
-            assert.spy(esoTERM_output.loot_to_chat_tab).was_not.called()
+            assert.spy(esoTERM_output.sysout).was_not.called()
         end
         -- }}}
 
         it("If not self.", function()
-            given_that_esoTERM_output_loot_to_chat_tab_is_stubbed()
+            given_that_esoTERM_output_stdout_is_stubbed()
 
             when_on_loot_received_is_called_with(EVENT, BY, ITEM, QUANTITY, SOUND, LOOT_TYPE, false)
 
