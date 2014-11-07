@@ -3,8 +3,10 @@ local requires_for_tests = require("tests/requires_for_tests")
 local GLOBAL = _G
 
 local A_STRING = "aAaAa"
+local A_INTEGER = 1111
 
 local LOOTED_ITEM = A_STRING
+local LOOT_QUANTITY = A_INTEGER
 
 local CACHE = esoTERM_loot.cache
 
@@ -12,10 +14,12 @@ describe("Test Loot module initialization.", function()
     local results = {}
 
     local return_values_of_the_getter_stubs = {
+        get_loot_quantity = LOOT_QUANTITY,
         get_looted_item = LOOTED_ITEM,
     }
 
     local expected_cached_values = {
+        loot_quantity = LOOT_QUANTITY,
         looted_item = LOOTED_ITEM,
     }
 
@@ -70,7 +74,6 @@ describe("Test Loot module initialization.", function()
             and_cached_values_became_initialized()
             and_getter_stubs_were_called_with_cache()
     end)
-
 end)
 
 describe("Test Loot related data getters.", function()
@@ -122,6 +125,43 @@ describe("Test Loot related data getters.", function()
         then_the_returned_looted_item_was(LOOTED_ITEM)
     end)
 
+    -- {{{
+    local function given_that_cached_loot_quantity_is_not_set()
+        CACHE.loot_quantity = nil
+    end
+
+    local function when_get_loot_quantity_is_called_with_cache()
+        results.loot_quantity = esoTERM_loot.get_loot_quantity(CACHE)
+    end
+
+    local function then_the_returned_loot_quantity_was(item)
+        assert.is.equal(item, results.loot_quantity)
+    end
+    -- }}}
+
+    it("Query CHARACTER LOOT QUANTITY, when NOT CACHED.",
+    function()
+        given_that_cached_loot_quantity_is_not_set()
+
+        when_get_loot_quantity_is_called_with_cache()
+
+        then_the_returned_loot_quantity_was(0)
+    end)
+
+    -- {{{
+    local function given_that_cached_loot_quantity_is(item)
+        CACHE.loot_quantity = item
+    end
+    -- }}}
+
+    it("Query CHARACTER LOOT QUANTITY, when CACHED.",
+    function()
+        given_that_cached_loot_quantity_is(LOOT_QUANTITY)
+
+        when_get_loot_quantity_is_called_with_cache()
+
+        then_the_returned_loot_quantity_was(LOOT_QUANTITY)
+    end)
 end)
 
 describe("Test event handler initialization.", function()
@@ -187,13 +227,13 @@ describe("Test the event handlers.", function()
     describe("The on loot received event handler.", function()
         local BY = "by"
         local ITEM = "item"
-        local QUANTITY = 1
+        local QUANTITY = 2
         local SOUND = "sound"
         local LOOT_TYPE = "loot_type"
 
         -- {{{
         local function given_that_esoTERM_output_stdout_is_stubbed()
-            ut_helper.stub_function(esoTERM_output, "sysout", nil)
+            ut_helper.stub_function(esoTERM_output, "stdout", nil)
         end
 
         local function when_on_loot_received_is_called_with(event, by, item, quantity, sound, loot_type, self)
@@ -208,7 +248,7 @@ describe("Test the event handlers.", function()
 
         local function then_esoTERM_output_stdout_was_called_with_loot_message()
             local message = get_loot_message()
-            assert.spy(esoTERM_output.sysout).was.called_with(message)
+            assert.spy(esoTERM_output.stdout).was.called_with(message)
         end
         -- }}}
 
@@ -222,7 +262,7 @@ describe("Test the event handlers.", function()
 
         -- {{{
         local function then_esoTERM_output_loot_to_chat_tab_was_not_called()
-            assert.spy(esoTERM_output.sysout).was_not.called()
+            assert.spy(esoTERM_output.stdout).was_not.called()
         end
         -- }}}
 
