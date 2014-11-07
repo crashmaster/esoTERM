@@ -114,13 +114,28 @@ function esoTERM_char.on_combat_event_update(event,
     esoTERM_output.stdout(message)
 end
 
+local function get_combat_enter_message()
+    return "Entered combat"
+end
+
 function esoTERM_char.enter_combat()
     CACHE.combat_start_time = GetGameTimeMilliseconds()
     CACHE.combat_damage = 0
     EVENT_MANAGER:RegisterForEvent(esoTERM.ADDON_NAME,
                                    EVENT_COMBAT_EVENT,
                                    esoTERM_char.on_combat_event_update)
-    esoTERM_output.combat_state_to_chat_tab()
+
+    esoTERM_output.stdout(get_combat_enter_message())
+end
+
+local function get_combat_left_message()
+    local length = esoTERM_char.get_combat_lenght(CACHE_CHAR) >= 1000 and
+                   esoTERM_char.get_combat_lenght(CACHE_CHAR) or 1000
+    return string.format(
+        "Left combat (lasted: %.2fs, dps: %.2f)",
+        esoTERM_char.get_combat_lenght(CACHE_CHAR) / 1000,
+        -- TODO: consider the zo_callLater delay
+        esoTERM_char.get_combat_damage(CACHE_CHAR) * 1000 / length)
 end
 
 function esoTERM_char.exit_combat()
@@ -131,7 +146,9 @@ function esoTERM_char.exit_combat()
         CACHE.combat_lenght = -1
     end
     EVENT_MANAGER:UnregisterForEvent(esoTERM.ADDON_NAME, EVENT_COMBAT_EVENT)
-    esoTERM_output.combat_state_to_chat_tab()
+
+    esoTERM_output.stdout(get_combat_left_message())
+
     CACHE.combat_start_time = 0
     CACHE.combat_damage = 0
 end

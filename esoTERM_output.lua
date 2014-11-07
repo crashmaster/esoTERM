@@ -8,9 +8,6 @@ esoTERM_output.default_settings = {chat_tab_number = 1}
 esoTERM_output.message_buffers = {}
 
 local function _initialize_message_buffers()
-    esoTERM_output.message_buffers.xp_messages = {}
-    esoTERM_output.message_buffers.ap_messages = {}
-    esoTERM_output.message_buffers.loot_messages = {}
     esoTERM_output.message_buffers.combat_state_messages = {}
 end
 
@@ -40,9 +37,6 @@ local function _set_output_to_chat_tab()
 end
 
 local function _activate_real_print_functions()
-    esoTERM_output.xp_to_chat_tab = print_xp_message
-    esoTERM_output.ap_to_chat_tab = print_ap_message
-    esoTERM_output.loot_to_chat_tab = print_loot_message
     esoTERM_output.combat_state_to_chat_tab = print_combat_state_message
 end
 
@@ -52,27 +46,6 @@ local function _print_message_buffers()
             esoTERM_output.stdout(message)
         end
     end
-end
-
-local function _xp_message()
-    return string.format("%s gained %d XP (%.2f%%)",
-                         esoTERM_char.get_name(CACHE_CHAR),
-                         esoTERM_pve.get_xp_gain(CACHE_PVE),
-                         esoTERM_pve.get_level_xp_percent(CACHE_PVE))
-end
-
-local function _ap_message()
-    return string.format("%s gained %d AP (%.2f%%)",
-                         esoTERM_char.get_name(CACHE_CHAR),
-                         esoTERM_pvp.get_ap_gain(CACHE_PVP),
-                         esoTERM_pvp.get_ava_rank_points_percent(CACHE_PVP))
-end
-
-local function _loot_message(item, quantity)
-    return string.format("%s received %d %s",
-                         esoTERM_char.get_name(CACHE_CHAR),
-                         quantity,
-                         zo_strformat(SI_TOOLTIP_ITEM_NAME, item))
 end
 
 local function _combat_enter_message()
@@ -97,30 +70,6 @@ local function _combat_state_message()
     else
         return _combat_left_message()
     end
-end
-
-function store_xp_message_before_player_activated()
-    table.insert(esoTERM_output.message_buffers.xp_messages, _xp_message())
-end
-
-function print_xp_message()
-    esoTERM_output.stdout(_xp_message())
-end
-
-function store_ap_message_before_player_activated()
-    table.insert(esoTERM_output.message_buffers.ap_messages, _ap_message())
-end
-
-function print_ap_message()
-    esoTERM_output.stdout(_ap_message())
-end
-
-function store_loot_message_before_player_activated(item, quantity)
-    table.insert(esoTERM_output.message_buffers.loot_messages, _loot_message(item, quantity))
-end
-
-function print_loot_message(item, quantity)
-    esoTERM_output.stdout(_loot_message(item, quantity))
 end
 
 function store_combat_state_message_before_player_activated()
@@ -149,9 +98,6 @@ function esoTERM_output.initialize()
                                    esoTERM_output.on_player_activated)
 end
 
-esoTERM_output.xp_to_chat_tab = store_xp_message_before_player_activated
-esoTERM_output.ap_to_chat_tab = store_ap_message_before_player_activated
-esoTERM_output.loot_to_chat_tab = store_loot_message_before_player_activated
 esoTERM_output.combat_state_to_chat_tab = store_combat_state_message_before_player_activated
 
 function esoTERM_output.stdout(message)

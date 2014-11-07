@@ -543,8 +543,8 @@ describe("The on combat-state-change event handler.", function()
         ut_helper.stub_function(esoTERM_char, "get_combat_state", combat_state)
     end
 
-    local function and_that_esoTERM_output_combat_state_to_chat_tab_is_stubbed()
-        ut_helper.stub_function(esoTERM_output, "combat_state_to_chat_tab", nil)
+    local function and_that_esoTERM_output_stdout_is_stubbed()
+        ut_helper.stub_function(esoTERM_output, "stdout", nil)
     end
 
     local function and_that_eso_GetGameTimeMilliseconds_returns(time)
@@ -572,8 +572,8 @@ describe("The on combat-state-change event handler.", function()
         esoTERM_char.on_combat_state_update(event, combat_state)
     end
 
-    local function and_esoTERM_output_combat_state_to_chat_tab_was_called()
-        assert.spy(esoTERM_output.combat_state_to_chat_tab).was.called()
+    local function and_esoTERM_output_stdout_was_called()
+        assert.spy(esoTERM_output.stdout).was.called()
     end
 
     local function then_the_and_cached_combat_state_became(comat_state)
@@ -593,7 +593,7 @@ describe("The on combat-state-change event handler.", function()
         given_that_get_combat_state_returns(OUTER_COMBAT)
             and_that_eso_GetGameTimeMilliseconds_returns(ENTER_TIME)
             and_that_event_manager_RegisterForEvent_is_stubbed()
-            and_that_esoTERM_output_combat_state_to_chat_tab_is_stubbed()
+            and_that_esoTERM_output_stdout_is_stubbed()
 
         when_on_combat_state_update_is_called_with(EVENT, IN_COMBAT)
 
@@ -602,7 +602,7 @@ describe("The on combat-state-change event handler.", function()
             and_cached_combat_start_time_became(ENTER_TIME)
             and_cached_combat_damage_became(0)
             and_event_manager_RegisterForEvent_was_called()
-            and_esoTERM_output_combat_state_to_chat_tab_was_called()
+            and_esoTERM_output_stdout_was_called()
     end)
 
     -- {{{
@@ -645,7 +645,7 @@ describe("The on combat-state-change event handler.", function()
             and_that_event_manager_UnregisterForEvent_is_stubbed()
             and_that_cached_combat_start_time_is(ENTER_TIME)
             and_that_cached_combat_damage_is(DAMAGE)
-            and_that_esoTERM_output_combat_state_to_chat_tab_is_stubbed()
+            and_that_esoTERM_output_stdout_is_stubbed()
 
         when_on_combat_state_update_is_called_with(EVENT, OUTER_COMBAT)
 
@@ -655,7 +655,7 @@ describe("The on combat-state-change event handler.", function()
             and_event_manager_UnregisterForEvent_was_called()
             and_cached_combat_start_time_became(0)
             and_cached_combat_damage_became(0)
-            and_esoTERM_output_combat_state_to_chat_tab_was_called()
+            and_esoTERM_output_stdout_was_called()
     end)
 
     it("Combat length when combat start time is invalid", function()
@@ -663,7 +663,7 @@ describe("The on combat-state-change event handler.", function()
             and_that_get_combat_start_time_returns(0)
             and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME)
             and_that_event_manager_UnregisterForEvent_is_stubbed()
-            and_that_esoTERM_output_combat_state_to_chat_tab_is_stubbed()
+            and_that_esoTERM_output_stdout_is_stubbed()
 
         when_on_combat_state_update_is_called_with(EVENT, OUTER_COMBAT)
 
@@ -673,12 +673,12 @@ describe("The on combat-state-change event handler.", function()
             and_event_manager_UnregisterForEvent_was_called()
             and_cached_combat_start_time_became(0)
             and_cached_combat_damage_became(0)
-            and_esoTERM_output_combat_state_to_chat_tab_was_called()
+            and_esoTERM_output_stdout_was_called()
     end)
 
     -- {{{
-    local function then_esoTERM_output_combat_state_to_chat_tab_was_not_called()
-        assert.spy(esoTERM_output.combat_state_to_chat_tab).was_not.called()
+    local function then_esoTERM_output_stdout_was_not_called()
+        assert.spy(esoTERM_output.stdout).was_not.called()
     end
 
     local function and_eso_GetGameTimeMilliseconds_was_not_called()
@@ -688,12 +688,12 @@ describe("The on combat-state-change event handler.", function()
 
     it("No combat-state-change, when already having that state", function()
         given_that_get_combat_state_returns(OUTER_COMBAT)
-            and_that_esoTERM_output_combat_state_to_chat_tab_is_stubbed()
+            and_that_esoTERM_output_stdout_is_stubbed()
             and_that_eso_GetGameTimeMilliseconds_returns(nil)
 
         when_on_combat_state_update_is_called_with(EVENT, OUTER_COMBAT)
 
-        then_esoTERM_output_combat_state_to_chat_tab_was_not_called()
+        then_esoTERM_output_stdout_was_not_called()
             and_eso_GetGameTimeMilliseconds_was_not_called()
     end)
 end)
