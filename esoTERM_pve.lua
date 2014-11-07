@@ -28,27 +28,11 @@ function esoTERM_pve.get_level(cache)
     end
 end
 
-local function _get_level_xp(cache)
-    if esoTERM_pve.is_veteran(cache) == false then
-        return GetUnitXP(PLAYER_UNIT_TAG)
-    else
-        return GetUnitVeteranPoints(PLAYER_UNIT_TAG)
-    end
-end
-
 function esoTERM_pve.get_level_xp(cache)
     if cache.level_xp ~= nil then
         return cache.level_xp
     else
-        return _get_level_xp(cache)
-    end
-end
-
-local function _get_level_xp_max(cache)
-    if esoTERM_pve.is_veteran(cache) == false then
-        return GetUnitXPMax(PLAYER_UNIT_TAG)
-    else
-        return GetUnitVeteranPointsMax(PLAYER_UNIT_TAG)
+        return GetUnitXP(PLAYER_UNIT_TAG)
     end
 end
 
@@ -56,7 +40,7 @@ function esoTERM_pve.get_level_xp_max(cache)
     if cache.level_xp_max ~= nil then
         return cache.level_xp_max
     else
-        return _get_level_xp_max(cache)
+        return GetUnitXPMax(PLAYER_UNIT_TAG)
     end
 end
 
