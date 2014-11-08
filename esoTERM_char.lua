@@ -129,22 +129,19 @@ function esoTERM_char.enter_combat()
 end
 
 local function get_combat_left_message()
-    local length = esoTERM_char.get_combat_lenght(CACHE_CHAR) >= 1000 and
-                   esoTERM_char.get_combat_lenght(CACHE_CHAR) or 1000
+    local length = esoTERM_char.get_combat_lenght(CACHE) >= 1000 and
+                   esoTERM_char.get_combat_lenght(CACHE) or 1000
     return string.format(
         "Left combat (lasted: %.2fs, dps: %.2f)",
-        esoTERM_char.get_combat_lenght(CACHE_CHAR) / 1000,
+        esoTERM_char.get_combat_lenght(CACHE) / 1000,
         -- TODO: consider the zo_callLater delay
-        esoTERM_char.get_combat_damage(CACHE_CHAR) * 1000 / length)
+        esoTERM_char.get_combat_damage(CACHE) * 1000 / length)
 end
 
 function esoTERM_char.exit_combat()
     local combat_start_time = esoTERM_char.get_combat_start_time(CACHE)
-    if combat_start_time > 0 then
-        CACHE.combat_lenght = GetGameTimeMilliseconds() - combat_start_time
-    else
-        CACHE.combat_lenght = -1
-    end
+    CACHE.combat_lenght = GetGameTimeMilliseconds() - combat_start_time
+
     EVENT_MANAGER:UnregisterForEvent(esoTERM.ADDON_NAME, EVENT_COMBAT_EVENT)
 
     esoTERM_output.stdout(get_combat_left_message())

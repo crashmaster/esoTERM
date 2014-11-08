@@ -528,8 +528,9 @@ describe("The on combat-state-change event handler.", function()
     local OUTER_COMBAT = false
     local IN_COMBAT = true
     local ENTER_TIME = 10
-    local EXIT_TIME = 50
-    local DAMAGE = 80
+    local EXIT_TIME = 1510
+    local EXIT_TIME_ONE_HIT = 210
+    local DAMAGE = 8000
 
     after_each(function()
         CACHE.combat_state = nil
@@ -572,8 +573,8 @@ describe("The on combat-state-change event handler.", function()
         esoTERM_char.on_combat_state_update(event, combat_state)
     end
 
-    local function and_esoTERM_output_stdout_was_called()
-        assert.spy(esoTERM_output.stdout).was.called()
+    local function and_esoTERM_output_stdout_was_called_with(message)
+        assert.spy(esoTERM_output.stdout).was.called_with(message)
     end
 
     local function then_the_and_cached_combat_state_became(comat_state)
@@ -586,6 +587,10 @@ describe("The on combat-state-change event handler.", function()
 
     local function and_cached_combat_damage_became(damage)
         assert.is.equal(damage, CACHE.combat_damage)
+    end
+
+    local function get_enter_combat_message()
+        return "Entered combat"
     end
     -- }}}
 
@@ -602,7 +607,7 @@ describe("The on combat-state-change event handler.", function()
             and_cached_combat_start_time_became(ENTER_TIME)
             and_cached_combat_damage_became(0)
             and_event_manager_RegisterForEvent_was_called()
-            and_esoTERM_output_stdout_was_called()
+            and_esoTERM_output_stdout_was_called_with(get_enter_combat_message())
     end)
 
     -- {{{
@@ -636,6 +641,13 @@ describe("The on combat-state-change event handler.", function()
     local function and_cached_combat_lenght_became(lenght)
         assert.is.equal(lenght, CACHE.combat_lenght)
     end
+
+    local function get_exit_combat_message()
+        return string.format(
+            "Left combat (lasted: %.2fs, dps: %.2f)",
+            (EXIT_TIME - ENTER_TIME) / 1000,
+            DAMAGE * 1000 / (EXIT_TIME - ENTER_TIME))
+    end
     -- }}}
 
     it("From in combat to out of combat", function()
@@ -655,25 +667,35 @@ describe("The on combat-state-change event handler.", function()
             and_event_manager_UnregisterForEvent_was_called()
             and_cached_combat_start_time_became(0)
             and_cached_combat_damage_became(0)
-            and_esoTERM_output_stdout_was_called()
+            and_esoTERM_output_stdout_was_called_with(get_exit_combat_message())
     end)
 
-    it("Combat length when combat start time is invalid", function()
+    -- {{{
+    local function get_exit_one_hit_combat_message()
+        return string.format(
+            "Left combat (lasted: %.2fs, dps: %.2f)",
+            (EXIT_TIME_ONE_HIT - ENTER_TIME) / 1000, DAMAGE)
+    end
+    -- }}}
+
+    it("One hit the enemy.", function()
         given_that_get_combat_state_returns(IN_COMBAT)
-            and_that_get_combat_start_time_returns(0)
-            and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME)
+            and_that_get_combat_start_time_returns(ENTER_TIME)
+            and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME_ONE_HIT)
             and_that_event_manager_UnregisterForEvent_is_stubbed()
+            and_that_cached_combat_start_time_is(ENTER_TIME)
+            and_that_cached_combat_damage_is(DAMAGE)
             and_that_esoTERM_output_stdout_is_stubbed()
 
         when_on_combat_state_update_is_called_with(EVENT, OUTER_COMBAT)
 
         then_the_and_cached_combat_state_became(OUTER_COMBAT)
             and_get_combat_start_time_was_called_once_with_cache()
-            and_cached_combat_lenght_became(-1)
+            and_cached_combat_lenght_became(EXIT_TIME_ONE_HIT - ENTER_TIME)
             and_event_manager_UnregisterForEvent_was_called()
             and_cached_combat_start_time_became(0)
             and_cached_combat_damage_became(0)
-            and_esoTERM_output_stdout_was_called()
+            and_esoTERM_output_stdout_was_called_with(get_exit_one_hit_combat_message())
     end)
 
     -- {{{
@@ -807,6 +829,13 @@ describe("The on combat event handler.", function()
         end
     end)
 
+    -- {{{
+    local function get_damage_message()
+        return string.format("%s deals damage with %s for: %d",
+                             NAME, ABILITY, ABILITY_HIT)
+    end
+    -- }}}
+
     it("Print message for damage done by player.", function()
         given_that_parameter_value_is(HIT_VALUE, ABILITY_HIT)
             and_that_esoTERM_char_get_name_returns(NAME)
@@ -815,10 +844,7 @@ describe("The on combat event handler.", function()
         when_on_combat_event_update_is_called()
 
         then_esoTERM_char_get_name_was_called()
-            and_esoTERM_output_stdout_was_called_with(
-                string.format("%s deals damage with %s for: %d",
-                              NAME, ABILITY, ABILITY_HIT)
-            )
+            and_esoTERM_output_stdout_was_called_with(get_damage_message())
     end)
 
     it("Print message for damage done by pet.", function()
@@ -829,10 +855,7 @@ describe("The on combat event handler.", function()
         when_on_combat_event_update_is_called()
 
         then_esoTERM_char_get_name_was_called()
-            and_esoTERM_output_stdout_was_called_with(
-                string.format("%s deals damage with %s for: %d",
-                              NAME, ABILITY, ABILITY_HIT)
-            )
+            and_esoTERM_output_stdout_was_called_with(get_damage_message())
     end)
 end)
 
