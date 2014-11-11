@@ -7,6 +7,7 @@ function esoTERM_init.initialize(addon_name)
         esoTERM_pvp.initialize()
         esoTERM_loot.initialize()
         esoTERM_slash.initialize()
+        esoTERM_window.initialize()
         esoTERM_output.initialize()
 
         EVENT_MANAGER:UnregisterForEvent(esoTERM.ADDON_NAME, EVENT_ADD_ON_LOADED)

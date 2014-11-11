@@ -9,6 +9,8 @@ esoTERM_output.message_buffers = {}
 
 local function _initialize_message_buffers()
     esoTERM_output.message_buffers.combat_state_messages = {}
+    esoTERM_output.message_buffers.stdout = {}
+    esoTERM_output.message_buffers.sysout = {}
 end
 
 function esoTERM_output.set_n_th_chat_tab_as_output(chat_tab_number)
@@ -101,11 +103,22 @@ end
 esoTERM_output.combat_state_to_chat_tab = store_combat_state_message_before_player_activated
 
 function esoTERM_output.stdout(message)
-    esoTERM_output.text_box:AddMessage(message)
+    esoTERM_window.tb:AddMessage(message)
 end
 
 function esoTERM_output.sysout(message)
     d(esoTERM_output.PROMPT .. message)
 end
+
+-- function store_stdout_messages_before_player_activated(message)
+--     table.insert(esoTERM_output.message_buffers.stdout, message)
+-- end
+-- 
+-- function store_sysout_messages_before_player_activated(message)
+--     table.insert(esoTERM_output.message_buffers.sysout, message)
+-- end
+-- 
+-- esoTERM_output.stdout = store_stdout_messages_before_player_activated
+-- esoTERM_output.sysout = store_sysout_messages_before_player_activated
 
 return esoTERM_output

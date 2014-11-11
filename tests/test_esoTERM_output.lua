@@ -98,4 +98,51 @@ describe("Test output initialization", function()
     end)
 end)
 
+-- describe("Test output", function()
+--     before_each(function()
+--         esoTERM_output.message_buffers.stdout = {}
+--     end)
+-- 
+--     after_each(function()
+--         ut_helper.restore_stubbed_functions()
+--     end)
+-- 
+--     -- {{{
+--     local function when_message_is_sent_to_stdout(message)
+--         esoTERM_output.stdout(message)
+--     end
+-- 
+--     local function then_stdout_message_buffer_contains(message)
+--         assert.is.equal(message, esoTERM_output.message_buffers.stdout[1])
+--     end
+--     -- }}}
+-- 
+--     it("Messages to sysout are stored before player is activated.",
+--     function()
+--         when_message_is_sent_to_stdout("foobar")
+--         then_stdout_message_buffer_contains("foobar")
+--     end)
+-- 
+--     -- {{{
+--     local function when_message_is_sent_to_sysout(message)
+--         esoTERM_output.sysout(message)
+--     end
+-- 
+--     local function then_sysout_message_buffer_contains(message)
+--         assert.is.equal(message, esoTERM_output.message_buffers.sysout[1])
+--     end
+--     -- }}}
+-- 
+--     it("Messages to sysout are stored before player is activated.",
+--     function()
+--         when_message_is_sent_to_sysout("foobar")
+--         then_sysout_message_buffer_contains("foobar")
+--     end)
+-- 
+--     it("Messages to sysout are printed after player is activated.",
+--     function()
+-- 
+--     end)
+-- end)
+
 -- vim:fdm=marker

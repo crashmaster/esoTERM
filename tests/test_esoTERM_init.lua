@@ -28,6 +28,10 @@ describe("Test esoTERM initialization", function()
         ut_helper.stub_function(esoTERM_slash, "initialize", nil)
     end
 
+    local function and_esoTERM_window_initialize_is_stubbed()
+        ut_helper.stub_function(esoTERM_window, "initialize", nil)
+    end
+
     local function and_esoTERM_output_initialize_is_stubbed()
         ut_helper.stub_function(esoTERM_output, "initialize", nil)
     end
@@ -40,12 +44,32 @@ describe("Test esoTERM initialization", function()
         esoTERM_init.initialize(name)
     end
 
-    local function then_esoTERM_loot_initialize_was_called_once_with()
+    local function then_esoTERM_char_initialize_was_called_once_with()
+        assert.spy(esoTERM_char.initialize).was.called_with()
+    end
+
+    local function and_esoTERM_pve_initialize_was_called_once_with()
+        assert.spy(esoTERM_pve.initialize).was.called_with()
+    end
+
+    local function and_esoTERM_pvp_initialize_was_called_once_with()
+        assert.spy(esoTERM_pvp.initialize).was.called_with()
+    end
+
+    local function and_esoTERM_loot_initialize_was_called_once_with()
         assert.spy(esoTERM_loot.initialize).was.called_with()
     end
 
-    local function and_esoTERM_char_initialize_was_called_once_with()
-        assert.spy(esoTERM_char.initialize).was.called_with()
+    local function and_esoTERM_slash_initialize_was_called_once_with()
+        assert.spy(esoTERM_slash.initialize).was.called_with()
+    end
+
+    local function and_esoTERM_window_initialize_was_called_once_with()
+        assert.spy(esoTERM_window.initialize).was.called_with()
+    end
+
+    local function and_esoTERM_output_initialize_was_called_once_with()
+        assert.spy(esoTERM_output.initialize).was.called_with()
     end
 
     local function and_event_manager_UnregisterForEvent_was_called_with(param1, param2)
@@ -63,13 +87,19 @@ describe("Test esoTERM initialization", function()
             and_esoTERM_pvp_initialize_is_stubbed()
             and_esoTERM_loot_initialize_is_stubbed()
             and_esoTERM_slash_initialize_is_stubbed()
+            and_esoTERM_window_initialize_is_stubbed()
             and_esoTERM_output_initialize_is_stubbed()
             and_event_manager_UnregisterForEvent_is_stubbed()
 
         when_esoTERM_init_initialize_is_called_with(ADDON_NAME)
 
-        then_esoTERM_loot_initialize_was_called_once_with()
-            and_esoTERM_char_initialize_was_called_once_with()
+        then_esoTERM_char_initialize_was_called_once_with()
+            and_esoTERM_pve_initialize_was_called_once_with()
+            and_esoTERM_pvp_initialize_was_called_once_with()
+            and_esoTERM_loot_initialize_was_called_once_with()
+            and_esoTERM_slash_initialize_was_called_once_with()
+            and_esoTERM_window_initialize_was_called_once_with()
+            and_esoTERM_output_initialize_was_called_once_with()
             and_event_manager_UnregisterForEvent_was_called_with(esoTERM.ADDON_NAME,
                                                                  EVENT_ADD_ON_LOADED)
     end)
