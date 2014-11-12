@@ -1,6 +1,5 @@
 ## Title: esoTERM (IN DEV!)
 ## APIVersion: 100010
-## SavedVariables: esoTERM_saved_variables
 
 esoTERM.lua
 esoTERM_char.lua

@@ -1,6 +1,5 @@
 EVENT_MANAGER = require("tests/fake_event_manager")
 SLASH_STUFF = require("tests/fake_slash_stuff")
-ZO_SavedVars = require("tests/fake_zo_saved_vars")
 ZO_Globals = require("tests/fake_zo_globals")
 
 ut_helper = require("tests/ut_helper")

@@ -58,91 +58,61 @@ describe("Test output initialization", function()
 
         then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_register_params)
     end)
+end)
+
+describe("Test output.", function()
+    before_each(function()
+        esoTERM_output.message_buffers.stdout = {}
+        esoTERM_output.message_buffers.sysout = {}
+    end)
+
+    after_each(function()
+        ut_helper.restore_stubbed_functions()
+    end)
 
     -- {{{
-    local function given_that_ZO_SavedVars_New_is_stubbed()
-        ut_helper.stub_function(ZO_SavedVars, "New", nil)
+    local function when_message_is_sent_to_stdout(message)
+        esoTERM_output.stdout(message)
     end
 
-    local function and_expected_saved_vars_new_is_set_up()
-        expected_new_params.chat_saved_settings = {
-            table_name = "esoTERM_saved_variables",
-            version = 1,
-            namespace = nil,
-            default = {chat_tab_number = 1}
-        }
-    end
-
-    local function then_ZO_SavedVars_New_was_called_with(expected_params)
-        assert.spy(ZO_SavedVars.New).was.called(ut_helper.table_size(expected_params))
-        for param in pairs(expected_params) do
-            assert.spy(ZO_SavedVars.New).was.called_with(
-                ZO_SavedVars,
-                expected_params[param].table_name,
-                expected_params[param].version,
-                expected_params[param].namespace,
-                expected_params[param].default
-            )
-        end
+    local function then_stdout_message_buffer_contains(message)
+        assert.is.equal(message, esoTERM_output.message_buffers.stdout[1])
     end
     -- }}}
 
-    it("Saved variables loaded",
+    it("Messages to sysout are stored before player is activated.",
     function()
-        given_that_ZO_SavedVars_New_is_stubbed()
-            and_expected_saved_vars_new_is_set_up()
+        when_message_is_sent_to_stdout("foobar")
+        then_stdout_message_buffer_contains("foobar")
+    end)
 
-        when_initialize_is_called()
+    -- {{{
+    local function when_message_is_sent_to_sysout(message)
+        esoTERM_output.sysout(message)
+    end
 
-        then_ZO_SavedVars_New_was_called_with(expected_new_params)
+    local function then_sysout_message_buffer_contains(message)
+        assert.is.equal(message, esoTERM_output.message_buffers.sysout[1])
+    end
+    -- }}}
+
+    it("Messages to sysout are stored before player is activated.",
+    function()
+        when_message_is_sent_to_sysout("foobar")
+        then_sysout_message_buffer_contains("foobar")
+    end)
+
+    -- {{{
+    local function given_that_esoTERM_window_tb_AddMessage_is_stubbed()
+        ut_helper.stub_function(esoTERM_window.tb, "AddMessage", nil)
+    end
+    -- }}}
+
+    it("Messages to sysout are printed after player is activated.",
+    function()
+        given_that_esoTERM_window_tb_AddMessage_is_stubbed()
+
     end)
 end)
-
--- describe("Test output", function()
---     before_each(function()
---         esoTERM_output.message_buffers.stdout = {}
---     end)
--- 
---     after_each(function()
---         ut_helper.restore_stubbed_functions()
---     end)
--- 
---     -- {{{
---     local function when_message_is_sent_to_stdout(message)
---         esoTERM_output.stdout(message)
---     end
--- 
---     local function then_stdout_message_buffer_contains(message)
---         assert.is.equal(message, esoTERM_output.message_buffers.stdout[1])
---     end
---     -- }}}
--- 
---     it("Messages to sysout are stored before player is activated.",
---     function()
---         when_message_is_sent_to_stdout("foobar")
---         then_stdout_message_buffer_contains("foobar")
---     end)
--- 
---     -- {{{
---     local function when_message_is_sent_to_sysout(message)
---         esoTERM_output.sysout(message)
---     end
--- 
---     local function then_sysout_message_buffer_contains(message)
---         assert.is.equal(message, esoTERM_output.message_buffers.sysout[1])
---     end
---     -- }}}
--- 
---     it("Messages to sysout are stored before player is activated.",
---     function()
---         when_message_is_sent_to_sysout("foobar")
---         then_sysout_message_buffer_contains("foobar")
---     end)
--- 
---     it("Messages to sysout are printed after player is activated.",
---     function()
--- 
---     end)
--- end)
 
 -- vim:fdm=marker
