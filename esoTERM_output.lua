@@ -12,10 +12,6 @@ local function _clear_message_buffers()
     esoTERM_output.message_buffers.sysout = {}
 end
 
-local function _activate_real_print_functions()
-    esoTERM_output.combat_state_to_chat_tab = print_combat_state_message
-end
-
 local function _print_message_buffers()
     for _, buffer in pairs(esoTERM_output.message_buffers) do
         for _, message in ipairs(buffer) do
@@ -56,8 +52,11 @@ function print_combat_state_message()
     esoTERM_output.stdout(_combat_state_message())
 end
 
+local function _activate_real_print_functions()
+    esoTERM_output.stdout = esoTERM_output.real_stdout
+end
+
 function esoTERM_output.on_player_activated(event)
-    _set_output_to_chat_tab()
     _activate_real_print_functions()
     _print_message_buffers()
     _clear_message_buffers()
@@ -72,11 +71,11 @@ end
 
 esoTERM_output.combat_state_to_chat_tab = store_combat_state_message_before_player_activated
 
-function esoTERM_output.stdout(message)
-    esoTERM_window.tb:AddMessage(message)
+function esoTERM_output.real_stdout(message)
+    esoTERM_window.print_message(message)
 end
 
-function esoTERM_output.sysout(message)
+function esoTERM_output.real_sysout(message)
     d(esoTERM_output.PROMPT .. message)
 end
 

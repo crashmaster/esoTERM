@@ -26,6 +26,10 @@ function esoTERM_window.create()
     HUD_UI_SCENE:AddFragment(fragment)
 end
 
+function esoTERM_window.print_message(message)
+    esoTERM_window.tb:AddMessage(message)
+end
+
 function esoTERM_window.initialize()
     esoTERM_window.create()
 end

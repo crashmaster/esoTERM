@@ -83,6 +83,7 @@ describe("Test output.", function()
     it("Messages to sysout are stored before player is activated.",
     function()
         when_message_is_sent_to_stdout("foobar")
+
         then_stdout_message_buffer_contains("foobar")
     end)
 
@@ -99,19 +100,55 @@ describe("Test output.", function()
     it("Messages to sysout are stored before player is activated.",
     function()
         when_message_is_sent_to_sysout("foobar")
+
         then_sysout_message_buffer_contains("foobar")
     end)
 
     -- {{{
-    local function given_that_esoTERM_window_tb_AddMessage_is_stubbed()
-        ut_helper.stub_function(esoTERM_window.tb, "AddMessage", nil)
+    local function given_that_esoTERM_window_print_message_is_stubbed()
+        ut_helper.stub_function(esoTERM_window, "print_message", nil)
     end
+
+    local function and_message_is_sent_to_stdout(message)
+        esoTERM_output.stdout(message)
+    end
+
+    local function when_player_activated_event_occured()
+        esoTERM_output.on_player_activated(nil)
+    end
+
+    local function then_esoTERM_window_print_message_was_called_with(buffered, unbuffered)
+        assert.spy(esoTERM_window.print_message).was.called_with(buffered)
+        assert.spy(esoTERM_window.print_message).was.called_with(unbuffered)
+    end
+
+    local function and_esoTERM_output_stdout_message_buffer_became_empty()
+        assert.is.equal(0, ut_helper.table_size(esoTERM_output.message_buffers.stdout))
+    end
+    -- }}}
+
+    it("Messages to stdout are printed after player is activated.",
+    function()
+        given_that_esoTERM_window_print_message_is_stubbed()
+            and_message_is_sent_to_stdout("foobar")
+
+        when_player_activated_event_occured()
+            and_message_is_sent_to_stdout("foobar2")
+
+        then_esoTERM_window_print_message_was_called_with("foobar", "foobar2")
+            and_esoTERM_output_stdout_message_buffer_became_empty()
+    end)
+
+    -- {{{
+    local function given_that_d_stubbed()
+        ut_helper.stub_function(GLOBAL, "d", nil)
+    end
+
     -- }}}
 
     it("Messages to sysout are printed after player is activated.",
     function()
-        given_that_esoTERM_window_tb_AddMessage_is_stubbed()
-
+        given_that_d_stubbed()
     end)
 end)
 
