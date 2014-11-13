@@ -107,9 +107,6 @@ function esoTERM_pve.initialize()
                                    EVENT_EXPERIENCE_UPDATE,
                                    esoTERM_pve.on_experience_update)
     EVENT_MANAGER:RegisterForEvent(esoTERM.ADDON_NAME,
-                                   EVENT_VETERAN_POINTS_UPDATE,
-                                   esoTERM_pve.on_experience_update)
-    EVENT_MANAGER:RegisterForEvent(esoTERM.ADDON_NAME,
                                    EVENT_LEVEL_UPDATE,
                                    esoTERM_pve.on_level_update)
     EVENT_MANAGER:RegisterForEvent(esoTERM.ADDON_NAME,

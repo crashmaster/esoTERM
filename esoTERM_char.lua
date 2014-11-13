@@ -107,8 +107,7 @@ function esoTERM_char.on_combat_event_update(event,
     if damage_type < 1 then return end
 
     CACHE.combat_damage = CACHE.combat_damage + hit_value
-    local message = string.format("%s deals damage with %s for: %d",
-                                  esoTERM_char.get_name(CACHE),
+    local message = string.format("Dealt damage with %s for: %d",
                                   ability_name,
                                   hit_value)
     esoTERM_output.stdout(message)
