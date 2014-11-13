@@ -62,8 +62,7 @@ end)
 
 describe("Test output.", function()
     before_each(function()
-        esoTERM_output.message_buffers.stdout = {}
-        esoTERM_output.message_buffers.sysout = {}
+        esoTERM_output.initialize()
     end)
 
     after_each(function()
@@ -144,11 +143,30 @@ describe("Test output.", function()
         ut_helper.stub_function(GLOBAL, "d", nil)
     end
 
+    local function and_message_is_sent_to_sysout(message)
+        esoTERM_output.sysout(message)
+    end
+
+    local function then_d_was_called_with(buffered, unbuffered)
+        assert.spy(GLOBAL.d).was.called_with(buffered)
+        assert.spy(GLOBAL.d).was.called_with(unbuffered)
+    end
+
+    local function and_esoTERM_output_sysout_message_buffer_became_empty()
+        assert.is.equal(0, ut_helper.table_size(esoTERM_output.message_buffers.sysout))
+    end
     -- }}}
 
     it("Messages to sysout are printed after player is activated.",
     function()
         given_that_d_stubbed()
+            and_message_is_sent_to_sysout("barfoo")
+
+        when_player_activated_event_occured()
+            and_message_is_sent_to_sysout("barfoo2")
+
+        then_d_was_called_with("[esoTERM] barfoo", "[esoTERM] barfoo2")
+            and_esoTERM_output_sysout_message_buffer_became_empty()
     end)
 end)
 
