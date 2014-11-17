@@ -19,10 +19,13 @@ function esoTERM_loot.get_looted_item(cache)
 end
 
 local function get_loot_message()
-    return string.format("Received %d %s",
+    local item = esoTERM_loot.get_looted_item(CACHE)
+    local color = GetItemQualityColor(GetItemLinkQuality(item))
+    return string.format("Received %d %s%s%s",
                          esoTERM_loot.get_loot_quantity(CACHE),
-                         zo_strformat(SI_TOOLTIP_ITEM_NAME,
-                                      esoTERM_loot.get_looted_item(CACHE)))
+                         color:Colorize("["),
+                         zo_strformat(SI_TOOLTIP_ITEM_NAME, item),
+                         color:Colorize("]"))
 end
 
 function esoTERM_loot.on_loot_received(event, by, item, quantity, sound, loot_type, self)
@@ -32,6 +35,7 @@ function esoTERM_loot.on_loot_received(event, by, item, quantity, sound, loot_ty
 
     CACHE.loot_quantity = quantity
     CACHE.looted_item = item
+
     esoTERM_output.stdout(get_loot_message())
 end
 
