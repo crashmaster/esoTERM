@@ -773,27 +773,15 @@ describe("The on combat event handler.", function()
         parameter_values[parameter] = value
     end
 
-    local function and_that_esoTERM_char_get_name_returns(name)
-        ut_helper.stub_function(esoTERM_char, "get_name", name)
-    end
-
-    local function then_esoTERM_char_get_name_was_called()
-        assert.spy(esoTERM_char.get_name).was.called()
-    end
-
-    local function then_esoTERM_char_get_name_was_not_called()
-        assert.spy(esoTERM_char.get_name).was_not.called()
-    end
-
     local function and_that_esoTERM_output_stdout_is_stubbed()
         ut_helper.stub_function(esoTERM_output, "stdout", nil)
     end
 
-    local function and_esoTERM_output_stdout_was_called_with(message)
+    local function then_esoTERM_output_stdout_was_called_with(message)
         assert.spy(esoTERM_output.stdout).was.called_with(message)
     end
 
-    local function and_esoTERM_output_stdout_was_not_called()
+    local function then_esoTERM_output_stdout_was_not_called()
         assert.spy(esoTERM_output.stdout).was_not.called()
     end
 
@@ -817,13 +805,11 @@ describe("The on combat event handler.", function()
         }
         for parameter, value in pairs(test_parameters) do
             given_that_parameter_value_is(parameter, value)
-                and_that_esoTERM_char_get_name_returns(NAME)
                 and_that_esoTERM_output_stdout_is_stubbed()
 
             when_on_combat_event_update_is_called()
 
-            then_esoTERM_char_get_name_was_not_called()
-                and_esoTERM_output_stdout_was_not_called()
+            then_esoTERM_output_stdout_was_not_called()
 
             reset_event_parameters()
         end
@@ -831,31 +817,26 @@ describe("The on combat event handler.", function()
 
     -- {{{
     local function get_damage_message()
-        return string.format("%s deals damage with %s for: %d",
-                             NAME, ABILITY, ABILITY_HIT)
+        return string.format("Dealt damage with %s for: %d", ABILITY, ABILITY_HIT)
     end
     -- }}}
 
     it("Print message for damage done by player.", function()
         given_that_parameter_value_is(HIT_VALUE, ABILITY_HIT)
-            and_that_esoTERM_char_get_name_returns(NAME)
             and_that_esoTERM_output_stdout_is_stubbed()
 
         when_on_combat_event_update_is_called()
 
-        then_esoTERM_char_get_name_was_called()
-            and_esoTERM_output_stdout_was_called_with(get_damage_message())
+        then_esoTERM_output_stdout_was_called_with(get_damage_message())
     end)
 
     it("Print message for damage done by pet.", function()
         given_that_parameter_value_is(SOURCE_TYPE, COMBAT_UNIT_TYPE_PLAYER_PET)
-            and_that_esoTERM_char_get_name_returns(NAME)
             and_that_esoTERM_output_stdout_is_stubbed()
 
         when_on_combat_event_update_is_called()
 
-        then_esoTERM_char_get_name_was_called()
-            and_esoTERM_output_stdout_was_called_with(get_damage_message())
+        then_esoTERM_output_stdout_was_called_with(get_damage_message())
     end)
 end)
 

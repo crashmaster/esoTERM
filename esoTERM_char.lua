@@ -149,6 +149,12 @@ function esoTERM_char.exit_combat()
     CACHE.combat_damage = 0
 end
 
+function esoTERM_char.on_unit_death_state_change(event, unit, is_dead)
+    if unit == PLAYER_UNIT_TAG then
+        esoTERM_output.sysout(string.format("unit: %s is_dead: %s", unit, tostring(is_dead)))
+    end
+end
+
 function esoTERM_char.initialize()
     CACHE.gender = esoTERM_char.get_gender(CACHE)
     CACHE.class = esoTERM_char.get_class(CACHE)
@@ -161,6 +167,9 @@ function esoTERM_char.initialize()
     EVENT_MANAGER:RegisterForEvent(esoTERM.ADDON_NAME,
                                    EVENT_PLAYER_COMBAT_STATE,
                                    esoTERM_char.on_combat_state_update)
+    EVENT_MANAGER:RegisterForEvent(esoTERM.ADDON_NAME,
+                                   EVENT_UNIT_DEATH_STATE_CHANGED,
+                                   esoTERM_char.on_unit_death_state_change)
 end
 
 return esoTERM_char

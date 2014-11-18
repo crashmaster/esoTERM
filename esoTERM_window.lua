@@ -1,5 +1,34 @@
 esoTERM_window = {}
 
+local function set_window_visibility(window)
+    local fragment = ZO_SimpleSceneFragment:New(window)
+
+    SCENE_MANAGER:GetScene("achievements"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("cadwellsAlmanac"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("campaignBrowser"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("campaignOverview"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("friendsList"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("groupList"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("groupingTools"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("guildHistory"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("guildHome"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("guildRanks"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("guildRoster"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("helpCustomerSupport"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("helpTutorials"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("hud"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("hudui"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("ignoreList"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("leaderboards"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("loreLibrary"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("mailInbox"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("mailSend"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("notifications"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("questJournal"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("skills"):AddFragment(fragment)
+    SCENE_MANAGER:GetScene("stats"):AddFragment(fragment)
+end
+
 function esoTERM_window.create()
     etw = WINDOW_MANAGER:CreateTopLevelWindow()
     etw:SetMouseEnabled(true)
@@ -19,11 +48,9 @@ function esoTERM_window.create()
     esoTERM_window.tb:SetClearBufferAfterFadeout(false)
     esoTERM_window.tb:SetMaxHistoryLines(10000)
     esoTERM_window.tb:SetAnchorFill(etw)
-    esoTERM_window.tb:SetLineFade(30, 1)
+    esoTERM_window.tb:SetLineFade(60, 1)
 
-    local fragment = ZO_SimpleSceneFragment:New(etw)
-    HUD_SCENE:AddFragment(fragment)
-    HUD_UI_SCENE:AddFragment(fragment)
+    set_window_visibility(etw)
 end
 
 function esoTERM_window.print_message(message)

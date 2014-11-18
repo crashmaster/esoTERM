@@ -36,6 +36,10 @@ describe("Test esoTERM initialization", function()
         ut_helper.stub_function(esoTERM_output, "initialize", nil)
     end
 
+    local function and_esoTERM_output_stdout_is_stubbed()
+        ut_helper.stub_function(esoTERM_output, "stdout", nil)
+    end
+
     local function and_event_manager_UnregisterForEvent_is_stubbed()
         ut_helper.stub_function(EVENT_MANAGER, "UnregisterForEvent", nil)
     end
@@ -72,6 +76,10 @@ describe("Test esoTERM initialization", function()
         assert.spy(esoTERM_output.initialize).was.called_with()
     end
 
+    local function and_esoTERM_output_stdout_was_called_once_with(message)
+        assert.spy(esoTERM_output.stdout).was.called_with(message)
+    end
+
     local function and_event_manager_UnregisterForEvent_was_called_with(param1, param2)
         assert.spy(EVENT_MANAGER.UnregisterForEvent).was.called_with(EVENT_MANAGER,
                                                                      param1,
@@ -89,6 +97,7 @@ describe("Test esoTERM initialization", function()
             and_esoTERM_slash_initialize_is_stubbed()
             and_esoTERM_window_initialize_is_stubbed()
             and_esoTERM_output_initialize_is_stubbed()
+            and_esoTERM_output_stdout_is_stubbed()
             and_event_manager_UnregisterForEvent_is_stubbed()
 
         when_esoTERM_init_initialize_is_called_with(ADDON_NAME)
@@ -100,6 +109,7 @@ describe("Test esoTERM initialization", function()
             and_esoTERM_slash_initialize_was_called_once_with()
             and_esoTERM_window_initialize_was_called_once_with()
             and_esoTERM_output_initialize_was_called_once_with()
+            and_esoTERM_output_stdout_was_called_once_with("esoTERM is up and running")
             and_event_manager_UnregisterForEvent_was_called_with(esoTERM.ADDON_NAME,
                                                                  EVENT_ADD_ON_LOADED)
     end)

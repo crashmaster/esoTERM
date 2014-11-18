@@ -558,11 +558,6 @@ describe("Test event handler initialization.", function()
             event = EVENT_EXPERIENCE_UPDATE,
             callback = esoTERM_pve.on_experience_update
         }
-        expected_register_params.veteran_points_update = {
-            addon_name = addon_name,
-            event = EVENT_VETERAN_POINTS_UPDATE,
-            callback = esoTERM_pve.on_experience_update
-        }
         expected_register_params.level_update = {
             addon_name = addon_name,
             event = EVENT_LEVEL_UPDATE,
