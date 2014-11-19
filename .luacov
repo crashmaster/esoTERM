@@ -8,16 +8,18 @@ return {
     -- Patterns for files to include when reporting.
     ["include"] = {
         "ut_helper",
-        "esoTERM_char",
-        "esoTERM_pve",
-        "esoTERM_pvp",
-        "esoTERM_loot",
-        "esoTERM_init",
-        "esoTERM_output",
         "test_ut_helper",
+        "esoTERM_char",
         "test_esoTERM_char",
+        "esoTERM_pve",
+        "test_esoTERM_pve",
+        "esoTERM_pvp",
+        "test_esoTERM_pvp",
+        "esoTERM_loot",
         "test_esoTERM_loot",
+        "esoTERM_init",
         "test_esoTERM_init",
+        "esoTERM_output",
         "test_esoTERM_output"
     },
     ["exclude"] = {

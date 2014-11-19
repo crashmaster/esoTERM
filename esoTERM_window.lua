@@ -1,36 +1,42 @@
 esoTERM_window = {}
 
-local function set_window_visibility(window)
-    local fragment = ZO_SimpleSceneFragment:New(window)
+function esoTERM_window.set_window_visibility()
+    local fragment = ZO_SimpleSceneFragment:New(esoTERM_window.etw)
 
-    SCENE_MANAGER:GetScene("achievements"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("cadwellsAlmanac"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("campaignBrowser"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("campaignOverview"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("friendsList"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("groupList"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("groupingTools"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("guildHistory"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("guildHome"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("guildRanks"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("guildRoster"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("helpCustomerSupport"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("helpTutorials"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("hud"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("hudui"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("ignoreList"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("leaderboards"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("loreLibrary"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("mailInbox"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("mailSend"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("notifications"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("questJournal"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("skills"):AddFragment(fragment)
-    SCENE_MANAGER:GetScene("stats"):AddFragment(fragment)
+    local scenes = {
+        "achievements",
+        "cadwellsAlmanac",
+        "campaignBrowser",
+        "campaignOverview",
+        "friendsList",
+        "groupList",
+        "groupingTools",
+        "guildHistory",
+        "guildHome",
+        "guildRanks",
+        "guildRoster",
+        "helpCustomerSupport",
+        "helpTutorials",
+        "hud",
+        "hudui",
+        "ignoreList",
+        "leaderboards",
+        "loreLibrary",
+        "mailInbox",
+        "mailSend",
+        "notifications",
+        "questJournal",
+        "skills",
+        "stats",
+    }
+
+    for i, scene in ipairs(scenes) do
+        SCENE_MANAGER:GetScene(scene):AddFragment(fragment)
+    end
 end
 
 function esoTERM_window.create()
-    etw = WINDOW_MANAGER:CreateTopLevelWindow()
+    local etw = WINDOW_MANAGER:CreateTopLevelWindow()
     etw:SetMouseEnabled(true)
     etw:SetMovable(false)
     etw:SetDimensions(500, 305)
@@ -38,19 +44,20 @@ function esoTERM_window.create()
     etw:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, 20, 450)
     etw:SetHidden(true)
 
-    esoTERM_window.tb = WINDOW_MANAGER:CreateControl(nil, etw, CT_TEXTBUFFER)
-    esoTERM_window.tb:SetMouseEnabled(true)
-    esoTERM_window.tb:SetLinkEnabled(true)
-    esoTERM_window.tb:SetFont("ZoFontChat")
-    esoTERM_window.tb:SetHandler("OnLinkMouseUp", function(self, _, link, button) return ZO_LinkHandler_OnLinkMouseUp(link, button, self) end)
-    esoTERM_window.tb:SetHandler("OnMouseEnter", function() esoTERM_window.tb:ShowFadedLines() end)
-    esoTERM_window.tb:SetHidden(false)
-    esoTERM_window.tb:SetClearBufferAfterFadeout(false)
-    esoTERM_window.tb:SetMaxHistoryLines(10000)
-    esoTERM_window.tb:SetAnchorFill(etw)
-    esoTERM_window.tb:SetLineFade(60, 1)
+    local tb = WINDOW_MANAGER:CreateControl(nil, etw, CT_TEXTBUFFER)
+    tb:SetMouseEnabled(true)
+    tb:SetLinkEnabled(true)
+    tb:SetFont("ZoFontChat")
+    tb:SetHandler("OnLinkMouseUp", function(self, _, link, button) return ZO_LinkHandler_OnLinkMouseUp(link, button, self) end)
+    tb:SetHandler("OnMouseEnter", function() tb:ShowFadedLines() end)
+    tb:SetHidden(false)
+    tb:SetClearBufferAfterFadeout(false)
+    tb:SetMaxHistoryLines(10000)
+    tb:SetAnchorFill(etw)
+    tb:SetLineFade(60, 1)
 
-    set_window_visibility(etw)
+    esoTERM_window.etw = etw
+    esoTERM_window.tb = tb
 end
 
 function esoTERM_window.print_message(message)
@@ -59,6 +66,7 @@ end
 
 function esoTERM_window.initialize()
     esoTERM_window.create()
+    esoTERM_window.set_window_visibility()
 end
 
 return esoTERM_window

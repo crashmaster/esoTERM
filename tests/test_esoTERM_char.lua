@@ -495,6 +495,11 @@ describe("Test event handler initialization.", function()
             event = EVENT_PLAYER_COMBAT_STATE,
             callback = esoTERM_char.on_combat_state_update
         }
+        expected_register_params.death_state_update = {
+            addon_name = addon_name,
+            event = EVENT_UNIT_DEATH_STATE_CHANGED,
+            callback = esoTERM_char.on_unit_death_state_change
+        }
     end
 
     local function when_initialize_is_called()

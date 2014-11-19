@@ -53,3 +53,15 @@ end
 function zo_strformat(format_string, stuff)
     return stuff
 end
+
+ZO_SimpleSceneFragment = {
+    New = function(window) return nil end
+}
+
+SCENE = {
+    AddFragment = function(fragment) return nil end
+}
+
+SCENE_MANAGER = {
+    GetScene = function(scene) return SCENE end
+}
