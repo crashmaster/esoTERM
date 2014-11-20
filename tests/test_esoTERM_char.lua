@@ -683,7 +683,7 @@ describe("The on combat-state-change event handler.", function()
     end
     -- }}}
 
-    it("One hit the enemy.", function()
+    it("Onehit the enemy.", function()
         given_that_get_combat_state_returns(IN_COMBAT)
             and_that_get_combat_start_time_returns(ENTER_TIME)
             and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME_ONE_HIT)
