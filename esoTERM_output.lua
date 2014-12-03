@@ -1,7 +1,3 @@
-local CACHE_CHAR = esoTERM_char.cache
-local CACHE_PVE = esoTERM_pve.cache
-local CACHE_PVP = esoTERM_pvp.cache
-
 esoTERM_output = {}
 esoTERM_output.PROMPT = "[esoTERM] "
 esoTERM_output.message_buffers = {}

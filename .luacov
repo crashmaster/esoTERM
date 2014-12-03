@@ -20,7 +20,9 @@ return {
         "esoTERM_init",
         "test_esoTERM_init",
         "esoTERM_output",
-        "test_esoTERM_output"
+        "test_esoTERM_output",
+        "esoTERM_slash",
+        "test_esoTERM_slash"
     },
     ["exclude"] = {
         "luacov",
