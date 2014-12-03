@@ -151,7 +151,13 @@ end
 
 function esoTERM_char.on_unit_death_state_change(event, unit, is_dead)
     if unit == PLAYER_UNIT_TAG then
-        esoTERM_output.sysout(string.format("unit: %s is_dead: %s", unit, tostring(is_dead)))
+        if is_dead then
+            esoTERM_output.stdout("Died, you are pathetic!")
+            esoTERM_char.on_combat_state_update(nil, false)
+        else
+            esoTERM_output.stdout("Resurrected, watch out next time!")
+            esoTERM_char.on_combat_state_update(nil, true)
+        end
     end
 end
 
