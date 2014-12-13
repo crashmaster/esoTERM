@@ -35,6 +35,15 @@ function esoTERM_window.set_window_visibility()
     end
 end
 
+local function get_chat_font()
+    local face = ZoFontChat:GetFontInfo()
+    local font_size = GetChatFontSize()
+    if font_size <= 14 then
+        return string.format("%s|%s|%s", face, font_size, "soft-shadow-thin")
+    end
+    return string.format("%s|%s|%s", face, font_size, "soft-shadow-thick")
+end
+
 function esoTERM_window.create()
     local etw = WINDOW_MANAGER:CreateTopLevelWindow()
     etw:SetMouseEnabled(true)
@@ -47,7 +56,7 @@ function esoTERM_window.create()
     local tb = WINDOW_MANAGER:CreateControl(nil, etw, CT_TEXTBUFFER)
     tb:SetMouseEnabled(true)
     tb:SetLinkEnabled(true)
-    tb:SetFont("ZoFontChat")
+    tb:SetFont(get_chat_font())
     tb:SetHandler("OnLinkMouseUp", function(self, _, link, button) return ZO_LinkHandler_OnLinkMouseUp(link, button, self) end)
     tb:SetHandler("OnMouseEnter", function() tb:ShowFadedLines() end)
     tb:SetHidden(false)
