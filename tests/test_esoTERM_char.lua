@@ -532,6 +532,8 @@ end)
 describe("The on combat-state-change event handler.", function()
     local OUTER_COMBAT = false
     local IN_COMBAT = true
+    local DEAD = true
+    local ALIVE = false
     local ENTER_TIME = 10
     local EXIT_TIME = 1510
     local EXIT_TIME_ONE_HIT = 210
@@ -599,7 +601,7 @@ describe("The on combat-state-change event handler.", function()
     end
     -- }}}
 
-    it("From out of combat to in combat.", function()
+    it("Character entered combat.", function()
         given_that_get_combat_state_returns(OUTER_COMBAT)
             and_that_eso_GetGameTimeMilliseconds_returns(ENTER_TIME)
             and_that_event_manager_RegisterForEvent_is_stubbed()
@@ -616,14 +618,28 @@ describe("The on combat-state-change event handler.", function()
     end)
 
     -- {{{
-    local function and_that_get_combat_start_time_returns(time)
-        ut_helper.stub_function(esoTERM_char, "get_combat_start_time", time)
+    local function when_on_unit_death_state_change_is_called_with(event, is_dead)
+        esoTERM_char.on_unit_death_state_change(event, PLAYER, is_dead)
     end
+    -- }}}
 
-    local function and_get_combat_start_time_was_called_once_with_cache()
-        assert.spy(esoTERM_char.get_combat_start_time).was.called_with(CACHE)
-    end
+    it("Character resurrected.", function()
+        given_that_get_combat_state_returns(OUTER_COMBAT)
+            and_that_eso_GetGameTimeMilliseconds_returns(ENTER_TIME)
+            and_that_event_manager_RegisterForEvent_is_stubbed()
+            and_that_esoTERM_output_stdout_is_stubbed()
 
+        when_on_unit_death_state_change_is_called_with(EVENT, ALIVE)
+
+        then_the_and_cached_combat_state_became(IN_COMBAT)
+            and_eso_GetGameTimeMilliseconds_was_called()
+            and_cached_combat_start_time_became(ENTER_TIME)
+            and_cached_combat_damage_became(0)
+            and_event_manager_RegisterForEvent_was_called()
+            and_esoTERM_output_stdout_was_called_with(get_enter_combat_message())
+    end)
+
+    -- {{{
     local function and_that_event_manager_UnregisterForEvent_is_stubbed()
         ut_helper.stub_function(EVENT_MANAGER, "UnregisterForEvent", nil)
     end
@@ -636,15 +652,23 @@ describe("The on combat-state-change event handler.", function()
         CACHE.combat_damage = damage
     end
 
+    local function and_that_get_combat_start_time_returns(time)
+        ut_helper.stub_function(esoTERM_char, "get_combat_start_time", time)
+    end
+
+    local function and_get_combat_start_time_was_called_once_with_cache()
+        assert.spy(esoTERM_char.get_combat_start_time).was.called_with(CACHE)
+    end
+
+    local function and_cached_combat_lenght_became(lenght)
+        assert.is.equal(lenght, CACHE.combat_lenght)
+    end
+
     local function and_event_manager_UnregisterForEvent_was_called()
         assert.spy(EVENT_MANAGER.UnregisterForEvent).was.called_with(
             EVENT_MANAGER,
             esoTERM.ADDON_NAME,
             EVENT_COMBAT_EVENT)
-    end
-
-    local function and_cached_combat_lenght_became(lenght)
-        assert.is.equal(lenght, CACHE.combat_lenght)
     end
 
     local function get_exit_combat_message()
@@ -655,7 +679,7 @@ describe("The on combat-state-change event handler.", function()
     end
     -- }}}
 
-    it("From in combat to out of combat", function()
+    it("Character left combat.", function()
         given_that_get_combat_state_returns(IN_COMBAT)
             and_that_get_combat_start_time_returns(ENTER_TIME)
             and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME)
@@ -668,6 +692,28 @@ describe("The on combat-state-change event handler.", function()
 
         then_the_and_cached_combat_state_became(OUTER_COMBAT)
             and_get_combat_start_time_was_called_once_with_cache()
+            and_eso_GetGameTimeMilliseconds_was_called()
+            and_cached_combat_lenght_became(EXIT_TIME - ENTER_TIME)
+            and_event_manager_UnregisterForEvent_was_called()
+            and_cached_combat_start_time_became(0)
+            and_cached_combat_damage_became(0)
+            and_esoTERM_output_stdout_was_called_with(get_exit_combat_message())
+    end)
+
+    it("Character dies.", function()
+        given_that_get_combat_state_returns(IN_COMBAT)
+            and_that_get_combat_start_time_returns(ENTER_TIME)
+            and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME)
+            and_that_event_manager_UnregisterForEvent_is_stubbed()
+            and_that_cached_combat_start_time_is(ENTER_TIME)
+            and_that_cached_combat_damage_is(DAMAGE)
+            and_that_esoTERM_output_stdout_is_stubbed()
+
+        when_on_unit_death_state_change_is_called_with(EVENT, DEAD)
+
+        then_the_and_cached_combat_state_became(OUTER_COMBAT)
+            and_get_combat_start_time_was_called_once_with_cache()
+            and_eso_GetGameTimeMilliseconds_was_called()
             and_cached_combat_lenght_became(EXIT_TIME - ENTER_TIME)
             and_event_manager_UnregisterForEvent_was_called()
             and_cached_combat_start_time_became(0)
