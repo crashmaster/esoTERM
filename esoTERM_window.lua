@@ -76,6 +76,12 @@ end
 function esoTERM_window.initialize()
     esoTERM_window.create()
     esoTERM_window.set_window_visibility()
+    GAME_MENU_SCENE:RegisterCallback("StateChange", function(old_state, new_state)
+        if new_state == SCENE_HIDDEN then
+            -- TODO: call if other than before
+            esoTERM_window.tb:SetFont(get_chat_font())
+        end
+    end)
 end
 
 return esoTERM_window
