@@ -82,6 +82,10 @@ SCENE = {
     AddFragment = function(fragment) return nil end
 }
 
+GAME_MENU_SCENE = {
+    RegisterCallback = function(event, callback) return nil end
+}
+
 SCENE_MANAGER = {
     GetScene = function(scene) return SCENE end
 }
