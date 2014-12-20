@@ -1,3 +1,16 @@
+REGISTER_FOR = nil
+
+EVENT_ADD_ON_LOADED = 0
+EVENT_PLAYER_ACTIVATED = 1
+EVENT_EXPERIENCE_UPDATE = 2
+EVENT_VETERAN_POINTS_UPDATE = 3
+EVENT_LEVEL_UPDATE = 4
+EVENT_VETERAN_RANK_UPDATE = 5
+EVENT_ALLIANCE_POINT_UPDATE = 6
+EVENT_LOOT_RECEIVED = 7
+EVENT_PLAYER_COMBAT_STATE = 8
+EVENT_COMBAT_EVENT = 9
+
 ACTION_RESULT_DAMAGE = 1
 ACTION_RESULT_CRITICAL_DAMAGE = 2
 ACTION_RESULT_HEAL = 3
@@ -46,6 +59,8 @@ DAMAGE_TYPE_SHOCK = 12
 
 SI_TOOLTIP_ITEM_NAME = "SI_TOOLTIP_ITEM_NAME"
 
+SLASH_COMMANDS = {}
+
 function zo_callLater(func)
     func()
 end
@@ -53,6 +68,11 @@ end
 function zo_strformat(format_string, stuff)
     return stuff
 end
+
+EVENT_MANAGER = {
+    UnregisterForEvent = function(operation, event) return nil end,
+    RegisterForEvent = function(addon, event, callback) return nil end
+}
 
 ZO_SimpleSceneFragment = {
     New = function(window) return nil end

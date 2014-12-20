@@ -4,7 +4,7 @@ function esoTERM_slash.slash_command_handler(command)
     if command == "" then
         esoTERM_output.sysout("Running")
     elseif string.lower(command) == "help" then
-        esoTERM_output.sysout("Use /" .. esoTERM.ADDON_NAME .. " <number> to set output chat tab")
+        esoTERM_output.sysout("No help here")
     else
         esoTERM_output.sysout("Invalid command")
     end
