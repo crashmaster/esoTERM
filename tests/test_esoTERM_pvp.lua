@@ -27,8 +27,9 @@ local AVA_RANK_POINTS_PERCENT = A_INTEGER
 local AVA_POINTS_GAIN = A_INTEGER
 
 local CACHE = esoTERM_pvp.cache
+local EVENT_REGISTER = esoTERM_pvp.event_register
 
-describe("Test character information getters", function()
+describe("Test cache initialization.", function()
     local results = {}
     local return_values_of_the_getter_stubs = {
         get_ava_points = AVA_RANK_1,
@@ -105,6 +106,66 @@ describe("Test character information getters", function()
         then_cache_is_no_longer_empty()
             and_cached_values_became_initialized()
             and_getter_stubs_were_called_with(CACHE)
+    end)
+end)
+
+describe("Test event handler initialization.", function()
+    local addon_name = "esoTERM"
+    local expected_register_params = {}
+
+    after_each(function()
+        ut_helper.restore_stubbed_functions()
+    end)
+
+    teardown(function()
+        expected_register_params = nil
+    end)
+
+    -- {{{
+    local function given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
+        ut_helper.stub_function(EVENT_MANAGER, "RegisterForEvent", nil)
+    end
+
+    local function and_expected_register_event_parameters_are_set_up()
+        expected_register_params.ava_xp_update = {
+            addon_name = addon_name,
+            event = EVENT_ALLIANCE_POINT_UPDATE,
+            callback = esoTERM_pvp.on_ava_points_update
+        }
+    end
+
+    local function when_initialize_is_called()
+        esoTERM_pvp.initialize()
+    end
+
+    local function then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_params)
+        assert.spy(EVENT_MANAGER.RegisterForEvent).was.called(ut_helper.table_size(expected_params))
+        for param in pairs(expected_params) do
+            assert.spy(EVENT_MANAGER.RegisterForEvent).was.called_with(
+                EVENT_MANAGER,
+                expected_params[param].addon_name,
+                expected_params[param].event,
+                expected_params[param].callback
+            )
+        end
+    end
+
+    local function and_event_handlers_are_active(active_event_handlers)
+        for handler in pairs(active_event_handlers) do
+            local active_event = EVENT_REGISTER[active_event_handlers[handler].event]
+            assert.is.equal(true, active_event == true)
+        end
+    end
+    -- }}}
+
+    it("Register for events", function()
+        given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
+            and_expected_register_event_parameters_are_set_up()
+
+        when_initialize_is_called()
+
+        then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_register_params)
+            and_event_handlers_are_active(expected_register_params)
     end)
 end)
 
@@ -743,58 +804,6 @@ describe("Test PvP related data getters.", function()
         then_the_returned_character_ava_rank_points_ub_was(AVA_RANK_POINTS_UB_1)
             and_get_ava_rank_was_not_called()
             and_eso_GetNumPointsNeededForAvARank_was_not_called()
-    end)
-end)
-
-describe("Test event handler initialization.", function()
-    local addon_name = "esoTERM"
-    local expected_register_params = {}
-
-    after_each(function()
-        ut_helper.restore_stubbed_functions()
-    end)
-
-    teardown(function()
-        expected_register_params = nil
-    end)
-
-    -- {{{
-    local function given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
-        ut_helper.stub_function(EVENT_MANAGER, "RegisterForEvent", nil)
-    end
-
-    local function and_expected_register_event_parameters_are_set_up()
-        expected_register_params.ava_xp_update = {
-            addon_name = addon_name,
-            event = EVENT_ALLIANCE_POINT_UPDATE,
-            callback = esoTERM_pvp.on_ava_points_update
-        }
-    end
-
-    local function when_initialize_is_called()
-        esoTERM_pvp.initialize()
-    end
-
-    local function then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_params)
-        assert.spy(EVENT_MANAGER.RegisterForEvent).was.called(ut_helper.table_size(expected_params))
-        for param in pairs(expected_params) do
-            assert.spy(EVENT_MANAGER.RegisterForEvent).was.called_with(
-                EVENT_MANAGER,
-                expected_params[param].addon_name,
-                expected_params[param].event,
-                expected_params[param].callback
-            )
-        end
-    end
-    -- }}}
-
-    it("Register for events", function()
-        given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
-            and_expected_register_event_parameters_are_set_up()
-
-        when_initialize_is_called()
-
-        then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_register_params)
     end)
 end)
 
