@@ -7,22 +7,24 @@ return {
     deletestats = true,
     -- Patterns for files to include when reporting.
     ["include"] = {
-        "ut_helper",
-        "test_ut_helper",
         "esoTERM_char",
         "test_esoTERM_char",
+        "esoTERM_common",
+        "test_esoTERM_common",
+        "esoTERM_init",
+        "test_esoTERM_init",
+        "esoTERM_loot",
+        "test_esoTERM_loot",
+        "esoTERM_output",
+        "test_esoTERM_output",
         "esoTERM_pve",
         "test_esoTERM_pve",
         "esoTERM_pvp",
         "test_esoTERM_pvp",
-        "esoTERM_loot",
-        "test_esoTERM_loot",
-        "esoTERM_init",
-        "test_esoTERM_init",
-        "esoTERM_output",
-        "test_esoTERM_output",
         "esoTERM_slash",
-        "test_esoTERM_slash"
+        "test_esoTERM_slash",
+        "ut_helper",
+        "test_ut_helper"
     },
     ["exclude"] = {
         "luacov",

@@ -9,6 +9,7 @@ local LOOTED_ITEM = A_STRING
 local LOOT_QUANTITY = A_INTEGER
 
 local CACHE = esoTERM_loot.cache
+local EVENT_REGISTER = esoTERM_loot.event_register
 
 describe("Test Loot module initialization.", function()
     local results = {}
@@ -73,6 +74,66 @@ describe("Test Loot module initialization.", function()
         then_cache_is_no_longer_empty()
             and_cached_values_became_initialized()
             and_getter_stubs_were_called_with_cache()
+    end)
+end)
+
+describe("Test event handler initialization.", function()
+    local addon_name = "esoTERM"
+    local expected_register_params = {}
+
+    after_each(function()
+        ut_helper.restore_stubbed_functions()
+    end)
+
+    teardown(function()
+        expected_register_params = nil
+    end)
+
+    -- {{{
+    local function given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
+        ut_helper.stub_function(EVENT_MANAGER, "RegisterForEvent", nil)
+    end
+
+    local function and_expected_register_event_parameters_are_set_up()
+        expected_register_params.loot_received_update = {
+            addon_name = addon_name,
+            event = EVENT_LOOT_RECEIVED,
+            callback = esoTERM_loot.on_loot_received
+        }
+    end
+
+    local function when_initialize_is_called()
+        esoTERM_loot.initialize()
+    end
+
+    local function then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_params)
+        assert.spy(EVENT_MANAGER.RegisterForEvent).was.called(ut_helper.table_size(expected_params))
+        for param in pairs(expected_params) do
+            assert.spy(EVENT_MANAGER.RegisterForEvent).was.called_with(
+                EVENT_MANAGER,
+                expected_params[param].addon_name,
+                expected_params[param].event,
+                expected_params[param].callback
+            )
+        end
+    end
+
+    local function and_event_handlers_are_active(active_event_handlers)
+        for handler in pairs(active_event_handlers) do
+            local active_event = EVENT_REGISTER[active_event_handlers[handler].event]
+            assert.is.equal(true, active_event == true)
+        end
+    end
+    -- }}}
+
+    it("Register for events", function()
+        given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
+            and_expected_register_event_parameters_are_set_up()
+
+        when_initialize_is_called()
+
+        then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_register_params)
+            and_event_handlers_are_active(expected_register_params)
     end)
 end)
 
@@ -161,58 +222,6 @@ describe("Test Loot related data getters.", function()
         when_get_loot_quantity_is_called_with_cache()
 
         then_the_returned_loot_quantity_was(LOOT_QUANTITY)
-    end)
-end)
-
-describe("Test event handler initialization.", function()
-    local addon_name = "esoTERM"
-    local expected_register_params = {}
-
-    after_each(function()
-        ut_helper.restore_stubbed_functions()
-    end)
-
-    teardown(function()
-        expected_register_params = nil
-    end)
-
-    -- {{{
-    local function given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
-        ut_helper.stub_function(EVENT_MANAGER, "RegisterForEvent", nil)
-    end
-
-    local function and_expected_register_event_parameters_are_set_up()
-        expected_register_params.loot_received_update = {
-            addon_name = addon_name,
-            event = EVENT_LOOT_RECEIVED,
-            callback = esoTERM_loot.on_loot_received
-        }
-    end
-
-    local function when_initialize_is_called()
-        esoTERM_loot.initialize()
-    end
-
-    local function then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_params)
-        assert.spy(EVENT_MANAGER.RegisterForEvent).was.called(ut_helper.table_size(expected_params))
-        for param in pairs(expected_params) do
-            assert.spy(EVENT_MANAGER.RegisterForEvent).was.called_with(
-                EVENT_MANAGER,
-                expected_params[param].addon_name,
-                expected_params[param].event,
-                expected_params[param].callback
-            )
-        end
-    end
-    -- }}}
-
-    it("Register for events", function()
-        given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
-            and_expected_register_event_parameters_are_set_up()
-
-        when_initialize_is_called()
-
-        then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_register_params)
     end)
 end)
 
