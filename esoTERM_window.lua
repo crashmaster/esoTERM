@@ -45,6 +45,7 @@ local function get_chat_font()
 end
 
 local function hide_etw()
+    esoTERM_output.sysout("hide_etw")
     if not MouseIsOver(esoTERM_window.etw) then
         esoTERM_window.fade_anim:SetMinMaxAlpha(0.0, 1.0)
         esoTERM_window.fade_anim:FadeOut(3000, 300)
@@ -52,13 +53,14 @@ local function hide_etw()
 end
 
 local function show_etw()
+    esoTERM_output.sysout("show_etw")
     if MouseIsOver(esoTERM_window.etw) then
         esoTERM_window.fade_anim:SetMinMaxAlpha(0.0, 1.0)
         esoTERM_window.fade_anim:FadeIn(0, 300)
     end
 end
 
-function esoTERM_window.create()
+local function create_top_level_window()
     local etw = WINDOW_MANAGER:CreateTopLevelWindow()
     etw:SetMouseEnabled(true)
     etw:SetMovable(true)
@@ -68,38 +70,37 @@ function esoTERM_window.create()
     etw:SetDimensions(400, 300)
     etw:SetDimensionConstraints(300, 200, 500, 800)
     etw:SetResizeHandleSize(16)
-    etw:SetHandler("OnMouseExit", function()
-        if not MouseIsOver(etw) then
-            esoTERM_window.fade_anim:SetMinMaxAlpha(0.0, 1.0)
-            esoTERM_window.fade_anim:FadeOut(3000, 300)
-        end
-    end)
-    etw:SetHandler("OnMouseEnter", function()
-        if MouseIsOver(etw) then
-            esoTERM_window.fade_anim:SetMinMaxAlpha(0.0, 1.0)
-            esoTERM_window.fade_anim:FadeIn(0, 300)
-        end
-    end)
+    etw:SetHandler("OnMouseExit", function() hide_etw() end)
+    etw:SetHandler("OnMouseEnter", function() show_etw() end)
+    return etw
+end
 
-    local bg = WINDOW_MANAGER:CreateControl(nil, etw, CT_BACKDROP)
-    bg:SetAnchor(TOPLEFT, etw, TOPLEFT, -8, -8)
-    bg:SetAnchor(BOTTOMRIGHT, etw, BOTTOMRIGHT, 8, 8)
+local function create_window_background()
+    local bg = WINDOW_MANAGER:CreateControl(nil, esoTERM_window.etw, CT_BACKDROP)
+    bg:SetAnchor(TOPLEFT, esoTERM_window.etw, TOPLEFT, 0, 0)
+    bg:SetAnchor(BOTTOMRIGHT, esoTERM_window.etw, BOTTOMRIGHT, 0, 0)
     bg:SetEdgeTexture("EsoUI/Art/ChatWindow/chat_BG_edge.dds", 512, 512, 32)
     bg:SetCenterTexture("EsoUI/Art/ChatWindow/chat_BG_center.dds")
     bg:SetInsets(32, 32, -32, -32)
+    return bg
+end
 
-    local divider = WINDOW_MANAGER:CreateControl(nil, etw, CT_TEXTURE)
+local function create_window_divider()
+    local divider = WINDOW_MANAGER:CreateControl(nil, esoTERM_window.etw, CT_TEXTURE)
     divider:SetDimensions(4, 4)
-    divider:SetAnchor(TOPLEFT, etw, TOPLEFT, 20, 40)
-    divider:SetAnchor(TOPRIGHT, etw, TOPRIGHT, -20, 40)
+    divider:SetAnchor(TOPLEFT, esoTERM_window.etw, TOPLEFT, 20, 40)
+    divider:SetAnchor(TOPRIGHT, esoTERM_window.etw, TOPRIGHT, -20, 40)
     divider:SetTexture("EsoUI/Art/Miscellaneous/horizontalDivider.dds")
     divider:SetTextureCoords(0.2, 0.8, 0, 1)
+    return divider
+end
 
-    local tb = WINDOW_MANAGER:CreateControl(nil, etw, CT_TEXTBUFFER)
+local function create_window_text_buffer()
+    local tb = WINDOW_MANAGER:CreateControl(nil, esoTERM_window.etw, CT_TEXTBUFFER)
     tb:SetMouseEnabled(true)
     tb:SetLinkEnabled(true)
-    tb:SetAnchor(TOPLEFT, etw, TOPLEFT, 20, 42)
-    tb:SetAnchor(BOTTOMRIGHT, etw, BOTTOMRIGHT, -35, -20)
+    tb:SetAnchor(TOPLEFT, esoTERM_window.etw, TOPLEFT, 30, 45)
+    tb:SetAnchor(BOTTOMRIGHT, esoTERM_window.etw, BOTTOMRIGHT, -30, -25)
     tb:SetFont(get_chat_font())
     tb:SetClearBufferAfterFadeout(false)
     tb:SetMaxHistoryLines(10000)
@@ -113,12 +114,17 @@ function esoTERM_window.create()
     tb:SetHandler("OnMouseWheel", function(self, delta, ctrl, alt, shift)
         tb:SetScrollPosition(tb:GetScrollPosition() + delta)
     end)
+    return tb
+end
 
-    esoTERM_window.fade_anim = ZO_AlphaAnimation:New(etw)
-    esoTERM_window.etw = etw
-    esoTERM_window.tb = tb
+function esoTERM_window.create()
+    esoTERM_window.etw = create_top_level_window()
+    esoTERM_window.fade_anim = ZO_AlphaAnimation:New(esoTERM_window.etw)
+    esoTERM_window.etw_bg = create_window_background()
+    esoTERM_window.etw_divider = create_window_divider()
+    esoTERM_window.tb = create_window_text_buffer()
 
-    hide_etw()
+    --hide_etw()
 end
 
 function esoTERM_window.print_message(message)

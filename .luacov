@@ -7,6 +7,8 @@ return {
     deletestats = true,
     -- Patterns for files to include when reporting.
     ["include"] = {
+        "esoTERM",
+        "test_esoTERM",
         "esoTERM_char",
         "test_esoTERM_char",
         "esoTERM_common",
@@ -26,8 +28,10 @@ return {
         "ut_helper",
         "test_ut_helper"
     },
+    -- Patterns for files to exclude when reporting.
     ["exclude"] = {
         "luacov",
+        "esoTERM_window"
     },
 }
 
