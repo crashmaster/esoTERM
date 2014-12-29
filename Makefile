@@ -27,14 +27,17 @@ BUILD_PKG_DIR := $(BUILD_DIR)/$(ADDON_NAME)
 PKG_NAME := $(ADDON_NAME)_$(shell date --iso-8601).zip
 
 
-.PHONY: all test gentxt install uninstall build
+.PHONY: all test test_silent gentxt install uninstall build
 
 all: test coverage
 
 test:
 	@$(foreach file,$(TESTS),printf "%s:" $(notdir $(file)) && $(BUSTED) $(file) || exit $?;)
 
-coverage: test
+test_silent:
+	@$(foreach file,$(TESTS), $(BUSTED) $(file) > /dev/null || exit $?;)
+
+coverage: test_silent
 	@$(LUACOV)
 	@$(LUA) $(LUACOV_PARSER) $(LUACOV_REPORT)
 	@$(RM) $(LUACOV_REPORT)
