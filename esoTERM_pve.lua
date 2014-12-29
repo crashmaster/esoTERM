@@ -7,6 +7,8 @@ esoTERM_pve.event_register = {}
 local CACHE = esoTERM_pve.cache
 local EVENT_REGISTER = esoTERM_pve.event_register
 
+local module_name = "pve module"
+
 function esoTERM_pve.is_veteran(cache)
     if cache.veteran ~= nil then
         return cache.veteran
@@ -115,6 +117,8 @@ function esoTERM_pve.initialize()
     esoTERM_common.register_for_event(EVENT_REGISTER,
                                       EVENT_VETERAN_RANK_UPDATE,
                                       esoTERM_pve.on_level_update)
+
+    esoTERM_common.active_module(esoTERM.module_register, module_name)
 end
 
 return esoTERM_pve

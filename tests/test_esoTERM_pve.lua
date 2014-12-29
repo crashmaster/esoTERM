@@ -85,6 +85,10 @@ describe("Test initialization.", function()
         }
     end
 
+    local function and_that_active_module_is_stubbed()
+        ut_helper.stub_function(esoTERM_common, "active_module", nil)
+    end
+
     local function when_initialize_is_called()
         esoTERM_pve.initialize()
     end
@@ -115,6 +119,11 @@ describe("Test initialization.", function()
             )
         end
     end
+
+    local function and_active_module_was_called()
+        assert.spy(esoTERM_common.active_module).was.called_with(esoTERM.module_register,
+                                                                 "pve module")
+    end
     -- }}}
 
     it("Cached PvE data is updated and subscribed for events.",
@@ -122,6 +131,7 @@ describe("Test initialization.", function()
         given_that_cache_is_empty()
             and_that_register_for_event_is_stubbed()
             and_that_expected_register_event_parameters_are_set_up()
+            and_that_active_module_is_stubbed()
 
         when_initialize_is_called()
 
@@ -129,6 +139,7 @@ describe("Test initialization.", function()
             and_cached_values_became_initialized()
             and_getter_stubs_were_called_with_cache()
             and_register_for_event_was_called_with(expected_register_params)
+            and_active_module_was_called()
     end)
 end)
 

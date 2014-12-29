@@ -5,6 +5,8 @@ esoTERM_loot.event_register = {}
 local CACHE = esoTERM_loot.cache
 local EVENT_REGISTER = esoTERM_loot.event_register
 
+local module_name = "loot module"
+
 function esoTERM_loot.get_loot_quantity(cache)
     if cache.loot_quantity ~= nil then
         return cache.loot_quantity
@@ -49,6 +51,8 @@ function esoTERM_loot.initialize()
     esoTERM_common.register_for_event(EVENT_REGISTER,
                                       EVENT_LOOT_RECEIVED,
                                       esoTERM_loot.on_loot_received)
+
+    esoTERM_common.active_module(esoTERM.module_register, module_name)
 end
 
 return esoTERM_loot

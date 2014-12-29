@@ -7,6 +7,8 @@ esoTERM_pvp.event_register = {}
 local CACHE = esoTERM_pvp.cache
 local EVENT_REGISTER = esoTERM_pvp.event_register
 
+local module_name = "pvp module"
+
 function esoTERM_pvp.get_ava_points(cache)
     if cache.ava_points ~= nil then
         return cache.ava_points
@@ -141,6 +143,8 @@ function esoTERM_pvp.initialize()
     esoTERM_common.register_for_event(EVENT_REGISTER,
                                       EVENT_ALLIANCE_POINT_UPDATE,
                                       esoTERM_pvp.on_ava_points_update)
+
+    esoTERM_common.active_module(esoTERM.module_register, module_name)
 end
 
 return esoTERM_pvp

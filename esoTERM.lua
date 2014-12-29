@@ -1,4 +1,6 @@
 esoTERM = {}
+esoTERM.module_register = {}
+
 esoTERM.ADDON_NAME = "esoTERM"
 
 function esoTERM.on_addon_loaded(event, addon_name)
