@@ -45,7 +45,6 @@ local function get_chat_font()
 end
 
 local function hide_etw()
-    esoTERM_output.sysout("hide_etw")
     if not MouseIsOver(esoTERM_window.etw) then
         esoTERM_window.fade_anim:SetMinMaxAlpha(0.0, 1.0)
         esoTERM_window.fade_anim:FadeOut(3000, 300)
@@ -53,7 +52,6 @@ local function hide_etw()
 end
 
 local function show_etw()
-    esoTERM_output.sysout("show_etw")
     if MouseIsOver(esoTERM_window.etw) then
         esoTERM_window.fade_anim:SetMinMaxAlpha(0.0, 1.0)
         esoTERM_window.fade_anim:FadeIn(0, 300)
@@ -124,7 +122,7 @@ function esoTERM_window.create()
     esoTERM_window.etw_divider = create_window_divider()
     esoTERM_window.tb = create_window_text_buffer()
 
-    --hide_etw()
+    hide_etw()
 end
 
 function esoTERM_window.print_message(message)

@@ -5,6 +5,10 @@ function esoTERM_slash.slash_command_handler(command)
         esoTERM_output.sysout("Running")
     elseif string.lower(command) == "help" then
         esoTERM_output.sysout("No help here")
+    elseif string.lower(command) == "status" then
+        for k, v in pairs(esoTERM.module_register) do
+            esoTERM_output.sysout(string.format("%12s -> %s", k, v and "active" or "inactive"))
+        end
     else
         esoTERM_output.sysout("Invalid command")
     end
