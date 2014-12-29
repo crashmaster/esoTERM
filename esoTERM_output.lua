@@ -1,6 +1,9 @@
 esoTERM_output = {}
+esoTERM_output.event_register = {}
 esoTERM_output.PROMPT = "[esoTERM] "
 esoTERM_output.message_buffers = {}
+
+local EVENT_REGISTER = esoTERM_output.event_register
 
 local function _clear_message_buffers()
     esoTERM_output.message_buffers.stdout = {}
@@ -49,9 +52,9 @@ function esoTERM_output.initialize()
     esoTERM_output.stdout = store_stdout_messages_before_player_activated
     esoTERM_output.sysout = store_sysout_messages_before_player_activated
 
-    EVENT_MANAGER:RegisterForEvent(esoTERM.ADDON_NAME,
-                                   EVENT_PLAYER_ACTIVATED,
-                                   esoTERM_output.on_player_activated)
+    esoTERM_common.register_for_event(EVENT_REGISTER,
+                                      EVENT_PLAYER_ACTIVATED,
+                                      esoTERM_output.on_player_activated)
 end
 
 return esoTERM_output

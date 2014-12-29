@@ -12,17 +12,16 @@ local CACHE = esoTERM_loot.cache
 local EVENT_REGISTER = esoTERM_loot.event_register
 
 describe("Test Loot module initialization.", function()
-    local results = {}
-
     local return_values_of_the_getter_stubs = {
         get_loot_quantity = LOOT_QUANTITY,
         get_looted_item = LOOTED_ITEM,
     }
-
     local expected_cached_values = {
         loot_quantity = LOOT_QUANTITY,
         looted_item = LOOTED_ITEM,
     }
+
+    local expected_register_params = {}
 
     local function setup_getter_stubs()
         for getter, return_value in pairs(return_values_of_the_getter_stubs) do
@@ -34,14 +33,26 @@ describe("Test Loot module initialization.", function()
         setup_getter_stubs()
     end)
 
-    teardown(function()
-        results = nil
+    after_each(function()
+        expected_register_params = nil
         ut_helper.restore_stubbed_functions()
     end)
 
     -- {{{
     local function given_that_cache_is_empty()
         assert.is.equal(0, ut_helper.table_size(CACHE))
+    end
+
+    local function and_that_register_for_event_is_stubbed()
+        ut_helper.stub_function(esoTERM_common, "register_for_event", nil)
+    end
+
+    local function and_that_expected_register_event_parameters_are_set_up()
+        expected_register_params.loot_received_update = {
+            local_register = EVENT_REGISTER,
+            event = EVENT_LOOT_RECEIVED,
+            callback = esoTERM_loot.on_loot_received
+        }
     end
 
     local function when_initialize_is_called()
@@ -63,79 +74,34 @@ describe("Test Loot module initialization.", function()
             assert.spy(esoTERM_loot[getter]).was.called_with(CACHE)
         end
     end
+
+    local function and_register_for_event_was_called_with(expected_params)
+        assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(expected_params))
+        for param in pairs(expected_params) do
+            assert.spy(esoTERM_common.register_for_event).was.called_with(
+                expected_params[param].local_register,
+                expected_params[param].event,
+                expected_params[param].callback
+            )
+        end
+    end
     -- }}}
 
-    it("Loot related data is initialized at startup.",
+    it("Cached loot data is updated and subscribed for events.",
     function()
         given_that_cache_is_empty()
+            and_that_register_for_event_is_stubbed()
+            and_that_expected_register_event_parameters_are_set_up()
 
         when_initialize_is_called()
 
         then_cache_is_no_longer_empty()
             and_cached_values_became_initialized()
             and_getter_stubs_were_called_with_cache()
+            and_register_for_event_was_called_with(expected_register_params)
     end)
 end)
 
-describe("Test event handler initialization.", function()
-    local addon_name = "esoTERM"
-    local expected_register_params = {}
-
-    after_each(function()
-        ut_helper.restore_stubbed_functions()
-    end)
-
-    teardown(function()
-        expected_register_params = nil
-    end)
-
-    -- {{{
-    local function given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
-        ut_helper.stub_function(EVENT_MANAGER, "RegisterForEvent", nil)
-    end
-
-    local function and_expected_register_event_parameters_are_set_up()
-        expected_register_params.loot_received_update = {
-            addon_name = addon_name,
-            event = EVENT_LOOT_RECEIVED,
-            callback = esoTERM_loot.on_loot_received
-        }
-    end
-
-    local function when_initialize_is_called()
-        esoTERM_loot.initialize()
-    end
-
-    local function then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_params)
-        assert.spy(EVENT_MANAGER.RegisterForEvent).was.called(ut_helper.table_size(expected_params))
-        for param in pairs(expected_params) do
-            assert.spy(EVENT_MANAGER.RegisterForEvent).was.called_with(
-                EVENT_MANAGER,
-                expected_params[param].addon_name,
-                expected_params[param].event,
-                expected_params[param].callback
-            )
-        end
-    end
-
-    local function and_event_handlers_are_active(active_event_handlers)
-        for handler in pairs(active_event_handlers) do
-            local active_event = EVENT_REGISTER[active_event_handlers[handler].event]
-            assert.is.equal(true, active_event == true)
-        end
-    end
-    -- }}}
-
-    it("Register for events", function()
-        given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
-            and_expected_register_event_parameters_are_set_up()
-
-        when_initialize_is_called()
-
-        then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_register_params)
-            and_event_handlers_are_active(expected_register_params)
-    end)
-end)
 
 describe("Test Loot related data getters.", function()
     local results = {}

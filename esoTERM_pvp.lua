@@ -126,11 +126,6 @@ function esoTERM_pvp.on_ava_points_update(event, point, sound, diff)
     end
 end
 
-local function register_for_event(event, callback)
-    EVENT_MANAGER:RegisterForEvent(esoTERM.ADDON_NAME, event, callback)
-    EVENT_REGISTER[event] = true
-end
-
 function esoTERM_pvp.initialize()
     CACHE.ava_points = esoTERM_pvp.get_ava_points(CACHE)
     CACHE.ava_rank = esoTERM_pvp.get_ava_rank(CACHE)
@@ -143,7 +138,9 @@ function esoTERM_pvp.initialize()
     CACHE.ava_rank_points_percent = esoTERM_pvp.get_ava_rank_points_percent(CACHE)
     CACHE.ap_gain = esoTERM_pvp.get_ap_gain(CACHE)
 
-    register_for_event(EVENT_ALLIANCE_POINT_UPDATE, esoTERM_pvp.on_ava_points_update)
+    esoTERM_common.register_for_event(EVENT_REGISTER,
+                                      EVENT_ALLIANCE_POINT_UPDATE,
+                                      esoTERM_pvp.on_ava_points_update)
 end
 
 return esoTERM_pvp

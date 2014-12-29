@@ -26,8 +26,7 @@ local COMBAT_DAMAGE = A_INTEGER
 local CACHE = esoTERM_char.cache
 local EVENT_REGISTER = esoTERM_char.event_register
 
-describe("Test cache initialization.", function()
-    local results = {}
+describe("Test initialization.", function()
     local return_values_of_the_getter_stubs = {
         get_gender = GENDER_1,
         get_class = CLASS_1,
@@ -47,6 +46,8 @@ describe("Test cache initialization.", function()
         combat_damage = COMBAT_DAMAGE
     }
 
+    local expected_register_params = {}
+
     local function setup_getter_stubs()
         for getter, return_value in pairs(return_values_of_the_getter_stubs) do
             ut_helper.stub_function(esoTERM_char, getter, return_value)
@@ -57,8 +58,8 @@ describe("Test cache initialization.", function()
         setup_getter_stubs()
     end)
 
-    teardown(function()
-        results = nil
+    after_each(function()
+        expected_register_params = nil
         ut_helper.restore_stubbed_functions()
     end)
 
@@ -67,7 +68,24 @@ describe("Test cache initialization.", function()
         assert.is.equal(0, ut_helper.table_size(CACHE))
     end
 
-    local function when_initialize_is_called_with_cache()
+    local function and_that_register_for_event_is_stubbed()
+        ut_helper.stub_function(esoTERM_common, "register_for_event", nil)
+    end
+
+    local function and_that_expected_register_event_parameters_are_set_up()
+        expected_register_params.combat_state_update = {
+            local_register = EVENT_REGISTER,
+            event = EVENT_PLAYER_COMBAT_STATE,
+            callback = esoTERM_char.on_combat_state_update
+        }
+        expected_register_params.death_state_update = {
+            local_register = EVENT_REGISTER,
+            event = EVENT_UNIT_DEATH_STATE_CHANGED,
+            callback = esoTERM_char.on_unit_death_state_change
+        }
+    end
+
+    local function when_initialize_is_called()
         esoTERM_char.initialize()
     end
 
@@ -86,82 +104,31 @@ describe("Test cache initialization.", function()
             assert.spy(esoTERM_char[getter]).was.called_with(param)
         end
     end
-    -- }}}
 
-    it("Cached character info is updated.",
-    function()
-        given_that_cache_is_empty()
-
-        when_initialize_is_called_with_cache()
-
-        then_cache_is_no_longer_empty()
-            and_cached_values_became_initialized()
-            and_getter_stubs_were_called_with(CACHE)
-    end)
-end)
-
-describe("Test event handler initialization.", function()
-    local addon_name = "esoTERM"
-    local expected_register_params = {}
-
-    after_each(function()
-        ut_helper.restore_stubbed_functions()
-    end)
-
-    teardown(function()
-        expected_register_params = nil
-    end)
-
-    -- {{{
-    local function given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
-        ut_helper.stub_function(EVENT_MANAGER, "RegisterForEvent", nil)
-    end
-
-    local function and_expected_register_event_parameters_are_set_up()
-        expected_register_params.combat_state_update = {
-            addon_name = addon_name,
-            event = EVENT_PLAYER_COMBAT_STATE,
-            callback = esoTERM_char.on_combat_state_update
-        }
-        expected_register_params.death_state_update = {
-            addon_name = addon_name,
-            event = EVENT_UNIT_DEATH_STATE_CHANGED,
-            callback = esoTERM_char.on_unit_death_state_change
-        }
-    end
-
-    local function when_initialize_is_called()
-        esoTERM_char.initialize()
-    end
-
-    local function then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_params)
-        assert.spy(EVENT_MANAGER.RegisterForEvent).was.called(ut_helper.table_size(expected_params))
+    local function and_register_for_event_was_called_with(expected_params)
+        assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(expected_params))
         for param in pairs(expected_params) do
-            assert.spy(EVENT_MANAGER.RegisterForEvent).was.called_with(
-                EVENT_MANAGER,
-                expected_params[param].addon_name,
+            assert.spy(esoTERM_common.register_for_event).was.called_with(
+                expected_params[param].local_register,
                 expected_params[param].event,
                 expected_params[param].callback
             )
         end
     end
-
-    local function and_event_handlers_are_active(active_event_handlers)
-        for handler in pairs(active_event_handlers) do
-            local active_event = EVENT_REGISTER[active_event_handlers[handler].event]
-            assert.is.equal(true, active_event == true)
-        end
-    end
     -- }}}
 
-    it("Register for events", function()
-        given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
-            and_expected_register_event_parameters_are_set_up()
+    it("Cached character data is updated and subscribed for events.",
+    function()
+        given_that_cache_is_empty()
+            and_that_register_for_event_is_stubbed()
+            and_that_expected_register_event_parameters_are_set_up()
 
         when_initialize_is_called()
 
-        then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_register_params)
-            and_event_handlers_are_active(expected_register_params)
+        then_cache_is_no_longer_empty()
+            and_cached_values_became_initialized()
+            and_getter_stubs_were_called_with(CACHE)
+            and_register_for_event_was_called_with(expected_register_params)
     end)
 end)
 
@@ -572,19 +539,16 @@ describe("The on combat-state-change event handler.", function()
         assert.spy(GLOBAL.GetGameTimeMilliseconds).was.called()
     end
 
-    local function and_that_event_manager_RegisterForEvent_is_stubbed()
-        ut_helper.stub_function(EVENT_MANAGER, "RegisterForEvent", nil)
+    local function and_that_event_manager_register_for_event_is_stubbed()
+        ut_helper.stub_function(esoTERM_common, "register_for_event", nil)
     end
 
     local function and_combat_event_handler_was_registered()
-        assert.spy(EVENT_MANAGER.RegisterForEvent).was.called_with(
-            EVENT_MANAGER,
-            esoTERM.ADDON_NAME,
+        assert.spy(esoTERM_common.register_for_event).was.called_with(
+            EVENT_REGISTER,
             EVENT_COMBAT_EVENT,
             esoTERM_char.on_combat_event_update
         )
-        local active_event = EVENT_REGISTER[EVENT_COMBAT_EVENT]
-        assert.is.equal(true, active_event == true)
     end
 
     local function when_on_combat_state_update_is_called_with(event, combat_state)
@@ -615,7 +579,7 @@ describe("The on combat-state-change event handler.", function()
     it("Character entered combat.", function()
         given_that_get_combat_state_returns(OUTER_COMBAT)
             and_that_eso_GetGameTimeMilliseconds_returns(ENTER_TIME)
-            and_that_event_manager_RegisterForEvent_is_stubbed()
+            and_that_event_manager_register_for_event_is_stubbed()
             and_that_esoTERM_output_stdout_is_stubbed()
 
         when_on_combat_state_update_is_called_with(EVENT, IN_COMBAT)
@@ -637,7 +601,7 @@ describe("The on combat-state-change event handler.", function()
     it("Character resurrected.", function()
         given_that_get_combat_state_returns(OUTER_COMBAT)
             and_that_eso_GetGameTimeMilliseconds_returns(ENTER_TIME)
-            and_that_event_manager_RegisterForEvent_is_stubbed()
+            and_that_event_manager_register_for_event_is_stubbed()
             and_that_esoTERM_output_stdout_is_stubbed()
 
         when_on_unit_death_state_change_is_called_with(EVENT, ALIVE)
@@ -651,8 +615,8 @@ describe("The on combat-state-change event handler.", function()
     end)
 
     -- {{{
-    local function and_that_event_manager_UnregisterForEvent_is_stubbed()
-        ut_helper.stub_function(EVENT_MANAGER, "UnregisterForEvent", nil)
+    local function and_that_event_manager_unregister_from_event_is_stubbed()
+        ut_helper.stub_function(esoTERM_common, "unregister_from_event", nil)
     end
 
     local function and_that_cached_combat_start_time_is(time)
@@ -676,12 +640,9 @@ describe("The on combat-state-change event handler.", function()
     end
 
     local function and_combat_event_handler_was_unregistered()
-        assert.spy(EVENT_MANAGER.UnregisterForEvent).was.called_with(
-            EVENT_MANAGER,
-            esoTERM.ADDON_NAME,
+        assert.spy(esoTERM_common.unregister_from_event).was.called_with(
+            EVENT_REGISTER,
             EVENT_COMBAT_EVENT)
-        local inactive_event = EVENT_REGISTER[EVENT_COMBAT_EVENT]
-        assert.is.equal(true, inactive_event == false)
     end
 
     local function get_exit_combat_message()
@@ -696,7 +657,7 @@ describe("The on combat-state-change event handler.", function()
         given_that_get_combat_state_returns(IN_COMBAT)
             and_that_get_combat_start_time_returns(ENTER_TIME)
             and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME)
-            and_that_event_manager_UnregisterForEvent_is_stubbed()
+            and_that_event_manager_unregister_from_event_is_stubbed()
             and_that_cached_combat_start_time_is(ENTER_TIME)
             and_that_cached_combat_damage_is(DAMAGE)
             and_that_esoTERM_output_stdout_is_stubbed()
@@ -717,7 +678,7 @@ describe("The on combat-state-change event handler.", function()
         given_that_get_combat_state_returns(IN_COMBAT)
             and_that_get_combat_start_time_returns(ENTER_TIME)
             and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME)
-            and_that_event_manager_UnregisterForEvent_is_stubbed()
+            and_that_event_manager_unregister_from_event_is_stubbed()
             and_that_cached_combat_start_time_is(ENTER_TIME)
             and_that_cached_combat_damage_is(DAMAGE)
             and_that_esoTERM_output_stdout_is_stubbed()
@@ -746,7 +707,7 @@ describe("The on combat-state-change event handler.", function()
         given_that_get_combat_state_returns(IN_COMBAT)
             and_that_get_combat_start_time_returns(ENTER_TIME)
             and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME_ONE_HIT)
-            and_that_event_manager_UnregisterForEvent_is_stubbed()
+            and_that_event_manager_unregister_from_event_is_stubbed()
             and_that_cached_combat_start_time_is(ENTER_TIME)
             and_that_cached_combat_damage_is(DAMAGE)
             and_that_esoTERM_output_stdout_is_stubbed()

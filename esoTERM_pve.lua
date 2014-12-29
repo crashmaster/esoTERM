@@ -98,11 +98,6 @@ function esoTERM_pve.on_level_update(event, unit, level)
     end
 end
 
-local function register_for_event(event, callback)
-    EVENT_MANAGER:RegisterForEvent(esoTERM.ADDON_NAME, event, callback)
-    EVENT_REGISTER[event] = true
-end
-
 function esoTERM_pve.initialize()
     CACHE.veteran = esoTERM_pve.is_veteran(CACHE)
     CACHE.level = esoTERM_pve.get_level(CACHE)
@@ -111,9 +106,15 @@ function esoTERM_pve.initialize()
     CACHE.level_xp_percent = esoTERM_pve.get_level_xp_percent(CACHE)
     CACHE.xp_gain = esoTERM_pve.get_xp_gain(CACHE)
 
-    register_for_event(EVENT_EXPERIENCE_UPDATE, esoTERM_pve.on_experience_update)
-    register_for_event(EVENT_LEVEL_UPDATE, esoTERM_pve.on_level_update)
-    register_for_event(EVENT_VETERAN_RANK_UPDATE, esoTERM_pve.on_level_update)
+    esoTERM_common.register_for_event(EVENT_REGISTER,
+                                      EVENT_EXPERIENCE_UPDATE,
+                                      esoTERM_pve.on_experience_update)
+    esoTERM_common.register_for_event(EVENT_REGISTER,
+                                      EVENT_LEVEL_UPDATE,
+                                      esoTERM_pve.on_level_update)
+    esoTERM_common.register_for_event(EVENT_REGISTER,
+                                      EVENT_VETERAN_RANK_UPDATE,
+                                      esoTERM_pve.on_level_update)
 end
 
 return esoTERM_pve

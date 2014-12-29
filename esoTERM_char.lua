@@ -120,21 +120,13 @@ local function get_combat_enter_message()
     return "Entered combat"
 end
 
-local function register_for_event(event, callback)
-    EVENT_MANAGER:RegisterForEvent(esoTERM.ADDON_NAME, event, callback)
-    EVENT_REGISTER[event] = true
-end
-
-local function unregister_from_event(event)
-    EVENT_MANAGER:UnregisterForEvent(esoTERM.ADDON_NAME, event)
-    EVENT_REGISTER[event] = false
-end
-
 function esoTERM_char.enter_combat()
     CACHE.combat_start_time = GetGameTimeMilliseconds()
     CACHE.combat_damage = 0
 
-    register_for_event(EVENT_COMBAT_EVENT, esoTERM_char.on_combat_event_update)
+    esoTERM_common.register_for_event(EVENT_REGISTER,
+                                      EVENT_COMBAT_EVENT,
+                                      esoTERM_char.on_combat_event_update)
 
     esoTERM_output.stdout(get_combat_enter_message())
 end
@@ -153,7 +145,7 @@ function esoTERM_char.exit_combat()
     local combat_start_time = esoTERM_char.get_combat_start_time(CACHE)
     CACHE.combat_lenght = GetGameTimeMilliseconds() - combat_start_time
 
-    unregister_from_event(EVENT_COMBAT_EVENT)
+    esoTERM_common.unregister_from_event(EVENT_REGISTER, EVENT_COMBAT_EVENT)
 
     esoTERM_output.stdout(get_combat_left_message())
 
@@ -182,8 +174,12 @@ function esoTERM_char.initialize()
     CACHE.combat_lenght = esoTERM_char.get_combat_lenght(CACHE)
     CACHE.combat_damage = esoTERM_char.get_combat_damage(CACHE)
 
-    register_for_event(EVENT_PLAYER_COMBAT_STATE, esoTERM_char.on_combat_state_update)
-    register_for_event(EVENT_UNIT_DEATH_STATE_CHANGED, esoTERM_char.on_unit_death_state_change)
+    esoTERM_common.register_for_event(EVENT_REGISTER,
+                                      EVENT_PLAYER_COMBAT_STATE,
+                                      esoTERM_char.on_combat_state_update)
+    esoTERM_common.register_for_event(EVENT_REGISTER,
+                                      EVENT_UNIT_DEATH_STATE_CHANGED,
+                                      esoTERM_char.on_unit_death_state_change)
 end
 
 return esoTERM_char

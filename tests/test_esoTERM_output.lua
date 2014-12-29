@@ -2,21 +2,19 @@ local requires_for_tests = require("tests/requires_for_tests")
 
 local GLOBAL = _G
 
+local EVENT_REGISTER = esoTERM_output.event_register
+
 describe("Test output initialization", function()
     local expected_register_params = {}
-    local expected_new_params = {}
 
     after_each(function()
+        expected_register_params = nil
         ut_helper.restore_stubbed_functions()
     end)
 
-    teardown(function()
-        expected_register_params = nil
-    end)
-
     -- {{{
-    local function given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
-        ut_helper.stub_function(EVENT_MANAGER, "RegisterForEvent", nil)
+    local function given_that_register_for_event_is_stubbed()
+        ut_helper.stub_function(esoTERM_common, "register_for_event", nil)
     end
 
     local function and_esoTERM_output_on_player_activated_is_stubbed()
@@ -25,7 +23,7 @@ describe("Test output initialization", function()
 
     local function and_expected_register_event_parameter_is_set_up()
         expected_register_params.experience_points_update = {
-            addon_name = esoTERM.ADDON_NAME,
+            local_register = EVENT_REGISTER,
             event = EVENT_PLAYER_ACTIVATED,
             callback = esoTERM_output.on_player_activated
         }
@@ -35,12 +33,11 @@ describe("Test output initialization", function()
         esoTERM_output.initialize()
     end
 
-    local function then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_params)
-        assert.spy(EVENT_MANAGER.RegisterForEvent).was.called(ut_helper.table_size(expected_params))
+    local function then_register_for_event_was_called_with(expected_params)
+        assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(expected_params))
         for param in pairs(expected_params) do
-            assert.spy(EVENT_MANAGER.RegisterForEvent).was.called_with(
-                EVENT_MANAGER,
-                expected_params[param].addon_name,
+            assert.spy(esoTERM_common.register_for_event).was.called_with(
+                expected_params[param].local_register,
                 expected_params[param].event,
                 expected_params[param].callback
             )
@@ -50,18 +47,19 @@ describe("Test output initialization", function()
 
     it("Register for player activated event",
     function()
-        given_that_EVENT_MANAGER_RegisterForEvent_is_stubbed()
+        given_that_register_for_event_is_stubbed()
             and_esoTERM_output_on_player_activated_is_stubbed()
             and_expected_register_event_parameter_is_set_up()
 
         when_initialize_is_called()
 
-        then_EVENT_MANAGER_RegisterForEvent_was_called_with(expected_register_params)
+        then_register_for_event_was_called_with(expected_register_params)
     end)
 end)
 
 describe("Test output.", function()
     before_each(function()
+        ut_helper.stub_function(esoTERM_common, "register_for_event", nil)
         esoTERM_output.initialize()
     end)
 

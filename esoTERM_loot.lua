@@ -42,16 +42,13 @@ function esoTERM_loot.on_loot_received(event, by, item, quantity, sound, loot_ty
     esoTERM_output.stdout(get_loot_message())
 end
 
-local function register_for_event(event, callback)
-    EVENT_MANAGER:RegisterForEvent(esoTERM.ADDON_NAME, event, callback)
-    EVENT_REGISTER[event] = true
-end
-
 function esoTERM_loot.initialize()
     CACHE.loot_quantity = esoTERM_loot.get_loot_quantity(CACHE)
     CACHE.looted_item = esoTERM_loot.get_looted_item(CACHE)
 
-    register_for_event(EVENT_LOOT_RECEIVED, esoTERM_loot.on_loot_received)
+    esoTERM_common.register_for_event(EVENT_REGISTER,
+                                      EVENT_LOOT_RECEIVED,
+                                      esoTERM_loot.on_loot_received)
 end
 
 return esoTERM_loot
