@@ -5,6 +5,7 @@ esoTERM_pvp.cache = {}
 esoTERM_pvp.event_register = {}
 
 esoTERM_pvp.module_name = "esoTERM-pvp"
+esoTERM_pvp.is_active = false
 
 local CACHE = esoTERM_pvp.cache
 local EVENT_REGISTER = esoTERM_pvp.event_register
@@ -145,6 +146,8 @@ function esoTERM_pvp.initialize()
                                       esoTERM_pvp.on_ava_points_update)
 
     esoTERM_common.register_module(esoTERM.module_register, esoTERM_pvp)
+
+    esoTERM_pvp.is_active = true
 end
 
 return esoTERM_pvp

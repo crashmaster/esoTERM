@@ -5,6 +5,7 @@ esoTERM_pve.cache = {}
 esoTERM_pve.event_register = {}
 
 esoTERM_pve.module_name = "esoTERM-pve"
+esoTERM_pve.is_active = false
 
 local CACHE = esoTERM_pve.cache
 local EVENT_REGISTER = esoTERM_pve.event_register
@@ -119,6 +120,8 @@ function esoTERM_pve.initialize()
                                       esoTERM_pve.on_level_update)
 
     esoTERM_common.register_module(esoTERM.module_register, esoTERM_pve)
+
+    esoTERM_pve.is_active = true
 end
 
 return esoTERM_pve

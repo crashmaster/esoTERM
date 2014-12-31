@@ -5,6 +5,7 @@ esoTERM_char.cache = {}
 esoTERM_char.event_register = {}
 
 esoTERM_char.module_name = "esoTERM-character"
+esoTERM_char.is_active = false
 
 local CACHE = esoTERM_char.cache
 local EVENT_REGISTER = esoTERM_char.event_register
@@ -184,6 +185,8 @@ function esoTERM_char.initialize()
                                       esoTERM_char.on_unit_death_state_change)
 
     esoTERM_common.register_module(esoTERM.module_register, esoTERM_char)
+
+    esoTERM_char.is_active = true
 end
 
 return esoTERM_char

@@ -143,6 +143,10 @@ describe("Test initialization.", function()
         assert.spy(esoTERM_common.register_module).was.called_with(
             esoTERM.module_register, esoTERM_pvp)
     end
+
+    local function and_module_is_active()
+        assert.is.equal(true, esoTERM_pvp.is_active)
+    end
     -- }}}
 
     it("Cached PvP data is updated and subscribed for events.",
@@ -159,6 +163,7 @@ describe("Test initialization.", function()
             and_getter_stubs_were_called_with(CACHE)
             and_register_for_event_was_called_with(expected_register_params)
             and_register_module_was_called()
+            and_module_is_active()
     end)
 end)
 

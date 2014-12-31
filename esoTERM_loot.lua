@@ -3,6 +3,7 @@ esoTERM_loot.cache = {}
 esoTERM_loot.event_register = {}
 
 esoTERM_loot.module_name = "esoTERM-loot"
+esoTERM_loot.is_active = false
 
 local CACHE = esoTERM_loot.cache
 local EVENT_REGISTER = esoTERM_loot.event_register
@@ -53,6 +54,8 @@ function esoTERM_loot.initialize()
                                       esoTERM_loot.on_loot_received)
 
     esoTERM_common.register_module(esoTERM.module_register, esoTERM_loot)
+
+    esoTERM_loot.is_active = true
 end
 
 return esoTERM_loot
