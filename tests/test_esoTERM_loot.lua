@@ -11,6 +11,21 @@ local LOOT_QUANTITY = A_INTEGER
 local CACHE = esoTERM_loot.cache
 local EVENT_REGISTER = esoTERM_loot.event_register
 
+describe("Test module.", function()
+    local name = "esoTERM-loot"
+
+    -- {{{
+    local function when_module_name_is_get_then_expected_name_is_returned(name)
+        assert.is.equal(name, esoTERM_loot.module_name)
+    end
+    -- }}}
+
+    it("Module is called: esoTERM-loot.",
+    function()
+        when_module_name_is_get_then_expected_name_is_returned(name)
+    end)
+end)
+
 describe("Test Loot module initialization.", function()
     local return_values_of_the_getter_stubs = {
         get_loot_quantity = LOOT_QUANTITY,

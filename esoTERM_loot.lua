@@ -2,10 +2,10 @@ esoTERM_loot = {}
 esoTERM_loot.cache = {}
 esoTERM_loot.event_register = {}
 
+esoTERM_loot.module_name = "esoTERM-loot"
+
 local CACHE = esoTERM_loot.cache
 local EVENT_REGISTER = esoTERM_loot.event_register
-
-local module_name = "loot module"
 
 function esoTERM_loot.get_loot_quantity(cache)
     if cache.loot_quantity ~= nil then

@@ -23,6 +23,21 @@ local LEVEL_XP_GAIN = A_INTEGER
 local CACHE = esoTERM_pve.cache
 local EVENT_REGISTER = esoTERM_pve.event_register
 
+describe("Test module.", function()
+    local name = "esoTERM-pve"
+
+    -- {{{
+    local function when_module_name_is_get_then_expected_name_is_returned(name)
+        assert.is.equal(name, esoTERM_pve.module_name)
+    end
+    -- }}}
+
+    it("Module is called: esoTERM-pve.",
+    function()
+        when_module_name_is_get_then_expected_name_is_returned(name)
+    end)
+end)
+
 describe("Test initialization.", function()
     local return_values_of_the_getter_stubs = {
         is_veteran = VETERANNESS_1,

@@ -29,6 +29,21 @@ local AVA_POINTS_GAIN = A_INTEGER
 local CACHE = esoTERM_pvp.cache
 local EVENT_REGISTER = esoTERM_pvp.event_register
 
+describe("Test module.", function()
+    local name = "esoTERM-pvp"
+
+    -- {{{
+    local function when_module_name_is_get_then_expected_name_is_returned(name)
+        assert.is.equal(name, esoTERM_pvp.module_name)
+    end
+    -- }}}
+
+    it("Module is called: esoTERM-pvp.",
+    function()
+        when_module_name_is_get_then_expected_name_is_returned(name)
+    end)
+end)
+
 describe("Test initialization.", function()
     local return_values_of_the_getter_stubs = {
         get_ava_points = AVA_RANK_1,

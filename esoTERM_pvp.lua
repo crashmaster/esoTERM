@@ -4,10 +4,10 @@ esoTERM_pvp = {}
 esoTERM_pvp.cache = {}
 esoTERM_pvp.event_register = {}
 
+esoTERM_pvp.module_name = "esoTERM-pvp"
+
 local CACHE = esoTERM_pvp.cache
 local EVENT_REGISTER = esoTERM_pvp.event_register
-
-local module_name = "pvp module"
 
 function esoTERM_pvp.get_ava_points(cache)
     if cache.ava_points ~= nil then

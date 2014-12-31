@@ -4,10 +4,10 @@ esoTERM_char = {}
 esoTERM_char.cache = {}
 esoTERM_char.event_register = {}
 
+esoTERM_char.module_name = "esoTERM-character"
+
 local CACHE = esoTERM_char.cache
 local EVENT_REGISTER = esoTERM_char.event_register
-
-local module_name = "char module"
 
 function esoTERM_char.get_gender(cache)
     if cache.gender ~= nil then

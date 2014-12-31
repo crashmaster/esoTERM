@@ -4,10 +4,10 @@ esoTERM_pve = {}
 esoTERM_pve.cache = {}
 esoTERM_pve.event_register = {}
 
+esoTERM_pve.module_name = "esoTERM-pve"
+
 local CACHE = esoTERM_pve.cache
 local EVENT_REGISTER = esoTERM_pve.event_register
-
-local module_name = "pve module"
 
 function esoTERM_pve.is_veteran(cache)
     if cache.veteran ~= nil then

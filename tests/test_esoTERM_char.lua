@@ -26,6 +26,21 @@ local COMBAT_DAMAGE = A_INTEGER
 local CACHE = esoTERM_char.cache
 local EVENT_REGISTER = esoTERM_char.event_register
 
+describe("Test module.", function()
+    local name = "esoTERM-character"
+
+    -- {{{
+    local function when_module_name_is_get_then_expected_name_is_returned(name)
+        assert.is.equal(name, esoTERM_char.module_name)
+    end
+    -- }}}
+
+    it("Module is called: esoTERM-character.",
+    function()
+        when_module_name_is_get_then_expected_name_is_returned(name)
+    end)
+end)
+
 describe("Test initialization.", function()
     local return_values_of_the_getter_stubs = {
         get_gender = GENDER_1,
