@@ -1,4 +1,10 @@
 esoTERM_window = {}
+esoTERM_window.default_settings = {
+    window_width = 400,
+    window_height = 300,
+    window_x = 20,
+    window_y = 450
+}
 
 function esoTERM_window.set_window_visibility()
     local fragment = ZO_SimpleSceneFragment:New(esoTERM_window.etw)
@@ -58,18 +64,38 @@ local function show_etw()
     end
 end
 
+local function on_resize_stop()
+    local settings = esoTERM_window.settings
+    settings.window_width, settings.window_height = esoTERM_window.etw:GetDimensions()
+end
+
+local function on_move_stop()
+    local settings = esoTERM_window.settings
+    _, _, _, _, settings.window_x, settings.window_y = esoTERM_window.etw:GetAnchor(0)
+end
+
 local function create_top_level_window()
     local etw = WINDOW_MANAGER:CreateTopLevelWindow()
     etw:SetMouseEnabled(true)
     etw:SetMovable(true)
     etw:SetHidden(true)
     etw:SetClampedToScreen(true)
-    etw:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, 20, 450)
-    etw:SetDimensions(400, 300)
+    local x = esoTERM_window.settings.window_x or
+              esoTERM_window.default_settings.window_x
+    local y = esoTERM_window.settings.window_y or
+              esoTERM_window.default_settings.window_y
+    etw:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, x, y)
+    local width = esoTERM_window.settings.window_width or
+                  esoTERM_window.default_settings.window_width
+    local height = esoTERM_window.settings.window_height or
+                   esoTERM_window.default_settings.window_height
+    etw:SetDimensions(width, height)
     etw:SetDimensionConstraints(300, 200, 500, 800)
     etw:SetResizeHandleSize(16)
-    etw:SetHandler("OnMouseExit", function() hide_etw() end)
-    etw:SetHandler("OnMouseEnter", function() show_etw() end)
+    etw:SetHandler("OnMouseExit", hide_etw)
+    etw:SetHandler("OnMouseEnter", show_etw)
+    etw:SetHandler("OnResizeStop", on_resize_stop)
+    etw:SetHandler("OnMoveStop", on_move_stop)
     return etw
 end
 
@@ -130,6 +156,9 @@ function esoTERM_window.print_message(message)
 end
 
 function esoTERM_window.initialize()
+    esoTERM_window.settings = ZO_SavedVars:New("esoTERM_settings",
+                                               1, nil,
+                                               esoTERM_window.default_settings)
     esoTERM_window.create()
     esoTERM_window.set_window_visibility()
     GAME_MENU_SCENE:RegisterCallback("StateChange", function(old_state, new_state)

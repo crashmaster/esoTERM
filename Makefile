@@ -8,9 +8,11 @@ BUSTED := busted --coverage
 LUACOV := luacov --config .luacov
 LUACOV_REPORT := luacov.report.out
 
-ESO_API_VERSION := 100010
 ADDON_NAME := esoTERM
 ADDON_TEXT_FILE := $(ADDON_NAME).txt
+ESO_API_VERSION := 100010
+ADDON_SAVED_VARIABLES := esoTERM_settings
+
 USER_DOCUMENTS_DIR := C:/Users/$(USER)/Documents
 ESO_ADDONS_DIR := $(USER_DOCUMENTS_DIR)/Elder\ Scrolls\ Online/liveeu/AddOns
 ESO_TERM_DIR := $(ESO_ADDONS_DIR)/$(ADDON_NAME)
@@ -45,7 +47,8 @@ coverage: test_silent
 gentxt:
 	@$(RM) $(ADDON_TEXT_FILE)
 	@printf "## Title: %s\n" $(ADDON_NAME) > $(ADDON_TEXT_FILE)
-	@printf "## APIVersion: %s\n\n" $(ESO_API_VERSION) >> $(ADDON_TEXT_FILE)
+	@printf "## APIVersion: %s\n" $(ESO_API_VERSION) >> $(ADDON_TEXT_FILE)
+	@printf "## SavedVariables: %s\n\n" $(ADDON_SAVED_VARIABLES) >> $(ADDON_TEXT_FILE)
 	@ls $(ADDON_NAME)*.lua >> $(ADDON_TEXT_FILE)
 
 install: gentxt
