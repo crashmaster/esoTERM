@@ -144,7 +144,7 @@ function esoTERM_pvp.initialize()
                                       EVENT_ALLIANCE_POINT_UPDATE,
                                       esoTERM_pvp.on_ava_points_update)
 
-    esoTERM_common.active_module(esoTERM.module_register, module_name)
+    esoTERM_common.register_module(esoTERM.module_register, esoTERM_pvp)
 end
 
 return esoTERM_pvp

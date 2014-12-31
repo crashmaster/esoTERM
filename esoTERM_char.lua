@@ -183,7 +183,7 @@ function esoTERM_char.initialize()
                                       EVENT_UNIT_DEATH_STATE_CHANGED,
                                       esoTERM_char.on_unit_death_state_change)
 
-    esoTERM_common.active_module(esoTERM.module_register, module_name)
+    esoTERM_common.register_module(esoTERM.module_register, esoTERM_char)
 end
 
 return esoTERM_char

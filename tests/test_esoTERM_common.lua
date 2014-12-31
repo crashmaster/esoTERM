@@ -79,7 +79,7 @@ describe("Test common functions.", function()
 
     describe("Register for active/inactive modules.", function()
         local module_register = {}
-        local module_name = "blabla"
+        local module = {}
 
         before_each(function()
             module_register = {}
@@ -90,50 +90,31 @@ describe("Test common functions.", function()
             assert.is.equal(0, ut_helper.table_size(register))
         end
 
-        local function when_module_marked_active(register, module)
-            esoTERM_common.active_module(register, module)
+        local function when_module_registered(register, module)
+            esoTERM_common.register_module(register, module)
         end
 
-        local function contains_key_with_value(table, expected_key, expected_value)
-            for key, value in pairs(table) do
-                if key == expected_key and value == expected_value then
+        local function contains_module(module_register, expected_module)
+            for index, module in pairs(module_register) do
+                if module == expected_module then
                     return true
                 end
             end
             return false
         end
 
-        local function then_the_module_register_contains_that_active_module(register, module)
-            assert.is.equal(true, contains_key_with_value(register, module, true))
+        local function then_the_module_register_contains_that_module(register, module)
+            assert.is.equal(true, contains_module(register, module))
         end
         -- }}}
 
-        it("Register active module.",
+        it("Register module.",
         function()
             given_that_module_register_is_empty(module_register)
 
-            when_module_marked_active(module_register, module_name)
+            when_module_registered(module_register, module)
 
-            then_the_module_register_contains_that_active_module(module_register, module_name)
-        end)
-
-        -- {{{
-        local function when_module_marked_inactive(register, module)
-            esoTERM_common.inactive_module(register, module)
-        end
-
-        local function then_the_module_register_contains_that_inactive_module(register, module)
-            assert.is.equal(true, contains_key_with_value(register, module, false))
-        end
-        -- }}}
-
-        it("Register inactive module.",
-        function()
-            given_that_module_register_is_empty(module_register)
-
-            when_module_marked_inactive(module_register, module_name)
-
-            then_the_module_register_contains_that_inactive_module(module_register, module_name)
+            then_the_module_register_contains_that_module(module_register, module)
         end)
     end)
 end)

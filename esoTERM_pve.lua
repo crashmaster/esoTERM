@@ -118,7 +118,7 @@ function esoTERM_pve.initialize()
                                       EVENT_VETERAN_RANK_UPDATE,
                                       esoTERM_pve.on_level_update)
 
-    esoTERM_common.active_module(esoTERM.module_register, module_name)
+    esoTERM_common.register_module(esoTERM.module_register, esoTERM_pve)
 end
 
 return esoTERM_pve

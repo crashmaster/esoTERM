@@ -10,12 +10,8 @@ function esoTERM_common.unregister_from_event(local_register, event)
     local_register[event] = false
 end
 
-function esoTERM_common.active_module(module_register, module_name)
-    module_register[module_name] = true
-end
-
-function esoTERM_common.inactive_module(module_register, module_name)
-    module_register[module_name] = false
+function esoTERM_common.register_module(module_register, module)
+    table.insert(module_register, module)
 end
 
 return esoTERM_common

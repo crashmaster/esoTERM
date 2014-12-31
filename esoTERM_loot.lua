@@ -52,7 +52,7 @@ function esoTERM_loot.initialize()
                                       EVENT_LOOT_RECEIVED,
                                       esoTERM_loot.on_loot_received)
 
-    esoTERM_common.active_module(esoTERM.module_register, module_name)
+    esoTERM_common.register_module(esoTERM.module_register, esoTERM_loot)
 end
 
 return esoTERM_loot
