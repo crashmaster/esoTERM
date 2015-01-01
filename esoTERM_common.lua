@@ -10,6 +10,14 @@ function esoTERM_common.unregister_from_event(local_register, event)
     local_register[event] = false
 end
 
+function esoTERM_common.unregister_from_all_events(local_register)
+    for event, is_active in pairs(local_register) do
+        if is_active then
+            esoTERM_common.unregister_from_event(local_register, event)
+        end
+    end
+end
+
 function esoTERM_common.register_module(module_register, module)
     table.insert(module_register, module)
 end
