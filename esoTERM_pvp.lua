@@ -150,4 +150,10 @@ function esoTERM_pvp.initialize()
     esoTERM_pvp.is_active = true
 end
 
+function esoTERM_pvp.deactivate()
+    esoTERM_common.unregister_from_all_events(EVENT_REGISTER)
+
+    esoTERM_pvp.is_active = false
+end
+
 return esoTERM_pvp

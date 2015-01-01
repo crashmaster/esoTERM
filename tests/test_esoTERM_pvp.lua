@@ -167,6 +167,41 @@ describe("Test initialization.", function()
     end)
 end)
 
+describe("Test deactivate.", function()
+    -- {{{
+    local function given_that_module_is_active()
+        esoTERM_pvp.is_active = true
+    end
+
+    local function and_that_unregister_from_all_events_is_stubbed()
+        ut_helper.stub_function(esoTERM_common, "unregister_from_all_events", nil)
+    end
+
+    local function when_deactivate_for_the_module_is_called()
+        esoTERM_pvp.deactivate()
+    end
+
+    local function then_unregister_from_all_events_was_called()
+        assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(EVENT_REGISTER)
+    end
+
+    local function and_module_becomes_inactive()
+        assert.is.equal(false, esoTERM_pvp.is_active)
+    end
+    -- }}}
+
+    it("Unsubscribe from active events and set activeness to false.",
+    function()
+        given_that_module_is_active()
+            and_that_unregister_from_all_events_is_stubbed()
+
+        when_deactivate_for_the_module_is_called()
+
+        then_unregister_from_all_events_was_called()
+            and_module_becomes_inactive()
+    end)
+end)
+
 describe("Test PvP related data getters.", function()
     local results = {}
 

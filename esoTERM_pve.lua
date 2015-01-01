@@ -124,4 +124,10 @@ function esoTERM_pve.initialize()
     esoTERM_pve.is_active = true
 end
 
+function esoTERM_pve.deactivate()
+    esoTERM_common.unregister_from_all_events(EVENT_REGISTER)
+
+    esoTERM_pve.is_active = false
+end
+
 return esoTERM_pve

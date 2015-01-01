@@ -58,4 +58,10 @@ function esoTERM_loot.initialize()
     esoTERM_loot.is_active = true
 end
 
+function esoTERM_loot.deactivate()
+    esoTERM_common.unregister_from_all_events(EVENT_REGISTER)
+
+    esoTERM_loot.is_active = false
+end
+
 return esoTERM_loot
