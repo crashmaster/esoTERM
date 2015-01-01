@@ -90,3 +90,7 @@ GAME_MENU_SCENE = {
 SCENE_MANAGER = {
     GetScene = function(scene) return SCENE end
 }
+
+ZO_SavedVars = {
+    New = function(table_name, version, namespace, default) return nil end
+}
