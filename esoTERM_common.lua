@@ -22,4 +22,12 @@ function esoTERM_common.register_module(module_register, module)
     table.insert(module_register, module)
 end
 
+function esoTERM_common.split(input_string)
+    local result = {}
+    for sub_string in string.gmatch(input_string, "%S+") do
+        table.insert(result, sub_string)
+    end
+    return result
+end
+
 return esoTERM_common

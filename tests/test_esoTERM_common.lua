@@ -182,6 +182,37 @@ describe("Test common functions.", function()
             then_the_module_register_contains_that_module(module_register, module)
         end)
     end)
+
+    -- {{{
+    local function split_string_into_strings_at_spaces(input_string, output_array)
+        local result = esoTERM_common.split(input_string)
+        for index, string in ipairs(output_array) do
+            assert.is.equal(result[index], string)
+        end
+    end
+    -- }}}
+
+    describe("String is split into array of strings at spaces.", function()
+        it("Empty input string results in empty output array.",
+        function()
+            split_string_into_strings_at_spaces("", {})
+        end)
+
+        it("Input string does not contain space.",
+        function()
+            split_string_into_strings_at_spaces("aaaa", {"aaaa"})
+        end)
+
+        it("Input string contains some spaces.",
+        function()
+            split_string_into_strings_at_spaces("a aa 1", {"a", "aa", "1"})
+        end)
+
+        it("Input string contains multiple spaces.",
+        function()
+            split_string_into_strings_at_spaces("a  aa    a", {"a", "aa", "a"})
+        end)
+    end)
 end)
 
 -- vim:fdm=marker

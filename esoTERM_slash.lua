@@ -13,7 +13,7 @@ function esoTERM_slash.slash_command_handler(command)
             esoTERM_output.sysout(m)
         end
     else
-        esoTERM_output.sysout("Invalid command")
+        esoTERM_output.sysout("Invalid command: " .. command)
     end
 end
 
