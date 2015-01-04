@@ -9,6 +9,7 @@ describe("Test main module.", function()
     end
 
     local function when_esoTERM_is_loaded()
+        package.loaded["esoTERM"] = nil
         local esoTERM = require("esoTERM")
     end
 

@@ -161,3 +161,5 @@ describe("Test slash command handlers.", function()
                                     "fake_inactive_module  <INACTIVE>")
     end)
 end)
+
+-- vim:fdm=marker
