@@ -6,15 +6,22 @@ describe("Test slash command handler initialization.", function()
         esoTERM_slash.initialize()
     end
 
-    local function then_slash_command_handler_for_esoTERM_is_registered()
+    local function then_slash_command_handler_for_esoTERM_was_registered()
         assert.is.equal(SLASH_COMMANDS["/esoterm"], esoTERM_slash.slash_command_handler)
+    end
+
+    local function and_command_handler_map_was_set_up()
+        assert.is.equal(true, esoTERM_slash.command_handlers[""] ~= nil)
+        assert.is.equal(true, esoTERM_slash.command_handlers["help"] ~= nil)
+        assert.is.equal(true, esoTERM_slash.command_handlers["status"] ~= nil)
     end
     -- }}}
 
     it("Command handler for /esoterm commands is registered.", function()
         when_initialize_is_called()
 
-        then_slash_command_handler_for_esoTERM_is_registered()
+        then_slash_command_handler_for_esoTERM_was_registered()
+            and_command_handler_map_was_set_up()
     end)
 end)
 
@@ -50,7 +57,9 @@ describe("Test slash command handlers.", function()
     it("Output of no command", function()
         when_command_handler_called_with("")
 
-        then_sysout_was_called_with("esoTERM active")
+        then_sysout_was_called_with("About\n" ..
+                                    "Name: esoTERM\n" ..
+                                    "Author: @Gaul")
     end)
 
     it("Output of invalid command", function()
@@ -62,13 +71,15 @@ describe("Test slash command handlers.", function()
     it("Output of lower case help command", function()
         when_command_handler_called_with("help")
 
-        then_sysout_was_called_with("No help here")
+        then_sysout_was_called_with("Help\n" ..
+                                    "No help here")
     end)
 
     it("Output of mixed case help command", function()
         when_command_handler_called_with("hElP")
 
-        then_sysout_was_called_with("No help here")
+        then_sysout_was_called_with("Help\n" ..
+                                    "No help here")
     end)
 
     -- {{{
@@ -82,7 +93,8 @@ describe("Test slash command handlers.", function()
 
         when_command_handler_called_with("status")
 
-        then_sysout_was_called_with("No registered modules")
+        then_sysout_was_called_with("Status of modules\n" ..
+                                    "No registered modules")
     end)
 
     -- {{{
@@ -96,7 +108,8 @@ describe("Test slash command handlers.", function()
 
         when_command_handler_called_with("status")
 
-        then_sysout_was_called_with("fake_active_module  <ACTIVE>")
+        then_sysout_was_called_with("Status of modules\n" ..
+                                    "fake_active_module  <ACTIVE>")
     end)
 
     it("The status command returns the status of one inactive module", function()
@@ -104,7 +117,8 @@ describe("Test slash command handlers.", function()
 
         when_command_handler_called_with("status")
 
-        then_sysout_was_called_with("fake_inactive_module  <INACTIVE>")
+        then_sysout_was_called_with("Status of modules\n" ..
+                                    "fake_inactive_module  <INACTIVE>")
     end)
 
     -- {{{
@@ -120,7 +134,8 @@ describe("Test slash command handlers.", function()
 
         when_command_handler_called_with("status")
 
-        then_sysout_was_called_with("fake_active_module  <ACTIVE>\n" ..
+        then_sysout_was_called_with("Status of modules\n" ..
+                                    "fake_active_module  <ACTIVE>\n" ..
                                     "fake_active_module  <ACTIVE>")
     end)
 
@@ -130,7 +145,8 @@ describe("Test slash command handlers.", function()
 
         when_command_handler_called_with("status")
 
-        then_sysout_was_called_with("fake_inactive_module  <INACTIVE>\n" ..
+        then_sysout_was_called_with("Status of modules\n" ..
+                                    "fake_inactive_module  <INACTIVE>\n" ..
                                     "fake_inactive_module  <INACTIVE>")
     end)
 
@@ -140,7 +156,8 @@ describe("Test slash command handlers.", function()
 
         when_command_handler_called_with("status")
 
-        then_sysout_was_called_with("fake_active_module  <ACTIVE>\n" ..
+        then_sysout_was_called_with("Status of modules\n" ..
+                                    "fake_active_module  <ACTIVE>\n" ..
                                     "fake_inactive_module  <INACTIVE>")
     end)
 end)
