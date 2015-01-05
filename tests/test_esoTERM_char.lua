@@ -586,6 +586,7 @@ describe("The on combat-state-change event handler.", function()
         CACHE.combat_start_time = -1
         CACHE.combat_lenght = 0
         CACHE.combat_damage = -1
+        ut_helper.restore_stubbed_functions()
     end)
 
     -- {{{

@@ -20,9 +20,9 @@ ESO_TERM_DIR := $(ESO_ADDONS_DIR)/$(ADDON_NAME)
 THIS_FILE := $(abspath $(lastword $(MAKEFILE_LIST)))
 REPO_DIR := $(patsubst %/,%,$(dir $(THIS_FILE)))
 TESTS_DIR := $(REPO_DIR)/tests
+TEST_FILE_PATTERN := test_esoTERM
 TOOLS_DIR := $(REPO_DIR)/tools
 LUACOV_PARSER := $(TOOLS_DIR)/parse_luacov_report.lua
-TESTS := $(foreach dir,$(TESTS_DIR),$(wildcard $(dir)/test_*.lua))
 SOURCES := $(foreach dir,$(REPO_DIR),$(wildcard $(dir)/$(ADDON_NAME)*))
 BUILD_DIR := $(REPO_DIR)/build
 BUILD_PKG_DIR := $(BUILD_DIR)/$(ADDON_NAME)
@@ -34,10 +34,10 @@ PKG_NAME := $(ADDON_NAME)_$(shell date --iso-8601).zip
 all: test coverage
 
 test:
-	@$(foreach file,$(TESTS),printf "%s:" $(notdir $(file)) && $(BUSTED) $(file) || exit $?;)
+	@$(BUSTED) -p $(TEST_FILE_PATTERN) $(TESTS_DIR)
 
 test_silent:
-	@$(foreach file,$(TESTS), $(BUSTED) $(file) > /dev/null || exit $?;)
+	@$(BUSTED) -p $(TEST_FILE_PATTERN) $(TESTS_DIR) > /dev/null
 
 coverage: test_silent
 	@$(LUACOV)
