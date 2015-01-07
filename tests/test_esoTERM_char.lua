@@ -747,6 +747,10 @@ describe("The on combat-state-change event handler.", function()
     local function and_IsUnitInCombat_was_called_once()
         assert.spy(GLOBAL.IsUnitInCombat).was.called_with(PLAYER)
     end
+
+    local function and_cached_combat_state_became(combat_state)
+        assert.is.equal(combat_state, CACHE.combat_state)
+    end
     -- }}}
 
     it("Character resurrected out of fight.", function()
@@ -759,6 +763,7 @@ describe("The on combat-state-change event handler.", function()
         then_on_combat_state_update_was_called_with(OUT_OF_COMBAT)
             and_esoTERM_output_stdout_was_called_with("Resurrected, watch out next time!")
             and_IsUnitInCombat_was_called_once()
+            and_cached_combat_state_became(OUT_OF_COMBAT)
     end)
 
     it("Character resurrected in fight.", function()
@@ -771,6 +776,7 @@ describe("The on combat-state-change event handler.", function()
         then_on_combat_state_update_was_called_with(IN_COMBAT)
             and_esoTERM_output_stdout_was_called_with("Resurrected, watch out next time!")
             and_IsUnitInCombat_was_called_once()
+            and_cached_combat_state_became(IN_COMBAT)
     end)
 
     -- {{{

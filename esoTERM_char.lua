@@ -163,7 +163,7 @@ function esoTERM_char.on_unit_death_state_change(event, unit, is_dead)
             esoTERM_char.on_combat_state_update(nil, false)
         else
             esoTERM_output.stdout("Resurrected, watch out next time!")
-            CACHE.combat_state = nil
+            CACHE.combat_state = IsUnitInCombat(PLAYER_UNIT_TAG)
             esoTERM_char.on_combat_state_update(nil, esoTERM_char.get_combat_state(CACHE))
         end
     end
