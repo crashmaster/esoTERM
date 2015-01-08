@@ -150,7 +150,6 @@ function esoTERM_char.exit_combat()
 
     esoTERM_common.unregister_from_event(EVENT_REGISTER, EVENT_COMBAT_EVENT)
 
-    print(get_combat_left_message())
     esoTERM_output.stdout(get_combat_left_message())
 
     CACHE.combat_start_time = 0

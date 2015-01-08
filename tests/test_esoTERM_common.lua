@@ -155,10 +155,6 @@ describe("Test common functions.", function()
             assert.is.equal(0, ut_helper.table_size(register))
         end
 
-        local function when_module_registered(register, module)
-            esoTERM_common.register_module(register, module)
-        end
-
         local function contains_module(module_register, expected_module)
             for index, module in pairs(module_register) do
                 if module == expected_module then
@@ -166,6 +162,23 @@ describe("Test common functions.", function()
                 end
             end
             return false
+        end
+
+        local function then_the_module_register_does_not_contains_module(register, module)
+            assert.is.equal(false, contains_module(register, module))
+        end
+        -- }}}
+
+        it("Empty register does not contain module.",
+        function()
+            given_that_module_register_is_empty(module_register)
+
+            then_the_module_register_does_not_contains_module(module_register, module)
+        end)
+
+        -- {{{
+        local function when_module_registered(register, module)
+            esoTERM_common.register_module(register, module)
         end
 
         local function then_the_module_register_contains_that_module(register, module)
