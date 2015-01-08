@@ -119,6 +119,20 @@ local function create_window_divider()
     return divider
 end
 
+local function create_lock_button()
+    local button = WINDOW_MANAGER:CreateControl(nil, esoTERM_window.etw, CT_BUTTON)
+    button:SetDimensions(48, 48)
+    button:SetPressedOffset(2, 2)
+    button:SetAnchor(TOPLEFT, esoTERM_window.etw, TOPLEFT, 0, 0)
+    button:SetNormalTexture("/esoui/art/progression/progression_crafting_locked_up.dds")
+    button:SetPressedTexture("/esoui/art/progression/progression_crafting_locked_down.dds")
+    button:SetMouseOverTexture("/esoui/art/progression/progression_crafting_locked_over.dds")
+    button:SetHandler("OnClicked", function(self, ...)
+        d("OnClicked")
+    end)
+    return button
+end
+
 local function create_window_text_buffer()
     local tb = WINDOW_MANAGER:CreateControl(nil, esoTERM_window.etw, CT_TEXTBUFFER)
     tb:SetMouseEnabled(true)
@@ -146,6 +160,7 @@ function esoTERM_window.create()
     esoTERM_window.fade_anim = ZO_AlphaAnimation:New(esoTERM_window.etw)
     esoTERM_window.etw_bg = create_window_background()
     esoTERM_window.etw_divider = create_window_divider()
+    esoTERM_window.etw_button_lock = create_lock_button()
     esoTERM_window.tb = create_window_text_buffer()
 
     hide_etw()
