@@ -572,10 +572,11 @@ describe("The on combat-state-change event handler.", function()
     local IN_COMBAT = true
     local DEAD = true
     local ALIVE = false
+    local EXIT_COMBAT_CALL_DELAY = 500
     local ENTER_TIME = 10
-    local EXIT_TIME = 1510
-    local EXIT_TIME_ONE_HIT = 210
-    local DAMAGE = 8000
+    local EXIT_TIME = 3010 + EXIT_COMBAT_CALL_DELAY
+    local EXIT_TIME_ONE_HIT = 210 + EXIT_COMBAT_CALL_DELAY
+    local DAMAGE = 9000
 
     after_each(function()
         CACHE.combat_state = nil
@@ -689,8 +690,8 @@ describe("The on combat-state-change event handler.", function()
     local function get_exit_combat_message()
         return string.format(
             "Left combat (lasted: %.2fs, dps: %.2f)",
-            (EXIT_TIME - ENTER_TIME) / 1000,
-            DAMAGE * 1000 / (EXIT_TIME - ENTER_TIME))
+            (EXIT_TIME - ENTER_TIME - EXIT_COMBAT_CALL_DELAY) / 1000,
+            DAMAGE * 1000 / (EXIT_TIME - ENTER_TIME - EXIT_COMBAT_CALL_DELAY))
     end
     -- }}}
 
@@ -783,7 +784,7 @@ describe("The on combat-state-change event handler.", function()
     local function get_exit_one_hit_combat_message()
         return string.format(
             "Left combat (lasted: %.2fs, dps: %.2f)",
-            (EXIT_TIME_ONE_HIT - ENTER_TIME) / 1000, DAMAGE)
+            (EXIT_TIME_ONE_HIT - ENTER_TIME - EXIT_COMBAT_CALL_DELAY) / 1000, DAMAGE)
     end
     -- }}}
 

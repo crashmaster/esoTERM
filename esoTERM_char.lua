@@ -9,6 +9,7 @@ esoTERM_char.is_active = false
 
 local CACHE = esoTERM_char.cache
 local EVENT_REGISTER = esoTERM_char.event_register
+local EXIT_COMBAT_CALL_DELAY = 500
 
 function esoTERM_char.get_gender(cache)
     if cache.gender ~= nil then
@@ -72,7 +73,7 @@ function esoTERM_char.on_combat_state_update(event, combat_state)
         if combat_state then
             esoTERM_char.enter_combat()
         else
-            zo_callLater(esoTERM_char.exit_combat, 500)
+            zo_callLater(esoTERM_char.exit_combat, EXIT_COMBAT_CALL_DELAY)
         end
     end
 end
@@ -135,13 +136,12 @@ function esoTERM_char.enter_combat()
 end
 
 local function get_combat_left_message()
-    local length = esoTERM_char.get_combat_lenght(CACHE) >= 1000 and
-                   esoTERM_char.get_combat_lenght(CACHE) or 1000
+    local net_length = esoTERM_char.get_combat_lenght(CACHE) - EXIT_COMBAT_CALL_DELAY
+    local length = net_length >= 1000 and net_length or 1000
     return string.format(
         "Left combat (lasted: %.2fs, dps: %.2f)",
-        esoTERM_char.get_combat_lenght(CACHE) / 1000,
-        -- TODO: consider the zo_callLater delay
-        esoTERM_char.get_combat_damage(CACHE) * 1000 / length)
+        (net_length) / 1000,
+        esoTERM_char.get_combat_damage(CACHE) * 1000 / (length))
 end
 
 function esoTERM_char.exit_combat()
@@ -150,6 +150,7 @@ function esoTERM_char.exit_combat()
 
     esoTERM_common.unregister_from_event(EVENT_REGISTER, EVENT_COMBAT_EVENT)
 
+    print(get_combat_left_message())
     esoTERM_output.stdout(get_combat_left_message())
 
     CACHE.combat_start_time = 0
