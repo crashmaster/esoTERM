@@ -3,7 +3,8 @@ esoTERM_window.default_settings = {
     window_width = 400,
     window_height = 300,
     window_x = 20,
-    window_y = 450
+    window_y = 450,
+    window_locked = false
 }
 
 function esoTERM_window.set_window_visibility()
@@ -52,15 +53,15 @@ end
 
 local function hide_etw()
     if not MouseIsOver(esoTERM_window.etw) then
-        esoTERM_window.fade_anim:SetMinMaxAlpha(0.0, 1.0)
-        esoTERM_window.fade_anim:FadeOut(3000, 300)
+        esoTERM_window.etw_fade_anim:SetMinMaxAlpha(0.0, 1.0)
+        esoTERM_window.etw_fade_anim:FadeOut(3000, 300)
     end
 end
 
 local function show_etw()
     if MouseIsOver(esoTERM_window.etw) then
-        esoTERM_window.fade_anim:SetMinMaxAlpha(0.0, 1.0)
-        esoTERM_window.fade_anim:FadeIn(0, 300)
+        esoTERM_window.etw_fade_anim:SetMinMaxAlpha(0.0, 1.0)
+        esoTERM_window.etw_fade_anim:FadeIn(0, 300)
     end
 end
 
@@ -103,8 +104,8 @@ local function create_window_background()
     local bg = WINDOW_MANAGER:CreateControl(nil, esoTERM_window.etw, CT_BACKDROP)
     bg:SetAnchor(TOPLEFT, esoTERM_window.etw, TOPLEFT, 0, 0)
     bg:SetAnchor(BOTTOMRIGHT, esoTERM_window.etw, BOTTOMRIGHT, 0, 0)
-    bg:SetEdgeTexture("EsoUI/Art/ChatWindow/chat_BG_edge.dds", 512, 512, 32)
-    bg:SetCenterTexture("EsoUI/Art/ChatWindow/chat_BG_center.dds")
+    bg:SetEdgeTexture("esoui/art/chatwindow/chat_bg_edge.dds", 512, 512, 32)
+    bg:SetCenterTexture("esoui/art/chatwindow/chat_bg_center.dds")
     bg:SetInsets(32, 32, -32, -32)
     return bg
 end
@@ -114,9 +115,24 @@ local function create_window_divider()
     divider:SetDimensions(4, 4)
     divider:SetAnchor(TOPLEFT, esoTERM_window.etw, TOPLEFT, 20, 40)
     divider:SetAnchor(TOPRIGHT, esoTERM_window.etw, TOPRIGHT, -20, 40)
-    divider:SetTexture("EsoUI/Art/Miscellaneous/horizontalDivider.dds")
+    divider:SetTexture("esoui/art/miscellaneous/horizontaldivider.dds")
     divider:SetTextureCoords(0.2, 0.8, 0, 1)
     return divider
+end
+
+local function set_window_lock_icon()
+    local locked = esoTERM_window.settings.window_locked or
+                   esoTERM_window.default_settings.window_locked
+    if locked then
+        esoTERM_window.etw_lock_button:SetNormalTexture("/esoui/art/progression/progression_crafting_unlocked_up.dds")
+        esoTERM_window.etw_lock_button:SetPressedTexture("/esoui/art/progression/progression_crafting_unlocked_down.dds")
+        esoTERM_window.etw_lock_button:SetMouseOverTexture("/esoui/art/progression/progression_crafting_unlocked_over.dds")
+    else
+        esoTERM_window.etw_lock_button:SetNormalTexture("/esoui/art/progression/progression_crafting_locked_up.dds")
+        esoTERM_window.etw_lock_button:SetPressedTexture("/esoui/art/progression/progression_crafting_locked_down.dds")
+        esoTERM_window.etw_lock_button:SetMouseOverTexture("/esoui/art/progression/progression_crafting_locked_over.dds")
+    end
+    esoTERM_window.settings.window_locked = not locked
 end
 
 local function create_lock_button()
@@ -124,11 +140,10 @@ local function create_lock_button()
     button:SetDimensions(48, 48)
     button:SetPressedOffset(2, 2)
     button:SetAnchor(TOPLEFT, esoTERM_window.etw, TOPLEFT, 0, 0)
-    button:SetNormalTexture("/esoui/art/progression/progression_crafting_locked_up.dds")
-    button:SetPressedTexture("/esoui/art/progression/progression_crafting_locked_down.dds")
-    button:SetMouseOverTexture("/esoui/art/progression/progression_crafting_locked_over.dds")
+    set_window_lock_icon()
     button:SetHandler("OnClicked", function(self, ...)
         d("OnClicked")
+        set_window_lock_icon()
     end)
     return button
 end
@@ -157,17 +172,17 @@ end
 
 function esoTERM_window.create()
     esoTERM_window.etw = create_top_level_window()
-    esoTERM_window.fade_anim = ZO_AlphaAnimation:New(esoTERM_window.etw)
-    esoTERM_window.etw_bg = create_window_background()
+    esoTERM_window.etw_fade_anim = ZO_AlphaAnimation:New(esoTERM_window.etw)
+    esoTERM_window.etw_background = create_window_background()
     esoTERM_window.etw_divider = create_window_divider()
-    esoTERM_window.etw_button_lock = create_lock_button()
-    esoTERM_window.tb = create_window_text_buffer()
+    esoTERM_window.etw_lock_button = create_lock_button()
+    esoTERM_window.etw_text_buffer = create_window_text_buffer()
 
     hide_etw()
 end
 
 function esoTERM_window.print_message(message)
-    esoTERM_window.tb:AddMessage(message)
+    esoTERM_window.etw_text_buffer:AddMessage(message)
 end
 
 function esoTERM_window.initialize()
@@ -179,7 +194,7 @@ function esoTERM_window.initialize()
     GAME_MENU_SCENE:RegisterCallback("StateChange", function(old_state, new_state)
         if new_state == SCENE_HIDDEN then
             -- TODO: call if other than before
-            esoTERM_window.tb:SetFont(get_chat_font())
+            esoTERM_window.etw_text_buffer:SetFont(get_chat_font())
         end
     end)
 end
