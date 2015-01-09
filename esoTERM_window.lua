@@ -77,6 +77,7 @@ end
 
 local function create_top_level_window()
     local etw = WINDOW_MANAGER:CreateTopLevelWindow()
+    esoTERM_window.etw = etw
     etw:SetMouseEnabled(true)
     etw:SetMovable(true)
     etw:SetHidden(true)
@@ -97,21 +98,21 @@ local function create_top_level_window()
     etw:SetHandler("OnMouseEnter", show_etw)
     etw:SetHandler("OnResizeStop", on_resize_stop)
     etw:SetHandler("OnMoveStop", on_move_stop)
-    return etw
 end
 
 local function create_window_background()
     local bg = WINDOW_MANAGER:CreateControl(nil, esoTERM_window.etw, CT_BACKDROP)
+    esoTERM_window.etw_background = bg
     bg:SetAnchor(TOPLEFT, esoTERM_window.etw, TOPLEFT, 0, 0)
     bg:SetAnchor(BOTTOMRIGHT, esoTERM_window.etw, BOTTOMRIGHT, 0, 0)
     bg:SetEdgeTexture("esoui/art/chatwindow/chat_bg_edge.dds", 512, 512, 32)
     bg:SetCenterTexture("esoui/art/chatwindow/chat_bg_center.dds")
     bg:SetInsets(32, 32, -32, -32)
-    return bg
 end
 
 local function create_window_divider()
     local divider = WINDOW_MANAGER:CreateControl(nil, esoTERM_window.etw, CT_TEXTURE)
+    esoTERM_window.etw_divider = divider
     divider:SetDimensions(4, 4)
     divider:SetAnchor(TOPLEFT, esoTERM_window.etw, TOPLEFT, 20, 40)
     divider:SetAnchor(TOPRIGHT, esoTERM_window.etw, TOPRIGHT, -20, 40)
@@ -124,32 +125,36 @@ local function set_window_lock_icon()
     local locked = esoTERM_window.settings.window_locked or
                    esoTERM_window.default_settings.window_locked
     if locked then
-        esoTERM_window.etw_lock_button:SetNormalTexture("/esoui/art/progression/progression_crafting_unlocked_up.dds")
-        esoTERM_window.etw_lock_button:SetPressedTexture("/esoui/art/progression/progression_crafting_unlocked_down.dds")
-        esoTERM_window.etw_lock_button:SetMouseOverTexture("/esoui/art/progression/progression_crafting_unlocked_over.dds")
+        esoTERM_window.etw_lock_button:SetNormalTexture("/esoui/art/buttons/pinned_normal.dds")
+        esoTERM_window.etw_lock_button:SetPressedTexture("/esoui/art/buttons/pinned_mousedown.dds")
+        esoTERM_window.etw_lock_button:SetMouseOverTexture("/esoui/art/buttons/pinned_mouseover.dds")
+        esoTERM_window.etw:SetMovable(false)
+        esoTERM_window.etw:SetResizeHandleSize(0)
     else
-        esoTERM_window.etw_lock_button:SetNormalTexture("/esoui/art/progression/progression_crafting_locked_up.dds")
-        esoTERM_window.etw_lock_button:SetPressedTexture("/esoui/art/progression/progression_crafting_locked_down.dds")
-        esoTERM_window.etw_lock_button:SetMouseOverTexture("/esoui/art/progression/progression_crafting_locked_over.dds")
+        esoTERM_window.etw_lock_button:SetNormalTexture("/esoui/art/buttons/unpinned_normal.dds")
+        esoTERM_window.etw_lock_button:SetPressedTexture("/esoui/art/buttons/unpinned_mousedown.dds")
+        esoTERM_window.etw_lock_button:SetMouseOverTexture("/esoui/art/buttons/unpinned_mouseover.dds")
+        esoTERM_window.etw:SetMovable(true)
+        esoTERM_window.etw:SetResizeHandleSize(16)
     end
     esoTERM_window.settings.window_locked = not locked
 end
 
 local function create_lock_button()
     local button = WINDOW_MANAGER:CreateControl(nil, esoTERM_window.etw, CT_BUTTON)
-    button:SetDimensions(48, 48)
+    esoTERM_window.etw_lock_button = button
+    button:SetDimensions(36, 36)
     button:SetPressedOffset(2, 2)
-    button:SetAnchor(TOPLEFT, esoTERM_window.etw, TOPLEFT, 0, 0)
+    button:SetAnchor(TOPRIGHT, esoTERM_window.etw, TOPRIGHT, -5, 15)
     set_window_lock_icon()
     button:SetHandler("OnClicked", function(self, ...)
-        d("OnClicked")
         set_window_lock_icon()
     end)
-    return button
 end
 
 local function create_window_text_buffer()
     local tb = WINDOW_MANAGER:CreateControl(nil, esoTERM_window.etw, CT_TEXTBUFFER)
+    esoTERM_window.etw_text_buffer = tb
     tb:SetMouseEnabled(true)
     tb:SetLinkEnabled(true)
     tb:SetAnchor(TOPLEFT, esoTERM_window.etw, TOPLEFT, 30, 45)
@@ -171,12 +176,12 @@ local function create_window_text_buffer()
 end
 
 function esoTERM_window.create()
-    esoTERM_window.etw = create_top_level_window()
+    create_top_level_window()
     esoTERM_window.etw_fade_anim = ZO_AlphaAnimation:New(esoTERM_window.etw)
-    esoTERM_window.etw_background = create_window_background()
-    esoTERM_window.etw_divider = create_window_divider()
-    esoTERM_window.etw_lock_button = create_lock_button()
-    esoTERM_window.etw_text_buffer = create_window_text_buffer()
+    create_window_background()
+    create_window_divider()
+    create_lock_button()
+    create_window_text_buffer()
 
     hide_etw()
 end
