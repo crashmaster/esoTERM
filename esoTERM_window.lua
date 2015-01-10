@@ -137,7 +137,6 @@ local function set_window_lock_icon()
         esoTERM_window.etw:SetMovable(true)
         esoTERM_window.etw:SetResizeHandleSize(16)
     end
-    esoTERM_window.settings.window_locked = not locked
 end
 
 local function create_lock_button()
@@ -148,6 +147,7 @@ local function create_lock_button()
     button:SetAnchor(TOPRIGHT, esoTERM_window.etw, TOPRIGHT, -5, 15)
     set_window_lock_icon()
     button:SetHandler("OnClicked", function(self, ...)
+        esoTERM_window.settings.window_locked = not esoTERM_window.settings.window_locked
         set_window_lock_icon()
     end)
 end
