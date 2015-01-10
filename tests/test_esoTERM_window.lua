@@ -32,13 +32,17 @@ local SCENES_WHERE_VISIBLE = {
     "stats",
 }
 
-describe("Test esoTERM_char window setup.", function()
+describe("Test esoTERM window initialization.", function()
     after_each(function()
         ut_helper.restore_stubbed_functions()
     end)
 
     -- {{{
-    local function given_that_create_is_stubbed()
+    local function given_that_ZO_SavedVars_New_is_stubbed()
+        ut_helper.stub_function(ZO_SavedVars, "New", nil)
+    end
+
+    local function and_that_create_is_stubbed()
         ut_helper.stub_function(esoTERM_window, "create", nil)
     end
 
@@ -50,7 +54,13 @@ describe("Test esoTERM_char window setup.", function()
         esoTERM_window.initialize()
     end
 
-    local function then_create_was_called()
+    local function then_ZO_SavedVars_New_was_called()
+        assert.spy(esoTERM_window.set_window_visibility).was.called_with(
+            "esoTERM_settings", 1, nil, esoTERM_window.default_settings
+        )
+    end
+
+    local function and_create_was_called()
         assert.spy(esoTERM_window.create).was.called()
     end
 
@@ -60,12 +70,13 @@ describe("Test esoTERM_char window setup.", function()
     -- }}}
 
     it("Window-create and visibility-setup is called on initialization.", function()
-        given_that_create_is_stubbed()
+        given_that_ZO_SavedVars_New_is_stubbed()
+            and_that_create_is_stubbed()
             and_that_set_window_visibility_is_stubbed()
 
         when_initialize_is_called()
 
-        then_create_was_called()
+            and_create_was_called()
             and_set_window_visibility_was_called()
     end)
 
