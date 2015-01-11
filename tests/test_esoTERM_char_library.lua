@@ -1,10 +1,6 @@
-local test_library = require("test_library")
+local test_library = require("tests/test_library")
 
 test_esoTERM_char_library = {}
-
-GLOBAL = _G
-
-PLAYER = "player"
 
 GENDER_1 = test_library.A_STRING
 GENDER_2 = test_library.B_STRING
@@ -17,5 +13,8 @@ COMBAT_STATE_2 = test_library.B_BOOL
 COMBAT_START_TIME = test_library.A_INTEGER
 COMBAT_LENGHT = test_library.A_INTEGER
 COMBAT_DAMAGE = test_library.A_INTEGER
+
+CACHE = esoTERM_char.cache
+EVENT_REGISTER = esoTERM_char.event_register
 
 return test_esoTERM_char_library

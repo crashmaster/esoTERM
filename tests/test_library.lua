@@ -1,5 +1,8 @@
 test_library = {}
 
+GLOBAL = _G
+PLAYER = "player"
+
 test_library.A_BOOL = true
 test_library.B_BOOL = false
 test_library.A_INTEGER = 1111

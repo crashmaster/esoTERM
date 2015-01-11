@@ -1,30 +1,5 @@
 local requires_for_tests = require("tests/requires_for_tests")
-
-local GLOBAL = _G
-
-local PLAYER = "player"
-
-local A_BOOL = true
-local B_BOOL = false
-local A_INTEGER = 1111
-local B_INTEGER = 2222
-local A_STRING = "aAaAa"
-local B_STRING = "bBbBb"
-
-local GENDER_1 = A_STRING
-local GENDER_2 = B_STRING
-local CLASS_1 = A_STRING
-local CLASS_2 = B_STRING
-local NAME_1 = A_STRING
-local NAME_2 = B_STRING
-local COMBAT_STATE_1 = A_BOOL
-local COMBAT_STATE_2 = B_BOOL
-local COMBAT_START_TIME = A_INTEGER
-local COMBAT_LENGHT = A_INTEGER
-local COMBAT_DAMAGE = A_INTEGER
-
-local CACHE = esoTERM_char.cache
-local EVENT_REGISTER = esoTERM_char.event_register
+local test_library = require("tests/test_esoTERM_char_library")
 
 describe("Test module.", function()
     local name = "esoTERM-character"

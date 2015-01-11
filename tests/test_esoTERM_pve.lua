@@ -1,27 +1,5 @@
 local requires_for_tests = require("tests/requires_for_tests")
-
-local GLOBAL = _G
-
-local PLAYER = "player"
-
-local A_BOOL = true
-local B_BOOL = false
-local A_INTEGER = 1111
-local B_INTEGER = 2222
-
-local VETERANNESS_1 = A_BOOL
-local VETERANNESS_2 = B_BOOL
-local LEVEL_1 = A_INTEGER
-local LEVEL_2 = B_INTEGER
-local LEVEL_XP_1 = A_INTEGER
-local LEVEL_XP_2 = B_INTEGER
-local LEVEL_XP_MAX_1 = A_INTEGER
-local LEVEL_XP_MAX_2 = B_INTEGER
-local LEVEL_XP_PERCENT = A_INTEGER
-local LEVEL_XP_GAIN = A_INTEGER
-
-local CACHE = esoTERM_pve.cache
-local EVENT_REGISTER = esoTERM_pve.event_register
+local test_library = require("tests/test_esoTERM_pve_library")
 
 describe("Test module.", function()
     local name = "esoTERM-pve"
