@@ -842,7 +842,6 @@ end)
 
 describe("Test the event handlers.", function()
     local EVENT = "event"
-    local UNIT = "player"
 
     after_each(function()
         ut_helper.restore_stubbed_functions()

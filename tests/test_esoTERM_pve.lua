@@ -1,5 +1,5 @@
 local requires_for_tests = require("tests/requires_for_tests")
-local test_library = require("tests/test_esoTERM_pve_library")
+local test_lib = require("tests/test_esoTERM_pve_library")
 
 describe("Test module.", function()
     local name = "esoTERM-pve"
@@ -18,20 +18,20 @@ end)
 
 describe("Test initialization.", function()
     local return_values_of_the_getter_stubs = {
-        is_veteran = VETERANNESS_1,
-        get_level = LEVEL_1,
-        get_level_xp = LEVEL_XP_1,
-        get_level_xp_max = LEVEL_XP_MAX_1,
-        get_level_xp_percent = LEVEL_XP_PERCENT,
-        get_xp_gain = LEVEL_XP_GAIN,
+        is_veteran = test_lib.VETERANNESS_1,
+        get_level = test_lib.LEVEL_1,
+        get_level_xp = test_lib.LEVEL_XP_1,
+        get_level_xp_max = test_lib.LEVEL_XP_MAX_1,
+        get_level_xp_percent = test_lib.LEVEL_XP_PERCENT,
+        get_xp_gain = test_lib.LEVEL_XP_GAIN,
     }
     local expected_cached_values = {
-        veteran = VETERANNESS_1,
-        level = LEVEL_1,
-        level_xp = LEVEL_XP_1,
-        level_xp_max = LEVEL_XP_MAX_1,
-        level_xp_percent = LEVEL_XP_PERCENT,
-        xp_gain = LEVEL_XP_GAIN,
+        veteran = test_lib.VETERANNESS_1,
+        level = test_lib.LEVEL_1,
+        level_xp = test_lib.LEVEL_XP_1,
+        level_xp_max = test_lib.LEVEL_XP_MAX_1,
+        level_xp_percent = test_lib.LEVEL_XP_PERCENT,
+        xp_gain = test_lib.LEVEL_XP_GAIN,
     }
 
     local expected_register_params = {}
@@ -212,11 +212,11 @@ describe("Test PvE related data getters.", function()
     it("Query CHARACTER VETERANNESS, when NOT CACHED.",
     function()
         given_that_cached_character_veteranness_is_not_set()
-            and_that_IsUnitVeteran_returns(VETERANNESS_1)
+            and_that_IsUnitVeteran_returns(test_lib.VETERANNESS_1)
 
         when_is_veteran_is_called_with_cache()
 
-        then_the_returned_character_veteranness_was(VETERANNESS_1)
+        then_the_returned_character_veteranness_was(test_lib.VETERANNESS_1)
             and_IsUnitVeteran_was_called_once_with_player()
     end)
 
@@ -236,12 +236,12 @@ describe("Test PvE related data getters.", function()
 
     it("Query CHARACTER VETERANNESS, when CACHED.",
     function()
-        given_that_cached_character_veteranness_is(VETERANNESS_1)
+        given_that_cached_character_veteranness_is(test_lib.VETERANNESS_1)
             and_that_IsUnitVeteran_returns(VETERANNESS_2)
 
         when_is_veteran_is_called_with_cache()
 
-        then_the_returned_character_veteranness_was(VETERANNESS_1)
+        then_the_returned_character_veteranness_was(test_lib.VETERANNESS_1)
             and_IsUnitVeteran_was_not_called()
     end)
 
@@ -274,12 +274,12 @@ describe("Test PvE related data getters.", function()
     it("Query NON-VETERAN CHARACTER LEVEL, when NOT CACHED.",
     function()
         given_that_cached_character_level_is_not_set()
-            and_that_eso_GetUnitLevel_returns(LEVEL_1)
+            and_that_eso_GetUnitLevel_returns(test_lib.LEVEL_1)
             and_character_is_not_veteran()
 
         when_get_level_is_called_with_cache()
 
-        then_the_returned_level_was(LEVEL_1)
+        then_the_returned_level_was(test_lib.LEVEL_1)
             and_eso_GetUnitLevel_was_called_once_with_player()
     end)
 
@@ -300,12 +300,12 @@ describe("Test PvE related data getters.", function()
     it("Query VETERAN CHARACTER LEVEL, when NOT CACHED.",
     function()
         given_that_cached_character_level_is_not_set()
-            and_that_eso_GetUnitVeteranRank_returns(LEVEL_1)
+            and_that_eso_GetUnitVeteranRank_returns(test_lib.LEVEL_1)
             and_character_is_veteran()
 
         when_get_level_is_called_with_cache()
 
-        then_the_returned_level_was(LEVEL_1)
+        then_the_returned_level_was(test_lib.LEVEL_1)
             and_eso_GetUnitVeteranRank_was_called_once_with_player()
     end)
 
@@ -329,13 +329,13 @@ describe("Test PvE related data getters.", function()
 
     it("Query NON-VETERAN CHARACTER LEVEL, when CACHED.",
     function()
-        given_that_cached_character_level_is(LEVEL_1)
-            and_that_eso_GetUnitLevel_returns(LEVEL_2)
+        given_that_cached_character_level_is(test_lib.LEVEL_1)
+            and_that_eso_GetUnitLevel_returns(test_lib.LEVEL_2)
             and_character_is_not_veteran()
 
         when_get_level_is_called_with_cache()
 
-        then_the_returned_level_was(LEVEL_1)
+        then_the_returned_level_was(test_lib.LEVEL_1)
             and_is_veteran_was_not_called()
             and_eso_GetUnitLevel_was_not_called()
     end)
@@ -352,13 +352,13 @@ describe("Test PvE related data getters.", function()
 
     it("Query VETERAN CHARACTER LEVEL, when CACHED.",
     function()
-        given_that_cached_character_level_is(LEVEL_1)
-            and_that_eso_GetUnitVeteranRank_returns(LEVEL_2)
+        given_that_cached_character_level_is(test_lib.LEVEL_1)
+            and_that_eso_GetUnitVeteranRank_returns(test_lib.LEVEL_2)
             and_character_is_veteran()
 
         when_get_level_is_called_with_cache()
 
-        then_the_returned_level_was(LEVEL_1)
+        then_the_returned_level_was(test_lib.LEVEL_1)
             and_is_veteran_was_not_called()
             and_eso_GetUnitVeteranRank_was_not_called()
     end)
@@ -388,12 +388,12 @@ describe("Test PvE related data getters.", function()
     it("Query NON-VETERAN CHARACTER LEVEL-XP, when NOT CACHED.",
     function()
         given_that_cached_character_level_xp_is_not_set()
-            and_that_eso_GetUnitXP_returns(LEVEL_XP_1)
+            and_that_eso_GetUnitXP_returns(test_lib.LEVEL_XP_1)
             and_character_is_not_veteran()
 
         when_get_level_xp_is_called_with_cache()
 
-        then_the_returned_level_xp_was(LEVEL_XP_1)
+        then_the_returned_level_xp_was(test_lib.LEVEL_XP_1)
             and_eso_GetUnitXP_was_called_once_with_player()
     end)
 
@@ -413,13 +413,13 @@ describe("Test PvE related data getters.", function()
 
     it("Query NON-VETERAN CHARACTER LEVEL-XP, when CACHED.",
     function()
-        given_that_cached_character_level_xp_is(LEVEL_XP_1)
-            and_that_eso_GetUnitXP_returns(LEVEL_XP_2)
+        given_that_cached_character_level_xp_is(test_lib.LEVEL_XP_1)
+            and_that_eso_GetUnitXP_returns(test_lib.LEVEL_XP_2)
             and_character_is_not_veteran()
 
         when_get_level_xp_is_called_with_cache()
 
-        then_the_returned_level_xp_was(LEVEL_XP_1)
+        then_the_returned_level_xp_was(test_lib.LEVEL_XP_1)
             and_is_veteran_was_not_called()
             and_eso_GetUnitXP_was_not_called()
     end)
@@ -449,12 +449,12 @@ describe("Test PvE related data getters.", function()
     it("Query NON-VETERAN CHARACTER LEVEL-XP MAX, when NOT CACHED.",
     function()
         given_that_cached_character_level_xp_max_is_not_set()
-            and_that_eso_GetUnitXPMax_returns(LEVEL_XP_MAX_1)
+            and_that_eso_GetUnitXPMax_returns(test_lib.LEVEL_XP_MAX_1)
             and_character_is_not_veteran()
 
         when_get_level_xp_max_is_called_with_cache()
 
-        then_the_returned_level_xp_max_was(LEVEL_XP_MAX_1)
+        then_the_returned_level_xp_max_was(test_lib.LEVEL_XP_MAX_1)
             and_eso_GetUnitXPMax_was_called_once_with_player()
     end)
 
@@ -474,13 +474,13 @@ describe("Test PvE related data getters.", function()
 
     it("Query NON-VETERAN CHARACTER LEVEL-XP MAX, when CACHED.",
     function()
-        given_that_cached_character_level_xp_max_is(LEVEL_XP_MAX_1)
-            and_that_eso_GetUnitXPMax_returns(LEVEL_XP_MAX_2)
+        given_that_cached_character_level_xp_max_is(test_lib.LEVEL_XP_MAX_1)
+            and_that_eso_GetUnitXPMax_returns(test_lib.LEVEL_XP_MAX_2)
             and_character_is_not_veteran()
 
         when_get_level_xp_max_is_called_with_cache()
 
-        then_the_returned_level_xp_max_was(LEVEL_XP_MAX_1)
+        then_the_returned_level_xp_max_was(test_lib.LEVEL_XP_MAX_1)
             and_is_veteran_was_not_called()
             and_eso_GetUnitXPMax_was_not_called()
     end)
@@ -565,13 +565,13 @@ describe("Test PvE related data getters.", function()
 
     it("Query CHARACTER LEVEL-XP PERCENT, when CACHED.",
     function()
-        given_that_cached_character_level_xp_percent_is(LEVEL_XP_PERCENT)
-            and_that_get_level_xp_max_returns(LEVEL_XP_MAX_1)
-            and_that_get_level_xp_returns(LEVEL_XP_1)
+        given_that_cached_character_level_xp_percent_is(test_lib.LEVEL_XP_PERCENT)
+            and_that_get_level_xp_max_returns(test_lib.LEVEL_XP_MAX_1)
+            and_that_get_level_xp_returns(test_lib.LEVEL_XP_1)
 
         when_get_level_xp_percent_is_called_with_cache()
 
-        then_the_returned_level_xp_percent_was(LEVEL_XP_PERCENT)
+        then_the_returned_level_xp_percent_was(test_lib.LEVEL_XP_PERCENT)
             and_get_level_xp_max_was_not_called()
             and_get_level_xp_was_not_called()
     end)
@@ -607,17 +607,16 @@ describe("Test PvE related data getters.", function()
 
     it("Query CHARACTER XP-GAIN, when CACHED.",
     function()
-        given_that_cached_character_level_xp_gain_is(LEVEL_XP_GAIN)
+        given_that_cached_character_level_xp_gain_is(test_lib.LEVEL_XP_GAIN)
 
         when_get_xp_gain_is_called_with_cache()
 
-        then_the_returned_level_xp_gain_was(LEVEL_XP_GAIN)
+        then_the_returned_level_xp_gain_was(test_lib.LEVEL_XP_GAIN)
     end)
 end)
 
 describe("Test the event handlers.", function()
     local EVENT = "event"
-    local UNIT = "player"
 
     after_each(function()
         ut_helper.restore_stubbed_functions()
@@ -678,7 +677,7 @@ describe("Test the event handlers.", function()
         it("Happy flow.", function()
             given_that_esoTERM_output_stdout_is_stubbed()
 
-            when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, NEW_XP_MAX, REASON)
+            when_on_experience_update_is_called_with(EVENT, PLAYER, NEW_XP, NEW_XP_MAX, REASON)
 
             then_the_xp_properties_in_character_info_where_updated()
                 and_esoTERM_output_stdout_was_called_with_xp_message()
@@ -696,7 +695,7 @@ describe("Test the event handlers.", function()
         it("If xp > level xp maximum, then 100%.", function()
             given_that_esoTERM_output_stdout_is_stubbed()
 
-            when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP_LVL_UP, OLD_XP_MAX, REASON)
+            when_on_experience_update_is_called_with(EVENT, PLAYER, NEW_XP_LVL_UP, OLD_XP_MAX, REASON)
 
             then_the_xp_properties_in_character_info_where_updated_to_lvl_up()
                 and_esoTERM_output_stdout_was_called_with_xp_message()
@@ -730,7 +729,7 @@ describe("Test the event handlers.", function()
         it("If reason is incorrect (level up drift handling).", function()
             given_that_esoTERM_output_stdout_is_stubbed()
 
-            when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, NEW_XP_MAX, -1)
+            when_on_experience_update_is_called_with(EVENT, PLAYER, NEW_XP, NEW_XP_MAX, -1)
 
             then_the_xp_properties_in_character_info_where_partly_updated()
                 and_esoTERM_output_stdout_was_called_with_xp_message()
@@ -739,7 +738,7 @@ describe("Test the event handlers.", function()
         it("If total maximum xp reached.", function()
             given_that_esoTERM_output_stdout_is_stubbed()
 
-            when_on_experience_update_is_called_with(EVENT, UNIT, NEW_XP, 0, REASON)
+            when_on_experience_update_is_called_with(EVENT, PLAYER, NEW_XP, 0, REASON)
 
             then_the_xp_properties_in_character_info_where_not_updated()
                 and_esoTERM_output_stdout_was_not_called()
@@ -765,7 +764,7 @@ describe("Test the event handlers.", function()
         -- }}}
 
         it("Happy flow.", function()
-            when_on_level_update_is_called_with(EVENT, UNIT, NEW_LEVEL)
+            when_on_level_update_is_called_with(EVENT, PLAYER, NEW_LEVEL)
 
             then_the_level_property_in_character_info_was_updated()
         end)

@@ -1,5 +1,5 @@
 local requires_for_tests = require("tests/requires_for_tests")
-local test_library = require("tests/test_esoTERM_char_library")
+local test_lib = require("tests/test_esoTERM_char_library")
 
 describe("Test module.", function()
     local name = "esoTERM-character"
@@ -18,22 +18,22 @@ end)
 
 describe("Test initialization.", function()
     local return_values_of_the_getter_stubs = {
-        get_gender = GENDER_1,
-        get_class = CLASS_1,
-        get_name = NAME_1,
-        get_combat_state = COMBAT_STATE_1,
-        get_combat_start_time = COMBAT_START_TIME,
-        get_combat_lenght = COMBAT_LENGHT,
-        get_combat_damage = COMBAT_DAMAGE
+        get_gender = test_lib.GENDER_1,
+        get_class = test_lib.CLASS_1,
+        get_name = test_lib.NAME_1,
+        get_combat_state = test_lib.COMBAT_STATE_1,
+        get_combat_start_time = test_lib.COMBAT_START_TIME,
+        get_combat_lenght = test_lib.COMBAT_LENGHT,
+        get_combat_damage = test_lib.COMBAT_DAMAGE
     }
     local expected_cached_values = {
-        gender = GENDER_1,
-        class = CLASS_1,
-        name = NAME_1,
-        combat_state = COMBAT_STATE_1,
-        combat_start_time = COMBAT_START_TIME,
-        combat_lenght = COMBAT_LENGHT,
-        combat_damage = COMBAT_DAMAGE
+        gender = test_lib.GENDER_1,
+        class = test_lib.CLASS_1,
+        name = test_lib.NAME_1,
+        combat_state = test_lib.COMBAT_STATE_1,
+        combat_start_time = test_lib.COMBAT_START_TIME,
+        combat_lenght = test_lib.COMBAT_LENGHT,
+        combat_damage = test_lib.COMBAT_DAMAGE
     }
 
     local expected_register_params = {}
@@ -209,11 +209,11 @@ describe("Test Character related data getters.", function()
     it("Query CHARACTER NAME, when NOT CACHED.",
     function()
         given_that_cached_character_name_is_not_set()
-            and_that_eso_GetUnitName_returns(NAME_1)
+            and_that_eso_GetUnitName_returns(test_lib.NAME_1)
 
         when_get_name_is_called_with_cache()
 
-        then_the_returned_character_name_was(NAME_1)
+        then_the_returned_character_name_was(test_lib.NAME_1)
             and_eso_GetUnitName_was_called_once_with_player()
     end)
 
@@ -233,12 +233,12 @@ describe("Test Character related data getters.", function()
 
     it("Query CHARACTER NAME, when CACHED.",
     function()
-        given_that_cached_character_name_is(NAME_1)
+        given_that_cached_character_name_is(test_lib.NAME_1)
             and_that_eso_GetUnitName_returns(NAME_2)
 
         when_get_name_is_called_with_cache()
 
-        then_the_returned_character_name_was(NAME_1)
+        then_the_returned_character_name_was(test_lib.NAME_1)
             and_eso_GetUnitName_was_not_called()
     end)
 
@@ -267,11 +267,11 @@ describe("Test Character related data getters.", function()
     it("Query CHARACTER GENDER, when NOT CACHED.",
     function()
         given_that_cached_character_gender_is_not_set()
-            and_that_eso_GetUnitGender_returns(GENDER_1)
+            and_that_eso_GetUnitGender_returns(test_lib.GENDER_1)
 
         when_get_gender_is_called_with_cache()
 
-        then_the_returned_character_gender_was(GENDER_1)
+        then_the_returned_character_gender_was(test_lib.GENDER_1)
             and_eso_GetUnitGender_was_called_once_with_player()
     end)
 
@@ -291,12 +291,12 @@ describe("Test Character related data getters.", function()
 
     it("Query CHARACTER GENDER, when CACHED.",
     function()
-        given_that_cached_character_gender_is(GENDER_1)
+        given_that_cached_character_gender_is(test_lib.GENDER_1)
             and_that_eso_GetUnitGender_returns(GENDER_2)
 
         when_get_gender_is_called_with_cache()
 
-        then_the_returned_character_gender_was(GENDER_1)
+        then_the_returned_character_gender_was(test_lib.GENDER_1)
             and_eso_GetUnitGender_was_not_called()
     end)
 
@@ -325,11 +325,11 @@ describe("Test Character related data getters.", function()
     it("Query CHARACTER CLASS, when NOT CACHED.",
     function()
         given_that_cached_character_class_is_not_set()
-            and_that_eso_GetUnitClass_returns(CLASS_1)
+            and_that_eso_GetUnitClass_returns(test_lib.CLASS_1)
 
         when_get_class_is_called_with_cache()
 
-        then_the_returned_character_class_was(CLASS_1)
+        then_the_returned_character_class_was(test_lib.CLASS_1)
             and_eso_GetUnitClass_was_called_once_with_player()
     end)
 
@@ -349,12 +349,12 @@ describe("Test Character related data getters.", function()
 
     it("Query CHARACTER CLASS, when CACHED.",
     function()
-        given_that_cached_character_class_is(CLASS_1)
+        given_that_cached_character_class_is(test_lib.CLASS_1)
             and_that_eso_GetUnitClass_returns(CLASS_2)
 
         when_get_class_is_called_with_cache()
 
-        then_the_returned_character_class_was(CLASS_1)
+        then_the_returned_character_class_was(test_lib.CLASS_1)
             and_eso_GetUnitClass_was_not_called()
     end)
 
@@ -383,11 +383,11 @@ describe("Test Character related data getters.", function()
     it("Query CHARACTER IN-COMBAT-NESS, when NOT CACHED.",
     function()
         given_that_cached_character_combat_state_is_not_set()
-            and_that_IsUnitInCombat_returns(COMBAT_STATE_1)
+            and_that_IsUnitInCombat_returns(test_lib.COMBAT_STATE_1)
 
         when_get_combat_state_is_called_with_cache()
 
-        then_the_returned_character_combat_state_was(COMBAT_STATE_1)
+        then_the_returned_character_combat_state_was(test_lib.COMBAT_STATE_1)
             and_IsUnitInCombat_was_called_once_with_player()
     end)
 
@@ -403,12 +403,12 @@ describe("Test Character related data getters.", function()
 
     it("Query CHARACTER IN-COMBAT-NESS, when CACHED.",
     function()
-        given_that_cached_character_combat_state_is(COMBAT_STATE_1)
+        given_that_cached_character_combat_state_is(test_lib.COMBAT_STATE_1)
             and_that_IsUnitInCombat_returns(COMBAT_STATE_2)
 
         when_get_combat_state_is_called_with_cache()
 
-        then_the_returned_character_combat_state_was(COMBAT_STATE_1)
+        then_the_returned_character_combat_state_was(test_lib.COMBAT_STATE_1)
             and_IsUnitInCombat_was_not_called()
     end)
 
@@ -443,11 +443,11 @@ describe("Test Character related data getters.", function()
 
     it("Query COMBAT TIME START, when CACHED.",
     function()
-        given_that_cached_combat_start_time_is(COMBAT_START_TIME)
+        given_that_cached_combat_start_time_is(test_lib.COMBAT_START_TIME)
 
         when_get_combat_start_time_is_called_with_cache()
 
-        then_the_returned_combat_start_time_was(COMBAT_START_TIME)
+        then_the_returned_combat_start_time_was(test_lib.COMBAT_START_TIME)
     end)
 
     -- {{{
@@ -496,11 +496,11 @@ describe("Test Character related data getters.", function()
 
     it("Query COMBAT TIME LENGHT, when CACHED.",
     function()
-        given_that_cached_combat_lenght_is(COMBAT_LENGHT)
+        given_that_cached_combat_lenght_is(test_lib.COMBAT_LENGHT)
 
         when_get_combat_lenght_is_called_with_cache()
 
-        then_the_returned_combat_lenght_was(COMBAT_LENGHT)
+        then_the_returned_combat_lenght_was(test_lib.COMBAT_LENGHT)
     end)
 
     -- {{{
@@ -534,11 +534,11 @@ describe("Test Character related data getters.", function()
 
     it("Query COMBAT DAMAGE, when CACHED.",
     function()
-        given_that_cached_combat_damage_is(COMBAT_DAMAGE)
+        given_that_cached_combat_damage_is(test_lib.COMBAT_DAMAGE)
 
         when_get_combat_damage_is_called_with_cache()
 
-        then_the_returned_combat_damage_was(COMBAT_DAMAGE)
+        then_the_returned_combat_damage_was(test_lib.COMBAT_DAMAGE)
     end)
 end)
 
