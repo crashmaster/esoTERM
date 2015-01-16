@@ -45,6 +45,10 @@ function esoTERM_loot.on_loot_received(event, by, item, quantity, sound, loot_ty
     esoTERM_output.stdout(get_loot_message())
 end
 
+function esoTERM_loot.on_money_received(event, new_amount, old_amount, reason)
+    esoTERM_output.stdout("new: " .. new_amount .. ", old: " .. old_amount)
+end
+
 function esoTERM_loot.initialize()
     CACHE.loot_quantity = esoTERM_loot.get_loot_quantity(CACHE)
     CACHE.looted_item = esoTERM_loot.get_looted_item(CACHE)
@@ -52,6 +56,9 @@ function esoTERM_loot.initialize()
     esoTERM_common.register_for_event(EVENT_REGISTER,
                                       EVENT_LOOT_RECEIVED,
                                       esoTERM_loot.on_loot_received)
+    esoTERM_common.register_for_event(EVENT_REGISTER,
+                                      EVENT_MONEY_UPDATE,
+                                      esoTERM_loot.on_money_received)
 
     esoTERM_common.register_module(esoTERM.module_register, esoTERM_loot)
 

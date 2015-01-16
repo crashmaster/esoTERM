@@ -68,6 +68,11 @@ describe("Test Loot module initialization.", function()
             event = EVENT_LOOT_RECEIVED,
             callback = esoTERM_loot.on_loot_received
         }
+        expected_register_params.money_received_update = {
+            local_register = EVENT_REGISTER,
+            event = EVENT_MONEY_UPDATE,
+            callback = esoTERM_loot.on_money_received
+        }
     end
 
     local function and_that_register_module_is_stubbed()
@@ -102,6 +107,7 @@ describe("Test Loot module initialization.", function()
                 expected_params[param].event,
                 expected_params[param].callback
             )
+            assert.is_not.equal(nil, expected_params[param].callback)
         end
     end
 
