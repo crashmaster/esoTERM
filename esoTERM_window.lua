@@ -35,6 +35,7 @@ function esoTERM_window.set_window_visibility()
         "questJournal",
         "skills",
         "stats",
+        "store",
     }
 
     for i, scene in ipairs(scenes) do

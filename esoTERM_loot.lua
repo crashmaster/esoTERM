@@ -45,8 +45,13 @@ function esoTERM_loot.on_loot_received(event, by, item, quantity, sound, loot_ty
     esoTERM_output.stdout(get_loot_message())
 end
 
+local function get_money_loot_message(new_amount, old_amount)
+    local looted = new_amount - old_amount
+    return "Received " .. looted .. " gold, now you have " .. new_amount .. " gold"
+end
+
 function esoTERM_loot.on_money_received(event, new_amount, old_amount, reason)
-    esoTERM_output.stdout("new: " .. new_amount .. ", old: " .. old_amount)
+    esoTERM_output.stdout(get_money_loot_message(new_amount, old_amount))
 end
 
 function esoTERM_loot.initialize()

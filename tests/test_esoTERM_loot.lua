@@ -336,8 +336,7 @@ describe("Test the event handlers.", function()
             return string.format("Received " ..  QUANTITY .. " " .. "[" .. ITEM .. "]")
         end
 
-        local function then_esoTERM_output_stdout_was_called_with_loot_message()
-            local message = get_loot_message()
+        local function then_esoTERM_output_stdout_was_called_with(message)
             assert.spy(esoTERM_output.stdout).was.called_with(message)
         end
 
@@ -352,7 +351,7 @@ describe("Test the event handlers.", function()
         end
         -- }}}
 
-        it("Happy flow.", function()
+        it("Looting happy flow.", function()
             given_that_esoTERM_output_stdout_is_stubbed()
                 and_get_looted_item_returns(ITEM)
                 and_GetItemLinkQuality_returns(QUALITY)
@@ -361,7 +360,7 @@ describe("Test the event handlers.", function()
 
             when_on_loot_received_is_called_with(EVENT, BY, ITEM, QUANTITY, SOUND, LOOT_TYPE, true)
 
-            then_esoTERM_output_stdout_was_called_with_loot_message(ITEM, QUANTITY)
+            then_esoTERM_output_stdout_was_called_with(get_loot_message())
                 and_get_looted_item_was_called_with(CACHE)
                 and_GetItemLinkQuality_was_called_with(ITEM)
                 and_GetItemQualityColor_was_called_with(QUALITY)
@@ -384,7 +383,7 @@ describe("Test the event handlers.", function()
         end
         -- }}}
 
-        it("If not self.", function()
+        it("Looting, if not self.", function()
             given_that_esoTERM_output_stdout_is_stubbed()
                 and_get_loot_message_is_stubbed()
 
@@ -392,6 +391,25 @@ describe("Test the event handlers.", function()
 
             then_esoTERM_output_loot_to_chat_tab_was_not_called()
                 and_get_loot_message_was_not_called()
+        end)
+
+        -- {{{
+        local function when_on_money_received_is_called_with(event, after, before, reason)
+            esoTERM_loot.on_money_received(event, after, before, reason)
+        end
+
+        local function get_money_loot_message(after, before)
+            local diff = after - before
+            return "Received " .. diff .. " gold, now you have " .. after .. " gold"
+        end
+        -- }}}
+
+        it("Money looted", function()
+            given_that_esoTERM_output_stdout_is_stubbed()
+
+            when_on_money_received_is_called_with(nil, 150, 100, nil)
+
+            then_esoTERM_output_stdout_was_called_with(get_money_loot_message(150, 100))
         end)
     end)
 end)
