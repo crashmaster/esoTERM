@@ -107,6 +107,7 @@ describe("Test initialization.", function()
                 expected_params[param].event,
                 expected_params[param].callback
             )
+            assert.is_not.equal(nil, expected_params[param].callback)
         end
     end
 

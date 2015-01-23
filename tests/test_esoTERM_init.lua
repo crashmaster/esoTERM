@@ -26,6 +26,10 @@ describe("Test esoTERM initialization", function()
         ut_helper.stub_function(esoTERM_output, "stdout", nil)
     end
 
+    local function and_that_callback_manager_FireCallbacks_is_stubbed()
+        ut_helper.stub_function(CALLBACK_MANAGER, "FireCallbacks", nil)
+    end
+
     local function and_that_event_manager_UnregisterForEvent_is_stubbed()
         ut_helper.stub_function(EVENT_MANAGER, "UnregisterForEvent", nil)
     end
@@ -45,9 +49,18 @@ describe("Test esoTERM initialization", function()
     end
 
     local function and_event_manager_UnregisterForEvent_was_called_with(param1, param2)
-        assert.spy(EVENT_MANAGER.UnregisterForEvent).was.called_with(EVENT_MANAGER,
-                                                                     param1,
-                                                                     param2)
+        assert.spy(EVENT_MANAGER.UnregisterForEvent).was.called_with(
+            EVENT_MANAGER,
+            param1,
+            param2
+        )
+    end
+
+    local function and_callback_manager_FireCallbacks_was_called_with(event_name)
+        assert.spy(CALLBACK_MANAGER.FireCallbacks).was.called_with(
+            CALLBACK_MANAGER,
+            event_name
+        )
     end
     -- }}}
 
@@ -55,12 +68,14 @@ describe("Test esoTERM initialization", function()
     function()
         given_that_initialize_functions_are_stubbed()
             and_that_esoTERM_output_stdout_is_stubbed()
+            and_that_callback_manager_FireCallbacks_is_stubbed()
             and_that_event_manager_UnregisterForEvent_is_stubbed()
 
         when_esoTERM_init_initialize_is_called()
 
         then_initialize_functions_were_called_once_with()
-            and_esoTERM_output_stdout_was_called_once_with("esoTERM is up and running")
+            and_esoTERM_output_stdout_was_called_once_with("esoTERM is active")
+            and_callback_manager_FireCallbacks_was_called_with("esoTERMModulesInitialized")
             and_event_manager_UnregisterForEvent_was_called_with(esoTERM.ADDON_NAME,
                                                                  EVENT_ADD_ON_LOADED)
     end)

@@ -10,7 +10,8 @@ function esoTERM_init.initialize(addon_name)
         esoTERM_window.initialize()
         esoTERM_output.initialize()
 
-        esoTERM_output.stdout("esoTERM is up and running")
+        esoTERM_output.stdout("esoTERM is active")
+        CALLBACK_MANAGER:FireCallbacks("esoTERMModulesInitialized")
 
         EVENT_MANAGER:UnregisterForEvent(esoTERM.ADDON_NAME, EVENT_ADD_ON_LOADED)
     end

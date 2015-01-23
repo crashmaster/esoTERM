@@ -30,6 +30,7 @@ local SCENES_WHERE_VISIBLE = {
     "questJournal",
     "skills",
     "stats",
+    "store",
 }
 
 describe("Test esoTERM window initialization.", function()

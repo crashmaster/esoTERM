@@ -35,6 +35,7 @@ function esoTERM_window.set_window_visibility()
         "questJournal",
         "skills",
         "stats",
+        "store",
     }
 
     for i, scene in ipairs(scenes) do
@@ -52,17 +53,14 @@ local function get_chat_font()
 end
 
 local function hide_etw()
-    if not MouseIsOver(esoTERM_window.etw) then
-        esoTERM_window.etw_fade_anim:SetMinMaxAlpha(0.0, 1.0)
-        esoTERM_window.etw_fade_anim:FadeOut(3000, 300)
-    end
+    esoTERM_window.etw_fade_anim:SetMinMaxAlpha(0.0, 1.0)
+    esoTERM_window.etw_fade_anim:FadeOut(3000, 300)
 end
 
 local function show_etw()
-    if MouseIsOver(esoTERM_window.etw) then
-        esoTERM_window.etw_fade_anim:SetMinMaxAlpha(0.0, 1.0)
-        esoTERM_window.etw_fade_anim:FadeIn(0, 300)
-    end
+    esoTERM_window.etw_text_buffer:ShowFadedLines()
+    esoTERM_window.etw_fade_anim:SetMinMaxAlpha(0.0, 1.0)
+    esoTERM_window.etw_fade_anim:FadeIn(0, 300)
 end
 
 local function on_resize_stop()
@@ -137,7 +135,6 @@ local function set_window_lock_icon()
         esoTERM_window.etw:SetMovable(true)
         esoTERM_window.etw:SetResizeHandleSize(16)
     end
-    esoTERM_window.settings.window_locked = not locked
 end
 
 local function create_lock_button()
@@ -148,6 +145,7 @@ local function create_lock_button()
     button:SetAnchor(TOPRIGHT, esoTERM_window.etw, TOPRIGHT, -5, 15)
     set_window_lock_icon()
     button:SetHandler("OnClicked", function(self, ...)
+        esoTERM_window.settings.window_locked = not esoTERM_window.settings.window_locked
         set_window_lock_icon()
     end)
 end
@@ -166,9 +164,8 @@ local function create_window_text_buffer()
     tb:SetHandler("OnLinkMouseUp", function(self, _, link, button)
         return ZO_LinkHandler_OnLinkMouseUp(link, button, self)
     end)
-    tb:SetHandler("OnMouseEnter", function()
-        tb:ShowFadedLines()
-    end)
+    tb:SetHandler("OnMouseEnter", show_etw)
+    tb:SetHandler("OnMouseExit", hide_etw)
     tb:SetHandler("OnMouseWheel", function(self, delta, ctrl, alt, shift)
         tb:SetScrollPosition(tb:GetScrollPosition() + delta)
     end)
