@@ -94,3 +94,7 @@ SCENE_MANAGER = {
 ZO_SavedVars = {
     New = function(table_name, version, namespace, default) return nil end
 }
+
+CALLBACK_MANAGER = {
+    FireCallbacks = function(event_name) return nil end
+}
