@@ -142,6 +142,10 @@ describe("Test initialization.", function()
 end)
 
 describe("Test deactivate.", function()
+    after_each(function()
+        ut_helper.restore_stubbed_functions()
+    end)
+
     -- {{{
     local function given_that_module_is_active()
         esoTERM_pve.is_active = true

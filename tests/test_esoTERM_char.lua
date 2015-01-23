@@ -139,6 +139,10 @@ describe("Test initialization.", function()
 end)
 
 describe("Test deactivate.", function()
+    after_each(function()
+        ut_helper.restore_stubbed_functions()
+    end)
+
     -- {{{
     local function given_that_module_is_active()
         esoTERM_char.is_active = true
@@ -851,6 +855,10 @@ describe("The on combat event handler.", function()
 
     before_each(function()
         reset_event_parameters()
+    end)
+
+    after_each(function()
+        ut_helper.restore_stubbed_functions()
     end)
 
     -- {{{
