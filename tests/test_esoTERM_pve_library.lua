@@ -2,8 +2,8 @@ local test_library = require("tests/test_library")
 
 test_esoTERM_pve_library = {}
 
-CACHE = esoTERM_pve.cache
-EVENT_REGISTER = esoTERM_pve.event_register
+test_esoTERM_pve_library.CACHE = esoTERM_pve.cache
+test_esoTERM_pve_library.EVENT_REGISTER = esoTERM_pve.event_register
 
 test_esoTERM_pve_library.VETERANNESS_1 = test_library.A_BOOL
 test_esoTERM_pve_library.VETERANNESS_2 = test_library.B_BOOL

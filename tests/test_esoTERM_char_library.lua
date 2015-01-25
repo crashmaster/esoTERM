@@ -2,8 +2,8 @@ local test_library = require("tests/test_library")
 
 test_esoTERM_char_library = {}
 
-CACHE = esoTERM_char.cache
-EVENT_REGISTER = esoTERM_char.event_register
+test_esoTERM_char_library.CACHE = esoTERM_char.cache
+test_esoTERM_char_library.EVENT_REGISTER = esoTERM_char.event_register
 
 test_esoTERM_char_library.GENDER_1 = test_library.A_STRING
 test_esoTERM_char_library.GENDER_2 = test_library.B_STRING
