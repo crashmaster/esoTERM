@@ -8,7 +8,7 @@ esoTERM_loot.is_active = false
 local CACHE = esoTERM_loot.cache
 local EVENT_REGISTER = esoTERM_loot.event_register
 
-function esoTERM_loot.get_loot_quantity(cache)
+function esoTERM_loot:get_loot_quantity()
     if cache.loot_quantity ~= nil then
         return cache.loot_quantity
     else
@@ -16,7 +16,7 @@ function esoTERM_loot.get_loot_quantity(cache)
     end
 end
 
-function esoTERM_loot.get_looted_item(cache)
+function esoTERM_loot:get_looted_item()
     if cache.looted_item ~= nil then
         return cache.looted_item
     else
@@ -25,10 +25,10 @@ function esoTERM_loot.get_looted_item(cache)
 end
 
 local function get_loot_message()
-    local item = esoTERM_loot.get_looted_item(CACHE)
+    local item = esoTERM_loot:get_looted_item()
     local color = GetItemQualityColor(GetItemLinkQuality(item))
     return string.format("Received %d %s%s%s",
-                         esoTERM_loot.get_loot_quantity(CACHE),
+                         esoTERM_loot:get_loot_quantity(),
                          color:Colorize("["),
                          zo_strformat(SI_TOOLTIP_ITEM_NAME, item),
                          color:Colorize("]"))
@@ -55,8 +55,8 @@ function esoTERM_loot.on_money_received(event, new_amount, old_amount, reason)
 end
 
 function esoTERM_loot.initialize()
-    CACHE.loot_quantity = esoTERM_loot.get_loot_quantity(CACHE)
-    CACHE.looted_item = esoTERM_loot.get_looted_item(CACHE)
+    CACHE.loot_quantity = esoTERM_loot:get_loot_quantity()
+    CACHE.looted_item = esoTERM_loot:get_looted_item()
 
     esoTERM_common.register_for_event(EVENT_REGISTER,
                                       EVENT_LOOT_RECEIVED,
