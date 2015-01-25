@@ -6,7 +6,7 @@ esoTERM_char.module_name = "esoTERM-character"
 esoTERM_char.is_active = false
 
 local ESOTERM_CHAR_CACHE = esoTERM_char.cache
-local ESOTERM_EVENT_REGISTER = esoTERM_char.event_register
+local ESOTERM_CHAR_EVENT_REGISTER = esoTERM_char.event_register
 local PLAYER_UNIT_TAG = "player"
 local EXIT_COMBAT_CALL_DELAY = 500
 
@@ -127,7 +127,7 @@ function esoTERM_char:enter_combat()
     ESOTERM_CHAR_CACHE.combat_start_time = GetGameTimeMilliseconds()
     ESOTERM_CHAR_CACHE.combat_damage = 0
 
-    esoTERM_common.register_for_event(ESOTERM_EVENT_REGISTER,
+    esoTERM_common.register_for_event(ESOTERM_CHAR_EVENT_REGISTER,
                                       EVENT_COMBAT_EVENT,
                                       esoTERM_char.on_combat_event_update)
 
@@ -147,7 +147,7 @@ function esoTERM_char:exit_combat()
     local combat_start_time = esoTERM_char:get_combat_start_time()
     ESOTERM_CHAR_CACHE.combat_lenght = GetGameTimeMilliseconds() - combat_start_time
 
-    esoTERM_common.unregister_from_event(ESOTERM_EVENT_REGISTER, EVENT_COMBAT_EVENT)
+    esoTERM_common.unregister_from_event(ESOTERM_CHAR_EVENT_REGISTER, EVENT_COMBAT_EVENT)
 
     esoTERM_output.stdout(get_combat_left_message())
 
@@ -190,7 +190,7 @@ function esoTERM_char:initialize()
 end
 
 function esoTERM_char:deactivate()
-    esoTERM_common.unregister_from_all_events(ESOTERM_EVENT_REGISTER)
+    esoTERM_common.unregister_from_all_events(ESOTERM_CHAR_EVENT_REGISTER)
 
     esoTERM_char.is_active = false
 end

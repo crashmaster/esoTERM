@@ -52,15 +52,13 @@ describe("Test esoTERM initialization", function()
         assert.spy(EVENT_MANAGER.UnregisterForEvent).was.called_with(
             EVENT_MANAGER,
             param1,
-            param2
-        )
+            param2)
     end
 
     local function and_callback_manager_FireCallbacks_was_called_with(event_name)
         assert.spy(CALLBACK_MANAGER.FireCallbacks).was.called_with(
             CALLBACK_MANAGER,
-            event_name
-        )
+            event_name)
     end
     -- }}}
 

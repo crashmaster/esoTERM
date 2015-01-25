@@ -105,8 +105,7 @@ describe("Test initialization.", function()
             assert.spy(esoTERM_common.register_for_event).was.called_with(
                 expected_params[param].local_register,
                 expected_params[param].event,
-                expected_params[param].callback
-            )
+                expected_params[param].callback)
             assert.is_not.equal(nil, expected_params[param].callback)
         end
     end
@@ -159,8 +158,7 @@ describe("Test deactivate.", function()
 
     local function then_unregister_from_all_events_was_called()
         assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(
-            tl.EVENT_REGISTER
-        )
+            tl.EVENT_REGISTER)
     end
 
     local function and_module_becomes_inactive()
@@ -593,8 +591,7 @@ describe("The on combat-state-change event handler.", function()
         assert.spy(esoTERM_common.register_for_event).was.called_with(
             tl.EVENT_REGISTER,
             EVENT_COMBAT_EVENT,
-            esoTERM_char.on_combat_event_update
-        )
+            esoTERM_char.on_combat_event_update)
     end
 
     local function when_on_combat_state_update_is_called_with(event, combat_state)
@@ -665,9 +662,7 @@ describe("The on combat-state-change event handler.", function()
 
     local function and_combat_event_handler_was_unregistered()
         assert.spy(esoTERM_common.unregister_from_event).was.called_with(
-            tl.EVENT_REGISTER,
-            EVENT_COMBAT_EVENT
-        )
+            tl.EVENT_REGISTER, EVENT_COMBAT_EVENT)
     end
 
     local function get_exit_combat_message()
