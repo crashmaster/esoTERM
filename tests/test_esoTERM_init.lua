@@ -40,7 +40,7 @@ describe("Test esoTERM initialization", function()
 
     local function then_initialize_functions_were_called_once_with()
         for index, module in ipairs(esoTERM_modules) do
-            assert.spy(module.initialize).was.called_with()
+            assert.spy(module.initialize).was.called_with(module)
         end
     end
 

@@ -1,24 +1,25 @@
 esoTERM_loot = {}
+
 esoTERM_loot.cache = {}
 esoTERM_loot.event_register = {}
 
 esoTERM_loot.module_name = "esoTERM-loot"
 esoTERM_loot.is_active = false
 
-local CACHE = esoTERM_loot.cache
-local EVENT_REGISTER = esoTERM_loot.event_register
+local ESOTERM_LOOT_CACHE = esoTERM_loot.cache
+local ESOTERM_LOOT_EVENT_REGISTER = esoTERM_loot.event_register
 
 function esoTERM_loot:get_loot_quantity()
-    if cache.loot_quantity ~= nil then
-        return cache.loot_quantity
+    if ESOTERM_LOOT_CACHE.loot_quantity ~= nil then
+        return ESOTERM_LOOT_CACHE.loot_quantity
     else
         return 0
     end
 end
 
 function esoTERM_loot:get_looted_item()
-    if cache.looted_item ~= nil then
-        return cache.looted_item
+    if ESOTERM_LOOT_CACHE.looted_item ~= nil then
+        return ESOTERM_LOOT_CACHE.looted_item
     else
         return "N/A"
     end
@@ -39,8 +40,8 @@ function esoTERM_loot.on_loot_received(event, by, item, quantity, sound, loot_ty
         return
     end
 
-    CACHE.loot_quantity = quantity
-    CACHE.looted_item = item
+    ESOTERM_LOOT_CACHE.loot_quantity = quantity
+    ESOTERM_LOOT_CACHE.looted_item = item
 
     esoTERM_output.stdout(get_loot_message())
 end
@@ -54,14 +55,14 @@ function esoTERM_loot.on_money_received(event, new_amount, old_amount, reason)
     esoTERM_output.stdout(get_money_loot_message(new_amount, old_amount))
 end
 
-function esoTERM_loot.initialize()
-    CACHE.loot_quantity = esoTERM_loot:get_loot_quantity()
-    CACHE.looted_item = esoTERM_loot:get_looted_item()
+function esoTERM_loot:initialize()
+    ESOTERM_LOOT_CACHE.loot_quantity = esoTERM_loot:get_loot_quantity()
+    ESOTERM_LOOT_CACHE.looted_item = esoTERM_loot:get_looted_item()
 
-    esoTERM_common.register_for_event(EVENT_REGISTER,
+    esoTERM_common.register_for_event(ESOTERM_LOOT_EVENT_REGISTER,
                                       EVENT_LOOT_RECEIVED,
                                       esoTERM_loot.on_loot_received)
-    esoTERM_common.register_for_event(EVENT_REGISTER,
+    esoTERM_common.register_for_event(ESOTERM_LOOT_EVENT_REGISTER,
                                       EVENT_MONEY_UPDATE,
                                       esoTERM_loot.on_money_received)
 
@@ -71,7 +72,7 @@ function esoTERM_loot.initialize()
 end
 
 function esoTERM_loot.deactivate()
-    esoTERM_common.unregister_from_all_events(EVENT_REGISTER)
+    esoTERM_common.unregister_from_all_events(ESOTERM_LOOT_EVENT_REGISTER)
 
     esoTERM_loot.is_active = false
 end

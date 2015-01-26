@@ -95,7 +95,7 @@ describe("Test Loot module initialization.", function()
 
     local function and_getter_stubs_were_called_with_cache()
         for getter, _ in pairs(return_values_of_the_getter_stubs) do
-            assert.spy(esoTERM_loot[getter]).was.called_with(CACHE)
+            assert.spy(esoTERM_loot[getter]).was.called_with(esoTERM_loot)
         end
     end
 
@@ -191,7 +191,7 @@ describe("Test Loot related data getters.", function()
     end
 
     local function when_get_looted_item_is_called_with_cache()
-        results.looted_item = esoTERM_loot.get_looted_item(CACHE)
+        results.looted_item = esoTERM_loot:get_looted_item()
     end
 
     local function then_the_returned_looted_item_was(item)
@@ -229,7 +229,7 @@ describe("Test Loot related data getters.", function()
     end
 
     local function when_get_loot_quantity_is_called_with_cache()
-        results.loot_quantity = esoTERM_loot.get_loot_quantity(CACHE)
+        results.loot_quantity = esoTERM_loot:get_loot_quantity()
     end
 
     local function then_the_returned_loot_quantity_was(item)
@@ -299,8 +299,8 @@ describe("Test the event handlers.", function()
             ut_helper.stub_function(esoTERM_loot, "get_looted_item", item)
         end
 
-        local function and_get_looted_item_was_called_with(cache)
-            assert.spy(esoTERM_loot.get_looted_item).was.called_with(cache)
+        local function and_get_looted_item_was_called()
+            assert.spy(esoTERM_loot.get_looted_item).was.called_with(esoTERM_loot)
         end
 
         local function and_GetItemLinkQuality_returns(quality)
@@ -323,8 +323,8 @@ describe("Test the event handlers.", function()
             ut_helper.stub_function(esoTERM_loot, "get_loot_quantity", quantity)
         end
 
-        local function and_get_loot_quantity_was_called_with(cache)
-            assert.spy(esoTERM_loot.get_loot_quantity).was.called_with(cache)
+        local function and_get_loot_quantity_was_called()
+            assert.spy(esoTERM_loot.get_loot_quantity).was.called_with(esoTERM_loot)
         end
 
         local function when_on_loot_received_is_called_with(event, by, item, quantity, sound, loot_type, self)
@@ -360,10 +360,10 @@ describe("Test the event handlers.", function()
             when_on_loot_received_is_called_with(EVENT, BY, ITEM, QUANTITY, SOUND, LOOT_TYPE, true)
 
             then_esoTERM_output_stdout_was_called_with(get_loot_message())
-                and_get_looted_item_was_called_with(CACHE)
+                and_get_looted_item_was_called()
                 and_GetItemLinkQuality_was_called_with(ITEM)
                 and_GetItemQualityColor_was_called_with(QUALITY)
-                and_get_loot_quantity_was_called_with(CACHE)
+                and_get_loot_quantity_was_called()
                 and_fake_color_was_called()
                 and_zo_strformat_was_called()
         end)

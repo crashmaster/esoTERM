@@ -177,10 +177,10 @@ function esoTERM_char:initialize()
     ESOTERM_CHAR_CACHE.combat_lenght = esoTERM_char:get_combat_lenght()
     ESOTERM_CHAR_CACHE.combat_damage = esoTERM_char:get_combat_damage()
 
-    esoTERM_common.register_for_event(esoTERM_char.event_register,
+    esoTERM_common.register_for_event(ESOTERM_CHAR_EVENT_REGISTER,
                                       EVENT_PLAYER_COMBAT_STATE,
                                       esoTERM_char.on_combat_state_update)
-    esoTERM_common.register_for_event(esoTERM_char.event_register,
+    esoTERM_common.register_for_event(ESOTERM_CHAR_EVENT_REGISTER,
                                       EVENT_UNIT_DEATH_STATE_CHANGED,
                                       esoTERM_char.on_unit_death_state_change)
 
