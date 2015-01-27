@@ -9,7 +9,7 @@ local ESOTERM_PVE_CACHE = esoTERM_pve.cache
 local ESOTERM_PVE_EVENT_REGISTER = esoTERM_pve.event_register
 local PLAYER_UNIT_TAG = "player"
 
-function esoTERM_pve:is_veteran()
+function esoTERM_pve.is_veteran()
     if ESOTERM_PVE_CACHE.veteran ~= nil then
         return ESOTERM_PVE_CACHE.veteran
     else
@@ -18,14 +18,14 @@ function esoTERM_pve:is_veteran()
 end
 
 local function _get_level()
-    if esoTERM_pve:is_veteran() == false then
+    if esoTERM_pve.is_veteran() == false then
         return GetUnitLevel(PLAYER_UNIT_TAG)
     else
         return GetUnitVeteranRank(PLAYER_UNIT_TAG)
     end
 end
 
-function esoTERM_pve:get_level()
+function esoTERM_pve.get_level()
     if ESOTERM_PVE_CACHE.level ~= nil then
         return ESOTERM_PVE_CACHE.level
     else
@@ -33,7 +33,7 @@ function esoTERM_pve:get_level()
     end
 end
 
-function esoTERM_pve:get_level_xp()
+function esoTERM_pve.get_level_xp()
     if ESOTERM_PVE_CACHE.level_xp ~= nil then
         return ESOTERM_PVE_CACHE.level_xp
     else
@@ -41,7 +41,7 @@ function esoTERM_pve:get_level_xp()
     end
 end
 
-function esoTERM_pve:get_level_xp_max()
+function esoTERM_pve.get_level_xp_max()
     if ESOTERM_PVE_CACHE.level_xp_max ~= nil then
         return ESOTERM_PVE_CACHE.level_xp_max
     else
@@ -49,7 +49,7 @@ function esoTERM_pve:get_level_xp_max()
     end
 end
 
-function esoTERM_pve:get_level_xp_percent()
+function esoTERM_pve.get_level_xp_percent()
     if ESOTERM_PVE_CACHE.level_xp_percent ~= nil then
         return ESOTERM_PVE_CACHE.level_xp_percent
     else
@@ -63,7 +63,7 @@ function esoTERM_pve:get_level_xp_percent()
     end
 end
 
-function esoTERM_pve:get_xp_gain()
+function esoTERM_pve.get_xp_gain()
     if ESOTERM_PVE_CACHE.xp_gain ~= nil then
         return ESOTERM_PVE_CACHE.xp_gain
     else
@@ -100,13 +100,13 @@ function esoTERM_pve.on_level_update(event, unit, level)
     end
 end
 
-function esoTERM_pve:initialize()
-    ESOTERM_PVE_CACHE.veteran = esoTERM_pve:is_veteran()
-    ESOTERM_PVE_CACHE.level = esoTERM_pve:get_level()
-    ESOTERM_PVE_CACHE.level_xp = esoTERM_pve:get_level_xp()
-    ESOTERM_PVE_CACHE.level_xp_max = esoTERM_pve:get_level_xp_max()
-    ESOTERM_PVE_CACHE.level_xp_percent = esoTERM_pve:get_level_xp_percent()
-    ESOTERM_PVE_CACHE.xp_gain = esoTERM_pve:get_xp_gain()
+function esoTERM_pve.initialize()
+    ESOTERM_PVE_CACHE.veteran = esoTERM_pve.is_veteran()
+    ESOTERM_PVE_CACHE.level = esoTERM_pve.get_level()
+    ESOTERM_PVE_CACHE.level_xp = esoTERM_pve.get_level_xp()
+    ESOTERM_PVE_CACHE.level_xp_max = esoTERM_pve.get_level_xp_max()
+    ESOTERM_PVE_CACHE.level_xp_percent = esoTERM_pve.get_level_xp_percent()
+    ESOTERM_PVE_CACHE.xp_gain = esoTERM_pve.get_xp_gain()
 
     esoTERM_common.register_for_event(ESOTERM_PVE_EVENT_REGISTER,
                                       EVENT_EXPERIENCE_UPDATE,
@@ -123,7 +123,7 @@ function esoTERM_pve:initialize()
     esoTERM_pve.is_active = true
 end
 
-function esoTERM_pve:deactivate()
+function esoTERM_pve.deactivate()
     esoTERM_common.unregister_from_all_events(ESOTERM_PVE_EVENT_REGISTER)
 
     esoTERM_pve.is_active = false

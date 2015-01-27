@@ -96,9 +96,9 @@ describe("Test initialization.", function()
         end
     end
 
-    local function and_getter_stubs_were_called_with_cache()
+    local function and_getter_stubs_were_called()
         for getter, _ in pairs(return_values_of_the_getter_stubs) do
-            assert.spy(esoTERM_pve[getter]).was.called_with(esoTERM_pve)
+            assert.spy(esoTERM_pve[getter]).was.called_with()
         end
     end
 
@@ -135,7 +135,7 @@ describe("Test initialization.", function()
 
         then_cache_is_no_longer_empty()
             and_cached_values_became_initialized()
-            and_getter_stubs_were_called_with_cache()
+            and_getter_stubs_were_called()
             and_register_for_event_was_called_with(expected_register_params)
             and_register_module_was_called()
             and_module_is_active()
@@ -204,7 +204,7 @@ describe("Test PvE related data getters.", function()
     end
 
     local function when_is_veteran_is_called_with_cache()
-        results.veteran = esoTERM_pve:is_veteran()
+        results.veteran = esoTERM_pve.is_veteran()
     end
 
     local function then_the_returned_character_veteranness_was(veteranness)
@@ -266,7 +266,7 @@ describe("Test PvE related data getters.", function()
     end
 
     local function when_get_level_is_called_with_cache()
-        results.level = esoTERM_pve:get_level()
+        results.level = esoTERM_pve.get_level()
     end
 
     local function then_the_returned_level_was(level)
@@ -380,7 +380,7 @@ describe("Test PvE related data getters.", function()
     end
 
     local function when_get_level_xp_is_called_with_cache()
-        results.level_xp = esoTERM_pve:get_level_xp()
+        results.level_xp = esoTERM_pve.get_level_xp()
     end
 
     local function then_the_returned_level_xp_was(xp)
@@ -441,7 +441,7 @@ describe("Test PvE related data getters.", function()
     end
 
     local function when_get_level_xp_max_is_called_with_cache()
-        results.level_xp_max = esoTERM_pve:get_level_xp_max()
+        results.level_xp_max = esoTERM_pve.get_level_xp_max()
     end
 
     local function then_the_returned_level_xp_max_was(xp)
@@ -506,7 +506,7 @@ describe("Test PvE related data getters.", function()
     end
 
     local function when_get_level_xp_percent_is_called_with_cache()
-        results.level_xp_percent = esoTERM_pve:get_level_xp_percent()
+        results.level_xp_percent = esoTERM_pve.get_level_xp_percent()
     end
 
     local function then_the_returned_level_xp_percent_was(level_xp_percent)
@@ -589,7 +589,7 @@ describe("Test PvE related data getters.", function()
     end
 
     local function when_get_xp_gain_is_called_with_cache()
-        results.xp_gain = esoTERM_pve:get_xp_gain()
+        results.xp_gain = esoTERM_pve.get_xp_gain()
     end
 
     local function then_the_returned_level_xp_gain_was(gain)

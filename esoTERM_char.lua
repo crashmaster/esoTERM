@@ -10,7 +10,7 @@ local ESOTERM_CHAR_EVENT_REGISTER = esoTERM_char.event_register
 local PLAYER_UNIT_TAG = "player"
 local EXIT_COMBAT_CALL_DELAY = 500
 
-function esoTERM_char:get_gender()
+function esoTERM_char.get_gender()
     if ESOTERM_CHAR_CACHE.gender ~= nil then
         return ESOTERM_CHAR_CACHE.gender
     else
@@ -18,7 +18,7 @@ function esoTERM_char:get_gender()
     end
 end
 
-function esoTERM_char:get_class()
+function esoTERM_char.get_class()
     if ESOTERM_CHAR_CACHE.class ~= nil then
         return ESOTERM_CHAR_CACHE.class
     else
@@ -26,7 +26,7 @@ function esoTERM_char:get_class()
     end
 end
 
-function esoTERM_char:get_name()
+function esoTERM_char.get_name()
     if ESOTERM_CHAR_CACHE.name ~= nil then
         return ESOTERM_CHAR_CACHE.name
     else
@@ -34,7 +34,7 @@ function esoTERM_char:get_name()
     end
 end
 
-function esoTERM_char:get_combat_state()
+function esoTERM_char.get_combat_state()
     if ESOTERM_CHAR_CACHE.combat_state ~= nil then
         return ESOTERM_CHAR_CACHE.combat_state
     else
@@ -42,7 +42,7 @@ function esoTERM_char:get_combat_state()
     end
 end
 
-function esoTERM_char:get_combat_start_time()
+function esoTERM_char.get_combat_start_time()
     if ESOTERM_CHAR_CACHE.combat_start_time ~= nil then
         return ESOTERM_CHAR_CACHE.combat_start_time
     else
@@ -50,7 +50,7 @@ function esoTERM_char:get_combat_start_time()
     end
 end
 
-function esoTERM_char:get_combat_lenght()
+function esoTERM_char.get_combat_lenght()
     if ESOTERM_CHAR_CACHE.combat_lenght ~= nil and ESOTERM_CHAR_CACHE.combat_lenght > 0 then
         return ESOTERM_CHAR_CACHE.combat_lenght
     else
@@ -58,7 +58,7 @@ function esoTERM_char:get_combat_lenght()
     end
 end
 
-function esoTERM_char:get_combat_damage()
+function esoTERM_char.get_combat_damage()
     if ESOTERM_CHAR_CACHE.combat_damage ~= nil then
         return ESOTERM_CHAR_CACHE.combat_damage
     else
@@ -67,7 +67,7 @@ function esoTERM_char:get_combat_damage()
 end
 
 function esoTERM_char.on_combat_state_update(event, combat_state)
-    if esoTERM_char:get_combat_state() ~= combat_state then
+    if esoTERM_char.get_combat_state() ~= combat_state then
         ESOTERM_CHAR_CACHE.combat_state = combat_state
         if combat_state then
             esoTERM_char.enter_combat()
@@ -123,7 +123,7 @@ local function get_combat_enter_message()
     return "Entered combat"
 end
 
-function esoTERM_char:enter_combat()
+function esoTERM_char.enter_combat()
     ESOTERM_CHAR_CACHE.combat_start_time = GetGameTimeMilliseconds()
     ESOTERM_CHAR_CACHE.combat_damage = 0
 
@@ -135,16 +135,16 @@ function esoTERM_char:enter_combat()
 end
 
 local function get_combat_left_message()
-    local net_length = esoTERM_char:get_combat_lenght() - EXIT_COMBAT_CALL_DELAY
+    local net_length = esoTERM_char.get_combat_lenght() - EXIT_COMBAT_CALL_DELAY
     local length = net_length >= 1000 and net_length or 1000
     return string.format(
         "Left combat (lasted: %.2fs, dps: %.2f)",
         (net_length) / 1000,
-        esoTERM_char:get_combat_damage() * 1000 / (length))
+        esoTERM_char.get_combat_damage() * 1000 / (length))
 end
 
-function esoTERM_char:exit_combat()
-    local combat_start_time = esoTERM_char:get_combat_start_time()
+function esoTERM_char.exit_combat()
+    local combat_start_time = esoTERM_char.get_combat_start_time()
     ESOTERM_CHAR_CACHE.combat_lenght = GetGameTimeMilliseconds() - combat_start_time
 
     esoTERM_common.unregister_from_event(ESOTERM_CHAR_EVENT_REGISTER, EVENT_COMBAT_EVENT)
@@ -163,19 +163,19 @@ function esoTERM_char.on_unit_death_state_change(event, unit, is_dead)
         else
             esoTERM_output.stdout("Resurrected, watch out next time!")
             ESOTERM_CHAR_CACHE.combat_state = IsUnitInCombat(PLAYER_UNIT_TAG)
-            esoTERM_char.on_combat_state_update(nil, esoTERM_char:get_combat_state())
+            esoTERM_char.on_combat_state_update(nil, esoTERM_char.get_combat_state())
         end
     end
 end
 
-function esoTERM_char:initialize()
-    ESOTERM_CHAR_CACHE.gender = esoTERM_char:get_gender()
-    ESOTERM_CHAR_CACHE.class = esoTERM_char:get_class()
-    ESOTERM_CHAR_CACHE.name = esoTERM_char:get_name()
-    ESOTERM_CHAR_CACHE.combat_state = esoTERM_char:get_combat_state()
-    ESOTERM_CHAR_CACHE.combat_start_time = esoTERM_char:get_combat_start_time()
-    ESOTERM_CHAR_CACHE.combat_lenght = esoTERM_char:get_combat_lenght()
-    ESOTERM_CHAR_CACHE.combat_damage = esoTERM_char:get_combat_damage()
+function esoTERM_char.initialize()
+    ESOTERM_CHAR_CACHE.gender = esoTERM_char.get_gender()
+    ESOTERM_CHAR_CACHE.class = esoTERM_char.get_class()
+    ESOTERM_CHAR_CACHE.name = esoTERM_char.get_name()
+    ESOTERM_CHAR_CACHE.combat_state = esoTERM_char.get_combat_state()
+    ESOTERM_CHAR_CACHE.combat_start_time = esoTERM_char.get_combat_start_time()
+    ESOTERM_CHAR_CACHE.combat_lenght = esoTERM_char.get_combat_lenght()
+    ESOTERM_CHAR_CACHE.combat_damage = esoTERM_char.get_combat_damage()
 
     esoTERM_common.register_for_event(ESOTERM_CHAR_EVENT_REGISTER,
                                       EVENT_PLAYER_COMBAT_STATE,
@@ -189,7 +189,7 @@ function esoTERM_char:initialize()
     esoTERM_char.is_active = true
 end
 
-function esoTERM_char:deactivate()
+function esoTERM_char.deactivate()
     esoTERM_common.unregister_from_all_events(ESOTERM_CHAR_EVENT_REGISTER)
 
     esoTERM_char.is_active = false

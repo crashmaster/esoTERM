@@ -93,9 +93,9 @@ describe("Test Loot module initialization.", function()
         end
     end
 
-    local function and_getter_stubs_were_called_with_cache()
+    local function and_getter_stubs_were_called()
         for getter, _ in pairs(return_values_of_the_getter_stubs) do
-            assert.spy(esoTERM_loot[getter]).was.called_with(esoTERM_loot)
+            assert.spy(esoTERM_loot[getter]).was.called_with()
         end
     end
 
@@ -132,7 +132,7 @@ describe("Test Loot module initialization.", function()
 
         then_cache_is_no_longer_empty()
             and_cached_values_became_initialized()
-            and_getter_stubs_were_called_with_cache()
+            and_getter_stubs_were_called()
             and_register_for_event_was_called_with(expected_register_params)
             and_register_module_was_called()
             and_module_is_active()
@@ -191,7 +191,7 @@ describe("Test Loot related data getters.", function()
     end
 
     local function when_get_looted_item_is_called_with_cache()
-        results.looted_item = esoTERM_loot:get_looted_item()
+        results.looted_item = esoTERM_loot.get_looted_item()
     end
 
     local function then_the_returned_looted_item_was(item)
@@ -229,7 +229,7 @@ describe("Test Loot related data getters.", function()
     end
 
     local function when_get_loot_quantity_is_called_with_cache()
-        results.loot_quantity = esoTERM_loot:get_loot_quantity()
+        results.loot_quantity = esoTERM_loot.get_loot_quantity()
     end
 
     local function then_the_returned_loot_quantity_was(item)
@@ -300,7 +300,7 @@ describe("Test the event handlers.", function()
         end
 
         local function and_get_looted_item_was_called()
-            assert.spy(esoTERM_loot.get_looted_item).was.called_with(esoTERM_loot)
+            assert.spy(esoTERM_loot.get_looted_item).was.called_with()
         end
 
         local function and_GetItemLinkQuality_returns(quality)
@@ -324,7 +324,7 @@ describe("Test the event handlers.", function()
         end
 
         local function and_get_loot_quantity_was_called()
-            assert.spy(esoTERM_loot.get_loot_quantity).was.called_with(esoTERM_loot)
+            assert.spy(esoTERM_loot.get_loot_quantity).was.called_with()
         end
 
         local function when_on_loot_received_is_called_with(event, by, item, quantity, sound, loot_type, self)

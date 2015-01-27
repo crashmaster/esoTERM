@@ -80,7 +80,7 @@ describe("Test initialization.", function()
     end
 
     local function when_initialize_is_called()
-        esoTERM_char:initialize()
+        esoTERM_char.initialize()
     end
 
     local function then_cache_is_no_longer_empty()
@@ -95,7 +95,7 @@ describe("Test initialization.", function()
 
     local function and_getter_stubs_were_called()
         for getter, _ in pairs(return_values_of_the_getter_stubs) do
-            assert.spy(esoTERM_char[getter]).was.called_with(esoTERM_char)
+            assert.spy(esoTERM_char[getter]).was.called_with()
         end
     end
 
@@ -153,7 +153,7 @@ describe("Test deactivate.", function()
     end
 
     local function when_deactivate_for_the_module_is_called()
-        esoTERM_char:deactivate()
+        esoTERM_char.deactivate()
     end
 
     local function then_unregister_from_all_events_was_called()
@@ -199,7 +199,7 @@ describe("Test Character related data getters.", function()
     end
 
     local function when_get_name_is_called_with_cache()
-        results.name = esoTERM_char:get_name()
+        results.name = esoTERM_char.get_name()
     end
 
     local function then_the_returned_character_name_was(name)
@@ -257,7 +257,7 @@ describe("Test Character related data getters.", function()
     end
 
     local function when_get_gender_is_called_with_cache()
-        results.gender = esoTERM_char:get_gender()
+        results.gender = esoTERM_char.get_gender()
     end
 
     local function then_the_returned_character_gender_was(gender)
@@ -315,7 +315,7 @@ describe("Test Character related data getters.", function()
     end
 
     local function when_get_class_is_called_with_cache()
-        results.class = esoTERM_char:get_class()
+        results.class = esoTERM_char.get_class()
     end
 
     local function then_the_returned_character_class_was(class)
@@ -373,7 +373,7 @@ describe("Test Character related data getters.", function()
     end
 
     local function when_get_combat_state_is_called_with_cache()
-        results.combat_state = esoTERM_char:get_combat_state()
+        results.combat_state = esoTERM_char.get_combat_state()
     end
 
     local function then_the_returned_character_combat_state_was(combat_state)
@@ -423,7 +423,7 @@ describe("Test Character related data getters.", function()
     end
 
     local function when_get_combat_start_time_is_called_with_cache()
-        results.combat_start_time = esoTERM_char:get_combat_start_time()
+        results.combat_start_time = esoTERM_char.get_combat_start_time()
     end
 
     local function then_the_returned_combat_start_time_was(start_time)
@@ -461,7 +461,7 @@ describe("Test Character related data getters.", function()
     end
 
     local function when_get_combat_lenght_is_called_with_cache()
-        results.combat_lenght = esoTERM_char:get_combat_lenght()
+        results.combat_lenght = esoTERM_char.get_combat_lenght()
     end
 
     local function then_the_returned_combat_lenght_was(lenght)
@@ -514,7 +514,7 @@ describe("Test Character related data getters.", function()
     end
 
     local function when_get_combat_damage_is_called_with_cache()
-        results.combat_damage = esoTERM_char:get_combat_damage()
+        results.combat_damage = esoTERM_char.get_combat_damage()
     end
 
     local function then_the_returned_combat_damage_was(start_time)
@@ -652,8 +652,8 @@ describe("The on combat-state-change event handler.", function()
         ut_helper.stub_function(esoTERM_char, "get_combat_start_time", time)
     end
 
-    local function and_get_combat_start_time_was_called_once_with_cache()
-        assert.spy(esoTERM_char.get_combat_start_time).was.called_with(esoTERM_char)
+    local function and_get_combat_start_time_was_called()
+        assert.spy(esoTERM_char.get_combat_start_time).was.called_with()
     end
 
     local function and_cached_combat_lenght_became(lenght)
@@ -685,7 +685,7 @@ describe("The on combat-state-change event handler.", function()
         when_on_combat_state_update_is_called_with(EVENT, OUT_OF_COMBAT)
 
         then_the_and_cached_combat_state_became(OUT_OF_COMBAT)
-            and_get_combat_start_time_was_called_once_with_cache()
+            and_get_combat_start_time_was_called()
             and_eso_GetGameTimeMilliseconds_was_called()
             and_cached_combat_lenght_became(EXIT_TIME - ENTER_TIME)
             and_combat_event_handler_was_unregistered()
@@ -778,7 +778,7 @@ describe("The on combat-state-change event handler.", function()
         when_on_combat_state_update_is_called_with(EVENT, OUT_OF_COMBAT)
 
         then_the_and_cached_combat_state_became(OUT_OF_COMBAT)
-            and_get_combat_start_time_was_called_once_with_cache()
+            and_get_combat_start_time_was_called()
             and_cached_combat_lenght_became(EXIT_TIME_ONE_HIT - ENTER_TIME)
             and_combat_event_handler_was_unregistered()
             and_cached_combat_start_time_became(0)
