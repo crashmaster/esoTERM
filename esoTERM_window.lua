@@ -1,4 +1,5 @@
 esoTERM_window = {}
+
 esoTERM_window.default_settings = {
     window_width = 400,
     window_height = 300,

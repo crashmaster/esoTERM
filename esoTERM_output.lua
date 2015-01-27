@@ -1,9 +1,10 @@
 esoTERM_output = {}
+
 esoTERM_output.event_register = {}
-esoTERM_output.PROMPT = "[esoTERM] "
 esoTERM_output.message_buffers = {}
 
-local EVENT_REGISTER = esoTERM_output.event_register
+local ESOTERM_OUTPUT_EVENT_REGISTER = esoTERM_output.event_register
+local SYSOUT_PROMPT = "[esoTERM] "
 
 local function _clear_message_buffers()
     esoTERM_output.message_buffers.stdout = {}
@@ -43,7 +44,7 @@ function store_sysout_messages_before_player_activated(message)
 end
 
 function esoTERM_output.real_sysout(message)
-    d(esoTERM_output.PROMPT .. message)
+    d(SYSOUT_PROMPT .. message)
 end
 
 function esoTERM_output.initialize()
@@ -52,7 +53,7 @@ function esoTERM_output.initialize()
     esoTERM_output.stdout = store_stdout_messages_before_player_activated
     esoTERM_output.sysout = store_sysout_messages_before_player_activated
 
-    esoTERM_common.register_for_event(EVENT_REGISTER,
+    esoTERM_common.register_for_event(ESOTERM_OUTPUT_EVENT_REGISTER,
                                       EVENT_PLAYER_ACTIVATED,
                                       esoTERM_output.on_player_activated)
 end
