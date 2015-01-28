@@ -1,15 +1,5 @@
 local requires_for_tests = require("tests/requires_for_tests")
-
-local GLOBAL = _G
-
-local A_STRING = "aAaAa"
-local A_INTEGER = 1111
-
-local LOOTED_ITEM = A_STRING
-local LOOT_QUANTITY = A_INTEGER
-
-local CACHE = esoTERM_loot.cache
-local EVENT_REGISTER = esoTERM_loot.event_register
+local tl = require("tests/test_esoTERM_loot_library")
 
 describe("Test module.", function()
     local name = "esoTERM-loot"
@@ -28,12 +18,12 @@ end)
 
 describe("Test Loot module initialization.", function()
     local return_values_of_the_getter_stubs = {
-        get_loot_quantity = LOOT_QUANTITY,
-        get_looted_item = LOOTED_ITEM,
+        get_loot_quantity = tl.LOOT_QUANTITY,
+        get_looted_item = tl.LOOTED_ITEM,
     }
     local expected_cached_values = {
-        loot_quantity = LOOT_QUANTITY,
-        looted_item = LOOTED_ITEM,
+        loot_quantity = tl.LOOT_QUANTITY,
+        looted_item = tl.LOOTED_ITEM,
     }
 
     local expected_register_params = {}
@@ -55,7 +45,7 @@ describe("Test Loot module initialization.", function()
 
     -- {{{
     local function given_that_cache_is_empty()
-        assert.is.equal(0, ut_helper.table_size(CACHE))
+        assert.is.equal(0, ut_helper.table_size(tl.CACHE))
     end
 
     local function and_that_register_for_event_is_stubbed()
@@ -64,12 +54,12 @@ describe("Test Loot module initialization.", function()
 
     local function and_that_expected_register_event_parameters_are_set_up()
         expected_register_params.loot_received_update = {
-            local_register = EVENT_REGISTER,
+            local_register = tl.EVENT_REGISTER,
             event = EVENT_LOOT_RECEIVED,
             callback = esoTERM_loot.on_loot_received
         }
         expected_register_params.money_received_update = {
-            local_register = EVENT_REGISTER,
+            local_register = tl.EVENT_REGISTER,
             event = EVENT_MONEY_UPDATE,
             callback = esoTERM_loot.on_money_received
         }
@@ -84,12 +74,12 @@ describe("Test Loot module initialization.", function()
     end
 
     local function then_cache_is_no_longer_empty()
-        assert.is_not.equal(0, ut_helper.table_size(CACHE))
+        assert.is_not.equal(0, ut_helper.table_size(tl.CACHE))
     end
 
     local function and_cached_values_became_initialized()
         for cache_attribute, expected_value in pairs(expected_cached_values) do
-            assert.is.equal(expected_value, CACHE[cache_attribute])
+            assert.is.equal(expected_value, tl.CACHE[cache_attribute])
         end
     end
 
@@ -154,7 +144,7 @@ describe("Test deactivate.", function()
     end
 
     local function then_unregister_from_all_events_was_called()
-        assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(EVENT_REGISTER)
+        assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(tl.EVENT_REGISTER)
     end
 
     local function and_module_becomes_inactive()
@@ -187,7 +177,7 @@ describe("Test Loot related data getters.", function()
 
     -- {{{
     local function given_that_cached_looted_item_is_not_set()
-        CACHE.looted_item = nil
+        tl.CACHE.looted_item = nil
     end
 
     local function when_get_looted_item_is_called_with_cache()
@@ -210,22 +200,22 @@ describe("Test Loot related data getters.", function()
 
     -- {{{
     local function given_that_cached_looted_item_is(item)
-        CACHE.looted_item = item
+        tl.CACHE.looted_item = item
     end
     -- }}}
 
     it("Query CHARACTER LOOTED ITEM, when CACHED.",
     function()
-        given_that_cached_looted_item_is(LOOTED_ITEM)
+        given_that_cached_looted_item_is(tl.LOOTED_ITEM)
 
         when_get_looted_item_is_called_with_cache()
 
-        then_the_returned_looted_item_was(LOOTED_ITEM)
+        then_the_returned_looted_item_was(tl.LOOTED_ITEM)
     end)
 
     -- {{{
     local function given_that_cached_loot_quantity_is_not_set()
-        CACHE.loot_quantity = nil
+        tl.CACHE.loot_quantity = nil
     end
 
     local function when_get_loot_quantity_is_called_with_cache()
@@ -248,17 +238,17 @@ describe("Test Loot related data getters.", function()
 
     -- {{{
     local function given_that_cached_loot_quantity_is(item)
-        CACHE.loot_quantity = item
+        tl.CACHE.loot_quantity = item
     end
     -- }}}
 
     it("Query CHARACTER LOOT QUANTITY, when CACHED.",
     function()
-        given_that_cached_loot_quantity_is(LOOT_QUANTITY)
+        given_that_cached_loot_quantity_is(tl.LOOT_QUANTITY)
 
         when_get_loot_quantity_is_called_with_cache()
 
-        then_the_returned_loot_quantity_was(LOOT_QUANTITY)
+        then_the_returned_loot_quantity_was(tl.LOOT_QUANTITY)
     end)
 end)
 
