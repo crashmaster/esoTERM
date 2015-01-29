@@ -31,7 +31,8 @@ return {
     -- Patterns for files to exclude when reporting.
     ["exclude"] = {
         "luacov",
-        "esoTERM_window"
+        "esoTERM_window",
+        "test_esoTERM_library"
     },
 }
 
