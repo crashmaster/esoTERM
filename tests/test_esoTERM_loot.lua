@@ -398,7 +398,7 @@ describe("Test the event handlers.", function()
             esoTERM_loot.on_money_received(event, after, before, reason)
         end
 
-        local function get_money_loot_message(after, before)
+        local function money_received_message(after, before)
             local diff = after - before
             return "Received " .. diff .. " gold, now you have " .. after .. " gold"
         end
@@ -409,7 +409,22 @@ describe("Test the event handlers.", function()
 
             when_on_money_received_is_called_with(nil, 150, 100, nil)
 
-            then_esoTERM_output_stdout_was_called_with(get_money_loot_message(150, 100))
+            then_esoTERM_output_stdout_was_called_with(money_received_message(150, 100))
+        end)
+
+        -- {{{
+        local function money_spent_message(after, before)
+            local diff = before - after
+            return "Spent " .. diff .. " gold, now you have " .. after .. " gold"
+        end
+        -- }}}
+
+        it("Money spent", function()
+            given_that_esoTERM_output_stdout_is_stubbed()
+
+            when_on_money_received_is_called_with(nil, 50, 100, nil)
+
+            then_esoTERM_output_stdout_was_called_with(money_spent_message(50, 100))
         end)
     end)
 end)
