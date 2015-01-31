@@ -58,8 +58,10 @@ end
 function esoTERM_loot.on_money_received(event, new_amount, old_amount, reason)
     if new_amount > old_amount then
         esoTERM_output.stdout(get_money_received_message(new_amount, old_amount))
-    else
+    elseif old_amount > new_amount then
         esoTERM_output.stdout(get_money_spent_message(new_amount, old_amount))
+    else
+        return
     end
 end
 

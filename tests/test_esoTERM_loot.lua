@@ -426,6 +426,20 @@ describe("Test the event handlers.", function()
 
             then_esoTERM_output_stdout_was_called_with(money_spent_message(50, 100))
         end)
+
+        -- {{{
+        local function then_esoTERM_output_stdout_was_not_called()
+            assert.spy(esoTERM_output.stdout).was_not.called()
+        end
+        -- }}}
+
+        it("Money same as before", function()
+            given_that_esoTERM_output_stdout_is_stubbed()
+
+            when_on_money_received_is_called_with(nil, 50, 50, nil)
+
+            then_esoTERM_output_stdout_was_not_called()
+        end)
     end)
 end)
 

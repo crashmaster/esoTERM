@@ -29,6 +29,7 @@ local SCENES_WHERE_VISIBLE = {
     "notifications",
     "questJournal",
     "skills",
+    "stables",
     "stats",
     "store",
 }

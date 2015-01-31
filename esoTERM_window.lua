@@ -34,6 +34,7 @@ function esoTERM_window.set_window_visibility()
         "notifications",
         "questJournal",
         "skills",
+        "stables",
         "stats",
         "store",
     }
