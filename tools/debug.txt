@@ -27,5 +27,9 @@
 --         damage_type)
 --     esoTERM_output.stdout(message)
 -- end
+--
+-- Get scene name:
+-- /script d(SCENE_MANAGER:GetCurrentScene():GetName())
+--
 
 -- vim: ft=lua

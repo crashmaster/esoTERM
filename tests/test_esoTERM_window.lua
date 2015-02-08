@@ -22,6 +22,7 @@ local SCENES_WHERE_VISIBLE = {
     "hud",
     "hudui",
     "ignoreList",
+    "interact",
     "leaderboards",
     "loreLibrary",
     "mailInbox",
@@ -32,6 +33,7 @@ local SCENES_WHERE_VISIBLE = {
     "stables",
     "stats",
     "store",
+    "tradinghouse",
 }
 
 describe("Test esoTERM window initialization.", function()

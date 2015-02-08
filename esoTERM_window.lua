@@ -27,6 +27,7 @@ function esoTERM_window.set_window_visibility()
         "hud",
         "hudui",
         "ignoreList",
+        "interact",
         "leaderboards",
         "loreLibrary",
         "mailInbox",
@@ -37,6 +38,7 @@ function esoTERM_window.set_window_visibility()
         "stables",
         "stats",
         "store",
+        "tradinghouse",
     }
 
     for i, scene in ipairs(scenes) do
