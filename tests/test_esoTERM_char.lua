@@ -2,139 +2,37 @@ local requires_for_tests = require("tests/requires_for_tests")
 local tl = require("tests/test_esoTERM_char_library")
 
 describe("Test module.", function()
-    local name = "esoTERM-character"
-
-    -- {{{
-    local function when_module_name_is_get_then_expected_name_is_returned(name)
-        assert.is.equal(name, esoTERM_char.module_name)
-    end
-    -- }}}
-
     it("Module is called: esoTERM-character.",
     function()
-        when_module_name_is_get_then_expected_name_is_returned(name)
+        tl.when_module_name_is_get_then_expected_name_is_returned()
     end)
 end)
 
 describe("Test initialization.", function()
-    local return_values_of_the_getter_stubs = {
-        get_gender = tl.GENDER_1,
-        get_class = tl.CLASS_1,
-        get_name = tl.NAME_1,
-        get_combat_state = tl.COMBAT_STATE_1,
-        get_combat_start_time = tl.COMBAT_START_TIME,
-        get_combat_lenght = tl.COMBAT_LENGHT,
-        get_combat_damage = tl.COMBAT_DAMAGE
-    }
-    local expected_cached_values = {
-        gender = tl.GENDER_1,
-        class = tl.CLASS_1,
-        name = tl.NAME_1,
-        combat_state = tl.COMBAT_STATE_1,
-        combat_start_time = tl.COMBAT_START_TIME,
-        combat_lenght = tl.COMBAT_LENGHT,
-        combat_damage = tl.COMBAT_DAMAGE
-    }
-
-    local expected_register_params = {}
-
-    local function setup_getter_stubs()
-        for getter, return_value in pairs(return_values_of_the_getter_stubs) do
-            ut_helper.stub_function(esoTERM_char, getter, return_value)
-        end
-    end
-
     setup(function()
-        setup_getter_stubs()
+        tl.setup_getter_stubs()
     end)
 
     after_each(function()
-        expected_register_params = nil
+        tl.EXPECTED_REGISTER_FOR_EVENT_PARAMS = nil
         ut_helper.restore_stubbed_functions()
     end)
 
-    -- {{{
-    local function given_that_cache_is_empty()
-        assert.is.equal(0, ut_helper.table_size(tl.CACHE))
-    end
-
-    local function and_that_register_for_event_is_stubbed()
-        ut_helper.stub_function(esoTERM_common, "register_for_event", nil)
-    end
-
-    local function and_that_expected_register_event_parameters_are_set_up()
-        expected_register_params.combat_state_update = {
-            local_register = tl.EVENT_REGISTER,
-            event = EVENT_PLAYER_COMBAT_STATE,
-            callback = esoTERM_char.on_combat_state_update
-        }
-        expected_register_params.death_state_update = {
-            local_register = tl.EVENT_REGISTER,
-            event = EVENT_UNIT_DEATH_STATE_CHANGED,
-            callback = esoTERM_char.on_unit_death_state_change
-        }
-    end
-
-    local function and_that_register_module_is_stubbed()
-        ut_helper.stub_function(esoTERM_common, "register_module", nil)
-    end
-
-    local function when_initialize_is_called()
-        esoTERM_char.initialize()
-    end
-
-    local function then_cache_is_no_longer_empty()
-        assert.is_not.equal(0, ut_helper.table_size(tl.CACHE))
-    end
-
-    local function and_cached_values_became_initialized()
-        for cache_attribute, expected_value in pairs(expected_cached_values) do
-            assert.is.equal(expected_value, tl.CACHE[cache_attribute])
-        end
-    end
-
-    local function and_getter_stubs_were_called()
-        for getter, _ in pairs(return_values_of_the_getter_stubs) do
-            assert.spy(esoTERM_char[getter]).was.called_with()
-        end
-    end
-
-    local function and_register_for_event_was_called_with(expected_params)
-        assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(expected_params))
-        for param in pairs(expected_params) do
-            assert.spy(esoTERM_common.register_for_event).was.called_with(
-                expected_params[param].local_register,
-                expected_params[param].event,
-                expected_params[param].callback)
-            assert.is_not.equal(nil, expected_params[param].callback)
-        end
-    end
-
-    local function and_register_module_was_called()
-        assert.spy(esoTERM_common.register_module).was.called_with(
-            esoTERM.module_register, esoTERM_char)
-    end
-
-    local function and_module_is_active()
-        assert.is.equal(true, esoTERM_char.is_active)
-    end
-    -- }}}
-
     it("Cached character data is updated and subscribed for events.",
     function()
-        given_that_cache_is_empty()
-            and_that_register_for_event_is_stubbed()
-            and_that_expected_register_event_parameters_are_set_up()
-            and_that_register_module_is_stubbed()
+        tl.given_that_cache_is_empty()
+            tl.and_that_register_for_event_is_stubbed()
+            tl.and_that_expected_register_event_parameters_are_set_up()
+            tl.and_that_register_module_is_stubbed()
 
-        when_initialize_is_called()
+        tl.when_initialize_is_called()
 
-        then_cache_is_no_longer_empty()
-            and_cached_values_became_initialized()
-            and_getter_stubs_were_called()
-            and_register_for_event_was_called_with(expected_register_params)
-            and_register_module_was_called()
-            and_module_is_active()
+        tl.then_cache_is_no_longer_empty()
+            tl.and_cached_values_became_initialized()
+            tl.and_getter_stubs_were_called()
+            tl.and_register_for_event_was_called_with_expected_parameters()
+            tl.and_register_module_was_called()
+            tl.and_module_is_active()
     end)
 end)
 
