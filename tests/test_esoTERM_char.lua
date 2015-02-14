@@ -14,15 +14,15 @@ describe("Test initialization.", function()
     end)
 
     after_each(function()
-        tl.EXPECTED_REGISTER_FOR_EVENT_PARAMS = nil
+        tl.expected_register_for_event_calls_are_cleared()
         ut_helper.restore_stubbed_functions()
     end)
 
-    it("Cached character data is updated and subscribed for events.",
+    it("Update cache and subscribe for events on initialization.",
     function()
         tl.given_that_cache_is_empty()
             tl.and_that_register_for_event_is_stubbed()
-            tl.and_that_expected_register_event_parameters_are_set_up()
+            tl.and_that_expected_register_for_event_calls_are_set_up()
             tl.and_that_register_module_is_stubbed()
 
         tl.when_initialize_is_called()
