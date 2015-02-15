@@ -1,18 +1,14 @@
 local requires_for_tests = require("tests/requires_for_tests")
 local tl = require("tests/test_esoTERM_char_library")
 
-describe("Test module.", function()
+describe("Test the esoTERM_char module.", function()
     it("Module is called: esoTERM-character.",
     function()
-        tl.when_module_name_is_get_then_expected_name_is_returned()
+        tl.verify_that_the_module_name_is_the_expected_one()
     end)
 end)
 
-describe("Test initialization.", function()
-    setup(function()
-        tl.setup_getter_stubs()
-    end)
-
+describe("Test the esoTERM_char module initialization.", function()
     after_each(function()
         tl.expected_register_for_event_calls_are_cleared()
         ut_helper.restore_stubbed_functions()
@@ -21,18 +17,20 @@ describe("Test initialization.", function()
     it("Update cache and subscribe for events on initialization.",
     function()
         tl.given_that_cache_is_empty()
+            tl.and_that_getter_functions_are_stubbed()
             tl.and_that_register_for_event_is_stubbed()
             tl.and_that_expected_register_for_event_calls_are_set_up()
             tl.and_that_register_module_is_stubbed()
+            tl.and_that_module_is_inactive()
 
         tl.when_initialize_is_called()
 
         tl.then_cache_is_no_longer_empty()
             tl.and_cached_values_became_initialized()
-            tl.and_getter_stubs_were_called()
+            tl.and_getter_function_stubs_were_called()
             tl.and_register_for_event_was_called_with_expected_parameters()
             tl.and_register_module_was_called()
-            tl.and_module_is_active()
+            tl.and_module_became_active()
     end)
 end)
 
@@ -41,38 +39,15 @@ describe("Test deactivate.", function()
         ut_helper.restore_stubbed_functions()
     end)
 
-    -- {{{
-    local function given_that_module_is_active()
-        esoTERM_char.is_active = true
-    end
-
-    local function and_that_unregister_from_all_events_is_stubbed()
-        ut_helper.stub_function(esoTERM_common, "unregister_from_all_events", nil)
-    end
-
-    local function when_deactivate_for_the_module_is_called()
-        esoTERM_char.deactivate()
-    end
-
-    local function then_unregister_from_all_events_was_called()
-        assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(
-            tl.EVENT_REGISTER)
-    end
-
-    local function and_module_becomes_inactive()
-        assert.is.equal(false, esoTERM_char.is_active)
-    end
-    -- }}}
-
     it("Unsubscribe from active events and set activeness to false.",
     function()
-        given_that_module_is_active()
-            and_that_unregister_from_all_events_is_stubbed()
+        tl.given_that_module_is_active()
+            tl.and_that_unregister_from_all_events_is_stubbed()
 
-        when_deactivate_for_the_module_is_called()
+        tl.when_deactivate_for_the_module_is_called()
 
-        then_unregister_from_all_events_was_called()
-            and_module_becomes_inactive()
+        tl.then_module_became_inactive()
+            tl.and_unregister_from_all_events_was_called()
     end)
 end)
 
