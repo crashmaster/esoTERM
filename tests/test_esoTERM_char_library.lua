@@ -61,6 +61,18 @@ function this.and_that_register_for_event_is_stubbed()
     test_library.stub_function_with_no_return_value(esoTERM_common, "register_for_event")
 end
 
+function this.and_register_for_event_was_called_with_expected_parameters()
+    assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(this.EXPECTED_REGISTER_FOR_EVENT_CALLS))
+    for param in pairs(this.EXPECTED_REGISTER_FOR_EVENT_CALLS) do
+        assert.spy(esoTERM_common.register_for_event).was.called_with(
+            this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].local_register,
+            this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].event,
+            this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].callback)
+        assert.is_not.equal(nil, this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].callback)
+    end
+end
+
+
 function this.and_that_register_module_is_stubbed()
     test_library.stub_function_with_no_return_value(esoTERM_common, "register_module")
 end
@@ -88,17 +100,6 @@ function this.and_that_expected_register_for_event_calls_are_set_up()
         event = EVENT_UNIT_DEATH_STATE_CHANGED,
         callback = esoTERM_char.on_unit_death_state_change
     }
-end
-
-function this.and_register_for_event_was_called_with_expected_parameters()
-    assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(this.EXPECTED_REGISTER_FOR_EVENT_CALLS))
-    for param in pairs(this.EXPECTED_REGISTER_FOR_EVENT_CALLS) do
-        assert.spy(esoTERM_common.register_for_event).was.called_with(
-            this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].local_register,
-            this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].event,
-            this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].callback)
-        assert.is_not.equal(nil, this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].callback)
-    end
 end
 
 function this.given_that_cache_is_empty()
