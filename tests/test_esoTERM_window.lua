@@ -12,7 +12,7 @@ local SCENES_WHERE_VISIBLE = {
     "campaignOverview",
     "friendsList",
     "groupList",
-    "groupingTools",
+    "groupingToolsKeyboard",
     "guildHistory",
     "guildHome",
     "guildRanks",

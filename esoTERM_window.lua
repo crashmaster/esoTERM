@@ -17,7 +17,7 @@ function esoTERM_window.set_window_visibility()
         "campaignOverview",
         "friendsList",
         "groupList",
-        "groupingTools",
+        "groupingToolsKeyboard",
         "guildHistory",
         "guildHome",
         "guildRanks",
