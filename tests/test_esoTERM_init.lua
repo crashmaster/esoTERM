@@ -3,6 +3,7 @@ local requires_for_tests = require("tests/requires_for_tests")
 describe("Test esoTERM initialization", function()
     local esoTERM_modules = {
         esoTERM_output,
+        esoTERM_champ,
         esoTERM_char,
         esoTERM_pve,
         esoTERM_pvp,

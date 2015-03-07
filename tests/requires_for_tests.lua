@@ -4,6 +4,7 @@ ut_helper = require("tests/ut_helper")
 
 esoTERM = require("esoTERM")
 esoTERM_common = require("esoTERM_common")
+esoTERM_champ = require("esoTERM_champ")
 esoTERM_char = require("esoTERM_char")
 esoTERM_init = require("esoTERM_init")
 esoTERM_loot = require("esoTERM_loot")
