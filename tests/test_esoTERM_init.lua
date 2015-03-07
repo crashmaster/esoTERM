@@ -38,7 +38,7 @@ describe("Test esoTERM initialization", function()
         esoTERM_init.initialize(esoTERM.ADDON_NAME)
     end
 
-    local function then_initialize_functions_were_called_once_with()
+    local function then_initialize_functions_were_called_once()
         for index, module in ipairs(esoTERM_modules) do
             assert.spy(module.initialize).was.called_with()
         end
@@ -52,15 +52,13 @@ describe("Test esoTERM initialization", function()
         assert.spy(EVENT_MANAGER.UnregisterForEvent).was.called_with(
             EVENT_MANAGER,
             param1,
-            param2
-        )
+            param2)
     end
 
     local function and_callback_manager_FireCallbacks_was_called_with(event_name)
         assert.spy(CALLBACK_MANAGER.FireCallbacks).was.called_with(
             CALLBACK_MANAGER,
-            event_name
-        )
+            event_name)
     end
     -- }}}
 
@@ -73,7 +71,7 @@ describe("Test esoTERM initialization", function()
 
         when_esoTERM_init_initialize_is_called()
 
-        then_initialize_functions_were_called_once_with()
+        then_initialize_functions_were_called_once()
             and_esoTERM_output_stdout_was_called_once_with("esoTERM is active")
             and_callback_manager_FireCallbacks_was_called_with("esoTERMModulesInitialized")
             and_event_manager_UnregisterForEvent_was_called_with(esoTERM.ADDON_NAME,

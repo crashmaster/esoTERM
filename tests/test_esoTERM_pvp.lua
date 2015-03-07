@@ -1,33 +1,5 @@
 local requires_for_tests = require("tests/requires_for_tests")
-
-local GLOBAL = _G
-
-local PLAYER = "player"
-
-local A_INTEGER = 1111
-local B_INTEGER = 2222
-
-local AVA_POINTS_1 = A_INTEGER
-local AVA_POINTS_2 = B_INTEGER
-local AVA_RANK_1 = A_INTEGER
-local AVA_RANK_2 = B_INTEGER
-local AVA_SUB_RANK_1 = A_INTEGER
-local AVA_SUB_RANK_2 = B_INTEGER
-local AVA_RANK_NAME_1 = A_INTEGER
-local AVA_RANK_NAME_2 = B_INTEGER
-local AVA_RANK_POINTS_1 = A_INTEGER
-local AVA_RANK_POINTS_2 = B_INTEGER
-local AVA_RANK_POINTS_MAX_1 = A_INTEGER
-local AVA_RANK_POINTS_MAX_2 = B_INTEGER
-local AVA_RANK_POINTS_LB_1 = A_INTEGER
-local AVA_RANK_POINTS_LB_2 = B_INTEGER
-local AVA_RANK_POINTS_UB_1 = A_INTEGER
-local AVA_RANK_POINTS_UB_2 = B_INTEGER
-local AVA_RANK_POINTS_PERCENT = A_INTEGER
-local AVA_POINTS_GAIN = A_INTEGER
-
-local CACHE = esoTERM_pvp.cache
-local EVENT_REGISTER = esoTERM_pvp.event_register
+local tl = require("tests/test_esoTERM_pvp_library")
 
 describe("Test module.", function()
     local name = "esoTERM-pvp"
@@ -46,28 +18,28 @@ end)
 
 describe("Test initialization.", function()
     local return_values_of_the_getter_stubs = {
-        get_ava_points = AVA_RANK_1,
-        get_ava_rank = AVA_RANK_1,
-        get_ava_sub_rank = AVA_SUB_RANK_1,
-        get_ava_rank_name = AVA_RANK_NAME_1,
-        get_ava_rank_points_lb = AVA_RANK_POINTS_LB_1,
-        get_ava_rank_points_ub = AVA_RANK_POINTS_UB_1,
-        get_ava_rank_points = AVA_RANK_POINTS_1,
-        get_ava_rank_points_max = AVA_RANK_POINTS_MAX_1,
-        get_ava_rank_points_percent = AVA_RANK_POINTS_PERCENT,
-        get_ap_gain = AVA_POINTS_GAIN,
+        get_ava_points = tl.AVA_RANK_1,
+        get_ava_rank = tl.AVA_RANK_1,
+        get_ava_sub_rank = tl.AVA_SUB_RANK_1,
+        get_ava_rank_name = tl.AVA_RANK_NAME_1,
+        get_ava_rank_points_lb = tl.AVA_RANK_POINTS_LB_1,
+        get_ava_rank_points_ub = tl.AVA_RANK_POINTS_UB_1,
+        get_ava_rank_points = tl.AVA_RANK_POINTS_1,
+        get_ava_rank_points_max = tl.AVA_RANK_POINTS_MAX_1,
+        get_ava_rank_points_percent = tl.AVA_RANK_POINTS_PERCENT,
+        get_ap_gain = tl.AVA_POINTS_GAIN,
     }
     local expected_cached_values = {
-        ava_points = AVA_POINTS_1,
-        ava_rank = AVA_RANK_1,
-        ava_sub_rank = AVA_SUB_RANK_1,
-        ava_rank_name = AVA_RANK_NAME_1,
-        ava_rank_points_lb = AVA_RANK_POINTS_LB_1,
-        ava_rank_points_ub = AVA_RANK_POINTS_UB_1,
-        ava_rank_points = AVA_RANK_POINTS_1,
-        ava_rank_points_max = AVA_RANK_POINTS_MAX_1,
-        ava_rank_points_percent = AVA_RANK_POINTS_PERCENT,
-        ap_gain = AVA_POINTS_GAIN,
+        ava_points = tl.AVA_POINTS_1,
+        ava_rank = tl.AVA_RANK_1,
+        ava_sub_rank = tl.AVA_SUB_RANK_1,
+        ava_rank_name = tl.AVA_RANK_NAME_1,
+        ava_rank_points_lb = tl.AVA_RANK_POINTS_LB_1,
+        ava_rank_points_ub = tl.AVA_RANK_POINTS_UB_1,
+        ava_rank_points = tl.AVA_RANK_POINTS_1,
+        ava_rank_points_max = tl.AVA_RANK_POINTS_MAX_1,
+        ava_rank_points_percent = tl.AVA_RANK_POINTS_PERCENT,
+        ap_gain = tl.AVA_POINTS_GAIN,
     }
 
     local expected_register_params = {}
@@ -89,7 +61,7 @@ describe("Test initialization.", function()
 
     -- {{{
     local function given_that_cache_is_empty()
-        assert.is.equal(0, ut_helper.table_size(CACHE))
+        assert.is.equal(0, ut_helper.table_size(tl.CACHE))
     end
 
     local function and_that_register_for_event_is_stubbed()
@@ -98,7 +70,7 @@ describe("Test initialization.", function()
 
     local function and_that_expected_register_event_parameters_are_set_up()
         expected_register_params.ava_xp_update = {
-            local_register = EVENT_REGISTER,
+            local_register = tl.EVENT_REGISTER,
             event = EVENT_ALLIANCE_POINT_UPDATE,
             callback = esoTERM_pvp.on_ava_points_update
         }
@@ -113,18 +85,18 @@ describe("Test initialization.", function()
     end
 
     local function then_cache_is_no_longer_empty()
-        assert.is_not.equal(0, ut_helper.table_size(CACHE))
+        assert.is_not.equal(0, ut_helper.table_size(tl.CACHE))
     end
 
     local function and_cached_values_became_initialized()
         for cache_attribute, expected_value in pairs(expected_cached_values) do
-            assert.is.equal(expected_value, CACHE[cache_attribute])
+            assert.is.equal(expected_value, tl.CACHE[cache_attribute])
         end
     end
 
-    local function and_getter_stubs_were_called_with(param)
+    local function and_getter_stubs_were_called()
         for getter, _ in pairs(return_values_of_the_getter_stubs) do
-            assert.spy(esoTERM_pvp[getter]).was.called_with(param)
+            assert.spy(esoTERM_pvp[getter]).was.called_with()
         end
     end
 
@@ -161,7 +133,7 @@ describe("Test initialization.", function()
 
         then_cache_is_no_longer_empty()
             and_cached_values_became_initialized()
-            and_getter_stubs_were_called_with(CACHE)
+            and_getter_stubs_were_called()
             and_register_for_event_was_called_with(expected_register_params)
             and_register_module_was_called()
             and_module_is_active()
@@ -183,7 +155,7 @@ describe("Test deactivate.", function()
     end
 
     local function then_unregister_from_all_events_was_called()
-        assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(EVENT_REGISTER)
+        assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(tl.EVENT_REGISTER)
     end
 
     local function and_module_becomes_inactive()
@@ -212,7 +184,7 @@ describe("Test PvP related data getters.", function()
 
     -- {{{
     local function given_that_cached_character_ava_points_is_not_set()
-        CACHE.ava_points = nil
+        tl.CACHE.ava_points = nil
     end
 
     local function and_that_eso_GetUnitAvARankPoints_returns(points)
@@ -220,7 +192,7 @@ describe("Test PvP related data getters.", function()
     end
 
     local function when_get_ava_points_is_called_with_cache()
-        results.ava_points = esoTERM_pvp.get_ava_points(CACHE)
+        results.ava_points = esoTERM_pvp.get_ava_points()
     end
 
     local function then_the_returned_character_ava_points_was(points)
@@ -235,17 +207,17 @@ describe("Test PvP related data getters.", function()
     it("Query CHARACTER AvA-POINTS, when NOT CACHED.",
     function()
         given_that_cached_character_ava_points_is_not_set()
-            and_that_eso_GetUnitAvARankPoints_returns(AVA_POINTS_1)
+            and_that_eso_GetUnitAvARankPoints_returns(tl.AVA_POINTS_1)
 
         when_get_ava_points_is_called_with_cache()
 
-        then_the_returned_character_ava_points_was(AVA_POINTS_1)
+        then_the_returned_character_ava_points_was(tl.AVA_POINTS_1)
             and_eso_GetUnitAvARankPoints_was_called_once_with_player()
     end)
 
     -- {{{
     local function given_that_cached_character_ava_points_is(points)
-        CACHE.ava_points = points
+        tl.CACHE.ava_points = points
     end
 
     local function and_eso_GetUnitAvARankPoints_was_not_called()
@@ -255,18 +227,18 @@ describe("Test PvP related data getters.", function()
 
     it("Query CHARACTER AvA-POINTS, when CACHED.",
     function()
-        given_that_cached_character_ava_points_is(AVA_POINTS_1)
-            and_that_eso_GetUnitAvARankPoints_returns(AVA_POINTS_2)
+        given_that_cached_character_ava_points_is(tl.AVA_POINTS_1)
+            and_that_eso_GetUnitAvARankPoints_returns(tl.AVA_POINTS_2)
 
         when_get_ava_points_is_called_with_cache()
 
-        then_the_returned_character_ava_points_was(AVA_POINTS_1)
+        then_the_returned_character_ava_points_was(tl.AVA_POINTS_1)
             and_eso_GetUnitAvARankPoints_was_not_called()
     end)
 
     -- {{{
     local function given_that_cached_character_ava_rank_is_not_set()
-        CACHE.ava_rank = nil
+        tl.CACHE.ava_rank = nil
     end
 
     local function and_that_eso_GetUnitAvARank_returns(rank, sub_rank)
@@ -274,7 +246,7 @@ describe("Test PvP related data getters.", function()
     end
 
     local function when_get_ava_rank_is_called_with_cache()
-        results.ava_rank = esoTERM_pvp.get_ava_rank(CACHE)
+        results.ava_rank = esoTERM_pvp.get_ava_rank()
     end
 
     local function then_the_returned_character_ava_rank_was(rank)
@@ -289,17 +261,17 @@ describe("Test PvP related data getters.", function()
     it("Query CHARACTER AvA-RANK, when NOT CACHED.",
     function()
         given_that_cached_character_ava_rank_is_not_set()
-            and_that_eso_GetUnitAvARank_returns(AVA_RANK_1, AVA_SUB_RANK_1)
+            and_that_eso_GetUnitAvARank_returns(tl.AVA_RANK_1, tl.AVA_SUB_RANK_1)
 
         when_get_ava_rank_is_called_with_cache()
 
-        then_the_returned_character_ava_rank_was(AVA_RANK_1)
+        then_the_returned_character_ava_rank_was(tl.AVA_RANK_1)
             and_eso_GetUnitAvARank_was_called_once_with_player()
     end)
 
     -- {{{
     local function given_that_cached_character_ava_rank_is(rank)
-        CACHE.ava_rank = rank
+        tl.CACHE.ava_rank = rank
     end
 
     local function and_that_eso_GetUnitAvARank_returns(rank, sub_rank)
@@ -313,18 +285,18 @@ describe("Test PvP related data getters.", function()
 
     it("Query CHARACTER AvA-RANK, when CACHED.",
     function()
-        given_that_cached_character_ava_rank_is(AVA_RANK_1)
-            and_that_eso_GetUnitAvARank_returns(AVA_RANK_2, AVA_SUB_RANK_2)
+        given_that_cached_character_ava_rank_is(tl.AVA_RANK_1)
+            and_that_eso_GetUnitAvARank_returns(tl.AVA_RANK_2, tl.AVA_SUB_RANK_2)
 
         when_get_ava_rank_is_called_with_cache()
 
-        then_the_returned_character_ava_rank_was(AVA_RANK_1)
+        then_the_returned_character_ava_rank_was(tl.AVA_RANK_1)
             and_eso_GetUnitAvARank_was_not_called()
     end)
 
     -- {{{
     local function given_that_cached_character_ava_sub_rank_is_not_set()
-        CACHE.ava_sub_rank = nil
+        tl.CACHE.ava_sub_rank = nil
     end
 
     local function and_that_eso_GetUnitAvARank_returns(rank, sub_rank)
@@ -332,7 +304,7 @@ describe("Test PvP related data getters.", function()
     end
 
     local function when_get_ava_sub_rank_is_called_with_cache()
-        results.ava_sub_rank = esoTERM_pvp.get_ava_sub_rank(CACHE)
+        results.ava_sub_rank = esoTERM_pvp.get_ava_sub_rank()
     end
 
     local function then_the_returned_character_ava_sub_rank_was(sub_rank)
@@ -347,17 +319,17 @@ describe("Test PvP related data getters.", function()
     it("Query CHARACTER AvA-SUB-RANK, when NOT CACHED.",
     function()
         given_that_cached_character_ava_sub_rank_is_not_set()
-            and_that_eso_GetUnitAvARank_returns(AVA_RANK_1, AVA_SUB_RANK_1)
+            and_that_eso_GetUnitAvARank_returns(tl.AVA_RANK_1, tl.AVA_SUB_RANK_1)
 
         when_get_ava_sub_rank_is_called_with_cache()
 
-        then_the_returned_character_ava_sub_rank_was(AVA_SUB_RANK_1)
+        then_the_returned_character_ava_sub_rank_was(tl.AVA_SUB_RANK_1)
             and_eso_GetUnitAvARank_was_called_once_with_player()
     end)
 
     -- {{{
     local function given_that_cached_character_ava_sub_rank_is(sub_rank)
-        CACHE.ava_sub_rank = sub_rank
+        tl.CACHE.ava_sub_rank = sub_rank
     end
 
     local function and_that_eso_GetUnitAvARank_returns(rank, sub_rank)
@@ -371,18 +343,18 @@ describe("Test PvP related data getters.", function()
 
     it("Query CHARACTER AvA-SUB-RANK, when CACHED.",
     function()
-        given_that_cached_character_ava_sub_rank_is(AVA_SUB_RANK_1)
-            and_that_eso_GetUnitAvARank_returns(AVA_RANK_2, AVA_SUB_RANK_2)
+        given_that_cached_character_ava_sub_rank_is(tl.AVA_SUB_RANK_1)
+            and_that_eso_GetUnitAvARank_returns(tl.AVA_RANK_2, tl.AVA_SUB_RANK_2)
 
         when_get_ava_sub_rank_is_called_with_cache()
 
-        then_the_returned_character_ava_sub_rank_was(AVA_SUB_RANK_1)
+        then_the_returned_character_ava_sub_rank_was(tl.AVA_SUB_RANK_1)
             and_eso_GetUnitAvARank_was_not_called()
     end)
 
     -- {{{
     local function given_that_cached_character_ava_rank_name_is_not_set()
-        CACHE.ava_rank_name = nil
+        tl.CACHE.ava_rank_name = nil
     end
 
     local function and_that_eso_GetAvARankName_returns(name)
@@ -398,7 +370,7 @@ describe("Test PvP related data getters.", function()
     end
 
     local function when_get_ava_rank_name_is_called_with_cache()
-        results.ava_rank_name = esoTERM_pvp.get_ava_rank_name(CACHE)
+        results.ava_rank_name = esoTERM_pvp.get_ava_rank_name()
     end
 
     local function then_the_returned_character_ava_rank_name_was(rank)
@@ -410,32 +382,32 @@ describe("Test PvP related data getters.", function()
     end
 
     local function and_get_gender_was_called_once_with_cache()
-        assert.spy(esoTERM_char.get_gender).was.called_with(CACHE)
+        assert.spy(esoTERM_char.get_gender).was.called_with()
     end
 
     local function and_get_ava_rank_was_called_once_with_cache()
-        assert.spy(esoTERM_pvp.get_ava_rank).was.called_with(CACHE)
+        assert.spy(esoTERM_pvp.get_ava_rank).was.called_with()
     end
     -- }}}
 
     it("Query CHARACTER AvA-RANK-NAME, when NOT CACHED.",
     function()
         given_that_cached_character_ava_rank_name_is_not_set()
-            and_that_eso_GetAvARankName_returns(AVA_RANK_NAME_1)
+            and_that_eso_GetAvARankName_returns(tl.AVA_RANK_NAME_1)
             and_that_get_gender_returns(GENDER_1)
-            and_that_get_ava_rank_returns(AVA_RANK_1)
+            and_that_get_ava_rank_returns(tl.AVA_RANK_1)
 
         when_get_ava_rank_name_is_called_with_cache()
 
-        then_the_returned_character_ava_rank_name_was(AVA_RANK_NAME_1)
-            and_eso_GetAvARankName_was_called_once_with(GENDER_1, AVA_RANK_1)
+        then_the_returned_character_ava_rank_name_was(tl.AVA_RANK_NAME_1)
+            and_eso_GetAvARankName_was_called_once_with(GENDER_1, tl.AVA_RANK_1)
             and_get_gender_was_called_once_with_cache()
             and_get_ava_rank_was_called_once_with_cache()
     end)
 
     -- {{{
     local function given_that_cached_character_ava_rank_name_is(name)
-        CACHE.ava_rank_name = name
+        tl.CACHE.ava_rank_name = name
     end
 
     local function and_that_eso_GetAvARankName_returns(name)
@@ -457,14 +429,14 @@ describe("Test PvP related data getters.", function()
 
     it("Query CHARACTER AvA-RANK-NAME, when CACHED.",
     function()
-        given_that_cached_character_ava_rank_name_is(AVA_RANK_NAME_1)
-            and_that_eso_GetAvARankName_returns(AVA_RANK_NAME_2)
+        given_that_cached_character_ava_rank_name_is(tl.AVA_RANK_NAME_1)
+            and_that_eso_GetAvARankName_returns(tl.AVA_RANK_NAME_2)
             and_that_get_gender_returns(GENDER_1)
-            and_that_get_ava_rank_returns(AVA_RANK_1)
+            and_that_get_ava_rank_returns(tl.AVA_RANK_1)
 
         when_get_ava_rank_name_is_called_with_cache()
 
-        then_the_returned_character_ava_rank_name_was(AVA_RANK_NAME_1)
+        then_the_returned_character_ava_rank_name_was(tl.AVA_RANK_NAME_1)
             and_eso_GetAvARankName_was_not_called()
             and_get_gender_was_not_called()
             and_get_ava_rank_was_not_called()
@@ -472,7 +444,7 @@ describe("Test PvP related data getters.", function()
 
     -- {{{
     local function given_that_cached_character_ava_rank_points_is_not_set()
-        CACHE.ava_rank_points = nil
+        tl.CACHE.ava_rank_points = nil
     end
 
     local function and_that_get_ava_rank_points_lb_returns(points)
@@ -484,7 +456,7 @@ describe("Test PvP related data getters.", function()
     end
 
     local function when_get_ava_rank_points_is_called_with_cache()
-        results.ava_rank_points = esoTERM_pvp.get_ava_rank_points(CACHE)
+        results.ava_rank_points = esoTERM_pvp.get_ava_rank_points()
     end
 
     local function then_the_returned_character_ava_rank_points_was(points)
@@ -492,15 +464,15 @@ describe("Test PvP related data getters.", function()
     end
 
     local function and_get_ava_rank_was_called_once_with_cache()
-        assert.spy(esoTERM_pvp.get_ava_rank).was.called_with(CACHE)
+        assert.spy(esoTERM_pvp.get_ava_rank).was.called_with()
     end
 
     local function and_get_ava_points_was_called_once_with_cache()
-        assert.spy(esoTERM_pvp.get_ava_points).was.called_with(CACHE)
+        assert.spy(esoTERM_pvp.get_ava_points).was.called_with()
     end
 
     local function and_get_ava_rank_points_lb_was_called_once_with_cache()
-        assert.spy(esoTERM_pvp.get_ava_rank_points_lb).was.called_with(CACHE)
+        assert.spy(esoTERM_pvp.get_ava_rank_points_lb).was.called_with()
     end
     -- }}}
 
@@ -519,7 +491,7 @@ describe("Test PvP related data getters.", function()
 
     -- {{{
     local function given_that_cached_character_ava_rank_points_is(points)
-        CACHE.ava_rank_points = points
+        tl.CACHE.ava_rank_points = points
     end
 
     local function and_get_ava_points_was_not_called()
@@ -533,20 +505,20 @@ describe("Test PvP related data getters.", function()
 
     it("Query CHARACTER AvA-RANK POINTS from the CACHE.",
     function()
-        given_that_cached_character_ava_rank_points_is(AVA_RANK_POINTS_1)
-            and_that_get_ava_points_returns(AVA_POINTS_1)
-            and_that_get_ava_rank_points_lb_returns(AVA_RANK_POINTS_LB_1)
+        given_that_cached_character_ava_rank_points_is(tl.AVA_RANK_POINTS_1)
+            and_that_get_ava_points_returns(tl.AVA_POINTS_1)
+            and_that_get_ava_rank_points_lb_returns(tl.AVA_RANK_POINTS_LB_1)
 
         when_get_ava_rank_points_is_called_with_cache()
 
-        then_the_returned_character_ava_rank_points_was(AVA_RANK_POINTS_1)
+        then_the_returned_character_ava_rank_points_was(tl.AVA_RANK_POINTS_1)
             and_get_ava_points_was_not_called()
             and_get_ava_rank_points_lb_was_not_called()
     end)
 
     -- {{{
     local function given_that_cached_character_ava_rank_points_max_is_not_set()
-        CACHE.ava_rank_points_max = nil
+        tl.CACHE.ava_rank_points_max = nil
     end
 
     local function and_that_get_ava_rank_points_lb_returns(points)
@@ -558,7 +530,7 @@ describe("Test PvP related data getters.", function()
     end
 
     local function when_get_ava_rank_points_max_is_called_with_cache()
-        results.ava_rank_points_max = esoTERM_pvp.get_ava_rank_points_max(CACHE)
+        results.ava_rank_points_max = esoTERM_pvp.get_ava_rank_points_max()
     end
 
     local function then_the_returned_character_ava_rank_points_max_was(points)
@@ -566,28 +538,28 @@ describe("Test PvP related data getters.", function()
     end
 
     local function and_get_ava_rank_points_ub_was_called_once_with_cache()
-        assert.spy(esoTERM_pvp.get_ava_rank_points_ub).was.called_with(CACHE)
+        assert.spy(esoTERM_pvp.get_ava_rank_points_ub).was.called_with()
     end
     -- }}}
 
     it("Query CHARACTER AvA-RANK POINTS MAX, when NOT CACHED.",
     function()
         given_that_cached_character_ava_rank_points_max_is_not_set()
-            and_that_get_ava_rank_returns(AVA_RANK_1)
-            and_that_get_ava_rank_points_lb_returns(AVA_RANK_POINTS_LB_1)
-            and_that_get_ava_rank_points_ub_returns(AVA_RANK_POINTS_UB_1)
+            and_that_get_ava_rank_returns(tl.AVA_RANK_1)
+            and_that_get_ava_rank_points_lb_returns(tl.AVA_RANK_POINTS_LB_1)
+            and_that_get_ava_rank_points_ub_returns(tl.AVA_RANK_POINTS_UB_1)
 
         when_get_ava_rank_points_max_is_called_with_cache()
 
         then_the_returned_character_ava_rank_points_max_was(
-                                AVA_RANK_POINTS_UB_1 - AVA_RANK_POINTS_LB_1)
+                                tl.AVA_RANK_POINTS_UB_1 - tl.AVA_RANK_POINTS_LB_1)
             and_get_ava_rank_points_lb_was_called_once_with_cache()
             and_get_ava_rank_points_ub_was_called_once_with_cache()
     end)
 
     -- {{{
     local function given_that_cached_character_ava_rank_points_max_is(points)
-        CACHE.ava_rank_points_max = points
+        tl.CACHE.ava_rank_points_max = points
     end
 
     local function and_get_ava_rank_points_ub_was_not_called()
@@ -597,20 +569,20 @@ describe("Test PvP related data getters.", function()
 
     it("Query CHARACTER AvA-RANK POINTS MAX from the CACHE.",
     function()
-        given_that_cached_character_ava_rank_points_max_is(AVA_RANK_POINTS_MAX_1)
-            and_that_get_ava_rank_points_lb_returns(AVA_RANK_POINTS_LB_1)
-            and_that_get_ava_rank_points_ub_returns(AVA_RANK_POINTS_UB_1)
+        given_that_cached_character_ava_rank_points_max_is(tl.AVA_RANK_POINTS_MAX_1)
+            and_that_get_ava_rank_points_lb_returns(tl.AVA_RANK_POINTS_LB_1)
+            and_that_get_ava_rank_points_ub_returns(tl.AVA_RANK_POINTS_UB_1)
 
         when_get_ava_rank_points_max_is_called_with_cache()
 
-        then_the_returned_character_ava_rank_points_max_was(AVA_RANK_POINTS_MAX_1)
+        then_the_returned_character_ava_rank_points_max_was(tl.AVA_RANK_POINTS_MAX_1)
             and_get_ava_rank_points_lb_was_not_called()
             and_get_ava_rank_points_ub_was_not_called()
     end)
 
     -- {{{
     local function given_that_cached_character_ava_rank_points_percent_is_not_set()
-        CACHE.ava_rank_points_percent = nil
+        tl.CACHE.ava_rank_points_percent = nil
     end
 
     local function and_that_get_ava_rank_points_returns(points)
@@ -622,7 +594,7 @@ describe("Test PvP related data getters.", function()
     end
 
     local function when_get_ava_rank_points_percent_is_called_with_cache()
-        results.rank_points_percent = esoTERM_pvp.get_ava_rank_points_percent(CACHE)
+        results.rank_points_percent = esoTERM_pvp.get_ava_rank_points_percent()
     end
 
     local function then_the_returned_ava_rank_points_percent_was(rank_points_percent)
@@ -630,11 +602,11 @@ describe("Test PvP related data getters.", function()
     end
 
     local function and_get_ava_rank_points_was_called_with_cache()
-        assert.spy(esoTERM_pvp.get_ava_rank_points).was.called_with(CACHE)
+        assert.spy(esoTERM_pvp.get_ava_rank_points).was.called_with()
     end
 
     local function and_get_ava_rank_points_max_was_called_with_cache()
-        assert.spy(esoTERM_pvp.get_ava_rank_points_max).was.called_with(CACHE)
+        assert.spy(esoTERM_pvp.get_ava_rank_points_max).was.called_with()
     end
     -- }}}
 
@@ -653,7 +625,7 @@ describe("Test PvP related data getters.", function()
 
     -- {{{
     local function given_that_cached_character_ava_rank_points_percent_is(percent)
-        CACHE.ava_rank_points_percent = percent
+        tl.CACHE.ava_rank_points_percent = percent
     end
 
     local function and_that_get_ava_rank_points_max_returns(rank_points)
@@ -675,24 +647,24 @@ describe("Test PvP related data getters.", function()
 
     it("Query CHARACTER AvA-RANK POINTS PERCENT, when CACHED.",
     function()
-        given_that_cached_character_ava_rank_points_percent_is(AVA_RANK_POINTS_PERCENT)
-            and_that_get_ava_rank_points_max_returns(AVA_RANK_POINTS_MAX_1)
-            and_that_get_ava_rank_points_returns(AVA_RANK_POINTS_1)
+        given_that_cached_character_ava_rank_points_percent_is(tl.AVA_RANK_POINTS_PERCENT)
+            and_that_get_ava_rank_points_max_returns(tl.AVA_RANK_POINTS_MAX_1)
+            and_that_get_ava_rank_points_returns(tl.AVA_RANK_POINTS_1)
 
         when_get_ava_rank_points_percent_is_called_with_cache()
 
-        then_the_returned_ava_rank_points_percent_was(AVA_RANK_POINTS_PERCENT)
+        then_the_returned_ava_rank_points_percent_was(tl.AVA_RANK_POINTS_PERCENT)
             and_get_ava_rank_points_max_was_not_called()
             and_get_ava_rank_points_was_not_called()
     end)
 
     -- {{{
     local function given_that_cached_character_ap_gain_is_not_set()
-        CACHE.ap_gain = nil
+        tl.CACHE.ap_gain = nil
     end
 
     local function when_get_ap_gain_is_called_with_cache()
-        results.ap_gain = esoTERM_pvp.get_ap_gain(CACHE)
+        results.ap_gain = esoTERM_pvp.get_ap_gain()
     end
 
     local function then_the_returned_ap_gain_was(gain)
@@ -711,22 +683,22 @@ describe("Test PvP related data getters.", function()
 
     -- {{{
     local function given_that_cached_character_ap_gain_is(gain)
-        CACHE.ap_gain = gain
+        tl.CACHE.ap_gain = gain
     end
     -- }}}
 
     it("Query CHARACTER AVA-POINTS GAIN, when CACHED.",
     function()
-        given_that_cached_character_ap_gain_is(AVA_POINTS_GAIN)
+        given_that_cached_character_ap_gain_is(tl.AVA_POINTS_GAIN)
 
         when_get_ap_gain_is_called_with_cache()
 
-        then_the_returned_ap_gain_was(AVA_POINTS_GAIN)
+        then_the_returned_ap_gain_was(tl.AVA_POINTS_GAIN)
     end)
 
     -- {{{
     local function given_that_cached_character_ava_rank_points_lb_is_not_set()
-        CACHE.ava_rank_points_lb = nil
+        tl.CACHE.ava_rank_points_lb = nil
     end
 
     local function and_that_eso_GetNumPointsNeededForAvARank_returns(point)
@@ -734,7 +706,7 @@ describe("Test PvP related data getters.", function()
     end
 
     local function when_get_ava_rank_points_lb_is_called_with_cache()
-        results.ava_rank_points_lb = esoTERM_pvp.get_ava_rank_points_lb(CACHE)
+        results.ava_rank_points_lb = esoTERM_pvp.get_ava_rank_points_lb()
     end
 
     local function then_the_returned_character_ava_rank_points_lb_was(point)
@@ -749,19 +721,19 @@ describe("Test PvP related data getters.", function()
     it("Query CHARACTER AVA-RANK LOWER BOUND POINTS, when NOT CACHED.",
     function()
         given_that_cached_character_ava_rank_points_lb_is_not_set()
-            and_that_get_ava_rank_returns(AVA_RANK_1)
-            and_that_eso_GetNumPointsNeededForAvARank_returns(AVA_RANK_POINTS_LB_1)
+            and_that_get_ava_rank_returns(tl.AVA_RANK_1)
+            and_that_eso_GetNumPointsNeededForAvARank_returns(tl.AVA_RANK_POINTS_LB_1)
 
         when_get_ava_rank_points_lb_is_called_with_cache()
 
-        then_the_returned_character_ava_rank_points_lb_was(AVA_RANK_POINTS_LB_1)
+        then_the_returned_character_ava_rank_points_lb_was(tl.AVA_RANK_POINTS_LB_1)
             and_get_ava_rank_was_called_once_with_cache()
-            and_eso_GetNumPointsNeededForAvARank_was_called_once_with(AVA_RANK_1)
+            and_eso_GetNumPointsNeededForAvARank_was_called_once_with(tl.AVA_RANK_1)
     end)
 
     -- {{{
     local function given_that_cached_character_ava_rank_points_lb_is(point)
-        CACHE.ava_rank_points_lb = point
+        tl.CACHE.ava_rank_points_lb = point
     end
 
     local function and_eso_GetNumPointsNeededForAvARank_was_not_called()
@@ -771,20 +743,20 @@ describe("Test PvP related data getters.", function()
 
     it("Query CHARACTER AVA-RANK LOWER BOUND POINTS, when CACHED.",
     function()
-        given_that_cached_character_ava_rank_points_lb_is(AVA_RANK_POINTS_LB_1)
-            and_that_get_ava_rank_returns(AVA_RANK_1)
-            and_that_eso_GetNumPointsNeededForAvARank_returns(AVA_RANK_POINTS_LB_2)
+        given_that_cached_character_ava_rank_points_lb_is(tl.AVA_RANK_POINTS_LB_1)
+            and_that_get_ava_rank_returns(tl.AVA_RANK_1)
+            and_that_eso_GetNumPointsNeededForAvARank_returns(tl.AVA_RANK_POINTS_LB_2)
 
         when_get_ava_rank_points_lb_is_called_with_cache()
 
-        then_the_returned_character_ava_rank_points_lb_was(AVA_RANK_POINTS_LB_1)
+        then_the_returned_character_ava_rank_points_lb_was(tl.AVA_RANK_POINTS_LB_1)
             and_get_ava_rank_was_not_called()
             and_eso_GetNumPointsNeededForAvARank_was_not_called()
     end)
 
     -- {{{
     local function given_that_cached_character_ava_rank_points_ub_is_not_set()
-        CACHE.ava_rank_points_ub = nil
+        tl.CACHE.ava_rank_points_ub = nil
     end
 
     local function and_that_eso_GetNumPointsNeededForAvARank_returns(point)
@@ -792,7 +764,7 @@ describe("Test PvP related data getters.", function()
     end
 
     local function when_get_ava_rank_points_ub_is_called_with_cache()
-        results.ava_rank_points_ub = esoTERM_pvp.get_ava_rank_points_ub(CACHE)
+        results.ava_rank_points_ub = esoTERM_pvp.get_ava_rank_points_ub()
     end
 
     local function then_the_returned_character_ava_rank_points_ub_was(point)
@@ -807,19 +779,19 @@ describe("Test PvP related data getters.", function()
     it("Query CHARACTER AVA-RANK UPPER BOUND POINTS, when NOT CACHED.",
     function()
         given_that_cached_character_ava_rank_points_ub_is_not_set()
-            and_that_get_ava_rank_returns(AVA_RANK_1)
-            and_that_eso_GetNumPointsNeededForAvARank_returns(AVA_RANK_POINTS_UB_1)
+            and_that_get_ava_rank_returns(tl.AVA_RANK_1)
+            and_that_eso_GetNumPointsNeededForAvARank_returns(tl.AVA_RANK_POINTS_UB_1)
 
         when_get_ava_rank_points_ub_is_called_with_cache()
 
-        then_the_returned_character_ava_rank_points_ub_was(AVA_RANK_POINTS_UB_1)
+        then_the_returned_character_ava_rank_points_ub_was(tl.AVA_RANK_POINTS_UB_1)
             and_get_ava_rank_was_called_once_with_cache()
-            and_eso_GetNumPointsNeededForAvARank_was_called_once_with(AVA_RANK_1 + 1)
+            and_eso_GetNumPointsNeededForAvARank_was_called_once_with(tl.AVA_RANK_1 + 1)
     end)
 
     -- {{{
     local function given_that_cached_character_ava_rank_points_ub_is(point)
-        CACHE.ava_rank_points_ub = point
+        tl.CACHE.ava_rank_points_ub = point
     end
 
     local function and_eso_GetNumPointsNeededForAvARank_was_not_called()
@@ -829,13 +801,13 @@ describe("Test PvP related data getters.", function()
 
     it("Query CHARACTER AVA-RANK UPPER BOUND POINTS, when CACHED.",
     function()
-        given_that_cached_character_ava_rank_points_ub_is(AVA_RANK_POINTS_UB_1)
-            and_that_get_ava_rank_returns(AVA_RANK_1)
-            and_that_eso_GetNumPointsNeededForAvARank_returns(AVA_RANK_POINTS_UB_2)
+        given_that_cached_character_ava_rank_points_ub_is(tl.AVA_RANK_POINTS_UB_1)
+            and_that_get_ava_rank_returns(tl.AVA_RANK_1)
+            and_that_eso_GetNumPointsNeededForAvARank_returns(tl.AVA_RANK_POINTS_UB_2)
 
         when_get_ava_rank_points_ub_is_called_with_cache()
 
-        then_the_returned_character_ava_rank_points_ub_was(AVA_RANK_POINTS_UB_1)
+        then_the_returned_character_ava_rank_points_ub_was(tl.AVA_RANK_POINTS_UB_1)
             and_get_ava_rank_was_not_called()
             and_eso_GetNumPointsNeededForAvARank_was_not_called()
     end)
@@ -843,7 +815,6 @@ end)
 
 describe("Test the event handlers.", function()
     local EVENT = "event"
-    local UNIT = "player"
 
     after_each(function()
         ut_helper.restore_stubbed_functions()
@@ -856,8 +827,8 @@ describe("Test the event handlers.", function()
 
     local function get_ap_message()
         return string.format("Gained %d AP (%.2f%%)",
-                             CACHE.ap_gain,
-                             CACHE.ava_rank_points_percent)
+                             tl.CACHE.ap_gain,
+                             tl.CACHE.ava_rank_points_percent)
     end
 
     local function and_esoTERM_output_stdout_was_called_with_ap_message()
@@ -890,11 +861,11 @@ describe("Test the event handlers.", function()
         local NEW_POINTS_PCT_RANK_UP = NEW_POINTS_RANK_UP * 100 / NEW_POINTS_MAX
 
         before_each(function()
-            CACHE.ava_rank = OLD_RANK
-            CACHE.ava_rank_points = OLD_POINTS
-            CACHE.ava_rank_points_max = OLD_POINTS_MAX
-            CACHE.ava_rank_points_percent = OLD_POINTS_PCT
-            CACHE.ap_gain = OLD_GAIN
+            tl.CACHE.ava_rank = OLD_RANK
+            tl.CACHE.ava_rank_points = OLD_POINTS
+            tl.CACHE.ava_rank_points_max = OLD_POINTS_MAX
+            tl.CACHE.ava_rank_points_percent = OLD_POINTS_PCT
+            tl.CACHE.ap_gain = OLD_GAIN
         end)
 
         -- {{{
@@ -903,7 +874,7 @@ describe("Test the event handlers.", function()
         end
 
         local function and_get_ava_rank_was_called_once_witch_cache()
-            assert.spy(esoTERM_pvp.get_ava_rank).was.called_with(CACHE)
+            assert.spy(esoTERM_pvp.get_ava_rank).was.called_with()
         end
 
         local function and_that_get_ava_rank_points_max_returns(points)
@@ -911,7 +882,7 @@ describe("Test the event handlers.", function()
         end
 
         local function and_get_ava_rank_points_max_was_called_once_witch_cache()
-            assert.spy(esoTERM_pvp.get_ava_rank_points_max).was.called_with(CACHE)
+            assert.spy(esoTERM_pvp.get_ava_rank_points_max).was.called_with()
         end
 
         local function when_on_ava_points_update_is_called_with(event, point, sound, diff)
@@ -919,24 +890,24 @@ describe("Test the event handlers.", function()
         end
 
         local function then_the_ava_properties_in_character_info_where_updated_no_rank_up()
-            assert.is.equal(OLD_RANK, CACHE.ava_rank)
-            assert.is.equal(NEW_POINTS, CACHE.ava_rank_points)
-            assert.is.equal(NEW_POINTS_PCT, CACHE.ava_rank_points_percent)
-            assert.is.equal(NEW_GAIN, CACHE.ap_gain)
+            assert.is.equal(OLD_RANK, tl.CACHE.ava_rank)
+            assert.is.equal(NEW_POINTS, tl.CACHE.ava_rank_points)
+            assert.is.equal(NEW_POINTS_PCT, tl.CACHE.ava_rank_points_percent)
+            assert.is.equal(NEW_GAIN, tl.CACHE.ap_gain)
         end
 
         local function then_the_ava_properties_in_character_info_where_not_updated()
-            assert.is.equal(OLD_RANK, CACHE.ava_rank)
-            assert.is.equal(OLD_POINTS, CACHE.ava_rank_points)
-            assert.is.equal(OLD_POINTS_PCT, CACHE.ava_rank_points_percent)
-            assert.is.equal(OLD_GAIN, CACHE.ap_gain)
+            assert.is.equal(OLD_RANK, tl.CACHE.ava_rank)
+            assert.is.equal(OLD_POINTS, tl.CACHE.ava_rank_points)
+            assert.is.equal(OLD_POINTS_PCT, tl.CACHE.ava_rank_points_percent)
+            assert.is.equal(OLD_GAIN, tl.CACHE.ap_gain)
         end
 
         local function then_the_ava_properties_in_character_info_where_updated_rank_up()
-            assert.is.equal(NEW_RANK, CACHE.ava_rank)
-            assert.is.equal(NEW_POINTS_RANK_UP, CACHE.ava_rank_points)
-            assert.is.equal(NEW_POINTS_PCT_RANK_UP, CACHE.ava_rank_points_percent)
-            assert.is.equal(GAIN_RANK_UP, CACHE.ap_gain)
+            assert.is.equal(NEW_RANK, tl.CACHE.ava_rank)
+            assert.is.equal(NEW_POINTS_RANK_UP, tl.CACHE.ava_rank_points)
+            assert.is.equal(NEW_POINTS_PCT_RANK_UP, tl.CACHE.ava_rank_points_percent)
+            assert.is.equal(GAIN_RANK_UP, tl.CACHE.ap_gain)
         end
         -- }}}
 

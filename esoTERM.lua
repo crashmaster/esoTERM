@@ -1,4 +1,5 @@
 esoTERM = {}
+
 esoTERM.module_register = {}
 
 esoTERM.ADDON_NAME = "esoTERM"

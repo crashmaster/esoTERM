@@ -1,4 +1,5 @@
 esoTERM_slash = {}
+
 esoTERM_slash.command_handlers = {}
 
 local function get_about()

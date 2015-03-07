@@ -5,7 +5,7 @@ return {
     ["reportfile"] = "luacov.report.out",
     -- Delete stats file after reporting.
     deletestats = true,
-    -- Patterns for files to include when reporting.
+    -- Patterns (RE) for files to include when reporting.
     ["include"] = {
         "esoTERM",
         "test_esoTERM",
@@ -28,10 +28,11 @@ return {
         "ut_helper",
         "test_ut_helper"
     },
-    -- Patterns for files to exclude when reporting.
+    -- Patterns (RE) for files to exclude when reporting.
     ["exclude"] = {
         "luacov",
-        "esoTERM_window"
+        "esoTERM_window",
+        "test_.*_library"
     },
 }
 
