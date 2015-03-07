@@ -43,7 +43,7 @@ this.EXPECTED_CACHED_VALUES = {
 this.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
 
 function this.expected_register_for_event_calls_are_cleared()
-    this.EXPECTED_REGISTER_FOR_EVENT_CALLS = nil
+    this.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
 end
 
 function this.and_that_expected_register_for_event_calls_are_set_up()
@@ -144,36 +144,20 @@ end
 -- }}}
 
 -- esoTERM_char module activeness {{{
-local function set_the_esoTERM_char_module_to_active()
+function this.given_that_module_is_active()
     test_library.set_module_to_active(esoTERM_char)
 end
 
-local function set_the_esoTERM_char_module_to_inactive()
+function this.and_that_module_is_inactive()
     test_library.set_module_to_inactive(esoTERM_char)
 end
 
-function this.given_that_module_is_active()
-    set_the_esoTERM_char_module_to_active()
-end
-
-function this.and_that_module_is_inactive()
-    set_the_esoTERM_char_module_to_inactive()
-end
-
-local function check_that_the_esoTERM_char_module_became_active()
-    test_library.check_that_module_became_active()
-end
-
-local function check_that_the_esoTERM_char_module_became_inactive()
-    test_library.check_that_module_became_inactive()
-end
-
 function this.and_module_became_active()
-    check_that_the_esoTERM_char_module_became_active()
+    test_library.check_that_module_became_active(esoTERM_char)
 end
 
 function this.then_module_became_inactive()
-    check_that_the_esoTERM_char_module_became_inactive()
+    test_library.check_that_module_became_inactive(esoTERM_char)
 end
 -- }}}
 

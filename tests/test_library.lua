@@ -37,11 +37,11 @@ function this.set_module_to_inactive(module)
 end
 
 function this.check_that_module_became_active(module)
-    assert.is.equal(MODULE_ACTIVE, esoTERM_char.is_active)
+    assert.is.equal(MODULE_ACTIVE, module.is_active)
 end
 
 function this.check_that_module_became_inactive(module)
-    assert.is.equal(MODULE_INACTIVE, esoTERM_char.is_active)
+    assert.is.equal(MODULE_INACTIVE, module.is_active)
 end
 -- }}}
 
