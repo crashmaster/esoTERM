@@ -6,7 +6,6 @@ esoTERM_pvp.module_name = "esoTERM-pvp"
 esoTERM_pvp.is_active = false
 
 local ESOTERM_PVP_CACHE = esoTERM_pvp.cache
-local ESOTERM_PVP_EVENT_REGISTER = esoTERM_pvp.event_register
 local PLAYER_UNIT_TAG = "player"
 
 function esoTERM_pvp.get_ava_points()
@@ -140,7 +139,7 @@ function esoTERM_pvp.initialize()
     ESOTERM_PVP_CACHE.ava_rank_points_percent = esoTERM_pvp.get_ava_rank_points_percent()
     ESOTERM_PVP_CACHE.ap_gain = esoTERM_pvp.get_ap_gain()
 
-    esoTERM_common.register_for_event(ESOTERM_PVP_EVENT_REGISTER,
+    esoTERM_common.register_for_event(esoTERM_pvp,
                                       EVENT_ALLIANCE_POINT_UPDATE,
                                       esoTERM_pvp.on_ava_points_update)
 
@@ -150,7 +149,7 @@ function esoTERM_pvp.initialize()
 end
 
 function esoTERM_pvp.deactivate()
-    esoTERM_common.unregister_from_all_events(ESOTERM_PVP_EVENT_REGISTER)
+    esoTERM_common.unregister_from_all_events(esoTERM_pvp)
 
     esoTERM_pvp.is_active = false
 end

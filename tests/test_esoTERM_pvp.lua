@@ -70,7 +70,7 @@ describe("Test initialization.", function()
 
     local function and_that_expected_register_event_parameters_are_set_up()
         expected_register_params.ava_xp_update = {
-            local_register = tl.EVENT_REGISTER,
+            module = esoTERM_pvp,
             event = EVENT_ALLIANCE_POINT_UPDATE,
             callback = esoTERM_pvp.on_ava_points_update
         }
@@ -104,7 +104,7 @@ describe("Test initialization.", function()
         assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(expected_params))
         for param in pairs(expected_params) do
             assert.spy(esoTERM_common.register_for_event).was.called_with(
-                expected_params[param].local_register,
+                expected_params[param].module,
                 expected_params[param].event,
                 expected_params[param].callback
             )
@@ -155,7 +155,7 @@ describe("Test deactivate.", function()
     end
 
     local function then_unregister_from_all_events_was_called()
-        assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(tl.EVENT_REGISTER)
+        assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(esoTERM_pvp)
     end
 
     local function and_module_becomes_inactive()

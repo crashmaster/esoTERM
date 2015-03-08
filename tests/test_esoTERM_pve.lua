@@ -62,17 +62,17 @@ describe("Test initialization.", function()
 
     local function and_that_expected_register_event_parameters_are_set_up()
         expected_register_params.experience_points_update = {
-            local_register = tl.EVENT_REGISTER,
+            module = esoTERM_pve,
             event = EVENT_EXPERIENCE_UPDATE,
             callback = esoTERM_pve.on_experience_update
         }
         expected_register_params.level_update = {
-            local_register = tl.EVENT_REGISTER,
+            module = esoTERM_pve,
             event = EVENT_LEVEL_UPDATE,
             callback = esoTERM_pve.on_level_update
         }
         expected_register_params.veteran_rank_update = {
-            local_register = tl.EVENT_REGISTER,
+            module = esoTERM_pve,
             event = EVENT_VETERAN_RANK_UPDATE,
             callback = esoTERM_pve.on_level_update
         }
@@ -106,7 +106,7 @@ describe("Test initialization.", function()
         assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(expected_params))
         for param in pairs(expected_params) do
             assert.spy(esoTERM_common.register_for_event).was.called_with(
-                expected_params[param].local_register,
+                expected_params[param].module,
                 expected_params[param].event,
                 expected_params[param].callback
             )
@@ -162,7 +162,7 @@ describe("Test deactivate.", function()
 
     local function then_unregister_from_all_events_was_called()
         assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(
-            tl.EVENT_REGISTER
+            esoTERM_pve
         )
     end
 

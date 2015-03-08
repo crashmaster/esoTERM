@@ -1,19 +1,19 @@
 esoTERM_common = {}
 
-function esoTERM_common.register_for_event(local_register, event, callback)
-    EVENT_MANAGER:RegisterForEvent(esoTERM.ADDON_NAME, event, callback)
-    local_register[event] = true
+function esoTERM_common.register_for_event(module, event, callback)
+    EVENT_MANAGER:RegisterForEvent(module.module_name, event, callback)
+    module.event_register[event] = true
 end
 
-function esoTERM_common.unregister_from_event(local_register, event)
-    EVENT_MANAGER:UnregisterForEvent(esoTERM.ADDON_NAME, event)
-    local_register[event] = false
+function esoTERM_common.unregister_from_event(module, event)
+    EVENT_MANAGER:UnregisterForEvent(module.module_name, event)
+    module.event_register[event] = false
 end
 
-function esoTERM_common.unregister_from_all_events(local_register)
-    for event, is_active in pairs(local_register) do
+function esoTERM_common.unregister_from_all_events(module)
+    for event, is_active in pairs(module.event_register) do
         if is_active then
-            esoTERM_common.unregister_from_event(local_register, event)
+            esoTERM_common.unregister_from_event(module, event)
         end
     end
 end

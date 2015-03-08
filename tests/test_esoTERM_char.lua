@@ -462,7 +462,7 @@ describe("The on combat-state-change event handler.", function()
 
     local function and_combat_event_handler_was_registered()
         assert.spy(esoTERM_common.register_for_event).was.called_with(
-            tl.EVENT_REGISTER,
+            esoTERM_char,
             EVENT_COMBAT_EVENT,
             esoTERM_char.on_combat_event_update)
     end
@@ -535,7 +535,7 @@ describe("The on combat-state-change event handler.", function()
 
     local function and_combat_event_handler_was_unregistered()
         assert.spy(esoTERM_common.unregister_from_event).was.called_with(
-            tl.EVENT_REGISTER, EVENT_COMBAT_EVENT)
+            esoTERM_char, EVENT_COMBAT_EVENT)
     end
 
     local function get_exit_combat_message()

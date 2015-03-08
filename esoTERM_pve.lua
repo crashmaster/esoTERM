@@ -6,7 +6,6 @@ esoTERM_pve.module_name = "esoTERM-pve"
 esoTERM_pve.is_active = false
 
 local ESOTERM_PVE_CACHE = esoTERM_pve.cache
-local ESOTERM_PVE_EVENT_REGISTER = esoTERM_pve.event_register
 local PLAYER_UNIT_TAG = "player"
 
 function esoTERM_pve.is_veteran()
@@ -108,13 +107,13 @@ function esoTERM_pve.initialize()
     ESOTERM_PVE_CACHE.level_xp_percent = esoTERM_pve.get_level_xp_percent()
     ESOTERM_PVE_CACHE.xp_gain = esoTERM_pve.get_xp_gain()
 
-    esoTERM_common.register_for_event(ESOTERM_PVE_EVENT_REGISTER,
+    esoTERM_common.register_for_event(esoTERM_pve,
                                       EVENT_EXPERIENCE_UPDATE,
                                       esoTERM_pve.on_experience_update)
-    esoTERM_common.register_for_event(ESOTERM_PVE_EVENT_REGISTER,
+    esoTERM_common.register_for_event(esoTERM_pve,
                                       EVENT_LEVEL_UPDATE,
                                       esoTERM_pve.on_level_update)
-    esoTERM_common.register_for_event(ESOTERM_PVE_EVENT_REGISTER,
+    esoTERM_common.register_for_event(esoTERM_pve,
                                       EVENT_VETERAN_RANK_UPDATE,
                                       esoTERM_pve.on_level_update)
 
@@ -124,7 +123,7 @@ function esoTERM_pve.initialize()
 end
 
 function esoTERM_pve.deactivate()
-    esoTERM_common.unregister_from_all_events(ESOTERM_PVE_EVENT_REGISTER)
+    esoTERM_common.unregister_from_all_events(esoTERM_pve)
 
     esoTERM_pve.is_active = false
 end

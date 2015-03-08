@@ -7,7 +7,6 @@ esoTERM_loot.module_name = "esoTERM-loot"
 esoTERM_loot.is_active = false
 
 local ESOTERM_LOOT_CACHE = esoTERM_loot.cache
-local ESOTERM_LOOT_EVENT_REGISTER = esoTERM_loot.event_register
 
 function esoTERM_loot.get_loot_quantity()
     if ESOTERM_LOOT_CACHE.loot_quantity ~= nil then
@@ -70,10 +69,10 @@ function esoTERM_loot.initialize()
     ESOTERM_LOOT_CACHE.loot_quantity = esoTERM_loot.get_loot_quantity()
     ESOTERM_LOOT_CACHE.looted_item = esoTERM_loot.get_looted_item()
 
-    esoTERM_common.register_for_event(ESOTERM_LOOT_EVENT_REGISTER,
+    esoTERM_common.register_for_event(esoTERM_loot,
                                       EVENT_LOOT_RECEIVED,
                                       esoTERM_loot.on_loot_received)
-    esoTERM_common.register_for_event(ESOTERM_LOOT_EVENT_REGISTER,
+    esoTERM_common.register_for_event(esoTERM_loot,
                                       EVENT_MONEY_UPDATE,
                                       esoTERM_loot.on_money_received)
 
@@ -83,7 +82,7 @@ function esoTERM_loot.initialize()
 end
 
 function esoTERM_loot.deactivate()
-    esoTERM_common.unregister_from_all_events(ESOTERM_LOOT_EVENT_REGISTER)
+    esoTERM_common.unregister_from_all_events(esoTERM_loot)
 
     esoTERM_loot.is_active = false
 end

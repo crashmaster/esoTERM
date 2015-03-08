@@ -2,8 +2,6 @@ local test_library = require("tests/test_library")
 
 this = {}
 
-this.EVENT_REGISTER = esoTERM_champ.event_register
-
 local MODULE_NAME = "esoTERM-champion"
 
 -- module_name {{{
@@ -28,8 +26,13 @@ function this.and_that_register_for_event_is_stubbed()
 end
 
 function this.and_that_expected_register_for_event_calls_are_set_up()
+    this.EXPECTED_REGISTER_FOR_EVENT_CALLS.champion_xp_gained = {
+        module = esoTERM_champ,
+        event = EVENT_EXPERIENCE_UPDATE,
+        callback = esoTERM_champ.on_experience_update
+    }
     this.EXPECTED_REGISTER_FOR_EVENT_CALLS.champion_point_gained = {
-        local_register = this.EVENT_REGISTER,
+        module = esoTERM_champ,
         event = EVENT_CHAMPION_POINT_GAINED,
         callback = esoTERM_champ.on_champion_point_gain
     }
@@ -47,7 +50,7 @@ function this.and_register_for_event_was_called_with_expected_parameters()
     assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(this.EXPECTED_REGISTER_FOR_EVENT_CALLS))
     for param in pairs(this.EXPECTED_REGISTER_FOR_EVENT_CALLS) do
         assert.spy(esoTERM_common.register_for_event).was.called_with(
-            this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].local_register,
+            this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].module,
             this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].event,
             this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].callback)
         assert.is_not.equal(nil, this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].callback)

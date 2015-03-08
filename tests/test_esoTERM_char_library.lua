@@ -3,7 +3,6 @@ local test_library = require("tests/test_library")
 this = {}
 
 this.CACHE = esoTERM_char.cache
-this.EVENT_REGISTER = esoTERM_char.event_register
 
 this.GENDER_1 = test_library.A_STRING
 this.GENDER_2 = test_library.B_STRING
@@ -48,12 +47,12 @@ end
 
 function this.and_that_expected_register_for_event_calls_are_set_up()
     this.EXPECTED_REGISTER_FOR_EVENT_CALLS.combat_state_update = {
-        local_register = this.EVENT_REGISTER,
+        module = esoTERM_char,
         event = EVENT_PLAYER_COMBAT_STATE,
         callback = esoTERM_char.on_combat_state_update
     }
     this.EXPECTED_REGISTER_FOR_EVENT_CALLS.death_state_update = {
-        local_register = this.EVENT_REGISTER,
+        module = esoTERM_char,
         event = EVENT_UNIT_DEATH_STATE_CHANGED,
         callback = esoTERM_char.on_unit_death_state_change
     }
@@ -67,7 +66,7 @@ function this.and_register_for_event_was_called_with_expected_parameters()
     assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(this.EXPECTED_REGISTER_FOR_EVENT_CALLS))
     for param in pairs(this.EXPECTED_REGISTER_FOR_EVENT_CALLS) do
         assert.spy(esoTERM_common.register_for_event).was.called_with(
-            this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].local_register,
+            this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].module,
             this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].event,
             this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].callback)
         assert.is_not.equal(nil, this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].callback)
@@ -105,7 +104,7 @@ function this.and_that_unregister_from_all_events_is_stubbed()
 end
 
 function this.and_unregister_from_all_events_was_called()
-    assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(this.EVENT_REGISTER)
+    assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(esoTERM_char)
 end
 -- }}}
 
