@@ -2,6 +2,8 @@ local test_library = require("tests/test_library")
 
 this = {}
 
+this.CACHE = esoTERM_champ.cache
+
 local MODULE_NAME = "esoTERM-champion"
 
 -- module_name {{{
@@ -23,6 +25,14 @@ end
 
 function this.given_that_module_is_inactive()
     test_library.set_module_to_inactive(esoTERM_champ)
+end
+
+function this.and_that_cache_is_empty()
+    assert.is.equal(0, ut_helper.table_size(this.CACHE))
+end
+
+function this.and_cache_is_no_longer_empty()
+    assert.is_not.equal(0, ut_helper.table_size(this.CACHE))
 end
 
 function this.and_that_register_for_event_is_stubbed()
