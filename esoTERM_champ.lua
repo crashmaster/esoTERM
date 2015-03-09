@@ -33,10 +33,15 @@ function esoTERM_champ.initialize()
     esoTERM_common.register_for_event(esoTERM_champ,
                                       EVENT_CHAMPION_POINT_GAINED,
                                       esoTERM_champ.on_champion_point_gain)
+
+    esoTERM_common.register_module(esoTERM.module_register, esoTERM_champ)
+
     esoTERM_champ.is_active = true
 end
 
 function esoTERM_champ.deactivate()
+    esoTERM_common.unregister_from_all_events(esoTERM_champ)
+
     esoTERM_champ.is_active = false
 end
 

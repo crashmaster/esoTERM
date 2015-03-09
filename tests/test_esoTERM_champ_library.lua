@@ -17,12 +17,20 @@ function this.expected_register_for_event_calls_are_cleared()
     this.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
 end
 
+function this.given_that_module_is_active()
+    test_library.set_module_to_active(esoTERM_champ)
+end
+
 function this.given_that_module_is_inactive()
     test_library.set_module_to_inactive(esoTERM_champ)
 end
 
 function this.and_that_register_for_event_is_stubbed()
     test_library.stub_function_with_no_return_value(esoTERM_common, "register_for_event")
+end
+
+function this.and_that_unregister_from_all_events_is_stubbed()
+    test_library.stub_function_with_no_return_value(esoTERM_common, "unregister_from_all_events")
 end
 
 function this.and_that_expected_register_for_event_calls_are_set_up()
@@ -42,8 +50,16 @@ function this.when_initialize_is_called()
     esoTERM_champ.initialize()
 end
 
+function this.when_deactivate_for_the_module_is_called()
+    esoTERM_champ.deactivate()
+end
+
 function this.and_module_became_active()
     test_library.check_that_module_became_active(esoTERM_champ)
+end
+
+function this.then_module_became_inactive()
+    test_library.check_that_module_became_inactive(esoTERM_champ)
 end
 
 function this.and_register_for_event_was_called_with_expected_parameters()
@@ -55,6 +71,18 @@ function this.and_register_for_event_was_called_with_expected_parameters()
             this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].callback)
         assert.is_not.equal(nil, this.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].callback)
     end
+end
+
+function this.and_unregister_from_all_events_was_called()
+    assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(esoTERM_champ)
+end
+
+function this.and_that_register_module_is_stubbed()
+    test_library.stub_function_with_no_return_value(esoTERM_common, "register_module")
+end
+
+function this.and_register_module_was_called()
+    assert.spy(esoTERM_common.register_module).was.called_with(esoTERM.module_register, esoTERM_champ)
 end
 -- }}}
 
