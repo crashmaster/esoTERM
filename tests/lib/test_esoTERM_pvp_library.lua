@@ -1,4 +1,5 @@
-local test_library = require("tests/test_library")
+local test_library = require("tests/lib/test_library")
+local esoTERM_pvp = require("esoTERM_pvp")
 
 test_esoTERM_pvp_library = {}
 

@@ -1,5 +1,5 @@
 local requires_for_tests = require("tests/requires_for_tests")
-local tl = require("tests/test_esoTERM_char_library")
+local tl = require("tests/lib/test_esoTERM_char_library")
 
 describe("Test the esoTERM_char module.", function()
     it("Module is called: esoTERM-character.",

@@ -1,5 +1,5 @@
 local requires_for_tests = require("tests/requires_for_tests")
-local tl = require("tests/test_esoTERM_champ_library")
+local tl = require("tests/lib/test_esoTERM_champ_library")
 
 describe("Test the esoTERM_champ module.", function()
     it("Module is called: esoTERM-champion.",
@@ -18,9 +18,10 @@ describe("Test the esoTERM_champ module initialization.", function()
     function()
         tl.given_that_module_is_inactive()
             tl.and_that_cache_is_empty()
-            tl.and_that_register_for_event_is_stubbed()
             tl.and_that_expected_register_for_event_calls_are_set_up()
+            tl.and_that_register_for_event_is_stubbed()
             tl.and_that_register_module_is_stubbed()
+            tl.and_that_getter_functions_are_stubbed()
 
         tl.when_initialize_is_called()
 
@@ -28,6 +29,8 @@ describe("Test the esoTERM_champ module initialization.", function()
             tl.and_cache_is_no_longer_empty()
             tl.and_register_for_event_was_called_with_expected_parameters()
             tl.and_register_module_was_called()
+            tl.and_getter_function_stubs_were_called()
+            tl.and_cached_values_became_initialized()
     end)
 end)
 

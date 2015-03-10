@@ -63,13 +63,15 @@ SI_TOOLTIP_ITEM_NAME = "SI_TOOLTIP_ITEM_NAME"
 
 SLASH_COMMANDS = {}
 
-function zo_callLater(func)
-    func()
-end
+function GetChampionXPInRank() end
 
-function zo_strformat(format_string, stuff)
-    return stuff
-end
+function GetPlayerChampionPointsEarned() end
+
+function GetPlayerChampionXP() end
+
+function zo_callLater(func) func() end
+
+function zo_strformat(format_string, stuff) return stuff end
 
 EVENT_MANAGER = {
     UnregisterForEvent = function(operation, event) return nil end,

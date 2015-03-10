@@ -1,6 +1,6 @@
 local ut_helper = require("tests/ut_helper")
 local ZO_Symbols = require("tests/fake_zo_symbols")
-local tl = require("tests/test_esoTERM_library")
+local tl = require("tests/lib/test_esoTERM_library")
 
 describe("Test main module.", function()
     after_each(function()
