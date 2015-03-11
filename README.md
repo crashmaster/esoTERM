@@ -38,4 +38,31 @@ C:\Users\<user>\Documents\Elder Scrolls Online\liveeu\SavedVariables\esoTERM.lua
 * `window_y`: y position of the *esoTERM* window
 * `version`: not used
 
-These parameters should **not** edited manually, *esoTERM* should handle them.
+A *"picture"* tells more than thousand words:
+
+```
+
+ ----------------------------------------------------------------
+ |                                                              |
+ |                                                              |
+ |                D                                             |
+ |                 *---------+   ---                            |
+ |                 |        *|A   ^                             |
+ |                 +---------+    |                             |
+ |                 |         |    |                             |
+ |                 |         |    C                             |
+ |                 | esoTERM |    |                             |
+ |                 |         |    |                             |
+ |                 |         |    |                             |
+ |                 +---------+   ---                            |
+ |                                                              |
+ |                 |         |       A - window_locked button   |
+ |                 |----B--->|       B - window_width           |
+ |                 |         |       C - window_height          |
+ |                                   D - window_x, window_y     |
+ |                                                              |
+ ----------------------------------------------------------------
+
+```
+
+Do **not** edit these parameters manually, *esoTERM* should handle them.
