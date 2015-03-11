@@ -43,6 +43,9 @@ function esoTERM_champ.on_champion_point_gain(...)
 end
 
 function esoTERM_champ.initialize()
+    if GetChampionXPInRank(GetPlayerChampionPointsEarned()) == nil then
+        return
+    end
     ESOTERM_CHAMP_CACHE.champion_xp = esoTERM_champ.get_champion_xp()
     ESOTERM_CHAMP_CACHE.champion_xp_max = esoTERM_champ.get_champion_xp_max()
 

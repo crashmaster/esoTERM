@@ -74,7 +74,9 @@ end
 
 local function on_move_stop()
     local settings = esoTERM_window.settings
-    _, _, _, _, settings.window_x, settings.window_y = esoTERM_window.etw:GetAnchor(0)
+    c_x, c_y = esoTERM_window.etw:GetCenter()
+    settings.window_x = c_x - esoTERM_window.settings.window_width / 2
+    settings.window_y = c_y - esoTERM_window.settings.window_height / 2
 end
 
 local function create_top_level_window()
@@ -88,7 +90,7 @@ local function create_top_level_window()
               esoTERM_window.default_settings.window_x
     local y = esoTERM_window.settings.window_y or
               esoTERM_window.default_settings.window_y
-    etw:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, x, y)
+    etw:SetAnchor(TOPLEFT, GuiRoot, nil, x, y)
     local width = esoTERM_window.settings.window_width or
                   esoTERM_window.default_settings.window_width
     local height = esoTERM_window.settings.window_height or
