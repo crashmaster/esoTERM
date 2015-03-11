@@ -43,7 +43,7 @@ A *"picture"* tells more than thousand words:
 ```
 
  +--------------------------------------------------------------+
- | **TESO** in-game screen :)                                       |
+ | TESO in-game screen :)                                       |
  |                                                              |
  |                                                              |
  |                 D---------+   ---                            |
