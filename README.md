@@ -23,13 +23,17 @@
 
 ## Configuration file
 
+Do **not** edit these parameters manually, *esoTERM* should handle them.
+
+## Configuration file location
+
 Location of the *esoTERM* configuration file is (assuming standard environment):
 
 ```
 C:\Users\<user>\Documents\Elder Scrolls Online\liveeu\SavedVariables\esoTERM.lua
 ```
 
-### Configuration parameters (per *character*):
+### Configuration file parameters (per *character*):
 
 * `window_locked`: whether the *esoTERM* window is moveable/resizeable or not
 * `window_width`: width of the *esoTERM* window
@@ -64,5 +68,3 @@ A *"picture"* tells more than thousand words:
  +--------------------------------------------------------------+
 
 ```
-
-Do **not** edit these parameters manually, *esoTERM* should handle them.
