@@ -75,8 +75,8 @@ end
 local function on_move_stop()
     local settings = esoTERM_window.settings
     c_x, c_y = esoTERM_window.etw:GetCenter()
-    settings.window_x = c_x - esoTERM_window.settings.window_width / 2
-    settings.window_y = c_y - esoTERM_window.settings.window_height / 2
+    settings.window_x = c_x - settings.window_width / 2
+    settings.window_y = c_y - settings.window_height / 2
 end
 
 local function create_top_level_window()
