@@ -70,6 +70,14 @@ function test_esoTERM_champ_library.and_that_expected_register_for_event_calls_a
     }
 end
 
+function test_esoTERM_champ_library.and_that_character_is_eligible_for_champion_xp()
+    test_library.stub_function_with_return_value(GLOBAL, "GetChampionXPInRank", 1)
+end
+
+function test_esoTERM_champ_library.and_that_character_is_not_eligible_for_champion_xp()
+    test_library.stub_function_with_return_value(GLOBAL, "GetChampionXPInRank", nil)
+end
+
 function test_esoTERM_champ_library.when_initialize_is_called()
     esoTERM_champ.initialize()
 end
@@ -127,6 +135,30 @@ function test_esoTERM_champ_library.and_cached_values_became_initialized()
     end
 end
 -- }}}
+
+function test_esoTERM_champ_library.given_that_esoTERM_output_stdout_is_stubbed()
+    test_library.stub_function_with_no_return_value(esoTERM_output, "stdout")
+end
+
+function test_esoTERM_champ_library.then_esoTERM_output_stdout_was_called_with(message)
+    assert.spy(esoTERM_output.stdout).was.called_with(message)
+end
+
+function test_esoTERM_champ_library.and_that_GetPlayerChampionXP_returns(xp)
+    test_library.stub_function_with_return_value(GLOBAL, "GetPlayerChampionXP", xp)
+end
+
+function test_esoTERM_champ_library.and_that_champion_xp_before_was(xp)
+    test_esoTERM_champ_library.CACHE.champion_xp = xp
+end
+
+function test_esoTERM_champ_library.and_that_champion_xp_max_is(xp)
+    test_esoTERM_champ_library.CACHE.champion_xp_max = xp
+end
+
+function test_esoTERM_champ_library.when_on_experience_update_is_called()
+    esoTERM_champ.on_experience_update()
+end
 
 return test_esoTERM_champ_library
 

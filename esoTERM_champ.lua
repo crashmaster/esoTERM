@@ -24,10 +24,14 @@ function esoTERM_champ.get_champion_xp_max()
 end
 
 local function get_champion_xp_message()
-    actual_champion_xp = GetPlayerChampionXP()
-    champion_xp_gain = actual_champion_xp - esoTERM_champ.get_champion_xp()
+    local actual_champion_xp = GetPlayerChampionXP()
+    local champion_xp_gain = actual_champion_xp - esoTERM_champ.get_champion_xp()
+    if champion_xp_gain == 0 then
+        return
+    end
     ESOTERM_CHAMP_CACHE.champion_xp = actual_champion_xp
     champion_xp_percent = esoTERM_champ.get_champion_xp() * 100 / esoTERM_champ.get_champion_xp_max()
+
     return string.format("Gained %d champion XP (%.2f%%)",
                          champion_xp_gain,
                          champion_xp_percent)
