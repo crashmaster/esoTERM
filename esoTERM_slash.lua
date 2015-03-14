@@ -5,7 +5,7 @@ esoTERM_slash.command_handlers = {}
 local function get_about()
     return "About\n" ..
            "Name: " .. esoTERM.ADDON_NAME .. "\n" ..
-           "Author: " .. esoTERM.ADDON_AUTHOR
+           "Author: " .. esoTERM.ADDON_AUTHOR .. " @ EU"
 end
 
 local function handle_empty_command()
@@ -13,8 +13,10 @@ local function handle_empty_command()
 end
 
 local function get_help()
-    return "Help\n" ..
-           "No help here"
+    return "Available command for esoTERM:\n" ..
+           " - show about: /esoterm\n" ..
+           " - show help: /esoterm help\n" ..
+           " - show status: /esoterm status"
 end
 
 local function handle_help_command()

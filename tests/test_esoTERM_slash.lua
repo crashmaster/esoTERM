@@ -34,6 +34,10 @@ describe("Test slash command handlers.", function()
         module_name = "fake_inactive_module",
         is_active = false
     }
+    local help_message="Available command for esoTERM:\n" ..
+                       " - show about: /esoterm\n" ..
+                       " - show help: /esoterm help\n" ..
+                       " - show status: /esoterm status"
 
     before_each(function()
         ut_helper.stub_function(esoTERM_output, "sysout", nil)
@@ -59,7 +63,7 @@ describe("Test slash command handlers.", function()
 
         then_sysout_was_called_with("About\n" ..
                                     "Name: esoTERM\n" ..
-                                    "Author: @Gaul")
+                                    "Author: @Gaul @ EU")
     end)
 
     it("Output of invalid command", function()
@@ -71,15 +75,13 @@ describe("Test slash command handlers.", function()
     it("Output of lower case help command", function()
         when_command_handler_called_with("help")
 
-        then_sysout_was_called_with("Help\n" ..
-                                    "No help here")
+        then_sysout_was_called_with(help_message)
     end)
 
     it("Output of mixed case help command", function()
         when_command_handler_called_with("hElP")
 
-        then_sysout_was_called_with("Help\n" ..
-                                    "No help here")
+        then_sysout_was_called_with(help_message)
     end)
 
     -- {{{
