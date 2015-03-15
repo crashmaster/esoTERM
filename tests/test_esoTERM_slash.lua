@@ -111,7 +111,7 @@ describe("Test slash command handlers.", function()
         when_command_handler_called_with("status")
 
         then_sysout_was_called_with("Status of modules\n" ..
-                                    "fake_active_module  <ACTIVE>")
+                                    "fake_active_module is ACTIVE")
     end)
 
     it("The status command returns the status of one inactive module", function()
@@ -120,7 +120,7 @@ describe("Test slash command handlers.", function()
         when_command_handler_called_with("status")
 
         then_sysout_was_called_with("Status of modules\n" ..
-                                    "fake_inactive_module  <INACTIVE>")
+                                    "fake_inactive_module is INACTIVE")
     end)
 
     -- {{{
@@ -137,8 +137,8 @@ describe("Test slash command handlers.", function()
         when_command_handler_called_with("status")
 
         then_sysout_was_called_with("Status of modules\n" ..
-                                    "fake_active_module  <ACTIVE>\n" ..
-                                    "fake_active_module  <ACTIVE>")
+                                    "fake_active_module is ACTIVE\n" ..
+                                    "fake_active_module is ACTIVE")
     end)
 
     it("The status command returns the status of two inactive modules", function()
@@ -148,8 +148,8 @@ describe("Test slash command handlers.", function()
         when_command_handler_called_with("status")
 
         then_sysout_was_called_with("Status of modules\n" ..
-                                    "fake_inactive_module  <INACTIVE>\n" ..
-                                    "fake_inactive_module  <INACTIVE>")
+                                    "fake_inactive_module is INACTIVE\n" ..
+                                    "fake_inactive_module is INACTIVE")
     end)
 
     it("The status command returns the status of an active and an inactive module", function()
@@ -159,8 +159,8 @@ describe("Test slash command handlers.", function()
         when_command_handler_called_with("status")
 
         then_sysout_was_called_with("Status of modules\n" ..
-                                    "fake_active_module  <ACTIVE>\n" ..
-                                    "fake_inactive_module  <INACTIVE>")
+                                    "fake_active_module is ACTIVE\n" ..
+                                    "fake_inactive_module is INACTIVE")
     end)
 end)
 

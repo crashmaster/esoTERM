@@ -24,7 +24,7 @@ local function handle_help_command()
 end
 
 local function get_module_status(module)
-    return string.format("\n%s  <%s>",
+    return string.format("\n%s is %s",
                          module.module_name,
                          module.is_active and "ACTIVE" or "INACTIVE")
 end
