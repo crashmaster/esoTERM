@@ -26,7 +26,7 @@ end
 local function get_champion_xp_message()
     local actual_champion_xp = GetPlayerChampionXP()
     local champion_xp_gain = actual_champion_xp - esoTERM_champ.get_champion_xp()
-    if champion_xp_gain == 0 then
+    if champion_xp_gain <= 0 then
         return
     end
     ESOTERM_CHAMP_CACHE.champion_xp = actual_champion_xp

@@ -13,9 +13,11 @@ function esoTERM_window.set_window_visibility()
 
     local scenes = {
         "achievements",
+        "alchemy",
         "cadwellsAlmanac",
         "campaignBrowser",
         "campaignOverview",
+        "enchanting",
         "friendsList",
         "groupList",
         "groupingToolsKeyboard",

@@ -69,7 +69,7 @@ describe("Test slash command handlers.", function()
     it("Output of invalid command", function()
         when_command_handler_called_with("foobar")
 
-        then_sysout_was_called_with("Invalid command: foobar")
+        then_sysout_was_called_with("Invalid slash-command: foobar")
     end)
 
     it("Output of lower case help command", function()

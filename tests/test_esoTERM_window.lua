@@ -7,9 +7,11 @@ local FRAGMENT = "fragment"
 
 local SCENES_WHERE_VISIBLE = {
     "achievements",
+    "alchemy",
     "cadwellsAlmanac",
     "campaignBrowser",
     "campaignOverview",
+    "enchanting",
     "friendsList",
     "groupList",
     "groupingToolsKeyboard",

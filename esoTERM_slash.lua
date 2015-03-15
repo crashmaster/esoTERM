@@ -49,15 +49,16 @@ local function handle_status_command()
     return "Status of modules" .. status
 end
 
-function esoTERM_slash.slash_command_handler(command)
+function esoTERM_slash.slash_command_handler(command_and_arg)
     local output
     local command_handlers = esoTERM_slash.command_handlers
-    local lower_case_command = string.lower(command)
+    local command = string.lower(esoTERM_common.split(command_and_arg)[1] or "")
+    local arg = string.lower(esoTERM_common.split(command_and_arg)[2] or "")
 
-    if command_handlers[lower_case_command] == nil then
-        output = "Invalid command: " .. command
+    if command_handlers[command] == nil then
+        output = "Invalid slash-command: " .. command_and_arg
     else
-        output = command_handlers[lower_case_command]()
+        output = command_handlers[command](arg)
     end
 
     esoTERM_output.sysout(output)
