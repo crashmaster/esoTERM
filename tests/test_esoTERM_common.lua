@@ -1,4 +1,5 @@
 local requires_for_tests = require("tests/requires_for_tests")
+local tl = require("tests/lib/test_esoTERM_common_library")
 
 describe("Test common functions.", function()
     describe("Local register for subscribed events.", function()
