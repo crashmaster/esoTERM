@@ -148,7 +148,9 @@ describe("Test common functions.", function()
 
     describe("Register for active/inactive modules.", function()
         local module_register = {}
-        local module = {}
+        local module = {
+            module_name = "test_module"
+        }
 
         before_each(function()
             module_register = {}
@@ -197,6 +199,13 @@ describe("Test common functions.", function()
             when_module_registered(module_register, module)
 
             then_the_module_register_contains_that_module(module_register, module)
+        end)
+
+        it("Get registered module by not case-sensitive name.",
+        function()
+            tl.given_that_test_module_is_registered()
+
+            tl.then_the_getter_returns_the_registered_module()
         end)
     end)
 
