@@ -20,7 +20,7 @@ ESO_TERM_DIR := $(ESO_ADDONS_DIR)/$(ADDON_NAME)
 THIS_FILE := $(abspath $(lastword $(MAKEFILE_LIST)))
 REPO_DIR := $(patsubst %/,%,$(dir $(THIS_FILE)))
 TESTS_DIR := $(REPO_DIR)/tests
-TEST_FILE_PATTERN := test_esoTERM
+TEST_FILE_PATTERN := test_
 RUN_TESTS := $(BUSTED) --pattern=$(TEST_FILE_PATTERN) $(TESTS_DIR)
 TOOLS_DIR := $(REPO_DIR)/tools
 LUACOV_PARSER := $(TOOLS_DIR)/parse_luacov_report.lua

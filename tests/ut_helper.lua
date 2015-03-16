@@ -60,11 +60,16 @@ local function table_size(table)
     return size
 end
 
+local function clean_table(table)
+    for key in pairs(table) do table[key] = nil end
+end
+
 local ut_helper = {
     stub_function = stub_function,
     restore_stubbed_function = restore_stubbed_function,
     restore_stubbed_functions = restore_stubbed_functions,
-    table_size = table_size
+    table_size = table_size,
+    clean_table = clean_table
 }
 
 return ut_helper

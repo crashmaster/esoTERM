@@ -130,6 +130,25 @@ describe("Test various unit test helpers", function()
 
         then_the_returned_number_of_entires_was(n)
     end)
+
+    -- {{{
+    local function when_clean_table_on_test_table_is_called()
+        result = ut_helper.clean_table(test_table)
+    end
+
+    local function then_the_test_table_has_no_entries()
+        assert.is.equal(0, ut_helper.table_size(test_table))
+    end
+    -- }}}
+
+    it("Clean table.",
+    function()
+        given_that_the_number_of_entries_in_the_test_table_is(n)
+
+        when_clean_table_on_test_table_is_called()
+
+        then_the_test_table_has_no_entries()
+    end)
 end)
 
 -- vim:fdm=marker
