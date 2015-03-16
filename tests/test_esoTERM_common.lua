@@ -147,58 +147,24 @@ describe("Test common functions.", function()
     end)
 
     describe("Register for active/inactive modules.", function()
-        local module_register = {}
-        local module = {
-            module_name = "test_module"
-        }
-
-        before_each(function()
-            module_register = {}
+        after_each(function()
+            tl.clean_test_module_register()
         end)
-
-        -- {{{
-        local function given_that_module_register_is_empty(register)
-            assert.is.equal(0, ut_helper.table_size(register))
-        end
-
-        local function contains_module(module_register, expected_module)
-            for index, module in pairs(module_register) do
-                if module == expected_module then
-                    return true
-                end
-            end
-            return false
-        end
-
-        local function then_the_module_register_does_not_contains_module(register, module)
-            assert.is.equal(false, contains_module(register, module))
-        end
-        -- }}}
 
         it("Empty register does not contain module.",
         function()
-            given_that_module_register_is_empty(module_register)
+            tl.given_that_module_register_is_empty()
 
-            then_the_module_register_does_not_contains_module(module_register, module)
+            tl.then_the_module_register_does_not_contains_module(module_register, module)
         end)
-
-        -- {{{
-        local function when_module_registered(register, module)
-            esoTERM_common.register_module(register, module)
-        end
-
-        local function then_the_module_register_contains_that_module(register, module)
-            assert.is.equal(true, contains_module(register, module))
-        end
-        -- }}}
 
         it("Register module.",
         function()
-            given_that_module_register_is_empty(module_register)
+            tl.given_that_module_register_is_empty()
 
-            when_module_registered(module_register, module)
+            tl.when_module_registered()
 
-            then_the_module_register_contains_that_module(module_register, module)
+            tl.then_the_module_register_contains_that_module()
         end)
 
         it("Get registered module by not case-sensitive name.",
@@ -209,34 +175,25 @@ describe("Test common functions.", function()
         end)
     end)
 
-    -- {{{
-    local function split_string_into_strings_at_spaces(input_string, output_array)
-        local result = esoTERM_common.split(input_string)
-        for index, string in ipairs(output_array) do
-            assert.is.equal(result[index], string)
-        end
-    end
-    -- }}}
-
     describe("String is split into array of strings at spaces.", function()
         it("Empty input string results in empty output array.",
         function()
-            split_string_into_strings_at_spaces("", {})
+            tl.split_string_into_strings_at_spaces("", {})
         end)
 
         it("Input string does not contain space.",
         function()
-            split_string_into_strings_at_spaces("aaaa", {"aaaa"})
+            tl.split_string_into_strings_at_spaces("aaaa", {"aaaa"})
         end)
 
         it("Input string contains some spaces.",
         function()
-            split_string_into_strings_at_spaces("a aa 1", {"a", "aa", "1"})
+            tl.split_string_into_strings_at_spaces("a aa 1", {"a", "aa", "1"})
         end)
 
         it("Input string contains multiple spaces.",
         function()
-            split_string_into_strings_at_spaces("a  aa    a", {"a", "aa", "a"})
+            tl.split_string_into_strings_at_spaces("a  aa    a", {"a", "aa", "a"})
         end)
     end)
 end)
