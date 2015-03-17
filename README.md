@@ -21,13 +21,13 @@
 /esoterm status
 ```
 
-* activate: activate the given module, `module_name` can be incase-sensitive
+* activate: activate the given module, `module_name` can be case-insensitive
 
 ```
 /esoterm activate <module_name>
 ```
 
-* deactivate: deactivate the given module, `module_name` can be incase-sensitive
+* deactivate: deactivate the given module, `module_name` can be case-insensitive
 
 ```
 /esoterm deactivate <module_name>
