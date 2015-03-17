@@ -49,6 +49,26 @@ local function handle_status_command()
     return "Status of modules" .. status
 end
 
+local function handle_deactivate_command(module_name)
+    local module = esoTERM_common.get_module(esoTERM.module_register, module_name)
+    if module.is_active == false then
+        return "Module " .. module.module_name .. " already inactive"
+    else
+        module.deactivate()
+        return "Module " .. module.module_name .. " deactivated"
+    end
+end
+
+local function handle_activate_command(module_name)
+    local module = esoTERM_common.get_module(esoTERM.module_register, module_name)
+    if module.is_active == true then
+        return "Module " .. module.module_name .. " already active"
+    else
+        module.initialize()
+        return "Module " .. module.module_name .. " activated"
+    end
+end
+
 function esoTERM_slash.slash_command_handler(command_and_arg)
     local output
     local command_handlers = esoTERM_slash.command_handlers
@@ -71,6 +91,8 @@ function esoTERM_slash.initialize()
     command_handlers[""] = handle_empty_command
     command_handlers["help"] = handle_help_command
     command_handlers["status"] = handle_status_command
+    command_handlers["deactivate"] = handle_deactivate_command
+    command_handlers["activate"] = handle_activate_command
 end
 
 return esoTERM_slash

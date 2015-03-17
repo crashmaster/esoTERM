@@ -28,12 +28,20 @@ end)
 describe("Test slash command handlers.", function()
     local fake_active_module = {
         module_name = "fake_active_module",
-        is_active = true
+        is_active = true,
     }
+    function fake_active_module.deactivate()
+        fake_active_module.is_active = false
+    end
+
     local fake_inactive_module = {
         module_name = "fake_inactive_module",
-        is_active = false
+        is_active = false,
     }
+    function fake_inactive_module.initialize()
+        fake_inactive_module.is_active = true
+    end
+
     local help_message="Available command for esoTERM:\n" ..
                        " - show about: /esoterm\n" ..
                        " - show help: /esoterm help\n" ..
@@ -46,6 +54,8 @@ describe("Test slash command handlers.", function()
     after_each(function()
         ut_helper.restore_stubbed_functions()
         esoTERM.module_register = {}
+        fake_active_module.is_active = true
+        fake_inactive_module.is_active = false
     end)
 
     -- {{{
@@ -161,6 +171,58 @@ describe("Test slash command handlers.", function()
         then_sysout_was_called_with("Status of modules\n" ..
                                     "fake_active_module is ACTIVE\n" ..
                                     "fake_inactive_module is INACTIVE")
+    end)
+
+    -- {{{
+    local function then_the_module_became_inactive(module)
+        assert.is.equal(false, module.is_active)
+    end
+
+    local function and_sysout_was_called_with(message)
+        assert.spy(esoTERM_output.sysout).was.called_with(message)
+    end
+    -- }}}
+
+    it("Deactivate an active module", function()
+        given_that_there_is_one_module_registered(fake_active_module)
+
+        when_command_handler_called_with("deactivate fake_active_module")
+
+        then_the_module_became_inactive(fake_active_module)
+            and_sysout_was_called_with("Module fake_active_module deactivated")
+    end)
+
+    it("Deactivate an already inactive module", function()
+        given_that_there_is_one_module_registered(fake_inactive_module)
+
+        when_command_handler_called_with("deactivate fake_inactive_module")
+
+        then_the_module_became_inactive(fake_inactive_module)
+            and_sysout_was_called_with("Module fake_inactive_module already inactive")
+    end)
+
+    -- {{{
+    local function then_the_module_became_active(module)
+        assert.is.equal(true, module.is_active)
+    end
+    -- }}}
+
+    it("Activate an inactive module", function()
+        given_that_there_is_one_module_registered(fake_inactive_module)
+
+        when_command_handler_called_with("activate fake_inactive_module")
+
+        then_the_module_became_active(fake_inactive_module)
+            and_sysout_was_called_with("Module fake_inactive_module activated")
+    end)
+
+    it("Activate an already active module", function()
+        given_that_there_is_one_module_registered(fake_active_module)
+
+        when_command_handler_called_with("activate fake_active_module")
+
+        then_the_module_became_active(fake_active_module)
+            and_sysout_was_called_with("Module fake_active_module already active")
     end)
 end)
 

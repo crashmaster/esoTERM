@@ -8,17 +8,29 @@
 /esoterm
 ```
 
-* Help: displays the help message :)
+* help: displays the help message :)
 
 ```
 /esoterm help
 ```
 
 
-* Status: displays the status for each sub-module
+* status: displays the status for each module
 
 ```
 /esoterm status
+```
+
+* activate: activate the given module
+
+```
+/esoterm activate <module_name>
+```
+
+* deactivate: deactivate the given module
+
+```
+/esoterm deactivate <module_name>
 ```
 
 ## Configuration file
