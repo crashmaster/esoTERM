@@ -144,6 +144,10 @@ function test_esoTERM_champ_library.then_esoTERM_output_stdout_was_called_with(m
     assert.spy(esoTERM_output.stdout).was.called_with(message)
 end
 
+function test_esoTERM_champ_library.then_esoTERM_output_stdout_was_not_called()
+    assert.spy(esoTERM_output.stdout).was_not.called()
+end
+
 function test_esoTERM_champ_library.then_esoTERM_output_stdout_was_called_with2(message1, message2)
     assert.spy(esoTERM_output.stdout).was.called_with(message1)
     assert.spy(esoTERM_output.stdout).was.called_with(message2)

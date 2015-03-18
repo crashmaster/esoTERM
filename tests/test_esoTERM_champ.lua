@@ -81,6 +81,18 @@ describe("Test on experience update handler.", function()
         )
     end)
 
+    it("Character gained 0 champion xp, no output.",
+    function()
+        tl.given_that_esoTERM_output_stdout_is_stubbed()
+            tl.and_that_GetPlayerChampionXP_returns(400)
+            tl.and_that_champion_xp_before_was(400)
+            tl.and_that_champion_xp_max_is(2000)
+
+        tl.when_on_experience_update_is_called()
+
+        tl.then_esoTERM_output_stdout_was_not_called()
+    end)
+
     it("Character gained champion xp, almost enough to level up.",
     function()
         tl.given_that_esoTERM_output_stdout_is_stubbed()

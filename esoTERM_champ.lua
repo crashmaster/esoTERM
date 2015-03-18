@@ -33,6 +33,10 @@ function esoTERM_champ.on_experience_update()
     local old_champion_xp = esoTERM_champ.get_champion_xp()
     local actual_champion_xp = GetPlayerChampionXP()
 
+    if old_champion_xp == actual_champion_xp then
+        return
+    end
+
     ESOTERM_CHAMP_CACHE.champion_xp = actual_champion_xp
 
     if actual_champion_xp < old_champion_xp then
@@ -56,7 +60,7 @@ function esoTERM_champ.on_experience_update()
 end
 
 function esoTERM_champ.on_champion_point_gain()
-    d("debug: esoTERM_champ.on_champion_point_gain() called")
+    esoTERM_output.stdout("Gained champion point (" .. GetPlayerChampionPointsEarned() .. ")")
 end
 
 function esoTERM_champ.initialize()
