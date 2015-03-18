@@ -144,16 +144,37 @@ function test_esoTERM_champ_library.then_esoTERM_output_stdout_was_called_with(m
     assert.spy(esoTERM_output.stdout).was.called_with(message)
 end
 
+function test_esoTERM_champ_library.then_esoTERM_output_stdout_was_called_with2(message1, message2)
+    assert.spy(esoTERM_output.stdout).was.called_with(message1)
+    assert.spy(esoTERM_output.stdout).was.called_with(message2)
+end
+
 function test_esoTERM_champ_library.and_that_GetPlayerChampionXP_returns(xp)
     test_library.stub_function_with_return_value(GLOBAL, "GetPlayerChampionXP", xp)
+end
+
+function test_esoTERM_champ_library.and_that_GetChampionXPInRank_returns(xp)
+    test_library.stub_function_with_return_value(GLOBAL, "GetChampionXPInRank", xp)
 end
 
 function test_esoTERM_champ_library.and_that_champion_xp_before_was(xp)
     test_esoTERM_champ_library.CACHE.champion_xp = xp
 end
 
-function test_esoTERM_champ_library.and_that_champion_xp_max_is(xp)
+local function set_champion_xp_max(xp)
     test_esoTERM_champ_library.CACHE.champion_xp_max = xp
+end
+
+function test_esoTERM_champ_library.and_that_champion_xp_max_is(xp)
+    set_champion_xp_max(xp)
+end
+
+function test_esoTERM_champ_library.and_that_champion_xp_max_before_was(xp)
+    set_champion_xp_max(xp)
+end
+
+function test_esoTERM_champ_library.and_champion_xp_max_became(xp)
+    assert.is.equal(xp, test_esoTERM_champ_library.CACHE.champion_xp_max)
 end
 
 function test_esoTERM_champ_library.when_on_experience_update_is_called()

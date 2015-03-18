@@ -23,27 +23,40 @@ function esoTERM_champ.get_champion_xp_max()
     end
 end
 
-local function get_champion_xp_message()
+local function print_champion_xp_gain(champion_xp_gain, champion_xp_percent)
+    esoTERM_output.stdout(string.format("Gained %d champion XP (%.2f%%)",
+                                        champion_xp_gain,
+                                        champion_xp_percent))
+end
+
+function esoTERM_champ.on_experience_update()
+    local old_champion_xp = esoTERM_champ.get_champion_xp()
     local actual_champion_xp = GetPlayerChampionXP()
-    local champion_xp_gain = actual_champion_xp - esoTERM_champ.get_champion_xp()
-    if champion_xp_gain <= 0 then
-        return
-    end
+
     ESOTERM_CHAMP_CACHE.champion_xp = actual_champion_xp
-    champion_xp_percent = esoTERM_champ.get_champion_xp() * 100 / esoTERM_champ.get_champion_xp_max()
 
-    return string.format("Gained %d champion XP (%.2f%%)",
-                         champion_xp_gain,
-                         champion_xp_percent)
+    if actual_champion_xp < old_champion_xp then
+        local old_champion_xp_max = esoTERM_champ.get_champion_xp_max()
+        local actual_champion_xp_max = GetChampionXPInRank(GetPlayerChampionPointsEarned())
+
+        ESOTERM_CHAMP_CACHE.champion_xp_max = actual_champion_xp_max
+
+        champion_xp_gain = old_champion_xp_max - old_champion_xp
+        champion_xp_percent = 100
+        print_champion_xp_gain(champion_xp_gain, champion_xp_percent)
+
+        champion_xp_gain = actual_champion_xp
+        champion_xp_percent = actual_champion_xp * 100 / actual_champion_xp_max
+        print_champion_xp_gain(champion_xp_gain, champion_xp_percent)
+    else
+        champion_xp_gain = actual_champion_xp - old_champion_xp
+        champion_xp_percent = actual_champion_xp * 100 / esoTERM_champ.get_champion_xp_max()
+        print_champion_xp_gain(champion_xp_gain, champion_xp_percent)
+    end
 end
 
-function esoTERM_champ.on_experience_update(...)
-    esoTERM_output.stdout(get_champion_xp_message())
-end
-
-function esoTERM_champ.on_champion_point_gain(...)
-    d(...)
-    ESOTERM_CHAMP_CACHE.champion_xp_max = GetChampionXPInRank(GetPlayerChampionPointsEarned())
+function esoTERM_champ.on_champion_point_gain()
+    d("debug: esoTERM_champ.on_champion_point_gain() called")
 end
 
 function esoTERM_champ.initialize()

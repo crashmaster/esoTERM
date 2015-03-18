@@ -67,7 +67,7 @@ describe("Test on experience update handler.", function()
         ut_helper.restore_stubbed_functions()
     end)
 
-    it("Character gained champion xp.",
+    it("Character gained champion xp, not enough to level up.",
     function()
         tl.given_that_esoTERM_output_stdout_is_stubbed()
             tl.and_that_GetPlayerChampionXP_returns(500)
@@ -79,5 +79,36 @@ describe("Test on experience update handler.", function()
         tl.then_esoTERM_output_stdout_was_called_with(
             "Gained " .. 100 .. " champion XP (25.00%)"
         )
+    end)
+
+    it("Character gained champion xp, almost enough to level up.",
+    function()
+        tl.given_that_esoTERM_output_stdout_is_stubbed()
+            tl.and_that_GetPlayerChampionXP_returns(2000)
+            tl.and_that_champion_xp_before_was(400)
+            tl.and_that_champion_xp_max_is(2000)
+
+        tl.when_on_experience_update_is_called()
+
+        tl.then_esoTERM_output_stdout_was_called_with(
+            "Gained " .. 1600 .. " champion XP (100.00%)"
+        )
+    end)
+
+    it("Character gained champion xp, enough to level up.",
+    function()
+        tl.given_that_esoTERM_output_stdout_is_stubbed()
+            tl.and_that_GetPlayerChampionXP_returns(500)
+            tl.and_that_GetChampionXPInRank_returns(5000)
+            tl.and_that_champion_xp_before_was(1900)
+            tl.and_that_champion_xp_max_before_was(2000)
+
+        tl.when_on_experience_update_is_called()
+
+        tl.then_esoTERM_output_stdout_was_called_with2(
+            "Gained " .. 100 .. " champion XP (100.00%)",
+            "Gained " .. 500 .. " champion XP (10.00%)"
+        )
+            tl.and_champion_xp_max_became(5000)
     end)
 end)
