@@ -58,6 +58,18 @@ local function get_chat_font()
     return string.format("%s|%s|%s", face, font_size, "soft-shadow-thick")
 end
 
+local function get_top_level_window_geometry()
+    local x = esoTERM_window.settings.window_x or
+              esoTERM_window.default_settings.window_x
+    local y = esoTERM_window.settings.window_y or
+              esoTERM_window.default_settings.window_y
+    local w = esoTERM_window.settings.window_width or
+              esoTERM_window.default_settings.window_width
+    local h = esoTERM_window.settings.window_height or
+              esoTERM_window.default_settings.window_height
+    return x, y, w, h
+end
+
 local function hide_etw()
     esoTERM_window.etw_fade_anim:SetMinMaxAlpha(0.0, 1.0)
     esoTERM_window.etw_fade_anim:FadeOut(3000, 300)
@@ -88,16 +100,9 @@ local function create_top_level_window()
     etw:SetMovable(true)
     etw:SetHidden(true)
     etw:SetClampedToScreen(true)
-    local x = esoTERM_window.settings.window_x or
-              esoTERM_window.default_settings.window_x
-    local y = esoTERM_window.settings.window_y or
-              esoTERM_window.default_settings.window_y
+    local x, y, w, h = get_top_level_window_geometry()
     etw:SetAnchor(TOPLEFT, GuiRoot, nil, x, y)
-    local width = esoTERM_window.settings.window_width or
-                  esoTERM_window.default_settings.window_width
-    local height = esoTERM_window.settings.window_height or
-                   esoTERM_window.default_settings.window_height
-    etw:SetDimensions(width, height)
+    etw:SetDimensions(w, h)
     etw:SetDimensionConstraints(300, 200, 500, 800)
     etw:SetResizeHandleSize(16)
     etw:SetHandler("OnMouseExit", hide_etw)
