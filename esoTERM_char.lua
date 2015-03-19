@@ -136,10 +136,10 @@ end
 local function get_combat_left_message()
     local net_length = esoTERM_char.get_combat_lenght() - EXIT_COMBAT_CALL_DELAY
     local length = net_length >= 1000 and net_length or 1000
+    local damage = esoTERM_char.get_combat_damage()
     return string.format(
-        "Left combat (lasted: %.2fs, dps: %.2f)",
-        (net_length) / 1000,
-        esoTERM_char.get_combat_damage() * 1000 / (length))
+        "Left combat (lasted: %.2fs, damage: %d, dps: %.2f)",
+        (net_length) / 1000, damage, damage * 1000 / (length))
 end
 
 function esoTERM_char.exit_combat()

@@ -540,8 +540,9 @@ describe("The on combat-state-change event handler.", function()
 
     local function get_exit_combat_message()
         return string.format(
-            "Left combat (lasted: %.2fs, dps: %.2f)",
+            "Left combat (lasted: %.2fs, damage: %d, dps: %.2f)",
             (EXIT_TIME - ENTER_TIME - EXIT_COMBAT_CALL_DELAY) / 1000,
+            DAMAGE,
             DAMAGE * 1000 / (EXIT_TIME - ENTER_TIME - EXIT_COMBAT_CALL_DELAY))
     end
     -- }}}
@@ -634,8 +635,10 @@ describe("The on combat-state-change event handler.", function()
     -- {{{
     local function get_exit_one_hit_combat_message()
         return string.format(
-            "Left combat (lasted: %.2fs, dps: %.2f)",
-            (EXIT_TIME_ONE_HIT - ENTER_TIME - EXIT_COMBAT_CALL_DELAY) / 1000, DAMAGE)
+            "Left combat (lasted: %.2fs, damage: %d, dps: %.2f)",
+            (EXIT_TIME_ONE_HIT - ENTER_TIME - EXIT_COMBAT_CALL_DELAY) / 1000,
+            DAMAGE,
+            DAMAGE)
     end
     -- }}}
 
