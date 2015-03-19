@@ -31,6 +31,7 @@ local SCENES_WHERE_VISIBLE = {
     "mailSend",
     "notifications",
     "questJournal",
+    "siegeBar",
     "skills",
     "stables",
     "stats",
