@@ -69,11 +69,11 @@ A *"picture"* tells more than thousand words:
  |                 |         |    C                             |
  |                 | esoTERM |    |                             |
  |                 |         |    |                             |
- |                 |         |    |                             |
+ |                 |         |    v                             |
  |                 +---------+   ---                            |
  |                                                              |
  |                 |         |       A - window_locked button   |
- |                 |----B--->|       B - window_width           |
+ |                 |<---B--->|       B - window_width           |
  |                 |         |       C - window_height          |
  |                                   D - window_x, window_y     |
  |                                                              |
