@@ -169,6 +169,21 @@ function esoTERM_char.on_unit_death_state_change(event, unit, is_dead)
 end
 
 function esoTERM_char.initialize()
+    esoTERM_char.settings = ZO_SavedVars:New(
+        "esoTERM_settings",
+        1,
+        "active_modules",
+        {[esoTERM_char.module_name] = true}
+    )
+
+    esoTERM_common.register_module(esoTERM.module_register, esoTERM_char)
+
+    if esoTERM_char.settings[esoTERM_char.module_name] then
+        esoTERM_char.activate()
+    end
+end
+
+function esoTERM_char.activate()
     ESOTERM_CHAR_CACHE.gender = esoTERM_char.get_gender()
     ESOTERM_CHAR_CACHE.class = esoTERM_char.get_class()
     ESOTERM_CHAR_CACHE.name = esoTERM_char.get_name()
@@ -184,15 +199,15 @@ function esoTERM_char.initialize()
                                       EVENT_UNIT_DEATH_STATE_CHANGED,
                                       esoTERM_char.on_unit_death_state_change)
 
-    esoTERM_common.register_module(esoTERM.module_register, esoTERM_char)
-
     esoTERM_char.is_active = true
+    esoTERM_char.settings[esoTERM_char.module_name] = esoTERM_char.is_active
 end
 
 function esoTERM_char.deactivate()
     esoTERM_common.unregister_from_all_events(esoTERM_char)
 
     esoTERM_char.is_active = false
+    esoTERM_char.settings[esoTERM_char.module_name] = esoTERM_char.is_active
 end
 
 return esoTERM_char

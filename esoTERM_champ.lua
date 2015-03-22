@@ -67,6 +67,22 @@ function esoTERM_champ.initialize()
     if GetChampionXPInRank(GetPlayerChampionPointsEarned()) == nil then
         return
     end
+
+    esoTERM_champ.settings = ZO_SavedVars:New(
+        "esoTERM_settings",
+        1,
+        "active_modules",
+        {[esoTERM_champ.module_name] = true}
+    )
+
+    esoTERM_common.register_module(esoTERM.module_register, esoTERM_champ)
+
+    if esoTERM_champ.settings[esoTERM_champ.module_name] then
+        esoTERM_champ.activate()
+    end
+end
+
+function esoTERM_champ.activate()
     ESOTERM_CHAMP_CACHE.champion_xp = esoTERM_champ.get_champion_xp()
     ESOTERM_CHAMP_CACHE.champion_xp_max = esoTERM_champ.get_champion_xp_max()
 
@@ -77,15 +93,15 @@ function esoTERM_champ.initialize()
                                       EVENT_CHAMPION_POINT_GAINED,
                                       esoTERM_champ.on_champion_point_gain)
 
-    esoTERM_common.register_module(esoTERM.module_register, esoTERM_champ)
-
     esoTERM_champ.is_active = true
+    esoTERM_champ.settings[esoTERM_champ.module_name] = esoTERM_champ.is_active
 end
 
 function esoTERM_champ.deactivate()
     esoTERM_common.unregister_from_all_events(esoTERM_champ)
 
     esoTERM_champ.is_active = false
+    esoTERM_champ.settings[esoTERM_champ.module_name] = esoTERM_champ.is_active
 end
 
 return esoTERM_champ

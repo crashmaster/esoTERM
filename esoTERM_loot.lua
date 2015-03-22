@@ -66,6 +66,21 @@ function esoTERM_loot.on_money_received(event, new_amount, old_amount, reason)
 end
 
 function esoTERM_loot.initialize()
+    esoTERM_loot.settings = ZO_SavedVars:New(
+        "esoTERM_settings",
+        1,
+        "active_modules",
+        {[esoTERM_loot.module_name] = true}
+    )
+
+    esoTERM_common.register_module(esoTERM.module_register, esoTERM_loot)
+
+    if esoTERM_loot.settings[esoTERM_loot.module_name] then
+        esoTERM_loot.activate()
+    end
+end
+
+function esoTERM_loot.activate()
     ESOTERM_LOOT_CACHE.loot_quantity = esoTERM_loot.get_loot_quantity()
     ESOTERM_LOOT_CACHE.looted_item = esoTERM_loot.get_looted_item()
 
@@ -76,15 +91,15 @@ function esoTERM_loot.initialize()
                                       EVENT_MONEY_UPDATE,
                                       esoTERM_loot.on_money_received)
 
-    esoTERM_common.register_module(esoTERM.module_register, esoTERM_loot)
-
     esoTERM_loot.is_active = true
+    esoTERM_loot.settings[esoTERM_loot.module_name] = esoTERM_loot.is_active
 end
 
 function esoTERM_loot.deactivate()
     esoTERM_common.unregister_from_all_events(esoTERM_loot)
 
     esoTERM_loot.is_active = false
+    esoTERM_loot.settings[esoTERM_loot.module_name] = esoTERM_loot.is_active
 end
 
 return esoTERM_loot

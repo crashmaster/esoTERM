@@ -64,7 +64,7 @@ local function handle_activate_command(module_name)
     if module.is_active == true then
         return "Module " .. module.module_name .. " already active"
     else
-        module.initialize()
+        module.activate()
         return "Module " .. module.module_name .. " activated"
     end
 end

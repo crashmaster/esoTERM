@@ -128,6 +128,21 @@ function esoTERM_pvp.on_ava_points_update(event, point, sound, diff)
 end
 
 function esoTERM_pvp.initialize()
+    esoTERM_pvp.settings = ZO_SavedVars:New(
+        "esoTERM_settings",
+        1,
+        "active_modules",
+        {[esoTERM_pvp.module_name] = true}
+    )
+
+    esoTERM_common.register_module(esoTERM.module_register, esoTERM_pvp)
+
+    if esoTERM_pvp.settings[esoTERM_pvp.module_name] then
+        esoTERM_pvp.activate()
+    end
+end
+
+function esoTERM_pvp.activate()
     ESOTERM_PVP_CACHE.ava_points = esoTERM_pvp.get_ava_points()
     ESOTERM_PVP_CACHE.ava_rank = esoTERM_pvp.get_ava_rank()
     ESOTERM_PVP_CACHE.ava_sub_rank = esoTERM_pvp.get_ava_sub_rank()
@@ -143,15 +158,15 @@ function esoTERM_pvp.initialize()
                                       EVENT_ALLIANCE_POINT_UPDATE,
                                       esoTERM_pvp.on_ava_points_update)
 
-    esoTERM_common.register_module(esoTERM.module_register, esoTERM_pvp)
-
     esoTERM_pvp.is_active = true
+    esoTERM_pvp.settings[esoTERM_pvp.module_name] = esoTERM_pvp.is_active
 end
 
 function esoTERM_pvp.deactivate()
     esoTERM_common.unregister_from_all_events(esoTERM_pvp)
 
     esoTERM_pvp.is_active = false
+    esoTERM_pvp.settings[esoTERM_pvp.module_name] = esoTERM_pvp.is_active
 end
 
 return esoTERM_pvp

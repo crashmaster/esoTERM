@@ -100,6 +100,21 @@ function esoTERM_pve.on_level_update(event, unit, level)
 end
 
 function esoTERM_pve.initialize()
+    esoTERM_pve.settings = ZO_SavedVars:New(
+        "esoTERM_settings",
+        1,
+        "active_modules",
+        {[esoTERM_pve.module_name] = true}
+    )
+
+    esoTERM_common.register_module(esoTERM.module_register, esoTERM_pve)
+
+    if esoTERM_pve.settings[esoTERM_pve.module_name] then
+        esoTERM_pve.activate()
+    end
+end
+
+function esoTERM_pve.activate()
     ESOTERM_PVE_CACHE.veteran = esoTERM_pve.is_veteran()
     ESOTERM_PVE_CACHE.level = esoTERM_pve.get_level()
     ESOTERM_PVE_CACHE.level_xp = esoTERM_pve.get_level_xp()
@@ -117,15 +132,15 @@ function esoTERM_pve.initialize()
                                       EVENT_VETERAN_RANK_UPDATE,
                                       esoTERM_pve.on_level_update)
 
-    esoTERM_common.register_module(esoTERM.module_register, esoTERM_pve)
-
     esoTERM_pve.is_active = true
+    esoTERM_pve.settings[esoTERM_pve.module_name] = esoTERM_pve.is_active
 end
 
 function esoTERM_pve.deactivate()
     esoTERM_common.unregister_from_all_events(esoTERM_pve)
 
     esoTERM_pve.is_active = false
+    esoTERM_pve.settings[esoTERM_pve.module_name] = esoTERM_pve.is_active
 end
 
 return esoTERM_pve
