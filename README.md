@@ -52,7 +52,6 @@ C:\Users\<user>\Documents\Elder Scrolls Online\liveeu\SavedVariables\esoTERM.lua
 * `window_height`: height of the *esoTERM* window
 * `window_x`: x position of the *esoTERM* window
 * `window_y`: y position of the *esoTERM* window
-* `version`: not used
 
 A *"picture"* tells more than thousand words:
 
