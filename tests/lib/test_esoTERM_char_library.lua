@@ -17,7 +17,7 @@ test_esoTERM_char_library.COMBAT_START_TIME = test_library.A_INTEGER
 test_esoTERM_char_library.COMBAT_LENGHT = test_library.A_INTEGER
 test_esoTERM_char_library.COMBAT_DAMAGE = test_library.A_INTEGER
 
-local MODULE_NAME = "esoTERM-character"
+local MODULE_NAME = "character"
 
 test_esoTERM_char_library.RETURN_VALUES_OF_THE_GETTER_STUBS = {
     get_gender = test_esoTERM_char_library.GENDER_1,

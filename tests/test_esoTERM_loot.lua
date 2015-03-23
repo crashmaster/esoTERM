@@ -2,7 +2,7 @@ local requires_for_tests = require("tests/requires_for_tests")
 local tl = require("tests/lib/test_esoTERM_loot_library")
 
 describe("Test module.", function()
-    local name = "esoTERM-loot"
+    local name = "loot"
 
     -- {{{
     local function when_module_name_is_get_then_expected_name_is_returned(name)

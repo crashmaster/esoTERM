@@ -2,7 +2,7 @@ esoTERM_champ = {}
 
 esoTERM_champ.cache = {}
 esoTERM_champ.event_register = {}
-esoTERM_champ.module_name = "esoTERM-champion"
+esoTERM_champ.module_name = "champion"
 esoTERM_champ.is_active = false
 
 local ESOTERM_CHAMP_CACHE = esoTERM_champ.cache
@@ -70,7 +70,7 @@ function esoTERM_champ.initialize()
 
     esoTERM_champ.settings = ZO_SavedVars:New(
         "esoTERM_settings",
-        1,
+        2,
         "active_modules",
         {[esoTERM_champ.module_name] = true}
     )

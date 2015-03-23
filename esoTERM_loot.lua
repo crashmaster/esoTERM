@@ -3,7 +3,7 @@ esoTERM_loot = {}
 esoTERM_loot.cache = {}
 esoTERM_loot.event_register = {}
 
-esoTERM_loot.module_name = "esoTERM-loot"
+esoTERM_loot.module_name = "loot"
 esoTERM_loot.is_active = false
 
 local ESOTERM_LOOT_CACHE = esoTERM_loot.cache
@@ -68,7 +68,7 @@ end
 function esoTERM_loot.initialize()
     esoTERM_loot.settings = ZO_SavedVars:New(
         "esoTERM_settings",
-        1,
+        2,
         "active_modules",
         {[esoTERM_loot.module_name] = true}
     )

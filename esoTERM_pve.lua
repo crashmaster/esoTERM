@@ -2,7 +2,7 @@ esoTERM_pve = {}
 
 esoTERM_pve.cache = {}
 esoTERM_pve.event_register = {}
-esoTERM_pve.module_name = "esoTERM-pve"
+esoTERM_pve.module_name = "pve"
 esoTERM_pve.is_active = false
 
 local ESOTERM_PVE_CACHE = esoTERM_pve.cache
@@ -102,7 +102,7 @@ end
 function esoTERM_pve.initialize()
     esoTERM_pve.settings = ZO_SavedVars:New(
         "esoTERM_settings",
-        1,
+        2,
         "active_modules",
         {[esoTERM_pve.module_name] = true}
     )

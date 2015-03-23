@@ -8,7 +8,7 @@ test_esoTERM_champ_library.CACHE = esoTERM_champ.cache
 test_esoTERM_champ_library.CHAMPION_XP_1 = test_library.A_INTEGER
 test_esoTERM_champ_library.CHAMPION_XP_MAX_1 = test_library.A_INTEGER
 
-local MODULE_NAME = "esoTERM-champion"
+local MODULE_NAME = "champion"
 
 test_esoTERM_champ_library.RETURN_VALUES_OF_THE_GETTER_STUBS = {
     get_champion_xp = test_esoTERM_champ_library.CHAMPION_XP_1,

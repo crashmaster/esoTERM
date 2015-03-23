@@ -2,7 +2,7 @@ esoTERM_char = {}
 
 esoTERM_char.cache = {}
 esoTERM_char.event_register = {}
-esoTERM_char.module_name = "esoTERM-character"
+esoTERM_char.module_name = "character"
 esoTERM_char.is_active = false
 
 local ESOTERM_CHAR_CACHE = esoTERM_char.cache
@@ -171,7 +171,7 @@ end
 function esoTERM_char.initialize()
     esoTERM_char.settings = ZO_SavedVars:New(
         "esoTERM_settings",
-        1,
+        2,
         "active_modules",
         {[esoTERM_char.module_name] = true}
     )

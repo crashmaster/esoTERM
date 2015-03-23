@@ -2,7 +2,7 @@ esoTERM_pvp = {}
 
 esoTERM_pvp.cache = {}
 esoTERM_pvp.event_register = {}
-esoTERM_pvp.module_name = "esoTERM-pvp"
+esoTERM_pvp.module_name = "pvp"
 esoTERM_pvp.is_active = false
 
 local ESOTERM_PVP_CACHE = esoTERM_pvp.cache
@@ -130,7 +130,7 @@ end
 function esoTERM_pvp.initialize()
     esoTERM_pvp.settings = ZO_SavedVars:New(
         "esoTERM_settings",
-        1,
+        2,
         "active_modules",
         {[esoTERM_pvp.module_name] = true}
     )
