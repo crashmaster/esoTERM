@@ -10,6 +10,41 @@ end)
 
 describe("Test the esoTERM_champ module initialization.", function()
     after_each(function()
+        ut_helper.restore_stubbed_functions()
+    end)
+
+    it("Do not initialize if character is not eligible for champion system.",
+    function()
+        tl.given_that_character_is_not_eligible_for_champion_xp()
+            tl.and_zo_savedvars_new_is_stubbed()
+            tl.and_that_register_module_is_stubbed()
+
+        tl.when_initialize_is_called()
+
+        tl.then_zo_savedvars_new_was_not_called()
+            tl.and_register_module_was_not_called()
+            -- TODO
+    end)
+
+    it("Initialize, but do not activate as configured inactive.",
+    function()
+        tl.given_that_character_is_eligible_for_champion_xp()
+
+        tl.when_initialize_is_called()
+
+    end)
+
+    it("Initialize, and activate as configured active.",
+    function()
+        tl.given_that_character_is_eligible_for_champion_xp()
+
+        tl.when_initialize_is_called()
+
+    end)
+end)
+
+describe("Test the esoTERM_champ module initialization2.", function()
+    after_each(function()
         tl.expected_register_for_event_calls_are_cleared()
         ut_helper.restore_stubbed_functions()
     end)
