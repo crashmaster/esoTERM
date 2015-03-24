@@ -21,9 +21,10 @@ describe("Test the esoTERM_champ module initialization.", function()
 
         tl.when_initialize_is_called()
 
-        tl.then_zo_savedvars_new_was_not_called()
+        tl.then_GetPlayerChampionPointsEarned_was_called()
+            tl.and_GetChampionXPInRank_was_called()
+            tl.and_zo_savedvars_new_was_not_called()
             tl.and_register_module_was_not_called()
-            -- TODO
     end)
 
     it("Initialize, but do not activate as configured inactive.",

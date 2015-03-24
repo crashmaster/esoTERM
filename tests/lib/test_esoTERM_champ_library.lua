@@ -70,20 +70,22 @@ function test_esoTERM_champ_library.and_that_expected_register_for_event_calls_a
     }
 end
 
-function test_esoTERM_champ_library.given_that_character_is_not_eligible_for_champion_xp()
+local function character_is_not_eligible_for_champion_xp()
     test_library.stub_function_with_no_return_value(GLOBAL, "GetChampionXPInRank")
+    test_library.stub_function_with_no_return_value(GLOBAL, "GetPlayerChampionPointsEarned")
 end
 
-function test_esoTERM_champ_library.and_zo_savedvars_new_is_stubbed()
-    test_library.stub_function_with_no_return_value(ZO_SavedVars, "New")
+function test_esoTERM_champ_library.given_that_character_is_not_eligible_for_champion_xp()
+    character_is_not_eligible_for_champion_xp()
 end
 
-function test_esoTERM_champ_library.then_zo_savedvars_new_was_not_called()
-    assert.spy(ZO_SavedVars.New).was_not.called()
+function test_esoTERM_champ_library.and_that_character_is_not_eligible_for_champion_xp()
+    character_is_not_eligible_for_champion_xp()
 end
 
 local function character_is_eligible_for_champion_xp()
     test_library.stub_function_with_return_value(GLOBAL, "GetChampionXPInRank", 1)
+    test_library.stub_function_with_return_value(GLOBAL, "GetPlayerChampionPointsEarned", 1)
 end
 
 function test_esoTERM_champ_library.given_that_character_is_eligible_for_champion_xp()
@@ -94,8 +96,12 @@ function test_esoTERM_champ_library.and_that_character_is_eligible_for_champion_
     character_is_eligible_for_champion_xp()
 end
 
-function test_esoTERM_champ_library.and_that_character_is_not_eligible_for_champion_xp()
-    test_library.stub_function_with_return_value(GLOBAL, "GetChampionXPInRank", nil)
+function test_esoTERM_champ_library.and_zo_savedvars_new_is_stubbed()
+    test_library.stub_function_with_no_return_value(ZO_SavedVars, "New")
+end
+
+function test_esoTERM_champ_library.and_zo_savedvars_new_was_not_called()
+    assert.spy(ZO_SavedVars.New).was_not.called()
 end
 
 function test_esoTERM_champ_library.when_initialize_is_called()
