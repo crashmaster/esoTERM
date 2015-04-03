@@ -27,24 +27,36 @@ describe("Test the esoTERM_champ module initialization.", function()
             tl.and_register_module_was_not_called()
     end)
 
-    it("Initialize, but do not activate as configured inactive.",
+    it("Initialize, but do not activate because configured as inactive.",
     function()
-        tl.given_that_character_is_eligible_for_champion_xp()
+        tl.given_that_module_configured_as_inactive()
+            tl.and_that_character_is_eligible_for_champion_xp()
+            tl.and_that_esoTERM_champ_activate_is_stubbed()
+            tl.and_that_register_module_is_stubbed()
 
         tl.when_initialize_is_called()
 
+        tl.then_esoTERM_champ_activate_was_not_called()
+            tl.and_zo_savedvars_new_was_called()
+            tl.and_register_module_was_called()
     end)
 
-    it("Initialize, and activate as configured active.",
+    it("Initialize, and activate because configured as active.",
     function()
-        tl.given_that_character_is_eligible_for_champion_xp()
+        tl.given_that_module_configured_as_active()
+            tl.and_that_character_is_eligible_for_champion_xp()
+            tl.and_that_esoTERM_champ_activate_is_stubbed()
+            tl.and_that_register_module_is_stubbed()
 
         tl.when_initialize_is_called()
 
+        tl.then_esoTERM_champ_activate_was_called()
+            tl.and_zo_savedvars_new_was_called()
+            tl.and_register_module_was_called()
     end)
 end)
 
-describe("Test the esoTERM_champ module initialization2.", function()
+describe("Test esoTERM_champ module activate.", function()
     after_each(function()
         tl.expected_register_for_event_calls_are_cleared()
         ut_helper.restore_stubbed_functions()
@@ -56,32 +68,20 @@ describe("Test the esoTERM_champ module initialization2.", function()
             tl.and_that_cache_is_empty()
             tl.and_that_expected_register_for_event_calls_are_set_up()
             tl.and_that_register_for_event_is_stubbed()
-            tl.and_that_register_module_is_stubbed()
             tl.and_that_getter_functions_are_stubbed()
-            tl.and_that_character_is_eligible_for_champion_xp()
 
-        tl.when_initialize_is_called()
+        tl.when_activate_is_called()
 
         tl.and_module_became_active()
             tl.and_cache_is_no_longer_empty()
             tl.and_register_for_event_was_called_with_expected_parameters()
-            tl.and_register_module_was_called()
             tl.and_getter_function_stubs_were_called()
             tl.and_cached_values_became_initialized()
-    end)
-
-    it("Skip initialization for non-champion characters.",
-    function()
-        tl.given_that_module_is_inactive()
-            tl.and_that_character_is_not_eligible_for_champion_xp()
-
-        tl.when_initialize_is_called()
-
-        tl.then_module_became_inactive()
+            and active setting saved
     end)
 end)
 
-describe("Test deactivate.", function()
+describe("Test esoTERM_champ module deactivate.", function()
     after_each(function()
         ut_helper.restore_stubbed_functions()
     end)
