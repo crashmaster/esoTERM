@@ -1,5 +1,9 @@
 # Elder Scrolls Online Terminal (esoTERM)
 
+## Screenshot
+
+![esoTERM](https://github.com/crashmaster/esoTERM/blob/master/screenshot/Screenshot_20150526_220031.jpg)
+
 ## Slash commands
 
 * Empty: displays the *about* message
