@@ -19,6 +19,7 @@ function esoTERM_window.set_window_visibility()
         "campaignOverview",
         "enchanting",
         "friendsList",
+        "fence_keyboard",
         "groupList",
         "groupingToolsKeyboard",
         "guildHistory",

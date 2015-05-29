@@ -12,6 +12,7 @@ local SCENES_WHERE_VISIBLE = {
     "campaignBrowser",
     "campaignOverview",
     "enchanting",
+    "fence_keyboard",
     "friendsList",
     "groupList",
     "groupingToolsKeyboard",
