@@ -135,6 +135,42 @@ end
 function test_esoTERM_char_library.when_initialize_is_called()
     esoTERM_char.initialize()
 end
+
+function test_esoTERM_char_library.given_that_module_configured_as_inactive()
+    local setting = {
+        [MODULE_NAME] = false
+    }
+    test_library.stub_function_with_return_value(ZO_SavedVars, "New", setting)
+end
+
+function test_esoTERM_char_library.given_that_module_configured_as_active()
+    local setting = {
+        [MODULE_NAME] = true
+    }
+    test_library.stub_function_with_return_value(ZO_SavedVars, "New", setting)
+end
+
+function test_esoTERM_char_library.and_zo_savedvars_new_was_called()
+    assert.spy(ZO_SavedVars.New).was.called_with(
+        ZO_SavedVars,
+        "esoTERM_settings",
+        2,
+        "active_modules",
+        {[MODULE_NAME] = true}
+    )
+end
+
+function test_esoTERM_char_library.and_that_esoTERM_char_activate_is_stubbed()
+    test_library.stub_function_with_no_return_value(esoTERM_char, "activate")
+end
+
+function test_esoTERM_char_library.then_esoTERM_char_activate_was_called()
+    assert.spy(esoTERM_char.activate).was.called()
+end
+
+function test_esoTERM_char_library.then_esoTERM_char_activate_was_not_called()
+    assert.spy(esoTERM_char.activate).was_not.called()
+end
 -- }}}
 
 -- deactivate {{{

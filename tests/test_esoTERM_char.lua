@@ -14,23 +14,30 @@ describe("Test the esoTERM_char module initialization.", function()
         ut_helper.restore_stubbed_functions()
     end)
 
-    it("Update cache and subscribe for events on initialization.",
+    it("Initialize, but do not activate because configured as inactive.",
     function()
-        tl.given_that_cache_is_empty()
-            tl.and_that_getter_functions_are_stubbed()
-            tl.and_that_register_for_event_is_stubbed()
-            tl.and_that_expected_register_for_event_calls_are_set_up()
+        tl.given_that_module_configured_as_inactive()
             tl.and_that_register_module_is_stubbed()
-            tl.and_that_module_is_inactive()
+            tl.and_that_esoTERM_char_activate_is_stubbed()
 
         tl.when_initialize_is_called()
 
-        tl.then_cache_is_no_longer_empty()
-            tl.and_cached_values_became_initialized()
-            tl.and_getter_function_stubs_were_called()
-            tl.and_register_for_event_was_called_with_expected_parameters()
+        tl.then_esoTERM_char_activate_was_not_called()
+            tl.and_zo_savedvars_new_was_called()
             tl.and_register_module_was_called()
-            tl.and_module_became_active()
+    end)
+
+    it("Initialize, and activate because configured as active.",
+    function()
+        tl.given_that_module_configured_as_active()
+            tl.and_that_register_module_is_stubbed()
+            tl.and_that_esoTERM_char_activate_is_stubbed()
+
+        tl.when_initialize_is_called()
+
+        tl.then_esoTERM_char_activate_was_called()
+            tl.and_zo_savedvars_new_was_called()
+            tl.and_register_module_was_called()
     end)
 end)
 
