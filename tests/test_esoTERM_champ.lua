@@ -77,7 +77,7 @@ describe("Test esoTERM_champ module activate.", function()
             tl.and_register_for_event_was_called_with_expected_parameters()
             tl.and_getter_function_stubs_were_called()
             tl.and_cached_values_became_initialized()
-            and active setting saved  -- TODO
+            tl.and_module_is_active_was_saved()
     end)
 end)
 

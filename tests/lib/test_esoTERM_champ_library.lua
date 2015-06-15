@@ -212,6 +212,10 @@ function test_esoTERM_champ_library.and_cached_values_became_initialized()
         assert.is.equal(expected_value, test_esoTERM_champ_library.CACHE[cache_attribute])
     end
 end
+
+function test_esoTERM_champ_library.and_module_is_active_was_saved()
+    assert.is.equal(esoTERM_champ.settings[MODULE_NAME], true)
+end
 -- }}}
 
 function test_esoTERM_champ_library.given_that_esoTERM_output_stdout_is_stubbed()
