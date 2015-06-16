@@ -41,7 +41,32 @@ describe("Test the esoTERM_char module initialization.", function()
     end)
 end)
 
-describe("Test deactivate.", function()
+describe("Test esoTERM_char module activate.", function()
+    after_each(function()
+        tl.expected_register_for_event_calls_are_cleared()
+        ut_helper.restore_stubbed_functions()
+    end)
+
+    it("Update cache and subscribe for events on initialization for champion characters.",
+    function()
+        tl.given_that_module_is_inactive()
+            tl.and_that_cache_is_empty()
+            tl.and_that_expected_register_for_event_calls_are_set_up()
+            tl.and_that_register_for_event_is_stubbed()
+            tl.and_that_getter_functions_are_stubbed()
+
+        tl.when_activate_is_called()
+
+        tl.and_module_became_active()
+            tl.and_cache_is_no_longer_empty()
+            tl.and_register_for_event_was_called_with_expected_parameters()
+            tl.and_getter_function_stubs_were_called()
+            tl.and_cached_values_became_initialized()
+            tl.and_module_is_active_was_saved()
+    end)
+end)
+
+describe("Test esoTERM_char module deactivate.", function()
     after_each(function()
         ut_helper.restore_stubbed_functions()
     end)

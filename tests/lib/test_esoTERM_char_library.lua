@@ -184,7 +184,7 @@ function test_esoTERM_char_library.given_that_module_is_active()
     test_library.set_module_to_active(esoTERM_char)
 end
 
-function test_esoTERM_char_library.and_that_module_is_inactive()
+function test_esoTERM_char_library.given_that_module_is_inactive()
     test_library.set_module_to_inactive(esoTERM_char)
 end
 
@@ -194,6 +194,22 @@ end
 
 function test_esoTERM_char_library.then_module_became_inactive()
     test_library.check_that_module_became_inactive(esoTERM_char)
+end
+
+function test_esoTERM_char_library.and_that_cache_is_empty()
+    assert.is.equal(0, ut_helper.table_size(test_esoTERM_char_library.CACHE))
+end
+
+function test_esoTERM_char_library.when_activate_is_called()
+    esoTERM_char.activate()
+end
+
+function test_esoTERM_char_library.and_cache_is_no_longer_empty()
+    assert.is_not.equal(0, ut_helper.table_size(test_esoTERM_char_library.CACHE))
+end
+
+function test_esoTERM_char_library.and_module_is_active_was_saved()
+    assert.is.equal(esoTERM_char.settings[MODULE_NAME], true)
 end
 -- }}}
 
