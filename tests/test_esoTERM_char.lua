@@ -10,11 +10,10 @@ end)
 
 describe("Test the esoTERM_char module initialization.", function()
     after_each(function()
-        tl.expected_register_for_event_calls_are_cleared()
         ut_helper.restore_stubbed_functions()
     end)
 
-    it("Initialize, but do not activate because configured as inactive.",
+    it("Initialize, but do not activate when configured as inactive.",
     function()
         tl.given_that_module_configured_as_inactive()
             tl.and_that_register_module_is_stubbed()
@@ -27,7 +26,7 @@ describe("Test the esoTERM_char module initialization.", function()
             tl.and_register_module_was_called()
     end)
 
-    it("Initialize, and activate because configured as active.",
+    it("Initialize, and activate when configured as active.",
     function()
         tl.given_that_module_configured_as_active()
             tl.and_that_register_module_is_stubbed()

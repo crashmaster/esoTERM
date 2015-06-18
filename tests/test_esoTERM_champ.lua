@@ -27,7 +27,7 @@ describe("Test the esoTERM_champ module initialization.", function()
             tl.and_register_module_was_not_called()
     end)
 
-    it("Initialize, but do not activate because configured as inactive.",
+    it("Initialize, but do not activate when configured as inactive.",
     function()
         tl.given_that_module_configured_as_inactive()
             tl.and_that_character_is_eligible_for_champion_xp()
@@ -41,7 +41,7 @@ describe("Test the esoTERM_champ module initialization.", function()
             tl.and_register_module_was_called()
     end)
 
-    it("Initialize, and activate because configured as active.",
+    it("Initialize, and activate when configured as active.",
     function()
         tl.given_that_module_configured_as_active()
             tl.and_that_character_is_eligible_for_champion_xp()

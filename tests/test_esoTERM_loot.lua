@@ -16,6 +16,38 @@ describe("Test module.", function()
     end)
 end)
 
+describe("Test the esoTERM_loot module initialization.", function()
+    after_each(function()
+        ut_helper.restore_stubbed_functions()
+    end)
+
+    it("Initialize, but do not activate when configured as inactive.",
+    function()
+        tl.given_that_module_configured_as_inactive()
+            tl.and_that_register_module_is_stubbed()
+            tl.and_that_esoTERM_loot_activate_is_stubbed()
+
+        tl.when_initialize_is_called()
+
+        tl.then_esoTERM_loot_activate_was_not_called()
+            tl.and_zo_savedvars_new_was_called()
+            tl.and_register_module_was_called()
+    end)
+
+    it("Initialize, and activate when configured as active.",
+    function()
+        tl.given_that_module_configured_as_active()
+            tl.and_that_register_module_is_stubbed()
+            tl.and_that_esoTERM_loot_activate_is_stubbed()
+
+        tl.when_initialize_is_called()
+
+        tl.then_esoTERM_loot_activate_was_called()
+            tl.and_zo_savedvars_new_was_called()
+            tl.and_register_module_was_called()
+    end)
+end)
+
 describe("Test Loot module initialization.", function()
     local return_values_of_the_getter_stubs = {
         get_loot_quantity = tl.LOOT_QUANTITY,
@@ -65,10 +97,6 @@ describe("Test Loot module initialization.", function()
         }
     end
 
-    local function and_that_register_module_is_stubbed()
-        ut_helper.stub_function(esoTERM_common, "register_module", nil)
-    end
-
     local function when_initialize_is_called()
         esoTERM_loot.initialize()
     end
@@ -101,11 +129,6 @@ describe("Test Loot module initialization.", function()
         end
     end
 
-    local function and_register_module_was_called()
-        assert.spy(esoTERM_common.register_module).was.called_with(
-            esoTERM.module_register, esoTERM_loot)
-    end
-
     local function and_module_is_active()
         assert.is.equal(true, esoTERM_loot.is_active)
     end
@@ -116,7 +139,7 @@ describe("Test Loot module initialization.", function()
         given_that_cache_is_empty()
             and_that_register_for_event_is_stubbed()
             and_that_expected_register_event_parameters_are_set_up()
-            and_that_register_module_is_stubbed()
+            tl.and_that_register_module_is_stubbed()
 
         when_initialize_is_called()
 
