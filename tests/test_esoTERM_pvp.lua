@@ -16,162 +16,79 @@ describe("Test module.", function()
     end)
 end)
 
-describe("Test initialization.", function()
-    local return_values_of_the_getter_stubs = {
-        get_ava_points = tl.AVA_RANK_1,
-        get_ava_rank = tl.AVA_RANK_1,
-        get_ava_sub_rank = tl.AVA_SUB_RANK_1,
-        get_ava_rank_name = tl.AVA_RANK_NAME_1,
-        get_ava_rank_points_lb = tl.AVA_RANK_POINTS_LB_1,
-        get_ava_rank_points_ub = tl.AVA_RANK_POINTS_UB_1,
-        get_ava_rank_points = tl.AVA_RANK_POINTS_1,
-        get_ava_rank_points_max = tl.AVA_RANK_POINTS_MAX_1,
-        get_ava_rank_points_percent = tl.AVA_RANK_POINTS_PERCENT,
-        get_ap_gain = tl.AVA_POINTS_GAIN,
-    }
-    local expected_cached_values = {
-        ava_points = tl.AVA_POINTS_1,
-        ava_rank = tl.AVA_RANK_1,
-        ava_sub_rank = tl.AVA_SUB_RANK_1,
-        ava_rank_name = tl.AVA_RANK_NAME_1,
-        ava_rank_points_lb = tl.AVA_RANK_POINTS_LB_1,
-        ava_rank_points_ub = tl.AVA_RANK_POINTS_UB_1,
-        ava_rank_points = tl.AVA_RANK_POINTS_1,
-        ava_rank_points_max = tl.AVA_RANK_POINTS_MAX_1,
-        ava_rank_points_percent = tl.AVA_RANK_POINTS_PERCENT,
-        ap_gain = tl.AVA_POINTS_GAIN,
-    }
-
-    local expected_register_params = {}
-
-    local function setup_getter_stubs()
-        for getter, return_value in pairs(return_values_of_the_getter_stubs) do
-            ut_helper.stub_function(esoTERM_pvp, getter, return_value)
-        end
-    end
-
-    setup(function()
-        setup_getter_stubs()
-    end)
-
+describe("Test the esoTERM_pvp module initialization.", function()
     after_each(function()
-        expected_register_params = nil
         ut_helper.restore_stubbed_functions()
     end)
 
-    -- {{{
-    local function given_that_cache_is_empty()
-        assert.is.equal(0, ut_helper.table_size(tl.CACHE))
-    end
-
-    local function and_that_register_for_event_is_stubbed()
-        ut_helper.stub_function(esoTERM_common, "register_for_event", nil)
-    end
-
-    local function and_that_expected_register_event_parameters_are_set_up()
-        expected_register_params.ava_xp_update = {
-            module = esoTERM_pvp,
-            event = EVENT_ALLIANCE_POINT_UPDATE,
-            callback = esoTERM_pvp.on_ava_points_update
-        }
-    end
-
-    local function and_that_register_module_is_stubbed()
-        ut_helper.stub_function(esoTERM_common, "register_module", nil)
-    end
-
-    local function when_initialize_is_called()
-        esoTERM_pvp.initialize()
-    end
-
-    local function then_cache_is_no_longer_empty()
-        assert.is_not.equal(0, ut_helper.table_size(tl.CACHE))
-    end
-
-    local function and_cached_values_became_initialized()
-        for cache_attribute, expected_value in pairs(expected_cached_values) do
-            assert.is.equal(expected_value, tl.CACHE[cache_attribute])
-        end
-    end
-
-    local function and_getter_stubs_were_called()
-        for getter, _ in pairs(return_values_of_the_getter_stubs) do
-            assert.spy(esoTERM_pvp[getter]).was.called_with()
-        end
-    end
-
-    local function and_register_for_event_was_called_with(expected_params)
-        assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(expected_params))
-        for param in pairs(expected_params) do
-            assert.spy(esoTERM_common.register_for_event).was.called_with(
-                expected_params[param].module,
-                expected_params[param].event,
-                expected_params[param].callback
-            )
-            assert.is_not.equal(nil, expected_params[param].callback)
-        end
-    end
-
-    local function and_register_module_was_called()
-        assert.spy(esoTERM_common.register_module).was.called_with(
-            esoTERM.module_register, esoTERM_pvp)
-    end
-
-    local function and_module_is_active()
-        assert.is.equal(true, esoTERM_pvp.is_active)
-    end
-    -- }}}
-
-    it("Cached PvP data is updated and subscribed for events.",
+    it("Initialize, but do not activate when configured as inactive.",
     function()
-        given_that_cache_is_empty()
-            and_that_register_for_event_is_stubbed()
-            and_that_expected_register_event_parameters_are_set_up()
-            and_that_register_module_is_stubbed()
+        tl.given_that_module_configured_as_inactive()
+            tl.and_that_register_module_is_stubbed()
+            tl.and_that_esoTERM_pvp_activate_is_stubbed()
 
-        when_initialize_is_called()
+        tl.when_initialize_is_called()
 
-        then_cache_is_no_longer_empty()
-            and_cached_values_became_initialized()
-            and_getter_stubs_were_called()
-            and_register_for_event_was_called_with(expected_register_params)
-            and_register_module_was_called()
-            and_module_is_active()
+        tl.then_esoTERM_pvp_activate_was_not_called()
+            tl.and_zo_savedvars_new_was_called()
+            tl.and_register_module_was_called()
+    end)
+
+    it("Initialize, and activate when configured as active.",
+    function()
+        tl.given_that_module_configured_as_active()
+            tl.and_that_register_module_is_stubbed()
+            tl.and_that_esoTERM_pvp_activate_is_stubbed()
+
+        tl.when_initialize_is_called()
+
+        tl.then_esoTERM_pvp_activate_was_called()
+            tl.and_zo_savedvars_new_was_called()
+            tl.and_register_module_was_called()
     end)
 end)
 
-describe("Test deactivate.", function()
-    -- {{{
-    local function given_that_module_is_active()
-        esoTERM_pvp.is_active = true
-    end
+describe("Test esoTERM_pvp module activate.", function()
+    after_each(function()
+        tl.expected_register_for_event_calls_are_cleared()
+        ut_helper.restore_stubbed_functions()
+    end)
+    -- TODO: clear chache after tests?
 
-    local function and_that_unregister_from_all_events_is_stubbed()
-        ut_helper.stub_function(esoTERM_common, "unregister_from_all_events", nil)
-    end
-
-    local function when_deactivate_for_the_module_is_called()
-        esoTERM_pvp.deactivate()
-    end
-
-    local function then_unregister_from_all_events_was_called()
-        assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(esoTERM_pvp)
-    end
-
-    local function and_module_becomes_inactive()
-        assert.is.equal(false, esoTERM_pvp.is_active)
-    end
-    -- }}}
-
-    it("Unsubscribe from active events and set activeness to false.",
+    it("Update cache and subscribe for events on activate.",
     function()
-        given_that_module_is_active()
-            and_that_unregister_from_all_events_is_stubbed()
+        tl.given_that_module_is_inactive()
+            tl.and_that_cache_is_empty()
+            tl.and_that_expected_register_for_event_calls_are_set_up()
+            tl.and_that_register_for_event_is_stubbed()
+            tl.and_that_getter_functions_are_stubbed()
 
-        when_deactivate_for_the_module_is_called()
+        tl.when_activate_is_called()
 
-        then_unregister_from_all_events_was_called()
-            and_module_becomes_inactive()
+        tl.and_module_became_active()
+            tl.and_cache_is_no_longer_empty()
+            tl.and_register_for_event_was_called_with_expected_parameters()
+            tl.and_getter_function_stubs_were_called()
+            tl.and_cached_values_became_initialized()
+            tl.and_module_is_active_was_saved()
+    end)
+end)
+
+describe("Test esoTERM_pvp module deactivate.", function()
+    after_each(function()
+        ut_helper.restore_stubbed_functions()
+    end)
+
+    it("Unsubscribe from active events on deactivate.",
+    function()
+        tl.given_that_module_is_active()
+            tl.and_that_unregister_from_all_events_is_stubbed()
+
+        tl.when_deactivate_for_the_module_is_called()
+
+        tl.then_module_became_inactive()
+            tl.and_unregister_from_all_events_was_called()
+            tl.and_module_is_inactive_was_saved()
     end)
 end)
 

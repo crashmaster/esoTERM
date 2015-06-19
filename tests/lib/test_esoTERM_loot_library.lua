@@ -91,12 +91,12 @@ function test_esoTERM_loot_library.and_that_cache_is_empty()
 end
 
 function test_esoTERM_loot_library.and_that_expected_register_for_event_calls_are_set_up()
-    test_esoTERM_loot_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.combat_state_update = {
+    test_esoTERM_loot_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.loot_received_update = {
         module = esoTERM_loot,
         event = EVENT_LOOT_RECEIVED,
         callback = esoTERM_loot.on_loot_received
     }
-    test_esoTERM_loot_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.death_state_update = {
+    test_esoTERM_loot_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.money_received_update = {
         module = esoTERM_loot,
         event = EVENT_MONEY_UPDATE,
         callback = esoTERM_loot.on_money_received
