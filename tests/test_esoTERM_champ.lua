@@ -61,8 +61,9 @@ describe("Test esoTERM_champ module activate.", function()
         tl.expected_register_for_event_calls_are_cleared()
         ut_helper.restore_stubbed_functions()
     end)
+    -- TODO: clear chache after tests?
 
-    it("Update cache and subscribe for events on initialization for champion characters.",
+    it("Update cache and subscribe for events for champion characters on activate.",
     function()
         tl.given_that_module_is_inactive()
             tl.and_that_cache_is_empty()
@@ -86,7 +87,7 @@ describe("Test esoTERM_champ module deactivate.", function()
         ut_helper.restore_stubbed_functions()
     end)
 
-    it("Unsubscribe from active events and set activeness to false.",
+    it("Unsubscribe from active events on deactivate.",
     function()
         tl.given_that_module_is_active()
             tl.and_that_unregister_from_all_events_is_stubbed()
@@ -95,6 +96,7 @@ describe("Test esoTERM_champ module deactivate.", function()
 
         tl.then_module_became_inactive()
             tl.and_unregister_from_all_events_was_called()
+        -- TODO: save inactive?
     end)
 end)
 
