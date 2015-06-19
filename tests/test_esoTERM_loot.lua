@@ -88,7 +88,7 @@ describe("Test esoTERM_char module deactivate.", function()
 
         tl.then_module_became_inactive()
             tl.and_unregister_from_all_events_was_called()
-        -- TODO: save inactive?
+            tl.and_module_is_inactive_was_saved()
     end)
 end)
 

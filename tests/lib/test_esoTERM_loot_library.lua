@@ -170,6 +170,10 @@ end
 function test_esoTERM_loot_library.and_unregister_from_all_events_was_called()
     assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(esoTERM_loot)
 end
+
+function test_esoTERM_loot_library.and_module_is_inactive_was_saved()
+    assert.is.equal(esoTERM_loot.settings[MODULE_NAME], false)
+end
 -- }}}
 
 return test_esoTERM_loot_library
