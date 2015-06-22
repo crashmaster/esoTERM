@@ -70,6 +70,71 @@ function test_esoTERM_champ_library.and_that_expected_register_for_event_calls_a
     }
 end
 
+local function character_is_not_eligible_for_champion_xp()
+    test_library.stub_function_with_no_return_value(GLOBAL, "GetChampionXPInRank")
+    test_library.stub_function_with_no_return_value(GLOBAL, "GetPlayerChampionPointsEarned")
+end
+
+-- Initialization {{{
+function test_esoTERM_champ_library.when_initialize_is_called()
+    esoTERM_champ.initialize()
+end
+
+function test_esoTERM_champ_library.given_that_character_is_not_eligible_for_champion_xp()
+    character_is_not_eligible_for_champion_xp()
+end
+
+local function character_is_eligible_for_champion_xp()
+    test_library.stub_function_with_return_value(GLOBAL, "GetChampionXPInRank", 1)
+    test_library.stub_function_with_return_value(GLOBAL, "GetPlayerChampionPointsEarned", 1)
+end
+
+function test_esoTERM_champ_library.given_that_character_is_eligible_for_champion_xp()
+    character_is_eligible_for_champion_xp()
+end
+
+function test_esoTERM_champ_library.and_that_character_is_eligible_for_champion_xp()
+    character_is_eligible_for_champion_xp()
+end
+
+function test_esoTERM_champ_library.and_zo_savedvars_new_is_stubbed()
+    test_library.stub_function_with_no_return_value(ZO_SavedVars, "New")
+end
+
+function test_esoTERM_champ_library.and_zo_savedvars_new_was_called()
+    assert.spy(ZO_SavedVars.New).was.called_with(
+        ZO_SavedVars,
+        "esoTERM_settings",
+        2,
+        "active_modules",
+        {[MODULE_NAME] = true}
+    )
+end
+
+function test_esoTERM_champ_library.and_zo_savedvars_new_was_not_called()
+    assert.spy(ZO_SavedVars.New).was_not.called()
+end
+
+function test_esoTERM_champ_library.and_that_register_module_is_stubbed()
+    test_library.stub_function_with_no_return_value(esoTERM_common, "register_module")
+end
+
+function test_esoTERM_champ_library.and_register_module_was_called()
+    assert.spy(esoTERM_common.register_module).was.called_with(esoTERM.module_register, esoTERM_champ)
+end
+
+function test_esoTERM_champ_library.and_register_module_was_not_called()
+    assert.spy(esoTERM_common.register_module).was_not.called()
+end
+
+function test_esoTERM_champ_library.then_GetPlayerChampionPointsEarned_was_called()
+    assert.spy(GLOBAL.GetPlayerChampionPointsEarned).was.called()
+end
+
+function test_esoTERM_champ_library.and_GetChampionXPInRank_was_called()
+    assert.spy(GLOBAL.GetChampionXPInRank).was.called()
+end
+
 function test_esoTERM_champ_library.given_that_module_configured_as_inactive()
     local setting = {
         [MODULE_NAME] = false
@@ -95,61 +160,10 @@ end
 function test_esoTERM_champ_library.then_esoTERM_champ_activate_was_called()
     assert.spy(esoTERM_champ.activate).was.called()
 end
-
-local function character_is_not_eligible_for_champion_xp()
-    test_library.stub_function_with_no_return_value(GLOBAL, "GetChampionXPInRank")
-    test_library.stub_function_with_no_return_value(GLOBAL, "GetPlayerChampionPointsEarned")
-end
-
-function test_esoTERM_champ_library.given_that_character_is_not_eligible_for_champion_xp()
-    character_is_not_eligible_for_champion_xp()
-end
+-- }}}
 
 function test_esoTERM_champ_library.and_that_character_is_not_eligible_for_champion_xp()
     character_is_not_eligible_for_champion_xp()
-end
-
-local function character_is_eligible_for_champion_xp()
-    test_library.stub_function_with_return_value(GLOBAL, "GetChampionXPInRank", 1)
-    test_library.stub_function_with_return_value(GLOBAL, "GetPlayerChampionPointsEarned", 1)
-end
-
-function test_esoTERM_champ_library.given_that_character_is_eligible_for_champion_xp()
-    character_is_eligible_for_champion_xp()
-end
-
-function test_esoTERM_champ_library.and_that_character_is_eligible_for_champion_xp()
-    character_is_eligible_for_champion_xp()
-end
-
-function test_esoTERM_champ_library.then_GetPlayerChampionPointsEarned_was_called()
-    assert.spy(GLOBAL.GetPlayerChampionPointsEarned).was.called()
-end
-
-function test_esoTERM_champ_library.and_GetChampionXPInRank_was_called()
-    assert.spy(GLOBAL.GetChampionXPInRank).was.called()
-end
-
-function test_esoTERM_champ_library.and_zo_savedvars_new_is_stubbed()
-    test_library.stub_function_with_no_return_value(ZO_SavedVars, "New")
-end
-
-function test_esoTERM_champ_library.and_zo_savedvars_new_was_not_called()
-    assert.spy(ZO_SavedVars.New).was_not.called()
-end
-
-function test_esoTERM_champ_library.and_zo_savedvars_new_was_called()
-    assert.spy(ZO_SavedVars.New).was.called_with(
-        ZO_SavedVars,
-        "esoTERM_settings",
-        2,
-        "active_modules",
-        {[MODULE_NAME] = true}
-    )
-end
-
-function test_esoTERM_champ_library.when_initialize_is_called()
-    esoTERM_champ.initialize()
 end
 
 function test_esoTERM_champ_library.when_activate_is_called()
@@ -181,18 +195,6 @@ end
 
 function test_esoTERM_champ_library.and_unregister_from_all_events_was_called()
     assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(esoTERM_champ)
-end
-
-function test_esoTERM_champ_library.and_that_register_module_is_stubbed()
-    test_library.stub_function_with_no_return_value(esoTERM_common, "register_module")
-end
-
-function test_esoTERM_champ_library.and_register_module_was_called()
-    assert.spy(esoTERM_common.register_module).was.called_with(esoTERM.module_register, esoTERM_champ)
-end
-
-function test_esoTERM_champ_library.and_register_module_was_not_called()
-    assert.spy(esoTERM_common.register_module).was_not.called()
 end
 
 function test_esoTERM_champ_library.and_that_getter_functions_are_stubbed()
