@@ -32,7 +32,7 @@ return {
     ["exclude"] = {
         "luacov",
         "esoTERM_window",
-        "test_.*_library"
+        "test.*_library"
     },
 }
 
