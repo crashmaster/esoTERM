@@ -11,9 +11,15 @@ describe("Test slash command handler initialization.", function()
     end
 
     local function and_command_handler_map_was_set_up()
-        assert.is.equal(true, esoTERM_slash.command_handlers[""] ~= nil)
-        assert.is.equal(true, esoTERM_slash.command_handlers["help"] ~= nil)
-        assert.is.equal(true, esoTERM_slash.command_handlers["status"] ~= nil)
+        local commands = {
+            "help",
+            "status",
+            "activate",
+            "deactivate",
+        }
+        for _, command in ipairs(commands) do
+            assert.is.equal(true, esoTERM_slash.command_handlers[command] ~= nil)
+        end
     end
     -- }}}
 
@@ -38,7 +44,7 @@ describe("Test slash command handlers.", function()
         module_name = "fake_inactive_module",
         is_active = false,
     }
-    function fake_inactive_module.initialize()
+    function fake_inactive_module.activate()
         fake_inactive_module.is_active = true
     end
 
