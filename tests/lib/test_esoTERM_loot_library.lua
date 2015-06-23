@@ -21,24 +21,15 @@ function test_esoTERM_loot_library.given_that_module_configured_as_inactive()
 end
 
 function test_esoTERM_loot_library.given_that_module_configured_as_active()
-    local setting = {
-        [MODULE_NAME] = true
-    }
-    test_library.stub_function_with_return_value(ZO_SavedVars, "New", setting)
+    test_library.configure_module_as_active(MODULE_NAME)
 end
 
 function test_esoTERM_loot_library.and_zo_savedvars_new_was_called()
-    assert.spy(ZO_SavedVars.New).was.called_with(
-        ZO_SavedVars,
-        "esoTERM_settings",
-        2,
-        "active_modules",
-        {[MODULE_NAME] = true}
-    )
+    test_library.zo_savedvars_new_was_called_with_module(MODULE_NAME)
 end
 
 function test_esoTERM_loot_library.and_that_register_module_is_stubbed()
-    ut_helper.stub_function(esoTERM_common, "register_module", nil)
+    test_library.stub_function_with_no_return_value(esoTERM_common, "register_module")
 end
 
 function test_esoTERM_loot_library.and_register_module_was_called()
