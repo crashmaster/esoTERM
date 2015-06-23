@@ -33,8 +33,7 @@ function test_esoTERM_loot_library.and_that_register_module_is_stubbed()
 end
 
 function test_esoTERM_loot_library.and_register_module_was_called()
-    assert.spy(esoTERM_common.register_module).was.called_with(
-        esoTERM.module_register, esoTERM_loot)
+    test_library.stub_function_called_with(esoTERM_common.register_module, esoTERM.module_register, esoTERM_loot)
 end
 
 function test_esoTERM_loot_library.and_that_esoTERM_loot_activate_is_stubbed()

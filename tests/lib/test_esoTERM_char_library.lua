@@ -39,6 +39,10 @@ end
 function test_esoTERM_char_library.and_that_register_module_is_stubbed()
     test_library.stub_function_with_no_return_value(esoTERM_common, "register_module")
 end
+
+function test_esoTERM_char_library.and_register_module_was_called()
+    test_library.stub_function_called_with(esoTERM_common.register_module, esoTERM.module_register, esoTERM_char)
+end
 -- }}}
 
 test_esoTERM_char_library.RETURN_VALUES_OF_THE_GETTER_STUBS = {
@@ -108,12 +112,6 @@ function test_esoTERM_char_library.and_getter_function_stubs_were_called()
     for getter, _ in pairs(test_esoTERM_char_library.RETURN_VALUES_OF_THE_GETTER_STUBS) do
         assert.spy(esoTERM_char[getter]).was.called_with()
     end
-end
--- }}}
-
--- register module {{{
-function test_esoTERM_char_library.and_register_module_was_called()
-    assert.spy(esoTERM_common.register_module).was.called_with(esoTERM.module_register, esoTERM_char)
 end
 -- }}}
 

@@ -30,6 +30,10 @@ end
 function test_esoTERM_champ_library.and_that_register_module_is_stubbed()
     test_library.stub_function_with_no_return_value(esoTERM_common, "register_module")
 end
+
+function test_esoTERM_champ_library.and_register_module_was_called()
+    test_library.stub_function_called_with(esoTERM_common.register_module, esoTERM.module_register, esoTERM_champ)
+end
 -- }}}
 
 test_esoTERM_champ_library.RETURN_VALUES_OF_THE_GETTER_STUBS = {
@@ -121,10 +125,6 @@ end
 
 function test_esoTERM_champ_library.and_zo_savedvars_new_was_not_called()
     assert.spy(ZO_SavedVars.New).was_not.called()
-end
-
-function test_esoTERM_champ_library.and_register_module_was_called()
-    assert.spy(esoTERM_common.register_module).was.called_with(esoTERM.module_register, esoTERM_champ)
 end
 
 function test_esoTERM_champ_library.and_register_module_was_not_called()
