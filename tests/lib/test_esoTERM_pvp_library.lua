@@ -30,14 +30,11 @@ local MODULE_NAME = "pvp"
 
 -- Initialization {{{
 function test_esoTERM_pvp_library.when_initialize_is_called()
-    esoTERM_pvp.initialize()
+    test_library.initialize_module(esoTERM_pvp)
 end
 
 function test_esoTERM_pvp_library.given_that_module_configured_as_inactive()
-    local setting = {
-        [MODULE_NAME] = false
-    }
-    test_library.stub_function_with_return_value(ZO_SavedVars, "New", setting)
+    test_library.configure_module_as_inactive(MODULE_NAME)
 end
 
 function test_esoTERM_pvp_library.given_that_module_configured_as_active()

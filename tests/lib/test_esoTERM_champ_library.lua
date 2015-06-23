@@ -10,6 +10,16 @@ test_esoTERM_champ_library.CHAMPION_XP_MAX_1 = test_library.A_INTEGER
 
 local MODULE_NAME = "champion"
 
+-- Initialization {{{
+function test_esoTERM_champ_library.when_initialize_is_called()
+    test_library.initialize_module(esoTERM_champ)
+end
+
+function test_esoTERM_champ_library.given_that_module_configured_as_inactive()
+    test_library.configure_module_as_inactive(MODULE_NAME)
+end
+-- }}}
+
 test_esoTERM_champ_library.RETURN_VALUES_OF_THE_GETTER_STUBS = {
     get_champion_xp = test_esoTERM_champ_library.CHAMPION_XP_1,
     get_champion_xp_max = test_esoTERM_champ_library.CHAMPION_XP_MAX_1,
@@ -76,10 +86,6 @@ local function character_is_not_eligible_for_champion_xp()
 end
 
 -- Initialization {{{
-function test_esoTERM_champ_library.when_initialize_is_called()
-    esoTERM_champ.initialize()
-end
-
 function test_esoTERM_champ_library.given_that_character_is_not_eligible_for_champion_xp()
     character_is_not_eligible_for_champion_xp()
 end
@@ -133,13 +139,6 @@ end
 
 function test_esoTERM_champ_library.and_GetChampionXPInRank_was_called()
     assert.spy(GLOBAL.GetChampionXPInRank).was.called()
-end
-
-function test_esoTERM_champ_library.given_that_module_configured_as_inactive()
-    local setting = {
-        [MODULE_NAME] = false
-    }
-    test_library.stub_function_with_return_value(ZO_SavedVars, "New", setting)
 end
 
 function test_esoTERM_champ_library.given_that_module_configured_as_active()

@@ -24,6 +24,19 @@ function this.stub_function_with_return_value(module, function_name, return_valu
     stub_function(module, function_name, return_value)
 end
 
+-- Initialization {{{
+function this.initialize_module(module)
+    module.initialize()
+end
+
+function this.configure_module_as_inactive(module_name)
+    local setting = {
+        [module_name] = false
+    }
+    this.stub_function_with_return_value(ZO_SavedVars, "New", setting)
+end
+-- }}}
+
 -- Module activeness {{{
 local MODULE_ACTIVE = true
 local MODULE_INACTIVE = false

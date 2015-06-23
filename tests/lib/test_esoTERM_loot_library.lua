@@ -13,14 +13,11 @@ local MODULE_NAME = "loot"
 
 -- Initialization {{{
 function test_esoTERM_loot_library.when_initialize_is_called()
-    esoTERM_loot.initialize()
+    test_library.initialize_module(esoTERM_loot)
 end
 
 function test_esoTERM_loot_library.given_that_module_configured_as_inactive()
-    local setting = {
-        [MODULE_NAME] = false
-    }
-    test_library.stub_function_with_return_value(ZO_SavedVars, "New", setting)
+    test_library.configure_module_as_inactive(MODULE_NAME)
 end
 
 function test_esoTERM_loot_library.given_that_module_configured_as_active()

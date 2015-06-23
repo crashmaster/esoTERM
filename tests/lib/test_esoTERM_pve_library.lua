@@ -21,14 +21,11 @@ local MODULE_NAME = "pve"
 
 -- Initialization {{{
 function test_esoTERM_pve_library.when_initialize_is_called()
-    esoTERM_pve.initialize()
+    test_library.initialize_module(esoTERM_pve)
 end
 
 function test_esoTERM_pve_library.given_that_module_configured_as_inactive()
-    local setting = {
-        [MODULE_NAME] = false
-    }
-    test_library.stub_function_with_return_value(ZO_SavedVars, "New", setting)
+    test_library.configure_module_as_inactive(MODULE_NAME)
 end
 
 function test_esoTERM_pve_library.given_that_module_configured_as_active()

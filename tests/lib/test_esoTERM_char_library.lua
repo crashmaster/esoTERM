@@ -19,6 +19,16 @@ test_esoTERM_char_library.COMBAT_DAMAGE = test_library.A_INTEGER
 
 local MODULE_NAME = "character"
 
+-- Initialization {{{
+function test_esoTERM_char_library.when_initialize_is_called()
+    test_library.initialize_module(esoTERM_char)
+end
+
+function test_esoTERM_char_library.given_that_module_configured_as_inactive()
+    test_library.configure_module_as_inactive(MODULE_NAME)
+end
+-- }}}
+
 test_esoTERM_char_library.RETURN_VALUES_OF_THE_GETTER_STUBS = {
     get_gender = test_esoTERM_char_library.GENDER_1,
     get_class = test_esoTERM_char_library.CLASS_1,
@@ -132,17 +142,6 @@ end
 -- }}}
 
 -- initialize {{{
-function test_esoTERM_char_library.when_initialize_is_called()
-    esoTERM_char.initialize()
-end
-
-function test_esoTERM_char_library.given_that_module_configured_as_inactive()
-    local setting = {
-        [MODULE_NAME] = false
-    }
-    test_library.stub_function_with_return_value(ZO_SavedVars, "New", setting)
-end
-
 function test_esoTERM_char_library.given_that_module_configured_as_active()
     local setting = {
         [MODULE_NAME] = true
