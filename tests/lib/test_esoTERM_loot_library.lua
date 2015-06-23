@@ -63,6 +63,14 @@ end
 -- }}}
 
 -- Activate {{{
+function test_esoTERM_loot_library.when_activate_is_called()
+    esoTERM_loot.activate()
+end
+
+function test_esoTERM_loot_library.and_module_became_active()
+    test_library.check_that_module_became_active(esoTERM_loot)
+end
+
 test_esoTERM_loot_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
 
 test_esoTERM_loot_library.EXPECTED_CACHED_VALUES = {
@@ -72,14 +80,6 @@ test_esoTERM_loot_library.EXPECTED_CACHED_VALUES = {
 
 function test_esoTERM_loot_library.expected_register_for_event_calls_are_cleared()
     test_esoTERM_loot_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
-end
-
-function test_esoTERM_loot_library.when_activate_is_called()
-    esoTERM_loot.activate()
-end
-
-function test_esoTERM_loot_library.and_module_became_active()
-    test_library.check_that_module_became_active(esoTERM_loot)
 end
 
 function test_esoTERM_loot_library.given_that_module_is_inactive()
