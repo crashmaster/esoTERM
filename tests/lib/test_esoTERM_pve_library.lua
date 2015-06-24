@@ -41,7 +41,7 @@ function test_esoTERM_pve_library.and_that_register_module_is_stubbed()
 end
 
 function test_esoTERM_pve_library.and_register_module_was_called()
-    test_library.stub_function_called_with(esoTERM_common.register_module, esoTERM.module_register, esoTERM_pve)
+    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, esoTERM_pve)
 end
 
 function test_esoTERM_pve_library.and_that_esoTERM_pve_activate_is_stubbed()
@@ -49,15 +49,17 @@ function test_esoTERM_pve_library.and_that_esoTERM_pve_activate_is_stubbed()
 end
 
 function test_esoTERM_pve_library.then_esoTERM_pve_activate_was_called()
-    assert.spy(esoTERM_pve.activate).was.called()
+    test_library.stub_function_called_without_arguments(esoTERM_pve.activate)
 end
 
 function test_esoTERM_pve_library.then_esoTERM_pve_activate_was_not_called()
-    assert.spy(esoTERM_pve.activate).was_not.called()
+    test_library.stub_function_was_not_called(esoTERM_pve.activate)
 end
 -- }}}
 
 -- Activate {{{
+test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
+
 function test_esoTERM_pve_library.expected_register_for_event_calls_are_cleared()
     test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
 end
@@ -77,8 +79,6 @@ end
 function test_esoTERM_pve_library.and_that_cache_is_empty()
     assert.is.equal(0, ut_helper.table_size(test_esoTERM_pve_library.CACHE))
 end
-
-test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
 
 function test_esoTERM_pve_library.and_that_expected_register_for_event_calls_are_set_up()
     test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.experience_points_update = {

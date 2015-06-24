@@ -1,10 +1,42 @@
+-- Locals {{{
 local requires_for_tests = require("tests/requires_for_tests")
 local tl = require("tests/lib/test_esoTERM_champ_library")
+
+local and_GetChampionXPInRank_was_called = tl.and_GetChampionXPInRank_was_called
+local and_cache_is_no_longer_empty = tl.and_cache_is_no_longer_empty
+local and_cached_values_became_initialized = tl.and_cached_values_became_initialized
+local and_getter_function_stubs_were_called = tl.and_getter_function_stubs_were_called
+local and_module_became_active = tl.and_module_became_active
+local and_module_is_active_was_saved = tl.and_module_is_active_was_saved
+local and_register_for_event_was_called_with_expected_parameters = tl.and_register_for_event_was_called_with_expected_parameters
+local and_register_module_was_called = tl.and_register_module_was_called
+local and_register_module_was_not_called = tl.and_register_module_was_not_called
+local and_that_cache_is_empty = tl.and_that_cache_is_empty
+local and_that_character_is_eligible_for_champion_xp = tl.and_that_character_is_eligible_for_champion_xp
+local and_that_esoTERM_champ_activate_is_stubbed = tl.and_that_esoTERM_champ_activate_is_stubbed
+local and_that_expected_register_for_event_calls_are_set_up = tl.and_that_expected_register_for_event_calls_are_set_up
+local and_that_getter_functions_are_stubbed = tl.and_that_getter_functions_are_stubbed
+local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
+local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
+local and_zo_savedvars_new_is_stubbed = tl.and_zo_savedvars_new_is_stubbed
+local and_zo_savedvars_new_was_called = tl.and_zo_savedvars_new_was_called
+local and_zo_savedvars_new_was_not_called = tl.and_zo_savedvars_new_was_not_called
+local given_that_character_is_not_eligible_for_champion_xp = tl.given_that_character_is_not_eligible_for_champion_xp
+local given_that_module_configured_as_active = tl.given_that_module_configured_as_active
+local given_that_module_configured_as_inactive = tl.given_that_module_configured_as_inactive
+local given_that_module_is_inactive = tl.given_that_module_is_inactive
+local then_GetPlayerChampionPointsEarned_was_called = tl.then_GetPlayerChampionPointsEarned_was_called
+local then_esoTERM_champ_activate_was_called = tl.then_esoTERM_champ_activate_was_called
+local then_esoTERM_champ_activate_was_not_called = tl.then_esoTERM_champ_activate_was_not_called
+local verify_that_the_module_name_is_the_expected_one = tl.verify_that_the_module_name_is_the_expected_one
+local when_activate_is_called = tl.when_activate_is_called
+local when_initialize_is_called = tl.when_initialize_is_called
+-- }}}
 
 describe("Test the esoTERM_champ module.", function()
     it("Module is called: esoTERM-champion.",
     function()
-        tl.verify_that_the_module_name_is_the_expected_one()
+        verify_that_the_module_name_is_the_expected_one()
     end)
 end)
 
@@ -15,44 +47,44 @@ describe("Test the esoTERM_champ module initialization.", function()
 
     it("Do not initialize if character is not eligible for champion system.",
     function()
-        tl.given_that_character_is_not_eligible_for_champion_xp()
-            tl.and_zo_savedvars_new_is_stubbed()
-            tl.and_that_register_module_is_stubbed()
+        given_that_character_is_not_eligible_for_champion_xp()
+            and_zo_savedvars_new_is_stubbed()
+            and_that_register_module_is_stubbed()
 
-        tl.when_initialize_is_called()
+        when_initialize_is_called()
 
-        tl.then_GetPlayerChampionPointsEarned_was_called()
-            tl.and_GetChampionXPInRank_was_called()
-            tl.and_zo_savedvars_new_was_not_called()
-            tl.and_register_module_was_not_called()
+        then_GetPlayerChampionPointsEarned_was_called()
+            and_GetChampionXPInRank_was_called()
+            and_zo_savedvars_new_was_not_called()
+            and_register_module_was_not_called()
     end)
 
     it("Initialize, but do not activate when configured as inactive.",
     function()
-        tl.given_that_module_configured_as_inactive()
-            tl.and_that_character_is_eligible_for_champion_xp()
-            tl.and_that_esoTERM_champ_activate_is_stubbed()
-            tl.and_that_register_module_is_stubbed()
+        given_that_module_configured_as_inactive()
+            and_that_character_is_eligible_for_champion_xp()
+            and_that_esoTERM_champ_activate_is_stubbed()
+            and_that_register_module_is_stubbed()
 
-        tl.when_initialize_is_called()
+        when_initialize_is_called()
 
-        tl.then_esoTERM_champ_activate_was_not_called()
-            tl.and_zo_savedvars_new_was_called()
-            tl.and_register_module_was_called()
+        then_esoTERM_champ_activate_was_not_called()
+            and_zo_savedvars_new_was_called()
+            and_register_module_was_called()
     end)
 
     it("Initialize, and activate when configured as active.",
     function()
-        tl.given_that_module_configured_as_active()
-            tl.and_that_character_is_eligible_for_champion_xp()
-            tl.and_that_esoTERM_champ_activate_is_stubbed()
-            tl.and_that_register_module_is_stubbed()
+        given_that_module_configured_as_active()
+            and_that_character_is_eligible_for_champion_xp()
+            and_that_esoTERM_champ_activate_is_stubbed()
+            and_that_register_module_is_stubbed()
 
-        tl.when_initialize_is_called()
+        when_initialize_is_called()
 
-        tl.then_esoTERM_champ_activate_was_called()
-            tl.and_zo_savedvars_new_was_called()
-            tl.and_register_module_was_called()
+        then_esoTERM_champ_activate_was_called()
+            and_zo_savedvars_new_was_called()
+            and_register_module_was_called()
     end)
 end)
 
@@ -65,20 +97,20 @@ describe("Test esoTERM_champ module activate.", function()
 
     it("Update cache and subscribe for events for champion characters on activate.",
     function()
-        tl.given_that_module_is_inactive()
-            tl.and_that_cache_is_empty()
-            tl.and_that_expected_register_for_event_calls_are_set_up()
-            tl.and_that_register_for_event_is_stubbed()
-            tl.and_that_getter_functions_are_stubbed()
+        given_that_module_is_inactive()
+            and_that_cache_is_empty()
+            and_that_expected_register_for_event_calls_are_set_up()
+            and_that_register_for_event_is_stubbed()
+            and_that_getter_functions_are_stubbed()
 
-        tl.when_activate_is_called()
+        when_activate_is_called()
 
-        tl.and_module_became_active()
-            tl.and_cache_is_no_longer_empty()
-            tl.and_register_for_event_was_called_with_expected_parameters()
-            tl.and_getter_function_stubs_were_called()
-            tl.and_cached_values_became_initialized()
-            tl.and_module_is_active_was_saved()
+        and_module_became_active()
+            and_cache_is_no_longer_empty()
+            and_register_for_event_was_called_with_expected_parameters()
+            and_getter_function_stubs_were_called()
+            and_cached_values_became_initialized()
+            and_module_is_active_was_saved()
     end)
 end)
 

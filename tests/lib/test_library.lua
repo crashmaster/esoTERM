@@ -24,7 +24,15 @@ function this.stub_function_with_return_value(module, function_name, return_valu
     stub_function(module, function_name, return_value)
 end
 
-function this.stub_function_called_with(module_function, ...)
+function this.stub_function_was_not_called(module_function)
+    assert.spy(module_function).was_not.called()
+end
+
+function this.stub_function_called_without_arguments(module_function)
+    assert.spy(module_function).was.called_with()
+end
+
+function this.stub_function_called_with_arguments(module_function, ...)
     assert.spy(module_function).was.called_with(...)
 end
 

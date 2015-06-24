@@ -1,6 +1,16 @@
 local requires_for_tests = require("tests/requires_for_tests")
 local tl = require("tests/lib/test_esoTERM_pvp_library")
 
+local and_register_module_was_called = tl.and_register_module_was_called
+local and_that_esoTERM_pvp_activate_is_stubbed = tl.and_that_esoTERM_pvp_activate_is_stubbed
+local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
+local and_zo_savedvars_new_was_called = tl.and_zo_savedvars_new_was_called
+local given_that_module_configured_as_active = tl.given_that_module_configured_as_active
+local given_that_module_configured_as_inactive = tl.given_that_module_configured_as_inactive
+local then_esoTERM_pvp_activate_was_called = tl.then_esoTERM_pvp_activate_was_called
+local then_esoTERM_pvp_activate_was_not_called = tl.then_esoTERM_pvp_activate_was_not_called
+local when_initialize_is_called = tl.when_initialize_is_called
+
 describe("Test module.", function()
     local name = "pvp"
 
@@ -23,28 +33,28 @@ describe("Test the esoTERM_pvp module initialization.", function()
 
     it("Initialize, but do not activate when configured as inactive.",
     function()
-        tl.given_that_module_configured_as_inactive()
-            tl.and_that_register_module_is_stubbed()
-            tl.and_that_esoTERM_pvp_activate_is_stubbed()
+        given_that_module_configured_as_inactive()
+            and_that_register_module_is_stubbed()
+            and_that_esoTERM_pvp_activate_is_stubbed()
 
-        tl.when_initialize_is_called()
+        when_initialize_is_called()
 
-        tl.then_esoTERM_pvp_activate_was_not_called()
-            tl.and_zo_savedvars_new_was_called()
-            tl.and_register_module_was_called()
+        then_esoTERM_pvp_activate_was_not_called()
+            and_zo_savedvars_new_was_called()
+            and_register_module_was_called()
     end)
 
     it("Initialize, and activate when configured as active.",
     function()
-        tl.given_that_module_configured_as_active()
-            tl.and_that_register_module_is_stubbed()
-            tl.and_that_esoTERM_pvp_activate_is_stubbed()
+        given_that_module_configured_as_active()
+            and_that_register_module_is_stubbed()
+            and_that_esoTERM_pvp_activate_is_stubbed()
 
-        tl.when_initialize_is_called()
+        when_initialize_is_called()
 
-        tl.then_esoTERM_pvp_activate_was_called()
-            tl.and_zo_savedvars_new_was_called()
-            tl.and_register_module_was_called()
+        then_esoTERM_pvp_activate_was_called()
+            and_zo_savedvars_new_was_called()
+            and_register_module_was_called()
     end)
 end)
 

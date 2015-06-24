@@ -32,7 +32,19 @@ function test_esoTERM_champ_library.and_that_register_module_is_stubbed()
 end
 
 function test_esoTERM_champ_library.and_register_module_was_called()
-    test_library.stub_function_called_with(esoTERM_common.register_module, esoTERM.module_register, esoTERM_champ)
+    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, esoTERM_champ)
+end
+
+function test_esoTERM_champ_library.and_that_esoTERM_champ_activate_is_stubbed()
+    test_library.stub_function_with_no_return_value(esoTERM_champ, "activate")
+end
+
+function test_esoTERM_champ_library.then_esoTERM_champ_activate_was_called()
+    test_library.stub_function_called_without_arguments(esoTERM_champ.activate)
+end
+
+function test_esoTERM_champ_library.then_esoTERM_champ_activate_was_not_called()
+    test_library.stub_function_was_not_called(esoTERM_champ.activate)
 end
 -- }}}
 
@@ -137,18 +149,6 @@ end
 
 function test_esoTERM_champ_library.and_GetChampionXPInRank_was_called()
     assert.spy(GLOBAL.GetChampionXPInRank).was.called()
-end
-
-function test_esoTERM_champ_library.and_that_esoTERM_champ_activate_is_stubbed()
-    test_library.stub_function_with_no_return_value(esoTERM_champ, "activate")
-end
-
-function test_esoTERM_champ_library.then_esoTERM_champ_activate_was_not_called()
-    assert.spy(esoTERM_champ.activate).was_not.called()
-end
-
-function test_esoTERM_champ_library.then_esoTERM_champ_activate_was_called()
-    assert.spy(esoTERM_champ.activate).was.called()
 end
 -- }}}
 

@@ -33,7 +33,7 @@ function test_esoTERM_loot_library.and_that_register_module_is_stubbed()
 end
 
 function test_esoTERM_loot_library.and_register_module_was_called()
-    test_library.stub_function_called_with(esoTERM_common.register_module, esoTERM.module_register, esoTERM_loot)
+    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, esoTERM_loot)
 end
 
 function test_esoTERM_loot_library.and_that_esoTERM_loot_activate_is_stubbed()
@@ -41,15 +41,17 @@ function test_esoTERM_loot_library.and_that_esoTERM_loot_activate_is_stubbed()
 end
 
 function test_esoTERM_loot_library.then_esoTERM_loot_activate_was_called()
-    assert.spy(esoTERM_loot.activate).was.called()
+    test_library.stub_function_called_without_arguments(esoTERM_loot.activate)
 end
 
 function test_esoTERM_loot_library.then_esoTERM_loot_activate_was_not_called()
-    assert.spy(esoTERM_loot.activate).was_not.called()
+    test_library.stub_function_was_not_called(esoTERM_loot.activate)
 end
 -- }}}
 
 -- Activate {{{
+test_esoTERM_loot_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
+
 function test_esoTERM_loot_library.when_activate_is_called()
     esoTERM_loot.activate()
 end
@@ -57,8 +59,6 @@ end
 function test_esoTERM_loot_library.and_module_became_active()
     test_library.check_that_module_became_active(esoTERM_loot)
 end
-
-test_esoTERM_loot_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
 
 test_esoTERM_loot_library.EXPECTED_CACHED_VALUES = {
     loot_quantity = test_esoTERM_loot_library.LOOT_QUANTITY,
