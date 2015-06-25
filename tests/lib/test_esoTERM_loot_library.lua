@@ -12,7 +12,7 @@ test_esoTERM_loot_library.LOOT_QUANTITY = test_library.A_INTEGER
 local MODULE_NAME = "loot"
 
 -- Module Name {{{
-function test_esoTERM_loot_library.verify_that_the_module_name_is_the_expected_one()
+function test_esoTERM_loot_library.verify_that_esoTERM_loot_module_has_the_expected_name()
     assert.is.equal(MODULE_NAME, esoTERM_loot.module_name)
 end
 -- }}}

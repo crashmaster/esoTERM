@@ -11,7 +11,7 @@ test_esoTERM_champ_library.CHAMPION_XP_MAX_1 = test_library.A_INTEGER
 local MODULE_NAME = "champion"
 
 -- Module Name {{{
-function test_esoTERM_champ_library.verify_that_the_module_name_is_the_expected_one()
+function test_esoTERM_champ_library.verify_that_esoTERM_champ_module_has_the_expected_name()
     assert.is.equal(MODULE_NAME, esoTERM_champ.module_name)
 end
 -- }}}
