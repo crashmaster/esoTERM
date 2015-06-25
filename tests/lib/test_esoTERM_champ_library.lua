@@ -10,6 +10,12 @@ test_esoTERM_champ_library.CHAMPION_XP_MAX_1 = test_library.A_INTEGER
 
 local MODULE_NAME = "champion"
 
+-- Module Name {{{
+function test_esoTERM_champ_library.verify_that_the_module_name_is_the_expected_one()
+    assert.is.equal(MODULE_NAME, esoTERM_champ.module_name)
+end
+-- }}}
+
 -- Initialization {{{
 function test_esoTERM_champ_library.when_initialize_is_called()
     test_library.initialize_module(esoTERM_champ)
@@ -57,12 +63,6 @@ test_esoTERM_champ_library.EXPECTED_CACHED_VALUES = {
     champion_xp = test_esoTERM_champ_library.CHAMPION_XP_1,
     champion_xp_max = test_esoTERM_champ_library.CHAMPION_XP_MAX_1,
 }
-
--- module_name {{{
-function test_esoTERM_champ_library.verify_that_the_module_name_is_the_expected_one()
-    assert.is.equal(MODULE_NAME, esoTERM_champ.module_name)
-end
--- }}}
 
 -- esoTERM_champ module activeness {{{
 test_esoTERM_champ_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}

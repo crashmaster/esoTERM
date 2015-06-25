@@ -19,6 +19,12 @@ test_esoTERM_char_library.COMBAT_DAMAGE = test_library.A_INTEGER
 
 local MODULE_NAME = "character"
 
+-- Module Name {{{
+function test_esoTERM_char_library.verify_that_the_module_name_is_the_expected_one()
+    assert.is.equal(MODULE_NAME, esoTERM_char.module_name)
+end
+-- }}}
+
 -- Initialization {{{
 function test_esoTERM_char_library.when_initialize_is_called()
     test_library.initialize_module(esoTERM_char)
@@ -150,12 +156,6 @@ function test_esoTERM_char_library.and_cached_values_became_initialized()
     for cache_attribute, expected_value in pairs(test_esoTERM_char_library.EXPECTED_CACHED_VALUES) do
         assert.is.equal(expected_value, test_esoTERM_char_library.CACHE[cache_attribute])
     end
-end
--- }}}
-
--- module_name {{{
-function test_esoTERM_char_library.verify_that_the_module_name_is_the_expected_one()
-    assert.is.equal(MODULE_NAME, esoTERM_char.module_name)
 end
 -- }}}
 

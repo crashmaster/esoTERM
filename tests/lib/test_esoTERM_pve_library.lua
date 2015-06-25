@@ -19,6 +19,12 @@ test_esoTERM_pve_library.LEVEL_XP_GAIN = test_library.A_INTEGER
 
 local MODULE_NAME = "pve"
 
+-- Module Name {{{
+function test_esoTERM_pve_library.verify_that_the_module_name_is_the_expected_one()
+    assert.is.equal(MODULE_NAME, esoTERM_pve.module_name)
+end
+-- }}}
+
 -- Initialization {{{
 function test_esoTERM_pve_library.when_initialize_is_called()
     test_library.initialize_module(esoTERM_pve)

@@ -1,6 +1,7 @@
 local requires_for_tests = require("tests/requires_for_tests")
 local tl = require("tests/lib/test_esoTERM_loot_library")
 
+-- Locals {{{
 local and_cache_is_no_longer_empty = tl.and_cache_is_no_longer_empty
 local and_cached_values_became_initialized = tl.and_cached_values_became_initialized
 local and_getter_function_stubs_were_called = tl.and_getter_function_stubs_were_called
@@ -30,23 +31,17 @@ local given_that_module_is_inactive = tl.given_that_module_is_inactive
 local then_esoTERM_loot_activate_was_called = tl.then_esoTERM_loot_activate_was_called
 local then_esoTERM_loot_activate_was_not_called = tl.then_esoTERM_loot_activate_was_not_called
 local then_module_became_inactive = tl.then_module_became_inactive
+local verify_that_the_module_name_is_the_expected_one = tl.verify_that_the_module_name_is_the_expected_one
 local when_activate_is_called = tl.when_activate_is_called
 local when_deactivate_for_the_module_is_called = tl.when_deactivate_for_the_module_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
+-- }}}
 
 describe("Test module.", function()
-    local name = "loot"
-
-    -- {{{
-    local function when_module_name_is_get_then_expected_name_is_returned(name)
-        assert.is.equal(name, esoTERM_loot.module_name)
-    end
-    -- }}}
-
     it("Module is called: esoTERM-loot.",
     function()
-        when_module_name_is_get_then_expected_name_is_returned(name)
+        verify_that_the_module_name_is_the_expected_one()
     end)
 end)
 
