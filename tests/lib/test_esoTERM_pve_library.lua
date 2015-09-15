@@ -19,6 +19,12 @@ test_esoTERM_pve_library.LEVEL_XP_GAIN = test_library.A_INTEGER
 
 local MODULE_NAME = "pve"
 
+-- Module Name {{{
+function test_esoTERM_pve_library.verify_that_esoTERM_pve_module_has_the_expected_name()
+    assert.is.equal(MODULE_NAME, esoTERM_pve.module_name)
+end
+-- }}}
+
 -- Initialization {{{
 function test_esoTERM_pve_library.when_initialize_is_called()
     test_library.initialize_module(esoTERM_pve)
@@ -41,7 +47,7 @@ function test_esoTERM_pve_library.and_that_register_module_is_stubbed()
 end
 
 function test_esoTERM_pve_library.and_register_module_was_called()
-    test_library.stub_function_called_with(esoTERM_common.register_module, esoTERM.module_register, esoTERM_pve)
+    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, esoTERM_pve)
 end
 
 function test_esoTERM_pve_library.and_that_esoTERM_pve_activate_is_stubbed()
@@ -49,11 +55,11 @@ function test_esoTERM_pve_library.and_that_esoTERM_pve_activate_is_stubbed()
 end
 
 function test_esoTERM_pve_library.then_esoTERM_pve_activate_was_called()
-    assert.spy(esoTERM_pve.activate).was.called()
+    test_library.stub_function_called_without_arguments(esoTERM_pve.activate)
 end
 
 function test_esoTERM_pve_library.then_esoTERM_pve_activate_was_not_called()
-    assert.spy(esoTERM_pve.activate).was_not.called()
+    test_library.stub_function_was_not_called(esoTERM_pve.activate)
 end
 -- }}}
 

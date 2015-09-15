@@ -10,6 +10,12 @@ test_esoTERM_champ_library.CHAMPION_XP_MAX_1 = test_library.A_INTEGER
 
 local MODULE_NAME = "champion"
 
+-- Module Name {{{
+function test_esoTERM_champ_library.verify_that_esoTERM_champ_module_has_the_expected_name()
+    assert.is.equal(MODULE_NAME, esoTERM_champ.module_name)
+end
+-- }}}
+
 -- Initialization {{{
 function test_esoTERM_champ_library.when_initialize_is_called()
     test_library.initialize_module(esoTERM_champ)
@@ -32,7 +38,19 @@ function test_esoTERM_champ_library.and_that_register_module_is_stubbed()
 end
 
 function test_esoTERM_champ_library.and_register_module_was_called()
-    test_library.stub_function_called_with(esoTERM_common.register_module, esoTERM.module_register, esoTERM_champ)
+    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, esoTERM_champ)
+end
+
+function test_esoTERM_champ_library.and_that_esoTERM_champ_activate_is_stubbed()
+    test_library.stub_function_with_no_return_value(esoTERM_champ, "activate")
+end
+
+function test_esoTERM_champ_library.then_esoTERM_champ_activate_was_called()
+    test_library.stub_function_called_without_arguments(esoTERM_champ.activate)
+end
+
+function test_esoTERM_champ_library.then_esoTERM_champ_activate_was_not_called()
+    test_library.stub_function_was_not_called(esoTERM_champ.activate)
 end
 -- }}}
 
@@ -45,12 +63,6 @@ test_esoTERM_champ_library.EXPECTED_CACHED_VALUES = {
     champion_xp = test_esoTERM_champ_library.CHAMPION_XP_1,
     champion_xp_max = test_esoTERM_champ_library.CHAMPION_XP_MAX_1,
 }
-
--- module_name {{{
-function test_esoTERM_champ_library.verify_that_the_module_name_is_the_expected_one()
-    assert.is.equal(MODULE_NAME, esoTERM_champ.module_name)
-end
--- }}}
 
 -- esoTERM_champ module activeness {{{
 test_esoTERM_champ_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
@@ -137,18 +149,6 @@ end
 
 function test_esoTERM_champ_library.and_GetChampionXPInRank_was_called()
     assert.spy(GLOBAL.GetChampionXPInRank).was.called()
-end
-
-function test_esoTERM_champ_library.and_that_esoTERM_champ_activate_is_stubbed()
-    test_library.stub_function_with_no_return_value(esoTERM_champ, "activate")
-end
-
-function test_esoTERM_champ_library.then_esoTERM_champ_activate_was_not_called()
-    assert.spy(esoTERM_champ.activate).was_not.called()
-end
-
-function test_esoTERM_champ_library.then_esoTERM_champ_activate_was_called()
-    assert.spy(esoTERM_champ.activate).was.called()
 end
 -- }}}
 

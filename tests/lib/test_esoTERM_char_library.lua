@@ -19,6 +19,12 @@ test_esoTERM_char_library.COMBAT_DAMAGE = test_library.A_INTEGER
 
 local MODULE_NAME = "character"
 
+-- Module Name {{{
+function test_esoTERM_char_library.verify_that_esoTERM_char_module_has_the_expected_name()
+    assert.is.equal(MODULE_NAME, esoTERM_char.module_name)
+end
+-- }}}
+
 -- Initialization {{{
 function test_esoTERM_char_library.when_initialize_is_called()
     test_library.initialize_module(esoTERM_char)
@@ -41,7 +47,19 @@ function test_esoTERM_char_library.and_that_register_module_is_stubbed()
 end
 
 function test_esoTERM_char_library.and_register_module_was_called()
-    test_library.stub_function_called_with(esoTERM_common.register_module, esoTERM.module_register, esoTERM_char)
+    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, esoTERM_char)
+end
+
+function test_esoTERM_char_library.and_that_esoTERM_char_activate_is_stubbed()
+    test_library.stub_function_with_no_return_value(esoTERM_char, "activate")
+end
+
+function test_esoTERM_char_library.then_esoTERM_char_activate_was_called()
+    test_library.stub_function_called_without_arguments(esoTERM_char.activate)
+end
+
+function test_esoTERM_char_library.then_esoTERM_char_activate_was_not_called()
+    test_library.stub_function_was_not_called(esoTERM_char.activate)
 end
 -- }}}
 
@@ -138,26 +156,6 @@ function test_esoTERM_char_library.and_cached_values_became_initialized()
     for cache_attribute, expected_value in pairs(test_esoTERM_char_library.EXPECTED_CACHED_VALUES) do
         assert.is.equal(expected_value, test_esoTERM_char_library.CACHE[cache_attribute])
     end
-end
--- }}}
-
--- module_name {{{
-function test_esoTERM_char_library.verify_that_the_module_name_is_the_expected_one()
-    assert.is.equal(MODULE_NAME, esoTERM_char.module_name)
-end
--- }}}
-
--- initialize {{{
-function test_esoTERM_char_library.and_that_esoTERM_char_activate_is_stubbed()
-    test_library.stub_function_with_no_return_value(esoTERM_char, "activate")
-end
-
-function test_esoTERM_char_library.then_esoTERM_char_activate_was_called()
-    assert.spy(esoTERM_char.activate).was.called()
-end
-
-function test_esoTERM_char_library.then_esoTERM_char_activate_was_not_called()
-    assert.spy(esoTERM_char.activate).was_not.called()
 end
 -- }}}
 
