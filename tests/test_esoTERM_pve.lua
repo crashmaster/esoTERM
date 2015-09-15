@@ -50,26 +50,44 @@ end)
 
 describe("Test esoTERM_pve module activate.", function()
     after_each(function()
+        tl.cache_is_cleared()
         tl.expected_register_for_event_calls_are_cleared()
         ut_helper.restore_stubbed_functions()
     end)
-    -- TODO: clear chache after tests?
 
-    it("Update cache and subscribe for events on activate.",
+    it("Update cache and subscribe for events on activate for non veteran unit.",
     function()
         tl.given_that_module_is_inactive()
             tl.and_that_cache_is_empty()
-            tl.and_that_expected_register_for_event_calls_are_set_up()
+            tl.and_that_expected_register_for_event_calls_for_non_veteran_unit_are_set_up()
             tl.and_that_register_for_event_is_stubbed()
-            tl.and_that_getter_functions_are_stubbed()
+            tl.and_that_getter_functions_for_non_veteran_unit_are_stubbed()
 
         tl.when_activate_is_called()
 
         tl.and_module_became_active()
             tl.and_cache_is_no_longer_empty()
-            tl.and_register_for_event_was_called_with_expected_parameters()
+            tl.and_register_for_event_was_called_for_non_veteran_unit()
             tl.and_getter_function_stubs_were_called()
-            tl.and_cached_values_became_initialized()
+            tl.and_cached_values_for_non_veteran_unit_became_initialized()
+            tl.and_module_is_active_was_saved()
+    end)
+
+    it("Update cache and subscribe for events on activate for veteran unit.",
+    function()
+        tl.given_that_module_is_inactive()
+            tl.and_that_cache_is_empty()
+            tl.and_that_expected_register_for_event_calls_for_veteran_unit_are_set_up()
+            tl.and_that_register_for_event_is_stubbed()
+            tl.and_that_getter_functions_for_veteran_unit_are_stubbed()
+
+        tl.when_activate_is_called()
+
+        tl.and_module_became_active()
+            tl.and_cache_is_no_longer_empty()
+            tl.and_register_for_event_was_called_for_veteran_unit()
+            tl.and_getter_function_stubs_were_called()
+            tl.and_cached_values_for_veteran_unit_became_initialized()
             tl.and_module_is_active_was_saved()
     end)
 end)
@@ -204,10 +222,6 @@ describe("Test PvE related data getters.", function()
         ut_helper.stub_function(GLOBAL, "GetUnitVeteranRank", level)
     end
 
-    local function and_character_is_veteran()
-        ut_helper.stub_function(esoTERM_pve, "is_veteran", true)
-    end
-
     local function and_eso_GetUnitVeteranRank_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitVeteranRank).was.called_with(PLAYER)
     end
@@ -217,7 +231,7 @@ describe("Test PvE related data getters.", function()
     function()
         given_that_cached_character_level_is_not_set()
             and_that_eso_GetUnitVeteranRank_returns(tl.LEVEL_1)
-            and_character_is_veteran()
+            tl.and_character_is_veteran()
 
         when_get_level_is_called_with_cache()
 
@@ -270,7 +284,7 @@ describe("Test PvE related data getters.", function()
     function()
         given_that_cached_character_level_is(tl.LEVEL_1)
             and_that_eso_GetUnitVeteranRank_returns(tl.LEVEL_2)
-            and_character_is_veteran()
+            tl.and_character_is_veteran()
 
         when_get_level_is_called_with_cache()
 

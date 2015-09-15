@@ -9,8 +9,9 @@ LUACOV := luacov --config .luacov
 LUACOV_REPORT := luacov.report.out
 
 ADDON_NAME := esoTERM
+ADDON_DESCRIPTION := https://github.com/crashmaster/esoTERM
 ADDON_TEXT_FILE := $(ADDON_NAME).txt
-ESO_API_VERSION := 100011
+ESO_API_VERSION := 100012
 ADDON_SAVED_VARIABLES := esoTERM_settings
 
 USER_DOCUMENTS_DIR := C:/Users/$(USER)/Documents
@@ -48,6 +49,7 @@ coverage: test_silent
 gentxt:
 	@$(RM) $(ADDON_TEXT_FILE)
 	@printf "## Title: %s\n" $(ADDON_NAME) > $(ADDON_TEXT_FILE)
+	@printf "## Description: %s\n" $(ADDON_DESCRIPTION) > $(ADDON_TEXT_FILE)
 	@printf "## APIVersion: %s\n" $(ESO_API_VERSION) >> $(ADDON_TEXT_FILE)
 	@printf "## SavedVariables: %s\n\n" $(ADDON_SAVED_VARIABLES) >> $(ADDON_TEXT_FILE)
 	@ls $(ADDON_NAME)*.lua >> $(ADDON_TEXT_FILE)

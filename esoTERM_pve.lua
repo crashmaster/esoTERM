@@ -122,12 +122,18 @@ function esoTERM_pve.activate()
     ESOTERM_PVE_CACHE.level_xp_percent = esoTERM_pve.get_level_xp_percent()
     ESOTERM_PVE_CACHE.xp_gain = esoTERM_pve.get_xp_gain()
 
-    esoTERM_common.register_for_event(esoTERM_pve,
-                                      EVENT_EXPERIENCE_UPDATE,
-                                      esoTERM_pve.on_experience_update)
-    esoTERM_common.register_for_event(esoTERM_pve,
-                                      EVENT_LEVEL_UPDATE,
-                                      esoTERM_pve.on_level_update)
+    if ESOTERM_PVE_CACHE.veteran then
+        esoTERM_common.register_for_event(esoTERM_pve,
+                                          EVENT_VETERAN_POINTS_UPDATE,
+                                          esoTERM_pve.on_experience_update)
+    else
+        esoTERM_common.register_for_event(esoTERM_pve,
+                                          EVENT_EXPERIENCE_UPDATE,
+                                          esoTERM_pve.on_experience_update)
+        esoTERM_common.register_for_event(esoTERM_pve,
+                                          EVENT_LEVEL_UPDATE,
+                                          esoTERM_pve.on_level_update)
+    end
     esoTERM_common.register_for_event(esoTERM_pve,
                                       EVENT_VETERAN_RANK_UPDATE,
                                       esoTERM_pve.on_level_update)
