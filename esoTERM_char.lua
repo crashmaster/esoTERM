@@ -66,13 +66,11 @@ function esoTERM_char.get_combat_damage()
 end
 
 function esoTERM_char.on_combat_state_update(event, combat_state)
-    if esoTERM_char.get_combat_state() ~= combat_state then
-        ESOTERM_CHAR_CACHE.combat_state = combat_state
-        if combat_state then
-            esoTERM_char.enter_combat()
-        else
-            zo_callLater(esoTERM_char.exit_combat, EXIT_COMBAT_CALL_DELAY)
-        end
+    ESOTERM_CHAR_CACHE.last_reported_combat_state = combat_state
+    if combat_state then
+        esoTERM_char.enter_combat()
+    else
+        zo_callLater(esoTERM_char.exit_combat, EXIT_COMBAT_CALL_DELAY)
     end
 end
 
@@ -123,6 +121,10 @@ local function get_combat_enter_message()
 end
 
 function esoTERM_char.enter_combat()
+    if ESOTERM_CHAR_CACHE.combat_state == true then
+        return
+    end
+    ESOTERM_CHAR_CACHE.combat_state = true
     ESOTERM_CHAR_CACHE.combat_start_time = GetGameTimeMilliseconds()
     ESOTERM_CHAR_CACHE.combat_damage = 0
 
@@ -143,6 +145,9 @@ local function get_combat_left_message()
 end
 
 function esoTERM_char.exit_combat()
+    if ESOTERM_CHAR_CACHE.last_reported_combat_state == true then
+        return
+    end
     local combat_start_time = esoTERM_char.get_combat_start_time()
     ESOTERM_CHAR_CACHE.combat_lenght = GetGameTimeMilliseconds() - combat_start_time
 
@@ -153,6 +158,7 @@ function esoTERM_char.exit_combat()
 
     ESOTERM_CHAR_CACHE.combat_start_time = 0
     ESOTERM_CHAR_CACHE.combat_damage = 0
+    ESOTERM_CHAR_CACHE.combat_state = false
 end
 
 function esoTERM_char.on_unit_death_state_change(event, unit, is_dead)
