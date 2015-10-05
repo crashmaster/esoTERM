@@ -44,7 +44,11 @@ function esoTERM_pve.get_level_xp_max()
     if ESOTERM_PVE_CACHE.level_xp_max ~= nil then
         return ESOTERM_PVE_CACHE.level_xp_max
     else
-        return GetUnitXPMax(PLAYER_UNIT_TAG)
+        if esoTERM_pve.is_veteran() == false then
+            return GetUnitXPMax(PLAYER_UNIT_TAG)
+        else
+            return GetUnitVeteranPointsMax(PLAYER_UNIT_TAG)
+        end
     end
 end
 

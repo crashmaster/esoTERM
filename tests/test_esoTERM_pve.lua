@@ -216,10 +216,6 @@ describe("Test PvE related data getters.", function()
         ut_helper.stub_function(GLOBAL, "GetUnitLevel", level)
     end
 
-    local function and_character_is_not_veteran()
-        ut_helper.stub_function(esoTERM_pve, "is_veteran", false)
-    end
-
     local function when_get_level_is_called_with_cache()
         results.level = esoTERM_pve.get_level()
     end
@@ -237,7 +233,7 @@ describe("Test PvE related data getters.", function()
     function()
         given_that_cached_character_level_is_not_set()
             and_that_eso_GetUnitLevel_returns(tl.LEVEL_1)
-            and_character_is_not_veteran()
+            tl.and_character_is_not_veteran()
 
         when_get_level_is_called_with_cache()
 
@@ -276,10 +272,6 @@ describe("Test PvE related data getters.", function()
         ut_helper.stub_function(GLOBAL, "GetUnitLevel", level)
     end
 
-    local function and_is_veteran_was_not_called()
-        assert.spy(esoTERM_pve.is_veteran).was_not.called()
-    end
-
     local function and_eso_GetUnitLevel_was_not_called()
         assert.spy(GLOBAL.GetUnitLevel).was_not.called()
     end
@@ -289,12 +281,12 @@ describe("Test PvE related data getters.", function()
     function()
         given_that_cached_character_level_is(tl.LEVEL_1)
             and_that_eso_GetUnitLevel_returns(tl.LEVEL_2)
-            and_character_is_not_veteran()
+            tl.and_character_is_not_veteran()
 
         when_get_level_is_called_with_cache()
 
         then_the_returned_level_was(tl.LEVEL_1)
-            and_is_veteran_was_not_called()
+            tl.and_is_veteran_was_not_called()
             and_eso_GetUnitLevel_was_not_called()
     end)
 
@@ -317,7 +309,7 @@ describe("Test PvE related data getters.", function()
         when_get_level_is_called_with_cache()
 
         then_the_returned_level_was(tl.LEVEL_1)
-            and_is_veteran_was_not_called()
+            tl.and_is_veteran_was_not_called()
             and_eso_GetUnitVeteranRank_was_not_called()
     end)
 
@@ -347,7 +339,7 @@ describe("Test PvE related data getters.", function()
     function()
         given_that_cached_character_level_xp_is_not_set()
             and_that_eso_GetUnitXP_returns(tl.LEVEL_XP_1)
-            and_character_is_not_veteran()
+            tl.and_character_is_not_veteran()
 
         when_get_level_xp_is_called_with_cache()
 
@@ -373,22 +365,18 @@ describe("Test PvE related data getters.", function()
     function()
         given_that_cached_character_level_xp_is(tl.LEVEL_XP_1)
             and_that_eso_GetUnitXP_returns(tl.LEVEL_XP_2)
-            and_character_is_not_veteran()
+            tl.and_character_is_not_veteran()
 
         when_get_level_xp_is_called_with_cache()
 
         then_the_returned_level_xp_was(tl.LEVEL_XP_1)
-            and_is_veteran_was_not_called()
+            tl.and_is_veteran_was_not_called()
             and_eso_GetUnitXP_was_not_called()
     end)
 
     -- {{{
     local function given_that_cached_character_level_xp_max_is_not_set()
         tl.CACHE.level_xp_max = nil
-    end
-
-    local function and_that_eso_GetUnitXPMax_returns(xp)
-        ut_helper.stub_function(GLOBAL, "GetUnitXPMax", xp)
     end
 
     local function when_get_level_xp_max_is_called_with_cache()
@@ -398,49 +386,72 @@ describe("Test PvE related data getters.", function()
     local function then_the_returned_level_xp_max_was(xp)
         assert.is.equal(xp, results.level_xp_max)
     end
-
-    local function and_eso_GetUnitXPMax_was_called_once_with_player()
-        assert.spy(GLOBAL.GetUnitXPMax).was.called_with(PLAYER)
-    end
     -- }}}
 
     it("Query NON-VETERAN CHARACTER LEVEL-XP MAX, when NOT CACHED.",
     function()
         given_that_cached_character_level_xp_max_is_not_set()
-            and_that_eso_GetUnitXPMax_returns(tl.LEVEL_XP_MAX_1)
-            and_character_is_not_veteran()
+            tl.and_that_eso_GetUnitXPMax_returns(tl.LEVEL_XP_MAX_1)
+            tl.and_that_eso_GetUnitVeteranPointsMax_returns(tl.LEVEL_XP_MAX_1)
+            tl.and_character_is_not_veteran()
 
         when_get_level_xp_max_is_called_with_cache()
 
         then_the_returned_level_xp_max_was(tl.LEVEL_XP_MAX_1)
-            and_eso_GetUnitXPMax_was_called_once_with_player()
+            tl.and_is_veteran_was_called()
+            tl.and_eso_GetUnitXPMax_was_called_once_with_player()
+            tl.and_eso_GetUnitVeteranPointsMax_was_not_called()
+    end)
+
+    it("Query VETERAN CHARACTER LEVEL-XP MAX, when NOT CACHED.",
+    function()
+        given_that_cached_character_level_xp_max_is_not_set()
+            tl.and_that_eso_GetUnitXPMax_returns(tl.LEVEL_XP_MAX_1)
+            tl.and_that_eso_GetUnitVeteranPointsMax_returns(tl.LEVEL_XP_MAX_1)
+            tl.and_character_is_veteran()
+
+        when_get_level_xp_max_is_called_with_cache()
+
+        then_the_returned_level_xp_max_was(tl.LEVEL_XP_MAX_1)
+            tl.and_is_veteran_was_called()
+            tl.and_eso_GetUnitXPMax_was_not_called()
+            tl.and_eso_GetUnitVeteranPointsMax_was_called_once_with_player()
     end)
 
     -- {{{
     local function given_that_cached_character_level_xp_max_is(xp)
         tl.CACHE.level_xp_max = xp
     end
-
-    local function and_that_eso_GetUnitXPMax_returns(xp)
-        ut_helper.stub_function(GLOBAL, "GetUnitXPMax", xp)
-    end
-
-    local function and_eso_GetUnitXPMax_was_not_called()
-        assert.spy(GLOBAL.GetUnitXPMax).was_not.called()
-    end
     -- }}}
 
     it("Query NON-VETERAN CHARACTER LEVEL-XP MAX, when CACHED.",
     function()
         given_that_cached_character_level_xp_max_is(tl.LEVEL_XP_MAX_1)
-            and_that_eso_GetUnitXPMax_returns(tl.LEVEL_XP_MAX_2)
-            and_character_is_not_veteran()
+            tl.and_that_eso_GetUnitXPMax_returns(tl.LEVEL_XP_MAX_2)
+            tl.and_that_eso_GetUnitVeteranPointsMax_returns(tl.LEVEL_XP_MAX_2)
+            tl.and_character_is_not_veteran()
 
         when_get_level_xp_max_is_called_with_cache()
 
         then_the_returned_level_xp_max_was(tl.LEVEL_XP_MAX_1)
-            and_is_veteran_was_not_called()
-            and_eso_GetUnitXPMax_was_not_called()
+            tl.and_is_veteran_was_not_called()
+            tl.and_eso_GetUnitXPMax_was_not_called()
+            tl.and_eso_GetUnitVeteranPointsMax_was_not_called()
+    end)
+
+    it("Query VETERAN CHARACTER LEVEL-XP MAX, when CACHED.",
+    function()
+        given_that_cached_character_level_xp_max_is(tl.LEVEL_XP_MAX_1)
+            tl.and_that_eso_GetUnitXPMax_returns(tl.LEVEL_XP_MAX_2)
+            tl.and_that_eso_GetUnitVeteranPointsMax_returns(tl.LEVEL_XP_MAX_2)
+            tl.and_character_is_veteran()
+
+        when_get_level_xp_max_is_called_with_cache()
+
+        then_the_returned_level_xp_max_was(tl.LEVEL_XP_MAX_1)
+            tl.and_is_veteran_was_not_called()
+            tl.and_eso_GetUnitXPMax_was_not_called()
+            tl.and_eso_GetUnitVeteranPointsMax_was_not_called()
     end)
 
     -- {{{
