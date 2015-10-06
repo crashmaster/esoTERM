@@ -212,10 +212,6 @@ describe("Test PvE related data getters.", function()
         tl.CACHE.level = nil
     end
 
-    local function and_that_eso_GetUnitLevel_returns(level)
-        ut_helper.stub_function(GLOBAL, "GetUnitLevel", level)
-    end
-
     local function when_get_level_is_called_with_cache()
         results.level = esoTERM_pve.get_level()
     end
@@ -223,94 +219,62 @@ describe("Test PvE related data getters.", function()
     local function then_the_returned_level_was(level)
         assert.is.equal(level, results.level)
     end
-
-    local function and_eso_GetUnitLevel_was_called_once_with_player()
-        assert.spy(GLOBAL.GetUnitLevel).was.called_with(PLAYER)
-    end
     -- }}}
 
     it("Query NON-VETERAN CHARACTER LEVEL, when NOT CACHED.",
     function()
         given_that_cached_character_level_is_not_set()
-            and_that_eso_GetUnitLevel_returns(tl.LEVEL_1)
+            tl.and_that_eso_GetUnitLevel_returns(tl.LEVEL_1)
             tl.and_character_is_not_veteran()
 
         when_get_level_is_called_with_cache()
 
         then_the_returned_level_was(tl.LEVEL_1)
-            and_eso_GetUnitLevel_was_called_once_with_player()
+            tl.and_eso_GetUnitLevel_was_called_once_with_player()
     end)
-
-    -- {{{
-    local function and_that_eso_GetUnitVeteranRank_returns(level)
-        ut_helper.stub_function(GLOBAL, "GetUnitVeteranRank", level)
-    end
-
-    local function and_eso_GetUnitVeteranRank_was_called_once_with_player()
-        assert.spy(GLOBAL.GetUnitVeteranRank).was.called_with(PLAYER)
-    end
-    -- }}}
 
     it("Query VETERAN CHARACTER LEVEL, when NOT CACHED.",
     function()
         given_that_cached_character_level_is_not_set()
-            and_that_eso_GetUnitVeteranRank_returns(tl.LEVEL_1)
+            tl.and_that_eso_GetUnitVeteranRank_returns(tl.LEVEL_1)
             tl.and_character_is_veteran()
 
         when_get_level_is_called_with_cache()
 
         then_the_returned_level_was(tl.LEVEL_1)
-            and_eso_GetUnitVeteranRank_was_called_once_with_player()
+            tl.and_eso_GetUnitVeteranRank_was_called_once_with_player()
     end)
 
     -- {{{
     local function given_that_cached_character_level_is(level)
         tl.CACHE.level = level
     end
-
-    local function and_that_eso_GetUnitLevel_returns(level)
-        ut_helper.stub_function(GLOBAL, "GetUnitLevel", level)
-    end
-
-    local function and_eso_GetUnitLevel_was_not_called()
-        assert.spy(GLOBAL.GetUnitLevel).was_not.called()
-    end
     -- }}}
 
     it("Query NON-VETERAN CHARACTER LEVEL, when CACHED.",
     function()
         given_that_cached_character_level_is(tl.LEVEL_1)
-            and_that_eso_GetUnitLevel_returns(tl.LEVEL_2)
+            tl.and_that_eso_GetUnitLevel_returns(tl.LEVEL_2)
             tl.and_character_is_not_veteran()
 
         when_get_level_is_called_with_cache()
 
         then_the_returned_level_was(tl.LEVEL_1)
             tl.and_is_veteran_was_not_called()
-            and_eso_GetUnitLevel_was_not_called()
+            tl.and_eso_GetUnitLevel_was_not_called()
     end)
-
-    -- {{{
-    local function and_that_eso_GetUnitVeteranRank_returns(level)
-        ut_helper.stub_function(GLOBAL, "GetUnitVeteranRank", level)
-    end
-
-    local function and_eso_GetUnitVeteranRank_was_not_called()
-        assert.spy(GLOBAL.GetUnitVeteranRank).was_not.called()
-    end
-    -- }}}
 
     it("Query VETERAN CHARACTER LEVEL, when CACHED.",
     function()
         given_that_cached_character_level_is(tl.LEVEL_1)
-            and_that_eso_GetUnitVeteranRank_returns(tl.LEVEL_2)
+            tl.and_that_eso_GetUnitVeteranRank_returns(tl.LEVEL_2)
             tl.and_character_is_veteran()
 
         when_get_level_is_called_with_cache()
 
         then_the_returned_level_was(tl.LEVEL_1)
             tl.and_is_veteran_was_not_called()
-            and_eso_GetUnitVeteranRank_was_not_called()
+            tl.and_eso_GetUnitVeteranRank_was_not_called()
     end)
 
     -- {{{

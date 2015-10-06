@@ -340,4 +340,32 @@ function test_esoTERM_pve_library.and_eso_GetUnitVeteranPointsMax_was_not_called
 end
 -- }}}
 
+-- GetUnitLevel {{{
+function test_esoTERM_pve_library.and_that_eso_GetUnitLevel_returns(level)
+    test_library.stub_function_with_return_value(GLOBAL, "GetUnitLevel", level)
+end
+
+function test_esoTERM_pve_library.and_eso_GetUnitLevel_was_called_once_with_player()
+    assert.spy(GLOBAL.GetUnitLevel).was.called_with(PLAYER)
+end
+
+function test_esoTERM_pve_library.and_eso_GetUnitLevel_was_not_called()
+    assert.spy(GLOBAL.GetUnitLevel).was_not.called()
+end
+-- }}}
+
+-- GetUnitVeteranRank {{{
+function test_esoTERM_pve_library.and_that_eso_GetUnitVeteranRank_returns(level)
+    test_library.stub_function_with_return_value(GLOBAL, "GetUnitVeteranRank", level)
+end
+
+function test_esoTERM_pve_library.and_eso_GetUnitVeteranRank_was_called_once_with_player()
+    assert.spy(GLOBAL.GetUnitVeteranRank).was.called_with(PLAYER)
+end
+
+function test_esoTERM_pve_library.and_eso_GetUnitVeteranRank_was_not_called()
+    assert.spy(GLOBAL.GetUnitVeteranRank).was_not.called()
+end
+-- }}}
+
 return test_esoTERM_pve_library
