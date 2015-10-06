@@ -36,7 +36,11 @@ function esoTERM_pve.get_level_xp()
     if ESOTERM_PVE_CACHE.level_xp ~= nil then
         return ESOTERM_PVE_CACHE.level_xp
     else
-        return GetUnitXP(PLAYER_UNIT_TAG)
+        if esoTERM_pve.is_veteran() == false then
+            return GetUnitXP(PLAYER_UNIT_TAG)
+        else
+            return GetUnitVeteranPoints(PLAYER_UNIT_TAG)
+        end
     end
 end
 

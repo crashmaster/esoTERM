@@ -9,6 +9,8 @@ this.A_BOOL = true
 this.B_BOOL = false
 this.A_INTEGER = 1111
 this.B_INTEGER = 2222
+this.C_INTEGER = 3333
+this.D_INTEGER = 4444
 this.A_STRING = "aAaAa"
 this.B_STRING = "bBbBb"
 

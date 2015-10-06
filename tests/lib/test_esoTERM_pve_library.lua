@@ -12,8 +12,12 @@ test_esoTERM_pve_library.LEVEL_1 = test_library.A_INTEGER
 test_esoTERM_pve_library.LEVEL_2 = test_library.B_INTEGER
 test_esoTERM_pve_library.LEVEL_XP_1 = test_library.A_INTEGER
 test_esoTERM_pve_library.LEVEL_XP_2 = test_library.B_INTEGER
+test_esoTERM_pve_library.LEVEL_VP_1 = test_library.C_INTEGER
+test_esoTERM_pve_library.LEVEL_VP_2 = test_library.D_INTEGER
 test_esoTERM_pve_library.LEVEL_XP_MAX_1 = test_library.A_INTEGER
 test_esoTERM_pve_library.LEVEL_XP_MAX_2 = test_library.B_INTEGER
+test_esoTERM_pve_library.LEVEL_VP_MAX_1 = test_library.C_INTEGER
+test_esoTERM_pve_library.LEVEL_VP_MAX_2 = test_library.D_INTEGER
 test_esoTERM_pve_library.LEVEL_XP_PERCENT = test_library.A_INTEGER
 test_esoTERM_pve_library.LEVEL_XP_GAIN = test_library.A_INTEGER
 
@@ -279,6 +283,34 @@ function test_esoTERM_pve_library.and_module_is_inactive_was_saved()
     assert.is.equal(esoTERM_pve.settings[MODULE_NAME], false)
 end
 -- }}}
+
+-- GetUnitXP {{{
+function test_esoTERM_pve_library.and_that_eso_GetUnitXP_returns(xp)
+    test_library.stub_function_with_return_value(GLOBAL, "GetUnitXP", xp)
+end
+
+function test_esoTERM_pve_library.and_eso_GetUnitXP_was_called_once_with_player()
+    assert.spy(GLOBAL.GetUnitXP).was.called_with(PLAYER)
+end
+
+function test_esoTERM_pve_library.and_eso_GetUnitXP_was_not_called()
+    assert.spy(GLOBAL.GetUnitXP).was_not.called()
+end
+-- }}}
+
+--  GetUnitVeteranPoints {{{
+function test_esoTERM_pve_library.and_that_eso_GetUnitVeteranPoints_returns(xp)
+    test_library.stub_function_with_return_value(GLOBAL, "GetUnitVeteranPoints", xp)
+end
+
+function test_esoTERM_pve_library.and_eso_GetUnitVeteranPoints_was_called_once_with_player()
+    assert.spy(GLOBAL.GetUnitVeteranPoints).was.called_with(PLAYER)
+end
+
+function test_esoTERM_pve_library.and_eso_GetUnitVeteranPoints_was_not_called()
+    assert.spy(GLOBAL.GetUnitVeteranPoints).was_not.called()
+end
+--  }}}
 
 -- GetUnitXPMax {{{
 function test_esoTERM_pve_library.and_that_eso_GetUnitXPMax_returns(xp)
