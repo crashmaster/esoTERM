@@ -9,6 +9,7 @@ local and_module_became_active = tl.and_module_became_active
 local and_module_is_active_was_saved = tl.and_module_is_active_was_saved
 local and_module_is_inactive_was_saved = tl.and_module_is_inactive_was_saved
 local and_register_for_event_was_called_with_expected_parameters = tl.and_register_for_event_was_called_with_expected_parameters
+local and_register_for_event_was_not_called = tl.and_register_for_event_was_not_called
 local and_register_module_was_called = tl.and_register_module_was_called
 local and_register_module_was_called = tl.and_register_module_was_called
 local and_that_cache_is_empty = tl.and_that_cache_is_empty
@@ -546,7 +547,7 @@ describe("The on combat-state-change event handler.", function()
         assert.spy(esoTERM_output.stdout).was.called_with(message)
     end
 
-    local function then_the_and_cached_combat_state_became(combat_state)
+    local function then_cached_combat_state_became(combat_state)
         assert.is.equal(combat_state, tl.CACHE.combat_state)
     end
 
@@ -571,7 +572,7 @@ describe("The on combat-state-change event handler.", function()
 
         when_on_combat_state_update_is_called_with(EVENT, IN_COMBAT)
 
-        then_the_and_cached_combat_state_became(IN_COMBAT)
+        then_cached_combat_state_became(IN_COMBAT)
             and_eso_GetGameTimeMilliseconds_was_called()
             and_cached_combat_start_time_became(ENTER_TIME)
             and_cached_combat_damage_became(0)
@@ -593,7 +594,7 @@ describe("The on combat-state-change event handler.", function()
     end
     -- }}}
 
-    it("Character enters combat.", function()
+    it("Call enter combat handler on in-combat event.", function()
         given_that_cached_last_reported_combat_state_is_nil()
             tl.and_that_esoTERM_char_enter_combat_is_stubbed()
             tl.and_that_eso_zo_callLater_is_stubbed()
@@ -605,7 +606,7 @@ describe("The on combat-state-change event handler.", function()
             tl.and_eso_zo_callLater_was_not_called()
     end)
 
-    it("Character enters combat.", function()
+    it("Call exit combat handler on out-of-combat event.", function()
         given_that_cached_last_reported_combat_state_is_nil()
             tl.and_that_esoTERM_char_enter_combat_is_stubbed()
             tl.and_that_eso_zo_callLater_is_stubbed()
@@ -615,6 +616,63 @@ describe("The on combat-state-change event handler.", function()
         then_cached_last_reported_combat_state_became(OUT_OF_COMBAT)
             tl.and_esoTERM_char_enter_combat_was_not_called()
             tl.and_eso_zo_callLater_was_called_with(esoTERM_char.exit_combat, 500)
+    end)
+
+    -- {{{
+    local function given_that_cached_combat_state_is_nil()
+        if tl.CACHE.combat_state ~= nil then
+            assert.is_true(false)
+        else
+            assert.is_true(true)
+        end
+    end
+
+    local function when_enter_combat_is_called()
+        esoTERM_char.enter_combat()
+    end
+    -- }}}
+
+    it("Enter combat handler.", function()
+        given_that_cached_combat_state_is_nil()
+            and_that_eso_GetGameTimeMilliseconds_returns(ENTER_TIME)
+            and_that_event_manager_register_for_event_is_stubbed()
+            and_that_esoTERM_output_stdout_is_stubbed()
+
+        when_enter_combat_is_called()
+
+        then_cached_combat_state_became(IN_COMBAT)
+            and_eso_GetGameTimeMilliseconds_was_called()
+            and_cached_combat_start_time_became(ENTER_TIME)
+            and_cached_combat_damage_became(0)
+            and_combat_event_handler_was_registered()
+            and_esoTERM_output_stdout_was_called_with(get_enter_combat_message())
+    end)
+
+    -- {{{
+    local function given_that_cached_combat_state_is_true()
+        tl.CACHE.combat_state = true
+    end
+
+    local function then_eso_GetGameTimeMilliseconds_was_not_called()
+        assert.spy(GLOBAL.GetGameTimeMilliseconds).was_not.called()
+    end
+
+    local function and_esoTERM_output_stdout_was_not_called()
+        assert.spy(esoTERM_output.stdout).was_not.called()
+    end
+    -- }}}
+
+    it("Enter combat handler returns when already in combat", function()
+        given_that_cached_combat_state_is_true()
+            and_that_eso_GetGameTimeMilliseconds_returns(ENTER_TIME)
+            and_that_event_manager_register_for_event_is_stubbed()
+            and_that_esoTERM_output_stdout_is_stubbed()
+
+        when_enter_combat_is_called()
+
+        then_eso_GetGameTimeMilliseconds_was_not_called()
+            and_register_for_event_was_not_called()
+            and_esoTERM_output_stdout_was_not_called()
     end)
 
     -- {{{
@@ -667,7 +725,7 @@ describe("The on combat-state-change event handler.", function()
 
         when_on_combat_state_update_is_called_with(EVENT, OUT_OF_COMBAT)
 
-        then_the_and_cached_combat_state_became(OUT_OF_COMBAT)
+        then_cached_combat_state_became(OUT_OF_COMBAT)
             and_get_combat_start_time_was_called()
             and_eso_GetGameTimeMilliseconds_was_called()
             and_cached_combat_lenght_became(EXIT_TIME - ENTER_TIME)
@@ -675,6 +733,36 @@ describe("The on combat-state-change event handler.", function()
             and_cached_combat_start_time_became(0)
             and_cached_combat_damage_became(0)
             and_esoTERM_output_stdout_was_called_with(get_exit_combat_message())
+    end)
+
+    -- {{{
+    local function get_exit_one_hit_combat_message()
+        return string.format(
+            "Left combat (lasted: %.2fs, damage: %d, dps: %.2f)",
+            (EXIT_TIME_ONE_HIT - ENTER_TIME - EXIT_COMBAT_CALL_DELAY) / 1000,
+            DAMAGE,
+            DAMAGE)
+    end
+    -- }}}
+
+    it("Onehit the enemy.", function()
+        given_that_get_combat_state_returns(IN_COMBAT)
+            and_that_get_combat_start_time_returns(ENTER_TIME)
+            and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME_ONE_HIT)
+            and_that_event_manager_unregister_from_event_is_stubbed()
+            and_that_cached_combat_start_time_is(ENTER_TIME)
+            and_that_cached_combat_damage_is(DAMAGE)
+            and_that_esoTERM_output_stdout_is_stubbed()
+
+        when_on_combat_state_update_is_called_with(EVENT, OUT_OF_COMBAT)
+
+        then_cached_combat_state_became(OUT_OF_COMBAT)
+            and_get_combat_start_time_was_called()
+            and_cached_combat_lenght_became(EXIT_TIME_ONE_HIT - ENTER_TIME)
+            and_combat_event_handler_was_unregistered()
+            and_cached_combat_start_time_became(0)
+            and_cached_combat_damage_became(0)
+            and_esoTERM_output_stdout_was_called_with(get_exit_one_hit_combat_message())
     end)
 
     -- {{{
@@ -739,57 +827,6 @@ describe("The on combat-state-change event handler.", function()
             and_esoTERM_output_stdout_was_called_with("Resurrected, watch out next time!")
             and_IsUnitInCombat_was_called_once()
             and_cached_combat_state_became(IN_COMBAT)
-    end)
-
-    -- {{{
-    local function get_exit_one_hit_combat_message()
-        return string.format(
-            "Left combat (lasted: %.2fs, damage: %d, dps: %.2f)",
-            (EXIT_TIME_ONE_HIT - ENTER_TIME - EXIT_COMBAT_CALL_DELAY) / 1000,
-            DAMAGE,
-            DAMAGE)
-    end
-    -- }}}
-
-    it("Onehit the enemy.", function()
-        given_that_get_combat_state_returns(IN_COMBAT)
-            and_that_get_combat_start_time_returns(ENTER_TIME)
-            and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME_ONE_HIT)
-            and_that_event_manager_unregister_from_event_is_stubbed()
-            and_that_cached_combat_start_time_is(ENTER_TIME)
-            and_that_cached_combat_damage_is(DAMAGE)
-            and_that_esoTERM_output_stdout_is_stubbed()
-
-        when_on_combat_state_update_is_called_with(EVENT, OUT_OF_COMBAT)
-
-        then_the_and_cached_combat_state_became(OUT_OF_COMBAT)
-            and_get_combat_start_time_was_called()
-            and_cached_combat_lenght_became(EXIT_TIME_ONE_HIT - ENTER_TIME)
-            and_combat_event_handler_was_unregistered()
-            and_cached_combat_start_time_became(0)
-            and_cached_combat_damage_became(0)
-            and_esoTERM_output_stdout_was_called_with(get_exit_one_hit_combat_message())
-    end)
-
-    -- {{{
-    local function then_esoTERM_output_stdout_was_not_called()
-        assert.spy(esoTERM_output.stdout).was_not.called()
-    end
-
-    local function and_eso_GetGameTimeMilliseconds_was_not_called()
-        assert.spy(GLOBAL.GetGameTimeMilliseconds).was_not.called()
-    end
-    -- }}}
-
-    it("No combat-state-change, when already having that state", function()
-        given_that_get_combat_state_returns(OUT_OF_COMBAT)
-            and_that_esoTERM_output_stdout_is_stubbed()
-            and_that_eso_GetGameTimeMilliseconds_returns(nil)
-
-        when_on_combat_state_update_is_called_with(EVENT, OUT_OF_COMBAT)
-
-        then_esoTERM_output_stdout_was_not_called()
-            and_eso_GetGameTimeMilliseconds_was_not_called()
     end)
 end)
 
