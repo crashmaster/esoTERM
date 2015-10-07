@@ -502,6 +502,7 @@ describe("The on combat-state-change event handler.", function()
     local DAMAGE = 9000
 
     after_each(function()
+        tl.CACHE.last_reported_combat_state = nil
         tl.CACHE.combat_state = nil
         tl.CACHE.combat_start_time = -1
         tl.CACHE.combat_lenght = 0
@@ -576,6 +577,44 @@ describe("The on combat-state-change event handler.", function()
             and_cached_combat_damage_became(0)
             and_combat_event_handler_was_registered()
             and_esoTERM_output_stdout_was_called_with(get_enter_combat_message())
+    end)
+
+    -- {{{
+    local function given_that_cached_last_reported_combat_state_is_nil()
+        if tl.CACHE.last_reported_combat_state ~= nil then
+            assert.is_true(false)
+        else
+            assert.is_true(true)
+        end
+    end
+
+    local function then_cached_last_reported_combat_state_became(state)
+        assert.is.equal(state, tl.CACHE.last_reported_combat_state)
+    end
+    -- }}}
+
+    it("Character enters combat.", function()
+        given_that_cached_last_reported_combat_state_is_nil()
+            tl.and_that_esoTERM_char_enter_combat_is_stubbed()
+            tl.and_that_eso_zo_callLater_is_stubbed()
+
+        when_on_combat_state_update_is_called_with(EVENT, IN_COMBAT)
+
+        then_cached_last_reported_combat_state_became(IN_COMBAT)
+            tl.and_esoTERM_char_enter_combat_was_called()
+            tl.and_eso_zo_callLater_was_not_called()
+    end)
+
+    it("Character enters combat.", function()
+        given_that_cached_last_reported_combat_state_is_nil()
+            tl.and_that_esoTERM_char_enter_combat_is_stubbed()
+            tl.and_that_eso_zo_callLater_is_stubbed()
+
+        when_on_combat_state_update_is_called_with(EVENT, OUT_OF_COMBAT)
+
+        then_cached_last_reported_combat_state_became(OUT_OF_COMBAT)
+            tl.and_esoTERM_char_enter_combat_was_not_called()
+            tl.and_eso_zo_callLater_was_called_with(esoTERM_char.exit_combat, 500)
     end)
 
     -- {{{

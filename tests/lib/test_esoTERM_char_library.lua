@@ -203,6 +203,34 @@ function test_esoTERM_char_library.and_module_is_inactive_was_saved()
 end
 -- }}}
 
+-- enter_combat {{{
+function test_esoTERM_char_library.and_that_esoTERM_char_enter_combat_is_stubbed()
+    test_library.stub_function_with_no_return_value(esoTERM_char, "enter_combat")
+end
+
+function test_esoTERM_char_library.and_esoTERM_char_enter_combat_was_called()
+    test_library.stub_function_called_without_arguments(esoTERM_char.enter_combat)
+end
+
+function test_esoTERM_char_library.and_esoTERM_char_enter_combat_was_not_called()
+    test_library.stub_function_was_not_called(esoTERM_char.enter_combat)
+end
+-- }}}
+
+-- zo_callLater {{{
+function test_esoTERM_char_library.and_that_eso_zo_callLater_is_stubbed()
+    test_library.stub_function_with_no_return_value(GLOBAL, "zo_callLater")
+end
+
+function test_esoTERM_char_library.and_eso_zo_callLater_was_called_with(...)
+    test_library.stub_function_called_with_arguments(GLOBAL.zo_callLater, ...)
+end
+
+function test_esoTERM_char_library.and_eso_zo_callLater_was_not_called()
+    test_library.stub_function_was_not_called(GLOBAL.zo_callLater)
+end
+-- }}}
+
 return test_esoTERM_char_library
 
 -- vim:fdm=marker
