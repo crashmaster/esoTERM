@@ -128,7 +128,7 @@ describe("Test PvP related data getters.", function()
         tl.CACHE.ava_points = nil
     end
 
-    local function and_that_eso_GetUnitAvARankPoints_returns(points)
+    local function and_that_GetUnitAvARankPoints_returns(points)
         ut_helper.stub_function(GLOBAL, "GetUnitAvARankPoints", points)
     end
 
@@ -140,7 +140,7 @@ describe("Test PvP related data getters.", function()
         assert.is.equal(points, results.ava_points)
     end
 
-    local function and_eso_GetUnitAvARankPoints_was_called_once_with_player()
+    local function and_GetUnitAvARankPoints_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitAvARankPoints).was.called_with(PLAYER)
     end
     -- }}}
@@ -148,12 +148,12 @@ describe("Test PvP related data getters.", function()
     it("Query CHARACTER AvA-POINTS, when NOT CACHED.",
     function()
         given_that_cached_character_ava_points_is_not_set()
-            and_that_eso_GetUnitAvARankPoints_returns(tl.AVA_POINTS_1)
+            and_that_GetUnitAvARankPoints_returns(tl.AVA_POINTS_1)
 
         when_get_ava_points_is_called_with_cache()
 
         then_the_returned_character_ava_points_was(tl.AVA_POINTS_1)
-            and_eso_GetUnitAvARankPoints_was_called_once_with_player()
+            and_GetUnitAvARankPoints_was_called_once_with_player()
     end)
 
     -- {{{
@@ -161,7 +161,7 @@ describe("Test PvP related data getters.", function()
         tl.CACHE.ava_points = points
     end
 
-    local function and_eso_GetUnitAvARankPoints_was_not_called()
+    local function and_GetUnitAvARankPoints_was_not_called()
         assert.spy(GLOBAL.GetUnitAvARankPoints).was_not.called()
     end
     -- }}}
@@ -169,12 +169,12 @@ describe("Test PvP related data getters.", function()
     it("Query CHARACTER AvA-POINTS, when CACHED.",
     function()
         given_that_cached_character_ava_points_is(tl.AVA_POINTS_1)
-            and_that_eso_GetUnitAvARankPoints_returns(tl.AVA_POINTS_2)
+            and_that_GetUnitAvARankPoints_returns(tl.AVA_POINTS_2)
 
         when_get_ava_points_is_called_with_cache()
 
         then_the_returned_character_ava_points_was(tl.AVA_POINTS_1)
-            and_eso_GetUnitAvARankPoints_was_not_called()
+            and_GetUnitAvARankPoints_was_not_called()
     end)
 
     -- {{{
@@ -182,7 +182,7 @@ describe("Test PvP related data getters.", function()
         tl.CACHE.ava_rank = nil
     end
 
-    local function and_that_eso_GetUnitAvARank_returns(rank, sub_rank)
+    local function and_that_GetUnitAvARank_returns(rank, sub_rank)
         ut_helper.stub_function(GLOBAL, "GetUnitAvARank", rank, sub_rank)
     end
 
@@ -194,7 +194,7 @@ describe("Test PvP related data getters.", function()
         assert.is.equal(rank, results.ava_rank)
     end
 
-    local function and_eso_GetUnitAvARank_was_called_once_with_player()
+    local function and_GetUnitAvARank_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitAvARank).was.called_with(PLAYER)
     end
     -- }}}
@@ -202,12 +202,12 @@ describe("Test PvP related data getters.", function()
     it("Query CHARACTER AvA-RANK, when NOT CACHED.",
     function()
         given_that_cached_character_ava_rank_is_not_set()
-            and_that_eso_GetUnitAvARank_returns(tl.AVA_RANK_1, tl.AVA_SUB_RANK_1)
+            and_that_GetUnitAvARank_returns(tl.AVA_RANK_1, tl.AVA_SUB_RANK_1)
 
         when_get_ava_rank_is_called_with_cache()
 
         then_the_returned_character_ava_rank_was(tl.AVA_RANK_1)
-            and_eso_GetUnitAvARank_was_called_once_with_player()
+            and_GetUnitAvARank_was_called_once_with_player()
     end)
 
     -- {{{
@@ -215,11 +215,11 @@ describe("Test PvP related data getters.", function()
         tl.CACHE.ava_rank = rank
     end
 
-    local function and_that_eso_GetUnitAvARank_returns(rank, sub_rank)
+    local function and_that_GetUnitAvARank_returns(rank, sub_rank)
         ut_helper.stub_function(GLOBAL, "GetUnitAvARank", rank, sub_rank)
     end
 
-    local function and_eso_GetUnitAvARank_was_not_called()
+    local function and_GetUnitAvARank_was_not_called()
         assert.spy(GLOBAL.GetUnitAvARank).was_not.called()
     end
     -- }}}
@@ -227,12 +227,12 @@ describe("Test PvP related data getters.", function()
     it("Query CHARACTER AvA-RANK, when CACHED.",
     function()
         given_that_cached_character_ava_rank_is(tl.AVA_RANK_1)
-            and_that_eso_GetUnitAvARank_returns(tl.AVA_RANK_2, tl.AVA_SUB_RANK_2)
+            and_that_GetUnitAvARank_returns(tl.AVA_RANK_2, tl.AVA_SUB_RANK_2)
 
         when_get_ava_rank_is_called_with_cache()
 
         then_the_returned_character_ava_rank_was(tl.AVA_RANK_1)
-            and_eso_GetUnitAvARank_was_not_called()
+            and_GetUnitAvARank_was_not_called()
     end)
 
     -- {{{
@@ -240,7 +240,7 @@ describe("Test PvP related data getters.", function()
         tl.CACHE.ava_sub_rank = nil
     end
 
-    local function and_that_eso_GetUnitAvARank_returns(rank, sub_rank)
+    local function and_that_GetUnitAvARank_returns(rank, sub_rank)
         ut_helper.stub_function(GLOBAL, "GetUnitAvARank", rank, sub_rank)
     end
 
@@ -252,7 +252,7 @@ describe("Test PvP related data getters.", function()
         assert.is.equal(sub_rank, results.ava_sub_rank)
     end
 
-    local function and_eso_GetUnitAvARank_was_called_once_with_player()
+    local function and_GetUnitAvARank_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitAvARank).was.called_with(PLAYER)
     end
     -- }}}
@@ -260,12 +260,12 @@ describe("Test PvP related data getters.", function()
     it("Query CHARACTER AvA-SUB-RANK, when NOT CACHED.",
     function()
         given_that_cached_character_ava_sub_rank_is_not_set()
-            and_that_eso_GetUnitAvARank_returns(tl.AVA_RANK_1, tl.AVA_SUB_RANK_1)
+            and_that_GetUnitAvARank_returns(tl.AVA_RANK_1, tl.AVA_SUB_RANK_1)
 
         when_get_ava_sub_rank_is_called_with_cache()
 
         then_the_returned_character_ava_sub_rank_was(tl.AVA_SUB_RANK_1)
-            and_eso_GetUnitAvARank_was_called_once_with_player()
+            and_GetUnitAvARank_was_called_once_with_player()
     end)
 
     -- {{{
@@ -273,11 +273,11 @@ describe("Test PvP related data getters.", function()
         tl.CACHE.ava_sub_rank = sub_rank
     end
 
-    local function and_that_eso_GetUnitAvARank_returns(rank, sub_rank)
+    local function and_that_GetUnitAvARank_returns(rank, sub_rank)
         ut_helper.stub_function(GLOBAL, "GetUnitAvARank", rank, sub_rank)
     end
 
-    local function and_eso_GetUnitAvARank_was_not_called()
+    local function and_GetUnitAvARank_was_not_called()
         assert.spy(GLOBAL.GetUnitAvARank).was_not.called()
     end
     -- }}}
@@ -285,12 +285,12 @@ describe("Test PvP related data getters.", function()
     it("Query CHARACTER AvA-SUB-RANK, when CACHED.",
     function()
         given_that_cached_character_ava_sub_rank_is(tl.AVA_SUB_RANK_1)
-            and_that_eso_GetUnitAvARank_returns(tl.AVA_RANK_2, tl.AVA_SUB_RANK_2)
+            and_that_GetUnitAvARank_returns(tl.AVA_RANK_2, tl.AVA_SUB_RANK_2)
 
         when_get_ava_sub_rank_is_called_with_cache()
 
         then_the_returned_character_ava_sub_rank_was(tl.AVA_SUB_RANK_1)
-            and_eso_GetUnitAvARank_was_not_called()
+            and_GetUnitAvARank_was_not_called()
     end)
 
     -- {{{
@@ -298,7 +298,7 @@ describe("Test PvP related data getters.", function()
         tl.CACHE.ava_rank_name = nil
     end
 
-    local function and_that_eso_GetAvARankName_returns(name)
+    local function and_that_GetAvARankName_returns(name)
         ut_helper.stub_function(GLOBAL, "GetAvARankName", name)
     end
 
@@ -318,7 +318,7 @@ describe("Test PvP related data getters.", function()
         assert.is.equal(rank, results.ava_rank_name)
     end
 
-    local function and_eso_GetAvARankName_was_called_once_with(gender, rank)
+    local function and_GetAvARankName_was_called_once_with(gender, rank)
         assert.spy(GLOBAL.GetAvARankName).was.called_with(gender, rank)
     end
 
@@ -334,14 +334,14 @@ describe("Test PvP related data getters.", function()
     it("Query CHARACTER AvA-RANK-NAME, when NOT CACHED.",
     function()
         given_that_cached_character_ava_rank_name_is_not_set()
-            and_that_eso_GetAvARankName_returns(tl.AVA_RANK_NAME_1)
+            and_that_GetAvARankName_returns(tl.AVA_RANK_NAME_1)
             and_that_get_gender_returns(GENDER_1)
             and_that_get_ava_rank_returns(tl.AVA_RANK_1)
 
         when_get_ava_rank_name_is_called_with_cache()
 
         then_the_returned_character_ava_rank_name_was(tl.AVA_RANK_NAME_1)
-            and_eso_GetAvARankName_was_called_once_with(GENDER_1, tl.AVA_RANK_1)
+            and_GetAvARankName_was_called_once_with(GENDER_1, tl.AVA_RANK_1)
             and_get_gender_was_called_once_with_cache()
             and_get_ava_rank_was_called_once_with_cache()
     end)
@@ -351,11 +351,11 @@ describe("Test PvP related data getters.", function()
         tl.CACHE.ava_rank_name = name
     end
 
-    local function and_that_eso_GetAvARankName_returns(name)
+    local function and_that_GetAvARankName_returns(name)
         ut_helper.stub_function(GLOBAL, "GetAvARankName", name)
     end
 
-    local function and_eso_GetAvARankName_was_not_called()
+    local function and_GetAvARankName_was_not_called()
         assert.spy(GLOBAL.GetAvARankName).was_not.called()
     end
 
@@ -371,14 +371,14 @@ describe("Test PvP related data getters.", function()
     it("Query CHARACTER AvA-RANK-NAME, when CACHED.",
     function()
         given_that_cached_character_ava_rank_name_is(tl.AVA_RANK_NAME_1)
-            and_that_eso_GetAvARankName_returns(tl.AVA_RANK_NAME_2)
+            and_that_GetAvARankName_returns(tl.AVA_RANK_NAME_2)
             and_that_get_gender_returns(GENDER_1)
             and_that_get_ava_rank_returns(tl.AVA_RANK_1)
 
         when_get_ava_rank_name_is_called_with_cache()
 
         then_the_returned_character_ava_rank_name_was(tl.AVA_RANK_NAME_1)
-            and_eso_GetAvARankName_was_not_called()
+            and_GetAvARankName_was_not_called()
             and_get_gender_was_not_called()
             and_get_ava_rank_was_not_called()
     end)
@@ -642,7 +642,7 @@ describe("Test PvP related data getters.", function()
         tl.CACHE.ava_rank_points_lb = nil
     end
 
-    local function and_that_eso_GetNumPointsNeededForAvARank_returns(point)
+    local function and_that_GetNumPointsNeededForAvARank_returns(point)
         ut_helper.stub_function(GLOBAL, "GetNumPointsNeededForAvARank", point)
     end
 
@@ -654,7 +654,7 @@ describe("Test PvP related data getters.", function()
         assert.is.equal(point, results.ava_rank_points_lb)
     end
 
-    local function and_eso_GetNumPointsNeededForAvARank_was_called_once_with(rank)
+    local function and_GetNumPointsNeededForAvARank_was_called_once_with(rank)
         assert.spy(GLOBAL.GetNumPointsNeededForAvARank).was.called_with(rank)
     end
     -- }}}
@@ -663,13 +663,13 @@ describe("Test PvP related data getters.", function()
     function()
         given_that_cached_character_ava_rank_points_lb_is_not_set()
             and_that_get_ava_rank_returns(tl.AVA_RANK_1)
-            and_that_eso_GetNumPointsNeededForAvARank_returns(tl.AVA_RANK_POINTS_LB_1)
+            and_that_GetNumPointsNeededForAvARank_returns(tl.AVA_RANK_POINTS_LB_1)
 
         when_get_ava_rank_points_lb_is_called_with_cache()
 
         then_the_returned_character_ava_rank_points_lb_was(tl.AVA_RANK_POINTS_LB_1)
             and_get_ava_rank_was_called_once_with_cache()
-            and_eso_GetNumPointsNeededForAvARank_was_called_once_with(tl.AVA_RANK_1)
+            and_GetNumPointsNeededForAvARank_was_called_once_with(tl.AVA_RANK_1)
     end)
 
     -- {{{
@@ -677,7 +677,7 @@ describe("Test PvP related data getters.", function()
         tl.CACHE.ava_rank_points_lb = point
     end
 
-    local function and_eso_GetNumPointsNeededForAvARank_was_not_called()
+    local function and_GetNumPointsNeededForAvARank_was_not_called()
         assert.spy(GLOBAL.GetNumPointsNeededForAvARank).was_not.called()
     end
     -- }}}
@@ -686,13 +686,13 @@ describe("Test PvP related data getters.", function()
     function()
         given_that_cached_character_ava_rank_points_lb_is(tl.AVA_RANK_POINTS_LB_1)
             and_that_get_ava_rank_returns(tl.AVA_RANK_1)
-            and_that_eso_GetNumPointsNeededForAvARank_returns(tl.AVA_RANK_POINTS_LB_2)
+            and_that_GetNumPointsNeededForAvARank_returns(tl.AVA_RANK_POINTS_LB_2)
 
         when_get_ava_rank_points_lb_is_called_with_cache()
 
         then_the_returned_character_ava_rank_points_lb_was(tl.AVA_RANK_POINTS_LB_1)
             and_get_ava_rank_was_not_called()
-            and_eso_GetNumPointsNeededForAvARank_was_not_called()
+            and_GetNumPointsNeededForAvARank_was_not_called()
     end)
 
     -- {{{
@@ -700,7 +700,7 @@ describe("Test PvP related data getters.", function()
         tl.CACHE.ava_rank_points_ub = nil
     end
 
-    local function and_that_eso_GetNumPointsNeededForAvARank_returns(point)
+    local function and_that_GetNumPointsNeededForAvARank_returns(point)
         ut_helper.stub_function(GLOBAL, "GetNumPointsNeededForAvARank", point)
     end
 
@@ -712,7 +712,7 @@ describe("Test PvP related data getters.", function()
         assert.is.equal(point, results.ava_rank_points_ub)
     end
 
-    local function and_eso_GetNumPointsNeededForAvARank_was_called_once_with(rank)
+    local function and_GetNumPointsNeededForAvARank_was_called_once_with(rank)
         assert.spy(GLOBAL.GetNumPointsNeededForAvARank).was.called_with(rank)
     end
     -- }}}
@@ -721,13 +721,13 @@ describe("Test PvP related data getters.", function()
     function()
         given_that_cached_character_ava_rank_points_ub_is_not_set()
             and_that_get_ava_rank_returns(tl.AVA_RANK_1)
-            and_that_eso_GetNumPointsNeededForAvARank_returns(tl.AVA_RANK_POINTS_UB_1)
+            and_that_GetNumPointsNeededForAvARank_returns(tl.AVA_RANK_POINTS_UB_1)
 
         when_get_ava_rank_points_ub_is_called_with_cache()
 
         then_the_returned_character_ava_rank_points_ub_was(tl.AVA_RANK_POINTS_UB_1)
             and_get_ava_rank_was_called_once_with_cache()
-            and_eso_GetNumPointsNeededForAvARank_was_called_once_with(tl.AVA_RANK_1 + 1)
+            and_GetNumPointsNeededForAvARank_was_called_once_with(tl.AVA_RANK_1 + 1)
     end)
 
     -- {{{
@@ -735,7 +735,7 @@ describe("Test PvP related data getters.", function()
         tl.CACHE.ava_rank_points_ub = point
     end
 
-    local function and_eso_GetNumPointsNeededForAvARank_was_not_called()
+    local function and_GetNumPointsNeededForAvARank_was_not_called()
         assert.spy(GLOBAL.GetNumPointsNeededForAvARank).was_not.called()
     end
     -- }}}
@@ -744,13 +744,13 @@ describe("Test PvP related data getters.", function()
     function()
         given_that_cached_character_ava_rank_points_ub_is(tl.AVA_RANK_POINTS_UB_1)
             and_that_get_ava_rank_returns(tl.AVA_RANK_1)
-            and_that_eso_GetNumPointsNeededForAvARank_returns(tl.AVA_RANK_POINTS_UB_2)
+            and_that_GetNumPointsNeededForAvARank_returns(tl.AVA_RANK_POINTS_UB_2)
 
         when_get_ava_rank_points_ub_is_called_with_cache()
 
         then_the_returned_character_ava_rank_points_ub_was(tl.AVA_RANK_POINTS_UB_1)
             and_get_ava_rank_was_not_called()
-            and_eso_GetNumPointsNeededForAvARank_was_not_called()
+            and_GetNumPointsNeededForAvARank_was_not_called()
     end)
 end)
 

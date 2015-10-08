@@ -285,85 +285,85 @@ end
 -- }}}
 
 -- GetUnitXP {{{
-function test_esoTERM_pve_library.and_that_eso_GetUnitXP_returns(xp)
+function test_esoTERM_pve_library.and_that_GetUnitXP_returns(xp)
     test_library.stub_function_with_return_value(GLOBAL, "GetUnitXP", xp)
 end
 
-function test_esoTERM_pve_library.and_eso_GetUnitXP_was_called_once_with_player()
+function test_esoTERM_pve_library.and_GetUnitXP_was_called_once_with_player()
     assert.spy(GLOBAL.GetUnitXP).was.called_with(PLAYER)
 end
 
-function test_esoTERM_pve_library.and_eso_GetUnitXP_was_not_called()
+function test_esoTERM_pve_library.and_GetUnitXP_was_not_called()
     assert.spy(GLOBAL.GetUnitXP).was_not.called()
 end
 -- }}}
 
 --  GetUnitVeteranPoints {{{
-function test_esoTERM_pve_library.and_that_eso_GetUnitVeteranPoints_returns(xp)
+function test_esoTERM_pve_library.and_that_GetUnitVeteranPoints_returns(xp)
     test_library.stub_function_with_return_value(GLOBAL, "GetUnitVeteranPoints", xp)
 end
 
-function test_esoTERM_pve_library.and_eso_GetUnitVeteranPoints_was_called_once_with_player()
+function test_esoTERM_pve_library.and_GetUnitVeteranPoints_was_called_once_with_player()
     assert.spy(GLOBAL.GetUnitVeteranPoints).was.called_with(PLAYER)
 end
 
-function test_esoTERM_pve_library.and_eso_GetUnitVeteranPoints_was_not_called()
+function test_esoTERM_pve_library.and_GetUnitVeteranPoints_was_not_called()
     assert.spy(GLOBAL.GetUnitVeteranPoints).was_not.called()
 end
 --  }}}
 
 -- GetUnitXPMax {{{
-function test_esoTERM_pve_library.and_that_eso_GetUnitXPMax_returns(xp)
+function test_esoTERM_pve_library.and_that_GetUnitXPMax_returns(xp)
     test_library.stub_function_with_return_value(GLOBAL, "GetUnitXPMax", xp)
 end
 
-function test_esoTERM_pve_library.and_eso_GetUnitXPMax_was_called_once_with_player()
+function test_esoTERM_pve_library.and_GetUnitXPMax_was_called_once_with_player()
     assert.spy(GLOBAL.GetUnitXPMax).was.called_with(PLAYER)
 end
 
-function test_esoTERM_pve_library.and_eso_GetUnitXPMax_was_not_called()
+function test_esoTERM_pve_library.and_GetUnitXPMax_was_not_called()
     assert.spy(GLOBAL.GetUnitXPMax).was_not.called()
 end
 -- }}}
 
 -- GetUnitVeteranPointsMax {{{
-function test_esoTERM_pve_library.and_that_eso_GetUnitVeteranPointsMax_returns(xp)
+function test_esoTERM_pve_library.and_that_GetUnitVeteranPointsMax_returns(xp)
     test_library.stub_function_with_return_value(GLOBAL, "GetUnitVeteranPointsMax", xp)
 end
 
-function test_esoTERM_pve_library.and_eso_GetUnitVeteranPointsMax_was_called_once_with_player()
+function test_esoTERM_pve_library.and_GetUnitVeteranPointsMax_was_called_once_with_player()
     assert.spy(GLOBAL.GetUnitVeteranPointsMax).was.called_with(PLAYER)
 end
 
-function test_esoTERM_pve_library.and_eso_GetUnitVeteranPointsMax_was_not_called()
+function test_esoTERM_pve_library.and_GetUnitVeteranPointsMax_was_not_called()
     assert.spy(GLOBAL.GetUnitVeteranPointsMax).was_not.called()
 end
 -- }}}
 
 -- GetUnitLevel {{{
-function test_esoTERM_pve_library.and_that_eso_GetUnitLevel_returns(level)
+function test_esoTERM_pve_library.and_that_GetUnitLevel_returns(level)
     test_library.stub_function_with_return_value(GLOBAL, "GetUnitLevel", level)
 end
 
-function test_esoTERM_pve_library.and_eso_GetUnitLevel_was_called_once_with_player()
+function test_esoTERM_pve_library.and_GetUnitLevel_was_called_once_with_player()
     assert.spy(GLOBAL.GetUnitLevel).was.called_with(PLAYER)
 end
 
-function test_esoTERM_pve_library.and_eso_GetUnitLevel_was_not_called()
+function test_esoTERM_pve_library.and_GetUnitLevel_was_not_called()
     assert.spy(GLOBAL.GetUnitLevel).was_not.called()
 end
 -- }}}
 
 -- GetUnitVeteranRank {{{
-function test_esoTERM_pve_library.and_that_eso_GetUnitVeteranRank_returns(level)
+function test_esoTERM_pve_library.and_that_GetUnitVeteranRank_returns(level)
     test_library.stub_function_with_return_value(GLOBAL, "GetUnitVeteranRank", level)
 end
 
-function test_esoTERM_pve_library.and_eso_GetUnitVeteranRank_was_called_once_with_player()
+function test_esoTERM_pve_library.and_GetUnitVeteranRank_was_called_once_with_player()
     assert.spy(GLOBAL.GetUnitVeteranRank).was.called_with(PLAYER)
 end
 
-function test_esoTERM_pve_library.and_eso_GetUnitVeteranRank_was_not_called()
+function test_esoTERM_pve_library.and_GetUnitVeteranRank_was_not_called()
     assert.spy(GLOBAL.GetUnitVeteranRank).was_not.called()
 end
 -- }}}
