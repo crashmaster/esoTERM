@@ -13,8 +13,8 @@ local and_register_for_event_was_not_called = tl.and_register_for_event_was_not_
 local and_register_module_was_called = tl.and_register_module_was_called
 local and_register_module_was_called = tl.and_register_module_was_called
 local and_that_cache_is_empty = tl.and_that_cache_is_empty
-local and_that_esoTERM_char_activate_is_stubbed = tl.and_that_esoTERM_char_activate_is_stubbed
-local and_that_esoTERM_char_activate_is_stubbed = tl.and_that_esoTERM_char_activate_is_stubbed
+local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
+local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
 local and_that_expected_register_for_event_calls_are_set_up = tl.and_that_expected_register_for_event_calls_are_set_up
 local and_that_getter_functions_are_stubbed = tl.and_that_getter_functions_are_stubbed
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
@@ -29,8 +29,8 @@ local given_that_module_configured_as_active = tl.given_that_module_configured_a
 local given_that_module_configured_as_inactive = tl.given_that_module_configured_as_inactive
 local given_that_module_is_active = tl.given_that_module_is_active
 local given_that_module_is_inactive = tl.given_that_module_is_inactive
-local then_esoTERM_char_activate_was_called = tl.then_esoTERM_char_activate_was_called
-local then_esoTERM_char_activate_was_not_called = tl.then_esoTERM_char_activate_was_not_called
+local then_activate_was_called = tl.then_activate_was_called
+local then_activate_was_not_called = tl.then_activate_was_not_called
 local then_module_became_inactive = tl.then_module_became_inactive
 local verify_that_esoTERM_char_module_has_the_expected_name = tl.verify_that_esoTERM_char_module_has_the_expected_name
 local when_activate_is_called = tl.when_activate_is_called
@@ -55,11 +55,11 @@ describe("Test the esoTERM_char module initialization.", function()
     function()
         given_that_module_configured_as_inactive()
             and_that_register_module_is_stubbed()
-            and_that_esoTERM_char_activate_is_stubbed()
+            and_that_activate_is_stubbed()
 
         when_initialize_is_called()
 
-        then_esoTERM_char_activate_was_not_called()
+        then_activate_was_not_called()
             and_zo_savedvars_new_was_called()
             and_register_module_was_called()
     end)
@@ -68,11 +68,11 @@ describe("Test the esoTERM_char module initialization.", function()
     function()
         given_that_module_configured_as_active()
             and_that_register_module_is_stubbed()
-            and_that_esoTERM_char_activate_is_stubbed()
+            and_that_activate_is_stubbed()
 
         when_initialize_is_called()
 
-        then_esoTERM_char_activate_was_called()
+        then_activate_was_called()
             and_zo_savedvars_new_was_called()
             and_register_module_was_called()
     end)
@@ -138,7 +138,7 @@ describe("Test Character related data getters.", function()
         tl.CACHE.name = nil
     end
 
-    local function and_that_eso_GetUnitName_returns(name)
+    local function and_that_GetUnitName_returns(name)
         ut_helper.stub_function(GLOBAL, "GetUnitName", name)
     end
 
@@ -150,7 +150,7 @@ describe("Test Character related data getters.", function()
         assert.is.equal(name, results.name)
     end
 
-    local function and_eso_GetUnitName_was_called_once_with_player()
+    local function and_GetUnitName_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitName).was.called_with(PLAYER)
     end
     -- }}}
@@ -158,12 +158,12 @@ describe("Test Character related data getters.", function()
     it("Query CHARACTER NAME, when NOT CACHED.",
     function()
         given_that_cached_character_name_is_not_set()
-            and_that_eso_GetUnitName_returns(tl.NAME_1)
+            and_that_GetUnitName_returns(tl.NAME_1)
 
         when_get_name_is_called_with_cache()
 
         then_the_returned_character_name_was(tl.NAME_1)
-            and_eso_GetUnitName_was_called_once_with_player()
+            and_GetUnitName_was_called_once_with_player()
     end)
 
     -- {{{
@@ -171,11 +171,11 @@ describe("Test Character related data getters.", function()
         tl.CACHE.name = name
     end
 
-    local function and_that_eso_GetUnitName_returns(name)
+    local function and_that_GetUnitName_returns(name)
         ut_helper.stub_function(GLOBAL, "GetUnitName", name)
     end
 
-    local function and_eso_GetUnitName_was_not_called()
+    local function and_GetUnitName_was_not_called()
         assert.spy(GLOBAL.GetUnitName).was_not.called()
     end
     -- }}}
@@ -183,12 +183,12 @@ describe("Test Character related data getters.", function()
     it("Query CHARACTER NAME, when CACHED.",
     function()
         given_that_cached_character_name_is(tl.NAME_1)
-            and_that_eso_GetUnitName_returns(NAME_2)
+            and_that_GetUnitName_returns(NAME_2)
 
         when_get_name_is_called_with_cache()
 
         then_the_returned_character_name_was(tl.NAME_1)
-            and_eso_GetUnitName_was_not_called()
+            and_GetUnitName_was_not_called()
     end)
 
     -- {{{
@@ -196,7 +196,7 @@ describe("Test Character related data getters.", function()
         tl.CACHE.gender = nil
     end
 
-    local function and_that_eso_GetUnitGender_returns(gender)
+    local function and_that_GetUnitGender_returns(gender)
         ut_helper.stub_function(GLOBAL, "GetUnitGender", gender)
     end
 
@@ -208,7 +208,7 @@ describe("Test Character related data getters.", function()
         assert.is.equal(gender, results.gender)
     end
 
-    local function and_eso_GetUnitGender_was_called_once_with_player()
+    local function and_GetUnitGender_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitGender).was.called_with(PLAYER)
     end
     -- }}}
@@ -216,12 +216,12 @@ describe("Test Character related data getters.", function()
     it("Query CHARACTER GENDER, when NOT CACHED.",
     function()
         given_that_cached_character_gender_is_not_set()
-            and_that_eso_GetUnitGender_returns(tl.GENDER_1)
+            and_that_GetUnitGender_returns(tl.GENDER_1)
 
         when_get_gender_is_called_with_cache()
 
         then_the_returned_character_gender_was(tl.GENDER_1)
-            and_eso_GetUnitGender_was_called_once_with_player()
+            and_GetUnitGender_was_called_once_with_player()
     end)
 
     -- {{{
@@ -229,11 +229,11 @@ describe("Test Character related data getters.", function()
         tl.CACHE.gender = gender
     end
 
-    local function and_that_eso_GetUnitGender_returns(gender)
+    local function and_that_GetUnitGender_returns(gender)
         ut_helper.stub_function(GLOBAL, "GetUnitGender", gender)
     end
 
-    local function and_eso_GetUnitGender_was_not_called()
+    local function and_GetUnitGender_was_not_called()
         assert.spy(GLOBAL.GetUnitGender).was_not.called()
     end
     -- }}}
@@ -241,12 +241,12 @@ describe("Test Character related data getters.", function()
     it("Query CHARACTER GENDER, when CACHED.",
     function()
         given_that_cached_character_gender_is(tl.GENDER_1)
-            and_that_eso_GetUnitGender_returns(GENDER_2)
+            and_that_GetUnitGender_returns(GENDER_2)
 
         when_get_gender_is_called_with_cache()
 
         then_the_returned_character_gender_was(tl.GENDER_1)
-            and_eso_GetUnitGender_was_not_called()
+            and_GetUnitGender_was_not_called()
     end)
 
     -- {{{
@@ -254,7 +254,7 @@ describe("Test Character related data getters.", function()
         tl.CACHE.class = nil
     end
 
-    local function and_that_eso_GetUnitClass_returns(class)
+    local function and_that_GetUnitClass_returns(class)
         ut_helper.stub_function(GLOBAL, "GetUnitClass", class)
     end
 
@@ -266,7 +266,7 @@ describe("Test Character related data getters.", function()
         assert.is.equal(class, results.class)
     end
 
-    local function and_eso_GetUnitClass_was_called_once_with_player()
+    local function and_GetUnitClass_was_called_once_with_player()
         assert.spy(GLOBAL.GetUnitClass).was.called_with(PLAYER)
     end
     -- }}}
@@ -274,12 +274,12 @@ describe("Test Character related data getters.", function()
     it("Query CHARACTER CLASS, when NOT CACHED.",
     function()
         given_that_cached_character_class_is_not_set()
-            and_that_eso_GetUnitClass_returns(tl.CLASS_1)
+            and_that_GetUnitClass_returns(tl.CLASS_1)
 
         when_get_class_is_called_with_cache()
 
         then_the_returned_character_class_was(tl.CLASS_1)
-            and_eso_GetUnitClass_was_called_once_with_player()
+            and_GetUnitClass_was_called_once_with_player()
     end)
 
     -- {{{
@@ -287,11 +287,11 @@ describe("Test Character related data getters.", function()
         tl.CACHE.class = class
     end
 
-    local function and_that_eso_GetUnitClass_returns(class)
+    local function and_that_GetUnitClass_returns(class)
         ut_helper.stub_function(GLOBAL, "GetUnitClass", class)
     end
 
-    local function and_eso_GetUnitClass_was_not_called()
+    local function and_GetUnitClass_was_not_called()
         assert.spy(GLOBAL.GetUnitClass).was_not.called()
     end
     -- }}}
@@ -299,12 +299,12 @@ describe("Test Character related data getters.", function()
     it("Query CHARACTER CLASS, when CACHED.",
     function()
         given_that_cached_character_class_is(tl.CLASS_1)
-            and_that_eso_GetUnitClass_returns(CLASS_2)
+            and_that_GetUnitClass_returns(CLASS_2)
 
         when_get_class_is_called_with_cache()
 
         then_the_returned_character_class_was(tl.CLASS_1)
-            and_eso_GetUnitClass_was_not_called()
+            and_GetUnitClass_was_not_called()
     end)
 
     -- {{{
@@ -503,7 +503,6 @@ describe("The on combat-state-change event handler.", function()
     local DAMAGE = 9000
 
     after_each(function()
-        tl.CACHE.last_reported_combat_state = nil
         tl.CACHE.combat_state = nil
         tl.CACHE.combat_start_time = -1
         tl.CACHE.combat_lenght = 0
@@ -512,43 +511,70 @@ describe("The on combat-state-change event handler.", function()
     end)
 
     -- {{{
-    local function given_that_get_combat_state_returns(combat_state)
-        ut_helper.stub_function(esoTERM_char, "get_combat_state", combat_state)
-    end
-
-    local function and_that_esoTERM_output_stdout_is_stubbed()
-        ut_helper.stub_function(esoTERM_output, "stdout", nil)
-    end
-
-    local function and_that_eso_GetGameTimeMilliseconds_returns(time)
-        ut_helper.stub_function(GLOBAL, "GetGameTimeMilliseconds", time)
-    end
-
-    local function and_eso_GetGameTimeMilliseconds_was_called()
-        assert.spy(GLOBAL.GetGameTimeMilliseconds).was.called()
-    end
-
-    local function and_that_event_manager_register_for_event_is_stubbed()
-        ut_helper.stub_function(esoTERM_common, "register_for_event", nil)
-    end
-
-    local function and_combat_event_handler_was_registered()
-        assert.spy(esoTERM_common.register_for_event).was.called_with(
-            esoTERM_char,
-            EVENT_COMBAT_EVENT,
-            esoTERM_char.on_combat_event_update)
+    local function given_that_cached_last_reported_combat_state_is(state)
+        tl.CACHE.last_reported_combat_state = state
     end
 
     local function when_on_combat_state_update_is_called_with(event, combat_state)
         esoTERM_char.on_combat_state_update(event, combat_state)
     end
 
-    local function and_esoTERM_output_stdout_was_called_with(message)
-        assert.spy(esoTERM_output.stdout).was.called_with(message)
+    local function then_cached_last_reported_combat_state_became(state)
+        assert.is.equal(state, tl.CACHE.last_reported_combat_state)
+    end
+    -- }}}
+
+    it("Call enter combat handler on in-combat event.", function()
+        given_that_cached_last_reported_combat_state_is(nil)
+            tl.and_that_enter_combat_is_stubbed()
+            tl.and_that_zo_callLater_is_stubbed()
+
+        when_on_combat_state_update_is_called_with(EVENT, IN_COMBAT)
+
+        then_cached_last_reported_combat_state_became(IN_COMBAT)
+            tl.and_enter_combat_was_called()
+            tl.and_zo_callLater_was_not_called()
+    end)
+
+    it("Call exit combat handler on out-of-combat event.", function()
+        given_that_cached_last_reported_combat_state_is(nil)
+            tl.and_that_enter_combat_is_stubbed()
+            tl.and_that_zo_callLater_is_stubbed()
+
+        when_on_combat_state_update_is_called_with(EVENT, OUT_OF_COMBAT)
+
+        then_cached_last_reported_combat_state_became(OUT_OF_COMBAT)
+            tl.and_enter_combat_was_not_called()
+            tl.and_zo_callLater_was_called_with(esoTERM_char.exit_combat, 500)
+    end)
+
+    -- {{{
+    local function given_that_cached_combat_state_is(state)
+        tl.CACHE.combat_state = state
+    end
+
+    local function and_that_GetGameTimeMilliseconds_returns(time)
+        ut_helper.stub_function(GLOBAL, "GetGameTimeMilliseconds", time)
+    end
+
+    local function and_that_event_manager_register_for_event_is_stubbed()
+        ut_helper.stub_function(esoTERM_common, "register_for_event", nil)
+    end
+
+    local function and_that_esoTERM_output_stdout_is_stubbed()
+        ut_helper.stub_function(esoTERM_output, "stdout", nil)
+    end
+
+    local function when_enter_combat_is_called()
+        esoTERM_char.enter_combat()
     end
 
     local function then_cached_combat_state_became(combat_state)
         assert.is.equal(combat_state, tl.CACHE.combat_state)
+    end
+
+    local function and_GetGameTimeMilliseconds_was_called()
+        assert.spy(GLOBAL.GetGameTimeMilliseconds).was.called()
     end
 
     local function and_cached_combat_start_time_became(start_time)
@@ -559,101 +585,36 @@ describe("The on combat-state-change event handler.", function()
         assert.is.equal(damage, tl.CACHE.combat_damage)
     end
 
-    local function get_enter_combat_message()
-        return "Entered combat"
-    end
-    -- }}}
-
-    it("Character entered combat.", function()
-        given_that_get_combat_state_returns(OUT_OF_COMBAT)
-            and_that_eso_GetGameTimeMilliseconds_returns(ENTER_TIME)
-            and_that_event_manager_register_for_event_is_stubbed()
-            and_that_esoTERM_output_stdout_is_stubbed()
-
-        when_on_combat_state_update_is_called_with(EVENT, IN_COMBAT)
-
-        then_cached_combat_state_became(IN_COMBAT)
-            and_eso_GetGameTimeMilliseconds_was_called()
-            and_cached_combat_start_time_became(ENTER_TIME)
-            and_cached_combat_damage_became(0)
-            and_combat_event_handler_was_registered()
-            and_esoTERM_output_stdout_was_called_with(get_enter_combat_message())
-    end)
-
-    -- {{{
-    local function given_that_cached_last_reported_combat_state_is_nil()
-        if tl.CACHE.last_reported_combat_state ~= nil then
-            assert.is_true(false)
-        else
-            assert.is_true(true)
-        end
+    local function and_combat_event_handler_was_registered()
+        assert.spy(esoTERM_common.register_for_event).was.called_with(
+            esoTERM_char,
+            EVENT_COMBAT_EVENT,
+            esoTERM_char.on_combat_event_update)
     end
 
-    local function then_cached_last_reported_combat_state_became(state)
-        assert.is.equal(state, tl.CACHE.last_reported_combat_state)
-    end
-    -- }}}
-
-    it("Call enter combat handler on in-combat event.", function()
-        given_that_cached_last_reported_combat_state_is_nil()
-            tl.and_that_esoTERM_char_enter_combat_is_stubbed()
-            tl.and_that_eso_zo_callLater_is_stubbed()
-
-        when_on_combat_state_update_is_called_with(EVENT, IN_COMBAT)
-
-        then_cached_last_reported_combat_state_became(IN_COMBAT)
-            tl.and_esoTERM_char_enter_combat_was_called()
-            tl.and_eso_zo_callLater_was_not_called()
-    end)
-
-    it("Call exit combat handler on out-of-combat event.", function()
-        given_that_cached_last_reported_combat_state_is_nil()
-            tl.and_that_esoTERM_char_enter_combat_is_stubbed()
-            tl.and_that_eso_zo_callLater_is_stubbed()
-
-        when_on_combat_state_update_is_called_with(EVENT, OUT_OF_COMBAT)
-
-        then_cached_last_reported_combat_state_became(OUT_OF_COMBAT)
-            tl.and_esoTERM_char_enter_combat_was_not_called()
-            tl.and_eso_zo_callLater_was_called_with(esoTERM_char.exit_combat, 500)
-    end)
-
-    -- {{{
-    local function given_that_cached_combat_state_is_nil()
-        if tl.CACHE.combat_state ~= nil then
-            assert.is_true(false)
-        else
-            assert.is_true(true)
-        end
-    end
-
-    local function when_enter_combat_is_called()
-        esoTERM_char.enter_combat()
+    local function and_esoTERM_output_stdout_was_called_with(message)
+        assert.spy(esoTERM_output.stdout).was.called_with(message)
     end
     -- }}}
 
     it("Enter combat handler.", function()
-        given_that_cached_combat_state_is_nil()
-            and_that_eso_GetGameTimeMilliseconds_returns(ENTER_TIME)
+        given_that_cached_combat_state_is(OUT_OF_COMBAT)
+            and_that_GetGameTimeMilliseconds_returns(ENTER_TIME)
             and_that_event_manager_register_for_event_is_stubbed()
             and_that_esoTERM_output_stdout_is_stubbed()
 
         when_enter_combat_is_called()
 
         then_cached_combat_state_became(IN_COMBAT)
-            and_eso_GetGameTimeMilliseconds_was_called()
+            and_GetGameTimeMilliseconds_was_called()
             and_cached_combat_start_time_became(ENTER_TIME)
             and_cached_combat_damage_became(0)
             and_combat_event_handler_was_registered()
-            and_esoTERM_output_stdout_was_called_with(get_enter_combat_message())
+            and_esoTERM_output_stdout_was_called_with("Entered combat")
     end)
 
     -- {{{
-    local function given_that_cached_combat_state_is_true()
-        tl.CACHE.combat_state = true
-    end
-
-    local function then_eso_GetGameTimeMilliseconds_was_not_called()
+    local function then_GetGameTimeMilliseconds_was_not_called()
         assert.spy(GLOBAL.GetGameTimeMilliseconds).was_not.called()
     end
 
@@ -662,38 +623,38 @@ describe("The on combat-state-change event handler.", function()
     end
     -- }}}
 
-    it("Enter combat handler returns when already in combat", function()
-        given_that_cached_combat_state_is_true()
-            and_that_eso_GetGameTimeMilliseconds_returns(ENTER_TIME)
+    it("Enter combat handler returns when already in combat.", function()
+        given_that_cached_combat_state_is(IN_COMBAT)
+            and_that_GetGameTimeMilliseconds_returns(ENTER_TIME)
             and_that_event_manager_register_for_event_is_stubbed()
             and_that_esoTERM_output_stdout_is_stubbed()
 
         when_enter_combat_is_called()
 
-        then_eso_GetGameTimeMilliseconds_was_not_called()
+        then_GetGameTimeMilliseconds_was_not_called()
             and_register_for_event_was_not_called()
             and_esoTERM_output_stdout_was_not_called()
     end)
 
     -- {{{
-    local function and_that_event_manager_unregister_from_event_is_stubbed()
-        ut_helper.stub_function(esoTERM_common, "unregister_from_event", nil)
+    local function and_that_get_combat_start_time_returns(time)
+        ut_helper.stub_function(esoTERM_char, "get_combat_start_time", time)
     end
 
-    local function and_that_cached_combat_start_time_is(time)
-        tl.CACHE.combat_start_time = time
+    local function and_that_event_manager_unregister_from_event_is_stubbed()
+        ut_helper.stub_function(esoTERM_common, "unregister_from_event", nil)
     end
 
     local function and_that_cached_combat_damage_is(damage)
         tl.CACHE.combat_damage = damage
     end
 
-    local function and_that_get_combat_start_time_returns(time)
-        ut_helper.stub_function(esoTERM_char, "get_combat_start_time", time)
+    local function when_exit_combat_is_called()
+        esoTERM_char.exit_combat()
     end
 
     local function and_get_combat_start_time_was_called()
-        assert.spy(esoTERM_char.get_combat_start_time).was.called_with()
+        assert.spy(esoTERM_char.get_combat_start_time).was.called()
     end
 
     local function and_cached_combat_lenght_became(lenght)
@@ -714,20 +675,19 @@ describe("The on combat-state-change event handler.", function()
     end
     -- }}}
 
-    it("Character left combat.", function()
-        given_that_get_combat_state_returns(IN_COMBAT)
+    it("Exit combat handler.", function()
+        given_that_cached_last_reported_combat_state_is(OUT_OF_COMBAT)
             and_that_get_combat_start_time_returns(ENTER_TIME)
-            and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME)
+            and_that_GetGameTimeMilliseconds_returns(EXIT_TIME)
             and_that_event_manager_unregister_from_event_is_stubbed()
-            and_that_cached_combat_start_time_is(ENTER_TIME)
             and_that_cached_combat_damage_is(DAMAGE)
             and_that_esoTERM_output_stdout_is_stubbed()
 
-        when_on_combat_state_update_is_called_with(EVENT, OUT_OF_COMBAT)
+        when_exit_combat_is_called()
 
         then_cached_combat_state_became(OUT_OF_COMBAT)
             and_get_combat_start_time_was_called()
-            and_eso_GetGameTimeMilliseconds_was_called()
+            and_GetGameTimeMilliseconds_was_called()
             and_cached_combat_lenght_became(EXIT_TIME - ENTER_TIME)
             and_combat_event_handler_was_unregistered()
             and_cached_combat_start_time_became(0)
@@ -736,6 +696,37 @@ describe("The on combat-state-change event handler.", function()
     end)
 
     -- {{{
+    local function and_get_combat_start_time_was_not_called()
+        assert.spy(esoTERM_char.get_combat_start_time).was_not.called()
+    end
+
+    -- }}}
+
+    -- TODO
+--  it("Exit combat handler returns when still in combat.", function()
+--      given_that_cached_last_reported_combat_state_is(IN_COMBAT)
+--          and_that_get_combat_start_time_is_stubbed()
+--          and_that_GetGameTimeMilliseconds_is_stubbed()
+--          and_that_event_manager_unregister_from_event_is_stubbed()
+--          and_that_esoTERM_output_stdout_is_stubbed()
+--          and_that_cached_combat_damage_is(DAMAGE)
+
+--      when_exit_combat_is_called()
+
+--      then_cached_combat_state_became(IN_COMBAT)
+--          and_get_combat_start_time_was_not_called()
+--          and_GetGameTimeMilliseconds_was_not_called()
+--          and_unregister_from_event_was_not_called()
+--          and_cached_combat_start_time_became(ENTER_TIME)
+--          and_cached_combat_damage_became(DAMAGE)
+--          and_esoTERM_output_stdout_was_not_called()
+--  end)
+
+    -- {{{
+    local function given_that_get_combat_state_returns(combat_state)
+        ut_helper.stub_function(esoTERM_char, "get_combat_state", combat_state)
+    end
+
     local function get_exit_one_hit_combat_message()
         return string.format(
             "Left combat (lasted: %.2fs, damage: %d, dps: %.2f)",
@@ -748,9 +739,8 @@ describe("The on combat-state-change event handler.", function()
     it("Onehit the enemy.", function()
         given_that_get_combat_state_returns(IN_COMBAT)
             and_that_get_combat_start_time_returns(ENTER_TIME)
-            and_that_eso_GetGameTimeMilliseconds_returns(EXIT_TIME_ONE_HIT)
+            and_that_GetGameTimeMilliseconds_returns(EXIT_TIME_ONE_HIT)
             and_that_event_manager_unregister_from_event_is_stubbed()
-            and_that_cached_combat_start_time_is(ENTER_TIME)
             and_that_cached_combat_damage_is(DAMAGE)
             and_that_esoTERM_output_stdout_is_stubbed()
 

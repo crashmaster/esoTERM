@@ -50,15 +50,15 @@ function test_esoTERM_char_library.and_register_module_was_called()
     test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, esoTERM_char)
 end
 
-function test_esoTERM_char_library.and_that_esoTERM_char_activate_is_stubbed()
+function test_esoTERM_char_library.and_that_activate_is_stubbed()
     test_library.stub_function_with_no_return_value(esoTERM_char, "activate")
 end
 
-function test_esoTERM_char_library.then_esoTERM_char_activate_was_called()
+function test_esoTERM_char_library.then_activate_was_called()
     test_library.stub_function_called_without_arguments(esoTERM_char.activate)
 end
 
-function test_esoTERM_char_library.then_esoTERM_char_activate_was_not_called()
+function test_esoTERM_char_library.then_activate_was_not_called()
     test_library.stub_function_was_not_called(esoTERM_char.activate)
 end
 -- }}}
@@ -209,29 +209,29 @@ end
 -- }}}
 
 -- enter_combat {{{
-function test_esoTERM_char_library.and_that_esoTERM_char_enter_combat_is_stubbed()
+function test_esoTERM_char_library.and_that_enter_combat_is_stubbed()
     test_library.stub_function_with_no_return_value(esoTERM_char, "enter_combat")
 end
 
-function test_esoTERM_char_library.and_esoTERM_char_enter_combat_was_called()
+function test_esoTERM_char_library.and_enter_combat_was_called()
     test_library.stub_function_called_without_arguments(esoTERM_char.enter_combat)
 end
 
-function test_esoTERM_char_library.and_esoTERM_char_enter_combat_was_not_called()
+function test_esoTERM_char_library.and_enter_combat_was_not_called()
     test_library.stub_function_was_not_called(esoTERM_char.enter_combat)
 end
 -- }}}
 
 -- zo_callLater {{{
-function test_esoTERM_char_library.and_that_eso_zo_callLater_is_stubbed()
+function test_esoTERM_char_library.and_that_zo_callLater_is_stubbed()
     test_library.stub_function_with_no_return_value(GLOBAL, "zo_callLater")
 end
 
-function test_esoTERM_char_library.and_eso_zo_callLater_was_called_with(...)
+function test_esoTERM_char_library.and_zo_callLater_was_called_with(...)
     test_library.stub_function_called_with_arguments(GLOBAL.zo_callLater, ...)
 end
 
-function test_esoTERM_char_library.and_eso_zo_callLater_was_not_called()
+function test_esoTERM_char_library.and_zo_callLater_was_not_called()
     test_library.stub_function_was_not_called(GLOBAL.zo_callLater)
 end
 -- }}}
