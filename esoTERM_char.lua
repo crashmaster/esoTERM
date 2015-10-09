@@ -156,9 +156,9 @@ function esoTERM_char.exit_combat()
 
     esoTERM_output.stdout(get_combat_left_message())
 
+    ESOTERM_CHAR_CACHE.combat_state = false
     ESOTERM_CHAR_CACHE.combat_start_time = 0
     ESOTERM_CHAR_CACHE.combat_damage = 0
-    ESOTERM_CHAR_CACHE.combat_state = false
 end
 
 function esoTERM_char.on_unit_death_state_change(event, unit, is_dead)
