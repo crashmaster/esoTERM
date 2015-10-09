@@ -236,6 +236,52 @@ function test_esoTERM_char_library.and_zo_callLater_was_not_called()
 end
 -- }}}
 
+-- GetGameTimeMilliseconds {{{
+function test_esoTERM_char_library.and_that_GetGameTimeMilliseconds_returns(...)
+    test_library.stub_function_with_return_value(GLOBAL, "GetGameTimeMilliseconds", ...)
+end
+
+function test_esoTERM_char_library.and_that_GetGameTimeMilliseconds_is_stubbed()
+    test_esoTERM_char_library.and_that_GetGameTimeMilliseconds_returns(nil)
+end
+
+function test_esoTERM_char_library.and_GetGameTimeMilliseconds_was_called()
+    test_library.stub_function_called_without_arguments(GLOBAL.GetGameTimeMilliseconds)
+end
+
+function test_esoTERM_char_library.and_GetGameTimeMilliseconds_was_not_called()
+    test_library.stub_function_was_not_called(GLOBAL.GetGameTimeMilliseconds)
+end
+-- }}}
+
+-- get_combat_start_time {{{
+function test_esoTERM_char_library.and_that_get_combat_start_time_returns(...)
+    test_library.stub_function_with_return_value(esoTERM_char, "get_combat_start_time", ...)
+end
+
+function test_esoTERM_char_library.and_that_get_combat_start_time_is_stubbed()
+    test_esoTERM_char_library.and_that_get_combat_start_time_returns(nil)
+end
+
+function test_esoTERM_char_library.and_get_combat_start_time_was_called()
+    test_library.stub_function_called_without_arguments(esoTERM_char.get_combat_start_time)
+end
+
+function test_esoTERM_char_library.and_get_combat_start_time_was_not_called()
+    test_library.stub_function_was_not_called(esoTERM_char.get_combat_start_time)
+end
+-- }}}
+
+-- unregister_from_event {{{
+function test_esoTERM_char_library.and_that_unregister_from_event_is_stubbed()
+    test_library.stub_function_with_no_return_value(esoTERM_common, "unregister_from_event")
+end
+
+function test_esoTERM_char_library.and_unregister_from_event_was_not_called()
+    test_library.stub_function_was_not_called(esoTERM_common.unregister_from_event)
+end
+-- }}}
+
 return test_esoTERM_char_library
 
 -- vim:fdm=marker

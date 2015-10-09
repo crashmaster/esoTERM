@@ -2,8 +2,12 @@
 local requires_for_tests = require("tests/requires_for_tests")
 local tl = require("tests/lib/test_esoTERM_char_library")
 
+local and_GetGameTimeMilliseconds_was_called = tl.and_GetGameTimeMilliseconds_was_called
+local and_GetGameTimeMilliseconds_was_not_called = tl.and_GetGameTimeMilliseconds_was_not_called
 local and_cache_is_no_longer_empty = tl.and_cache_is_no_longer_empty
 local and_cached_values_became_initialized = tl.and_cached_values_became_initialized
+local and_get_combat_start_time_was_called = tl.and_get_combat_start_time_was_called
+local and_get_combat_start_time_was_not_called = tl.and_get_combat_start_time_was_not_called
 local and_getter_function_stubs_were_called = tl.and_getter_function_stubs_were_called
 local and_module_became_active = tl.and_module_became_active
 local and_module_is_active_was_saved = tl.and_module_is_active_was_saved
@@ -12,16 +16,22 @@ local and_register_for_event_was_called_with_expected_parameters = tl.and_regist
 local and_register_for_event_was_not_called = tl.and_register_for_event_was_not_called
 local and_register_module_was_called = tl.and_register_module_was_called
 local and_register_module_was_called = tl.and_register_module_was_called
+local and_that_GetGameTimeMilliseconds_is_stubbed = tl.and_that_GetGameTimeMilliseconds_is_stubbed
+local and_that_GetGameTimeMilliseconds_returns = tl.and_that_GetGameTimeMilliseconds_returns
+local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
+local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
 local and_that_cache_is_empty = tl.and_that_cache_is_empty
-local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
-local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
 local and_that_expected_register_for_event_calls_are_set_up = tl.and_that_expected_register_for_event_calls_are_set_up
+local and_that_get_combat_start_time_is_stubbed = tl.and_that_get_combat_start_time_is_stubbed
+local and_that_get_combat_start_time_returns = tl.and_that_get_combat_start_time_returns
 local and_that_getter_functions_are_stubbed = tl.and_that_getter_functions_are_stubbed
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
 local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
 local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
+local and_that_unregister_from_event_is_stubbed = tl.and_that_unregister_from_event_is_stubbed
 local and_unregister_from_all_events_was_called = tl.and_unregister_from_all_events_was_called
+local and_unregister_from_event_was_not_called = tl.and_unregister_from_event_was_not_called
 local and_zo_savedvars_new_was_called = tl.and_zo_savedvars_new_was_called
 local and_zo_savedvars_new_was_called = tl.and_zo_savedvars_new_was_called
 local expected_register_for_event_calls_are_cleared = tl.expected_register_for_event_calls_are_cleared
@@ -366,7 +376,7 @@ describe("Test Character related data getters.", function()
         tl.CACHE.combat_start_time = nil
     end
 
-    local function when_get_combat_start_time_is_called_with_cache()
+    local function when_get_combat_start_time_is_called()
         results.combat_start_time = esoTERM_char.get_combat_start_time()
     end
 
@@ -379,7 +389,7 @@ describe("Test Character related data getters.", function()
     function()
         given_that_cached_combat_start_time_is_not_set()
 
-        when_get_combat_start_time_is_called_with_cache()
+        when_get_combat_start_time_is_called()
 
         then_the_returned_combat_start_time_was(0)
     end)
@@ -394,7 +404,7 @@ describe("Test Character related data getters.", function()
     function()
         given_that_cached_combat_start_time_is(tl.COMBAT_START_TIME)
 
-        when_get_combat_start_time_is_called_with_cache()
+        when_get_combat_start_time_is_called()
 
         then_the_returned_combat_start_time_was(tl.COMBAT_START_TIME)
     end)
@@ -553,10 +563,6 @@ describe("The on combat-state-change event handler.", function()
         tl.CACHE.combat_state = state
     end
 
-    local function and_that_GetGameTimeMilliseconds_returns(time)
-        ut_helper.stub_function(GLOBAL, "GetGameTimeMilliseconds", time)
-    end
-
     local function and_that_event_manager_register_for_event_is_stubbed()
         ut_helper.stub_function(esoTERM_common, "register_for_event", nil)
     end
@@ -571,10 +577,6 @@ describe("The on combat-state-change event handler.", function()
 
     local function then_cached_combat_state_became(combat_state)
         assert.is.equal(combat_state, tl.CACHE.combat_state)
-    end
-
-    local function and_GetGameTimeMilliseconds_was_called()
-        assert.spy(GLOBAL.GetGameTimeMilliseconds).was.called()
     end
 
     local function and_cached_combat_start_time_became(start_time)
@@ -614,10 +616,6 @@ describe("The on combat-state-change event handler.", function()
     end)
 
     -- {{{
-    local function then_GetGameTimeMilliseconds_was_not_called()
-        assert.spy(GLOBAL.GetGameTimeMilliseconds).was_not.called()
-    end
-
     local function and_esoTERM_output_stdout_was_not_called()
         assert.spy(esoTERM_output.stdout).was_not.called()
     end
@@ -631,20 +629,13 @@ describe("The on combat-state-change event handler.", function()
 
         when_enter_combat_is_called()
 
-        then_GetGameTimeMilliseconds_was_not_called()
+        then_cached_combat_state_became(IN_COMBAT)
+            and_GetGameTimeMilliseconds_was_not_called()
             and_register_for_event_was_not_called()
             and_esoTERM_output_stdout_was_not_called()
     end)
 
     -- {{{
-    local function and_that_get_combat_start_time_returns(time)
-        ut_helper.stub_function(esoTERM_char, "get_combat_start_time", time)
-    end
-
-    local function and_that_unregister_from_event_is_stubbed()
-        ut_helper.stub_function(esoTERM_common, "unregister_from_event", nil)
-    end
-
     local function and_that_cached_combat_damage_is(damage)
         tl.CACHE.combat_damage = damage
     end
@@ -653,17 +644,12 @@ describe("The on combat-state-change event handler.", function()
         esoTERM_char.exit_combat()
     end
 
-    local function and_get_combat_start_time_was_called()
-        assert.spy(esoTERM_char.get_combat_start_time).was.called()
-    end
-
     local function and_cached_combat_lenght_became(lenght)
         assert.is.equal(lenght, tl.CACHE.combat_lenght)
     end
 
-    local function and_combat_event_handler_was_unregistered()
-        assert.spy(esoTERM_common.unregister_from_event).was.called_with(
-            esoTERM_char, EVENT_COMBAT_EVENT)
+    local function and_unregister_from_event_was_called_with(...)
+        assert.spy(esoTERM_common.unregister_from_event).was.called_with(...)
     end
 
     local function get_exit_combat_message()
@@ -689,7 +675,7 @@ describe("The on combat-state-change event handler.", function()
             and_get_combat_start_time_was_called()
             and_GetGameTimeMilliseconds_was_called()
             and_cached_combat_lenght_became(EXIT_TIME - ENTER_TIME)
-            and_combat_event_handler_was_unregistered()
+            and_unregister_from_event_was_called_with(esoTERM_char, EVENT_COMBAT_EVENT)
             and_cached_combat_start_time_became(0)
             and_cached_combat_damage_became(0)
             and_esoTERM_output_stdout_was_called_with(get_exit_combat_message())
@@ -702,26 +688,6 @@ describe("The on combat-state-change event handler.", function()
 
     local function and_that_cached_combat_start_time_is(time)
         tl.CACHE.combat_start_time = time
-    end
-
-    local function and_that_get_combat_start_time_is_stubbed()
-        ut_helper.stub_function(esoTERM_char, "get_combat_start_time", nil)
-    end
-
-    local function and_get_combat_start_time_was_not_called()
-        assert.spy(esoTERM_char.get_combat_start_time).was_not.called()
-    end
-
-    local function and_that_GetGameTimeMilliseconds_is_stubbed()
-        ut_helper.stub_function(GLOBAL, "GetGameTimeMilliseconds", nil)
-    end
-
-    local function and_GetGameTimeMilliseconds_was_not_called()
-        assert.spy(GLOBAL.GetGameTimeMilliseconds).was_not.called()
-    end
-
-    local function and_unregister_from_event_was_not_called()
-        assert.spy(esoTERM_common.unregister_from_event).was_not.called()
     end
     -- }}}
 
@@ -773,7 +739,7 @@ describe("The on combat-state-change event handler.", function()
         then_cached_combat_state_became(OUT_OF_COMBAT)
             and_get_combat_start_time_was_called()
             and_cached_combat_lenght_became(EXIT_TIME_ONE_HIT - ENTER_TIME)
-            and_combat_event_handler_was_unregistered()
+            and_unregister_from_event_was_called_with(esoTERM_char, EVENT_COMBAT_EVENT)
             and_cached_combat_start_time_became(0)
             and_cached_combat_damage_became(0)
             and_esoTERM_output_stdout_was_called_with(get_exit_one_hit_combat_message())
