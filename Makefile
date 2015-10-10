@@ -1,7 +1,7 @@
-MKDIR := mkdir -p
+MKDIR := mkdir --parents
 UNIX2DOS := unix2dos --quiet --newfile -1252
-RM := rm -rf
-CP := cp -f
+RM := rm --recursive --force
+CP := cp --force
 ZIP := zip --to-crlf --verbose --recurse-paths
 LUA := lua
 BUSTED := busted --coverage
