@@ -712,6 +712,27 @@ describe("The on combat-state-change event handler.", function()
             and_esoTERM_output_stdout_was_not_called()
     end)
 
+    it("Exit combat handler returns when already left combat.", function()
+        given_that_cached_last_reported_combat_state_is(OUT_OF_COMBAT)
+            and_that_cached_combat_state_is(OUT_OF_COMBAT)
+            and_that_cached_combat_start_time_is(ENTER_TIME)
+            and_that_cached_combat_damage_is(DAMAGE)
+            and_that_get_combat_start_time_is_stubbed()
+            and_that_GetGameTimeMilliseconds_is_stubbed()
+            and_that_unregister_from_event_is_stubbed()
+            and_that_esoTERM_output_stdout_is_stubbed()
+
+        when_exit_combat_is_called()
+
+        then_cached_combat_state_became(OUT_OF_COMBAT)
+            and_cached_combat_start_time_became(ENTER_TIME)
+            and_cached_combat_damage_became(DAMAGE)
+            and_get_combat_start_time_was_not_called()
+            and_GetGameTimeMilliseconds_was_not_called()
+            and_unregister_from_event_was_not_called()
+            and_esoTERM_output_stdout_was_not_called()
+    end)
+
     -- {{{
     local function given_that_get_combat_state_returns(combat_state)
         ut_helper.stub_function(esoTERM_char, "get_combat_state", combat_state)

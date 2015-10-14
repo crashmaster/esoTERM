@@ -145,7 +145,8 @@ local function get_combat_left_message()
 end
 
 function esoTERM_char.exit_combat()
-    if ESOTERM_CHAR_CACHE.last_reported_combat_state == true then
+    if ESOTERM_CHAR_CACHE.last_reported_combat_state == true or
+       ESOTERM_CHAR_CACHE.combat_state == false then
         return
     end
     local combat_start_time = esoTERM_char.get_combat_start_time()
@@ -189,6 +190,19 @@ function esoTERM_char.initialize()
     end
 end
 
+function esoTERM_char.on_skill_xp_update(event, skillType, skillLine, lastRankXP, nextRankXP, currentXP)
+    local skillName, currentLevel = GetSkillLineInfo(skillType, skillLine)
+    local message = string.format(
+        "skillName: %s; currentLevel: %d; lastRankXP: %d; nextRankXP: %d; currentXP: %d",
+        skillName,
+        currentLevel,
+        lastRankXP,
+        nextRankXP,
+        currentXP
+    )
+    esoTERM_output.sysout(message)
+end
+
 function esoTERM_char.activate()
     ESOTERM_CHAR_CACHE.gender = esoTERM_char.get_gender()
     ESOTERM_CHAR_CACHE.class = esoTERM_char.get_class()
@@ -204,6 +218,9 @@ function esoTERM_char.activate()
     esoTERM_common.register_for_event(esoTERM_char,
                                       EVENT_UNIT_DEATH_STATE_CHANGED,
                                       esoTERM_char.on_unit_death_state_change)
+--  esoTERM_common.register_for_event(esoTERM_char,
+--                                    EVENT_SKILL_XP_UPDATE,
+--                                    esoTERM_char.on_skill_xp_update)
 
     esoTERM_char.is_active = true
     esoTERM_char.settings[esoTERM_char.module_name] = esoTERM_char.is_active
