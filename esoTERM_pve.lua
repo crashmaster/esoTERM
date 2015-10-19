@@ -78,6 +78,14 @@ function esoTERM_pve.get_xp_gain()
     end
 end
 
+function esoTERM_pve.get_xp_gain_time()
+    if ESOTERM_PVE_CACHE.xp_gain_time ~= nil then
+        return ESOTERM_PVE_CACHE.xp_gain_time
+    else
+        return nil
+    end
+end
+
 local function get_xp_message()
     return string.format("Gained %d XP (%.2f%%)",
                          esoTERM_pve.get_xp_gain(),
@@ -101,6 +109,7 @@ function esoTERM_pve.on_experience_update(event, unit, xp, xp_max, reason)
     end
 end
 
+-- TODO: Consider normal -> veteran transition
 function esoTERM_pve.on_level_update(event, unit, level)
     if unit == PLAYER_UNIT_TAG then
         ESOTERM_PVE_CACHE.level = level
@@ -129,6 +138,7 @@ function esoTERM_pve.activate()
     ESOTERM_PVE_CACHE.level_xp_max = esoTERM_pve.get_level_xp_max()
     ESOTERM_PVE_CACHE.level_xp_percent = esoTERM_pve.get_level_xp_percent()
     ESOTERM_PVE_CACHE.xp_gain = esoTERM_pve.get_xp_gain()
+    ESOTERM_PVE_CACHE.xp_gain_time = esoTERM_pve.get_xp_gain_time()
 
     if ESOTERM_PVE_CACHE.veteran then
         esoTERM_common.register_for_event(esoTERM_pve,
@@ -150,6 +160,7 @@ function esoTERM_pve.activate()
     esoTERM_pve.settings[esoTERM_pve.module_name] = esoTERM_pve.is_active
 end
 
+-- TODO: Set related cache entries to nil in deactivate?
 function esoTERM_pve.deactivate()
     esoTERM_common.unregister_from_all_events(esoTERM_pve)
 

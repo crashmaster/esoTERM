@@ -20,6 +20,7 @@ test_esoTERM_pve_library.LEVEL_VP_MAX_1 = test_library.C_INTEGER
 test_esoTERM_pve_library.LEVEL_VP_MAX_2 = test_library.D_INTEGER
 test_esoTERM_pve_library.LEVEL_XP_PERCENT = test_library.A_INTEGER
 test_esoTERM_pve_library.LEVEL_XP_GAIN = test_library.A_INTEGER
+test_esoTERM_pve_library.LEVEL_XP_GAIN_TIME = test_library.A_INTEGER
 
 local MODULE_NAME = "pve"
 
@@ -139,6 +140,7 @@ test_esoTERM_pve_library.RETURN_VALUES_OF_THE_GETTER_STUBS_COMMON = {
     get_level_xp_max = test_esoTERM_pve_library.LEVEL_XP_MAX_1,
     get_level_xp_percent = test_esoTERM_pve_library.LEVEL_XP_PERCENT,
     get_xp_gain = test_esoTERM_pve_library.LEVEL_XP_GAIN,
+    get_xp_gain_time = test_esoTERM_pve_library.LEVEL_XP_GAIN_TIME,
 }
 
 test_esoTERM_pve_library.RETURN_VALUES_OF_THE_GETTER_STUBS_NON_VETERAN = {
@@ -163,6 +165,7 @@ test_esoTERM_pve_library.EXPECTED_CACHED_VALUES_COMMON = {
     level_xp_max = test_esoTERM_pve_library.LEVEL_XP_MAX_1,
     level_xp_percent = test_esoTERM_pve_library.LEVEL_XP_PERCENT,
     xp_gain = test_esoTERM_pve_library.LEVEL_XP_GAIN,
+    xp_gain_time = test_esoTERM_pve_library.LEVEL_XP_GAIN_TIME,
 }
 
 test_esoTERM_pve_library.EXPECTED_CACHED_VALUES_NON_VETERAN = {

@@ -137,7 +137,7 @@ describe("Test Loot related data getters.", function()
         tl.CACHE.looted_item = nil
     end
 
-    local function when_get_looted_item_is_called_with_cache()
+    local function when_get_looted_item_is_called()
         results.looted_item = esoTERM_loot.get_looted_item()
     end
 
@@ -150,7 +150,7 @@ describe("Test Loot related data getters.", function()
     function()
         given_that_cached_looted_item_is_not_set()
 
-        when_get_looted_item_is_called_with_cache()
+        when_get_looted_item_is_called()
 
         then_the_returned_looted_item_was("N/A")
     end)
@@ -165,7 +165,7 @@ describe("Test Loot related data getters.", function()
     function()
         given_that_cached_looted_item_is(tl.LOOTED_ITEM)
 
-        when_get_looted_item_is_called_with_cache()
+        when_get_looted_item_is_called()
 
         then_the_returned_looted_item_was(tl.LOOTED_ITEM)
     end)
@@ -175,7 +175,7 @@ describe("Test Loot related data getters.", function()
         tl.CACHE.loot_quantity = nil
     end
 
-    local function when_get_loot_quantity_is_called_with_cache()
+    local function when_get_loot_quantity_is_called()
         results.loot_quantity = esoTERM_loot.get_loot_quantity()
     end
 
@@ -188,7 +188,7 @@ describe("Test Loot related data getters.", function()
     function()
         given_that_cached_loot_quantity_is_not_set()
 
-        when_get_loot_quantity_is_called_with_cache()
+        when_get_loot_quantity_is_called()
 
         then_the_returned_loot_quantity_was(0)
     end)
@@ -203,7 +203,7 @@ describe("Test Loot related data getters.", function()
     function()
         given_that_cached_loot_quantity_is(tl.LOOT_QUANTITY)
 
-        when_get_loot_quantity_is_called_with_cache()
+        when_get_loot_quantity_is_called()
 
         then_the_returned_loot_quantity_was(tl.LOOT_QUANTITY)
     end)

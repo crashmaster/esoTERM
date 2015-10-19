@@ -152,7 +152,7 @@ describe("Test Character related data getters.", function()
         ut_helper.stub_function(GLOBAL, "GetUnitName", name)
     end
 
-    local function when_get_name_is_called_with_cache()
+    local function when_get_name_is_called()
         results.name = esoTERM_char.get_name()
     end
 
@@ -170,7 +170,7 @@ describe("Test Character related data getters.", function()
         given_that_cached_character_name_is_not_set()
             and_that_GetUnitName_returns(tl.NAME_1)
 
-        when_get_name_is_called_with_cache()
+        when_get_name_is_called()
 
         then_the_returned_character_name_was(tl.NAME_1)
             and_GetUnitName_was_called_once_with_player()
@@ -195,7 +195,7 @@ describe("Test Character related data getters.", function()
         given_that_cached_character_name_is(tl.NAME_1)
             and_that_GetUnitName_returns(NAME_2)
 
-        when_get_name_is_called_with_cache()
+        when_get_name_is_called()
 
         then_the_returned_character_name_was(tl.NAME_1)
             and_GetUnitName_was_not_called()
@@ -210,7 +210,7 @@ describe("Test Character related data getters.", function()
         ut_helper.stub_function(GLOBAL, "GetUnitGender", gender)
     end
 
-    local function when_get_gender_is_called_with_cache()
+    local function when_get_gender_is_called()
         results.gender = esoTERM_char.get_gender()
     end
 
@@ -228,7 +228,7 @@ describe("Test Character related data getters.", function()
         given_that_cached_character_gender_is_not_set()
             and_that_GetUnitGender_returns(tl.GENDER_1)
 
-        when_get_gender_is_called_with_cache()
+        when_get_gender_is_called()
 
         then_the_returned_character_gender_was(tl.GENDER_1)
             and_GetUnitGender_was_called_once_with_player()
@@ -253,7 +253,7 @@ describe("Test Character related data getters.", function()
         given_that_cached_character_gender_is(tl.GENDER_1)
             and_that_GetUnitGender_returns(GENDER_2)
 
-        when_get_gender_is_called_with_cache()
+        when_get_gender_is_called()
 
         then_the_returned_character_gender_was(tl.GENDER_1)
             and_GetUnitGender_was_not_called()
@@ -268,7 +268,7 @@ describe("Test Character related data getters.", function()
         ut_helper.stub_function(GLOBAL, "GetUnitClass", class)
     end
 
-    local function when_get_class_is_called_with_cache()
+    local function when_get_class_is_called()
         results.class = esoTERM_char.get_class()
     end
 
@@ -286,7 +286,7 @@ describe("Test Character related data getters.", function()
         given_that_cached_character_class_is_not_set()
             and_that_GetUnitClass_returns(tl.CLASS_1)
 
-        when_get_class_is_called_with_cache()
+        when_get_class_is_called()
 
         then_the_returned_character_class_was(tl.CLASS_1)
             and_GetUnitClass_was_called_once_with_player()
@@ -311,7 +311,7 @@ describe("Test Character related data getters.", function()
         given_that_cached_character_class_is(tl.CLASS_1)
             and_that_GetUnitClass_returns(CLASS_2)
 
-        when_get_class_is_called_with_cache()
+        when_get_class_is_called()
 
         then_the_returned_character_class_was(tl.CLASS_1)
             and_GetUnitClass_was_not_called()
@@ -326,7 +326,7 @@ describe("Test Character related data getters.", function()
         ut_helper.stub_function(GLOBAL, "IsUnitInCombat", combat_state)
     end
 
-    local function when_get_combat_state_is_called_with_cache()
+    local function when_get_combat_state_is_called()
         results.combat_state = esoTERM_char.get_combat_state()
     end
 
@@ -344,7 +344,7 @@ describe("Test Character related data getters.", function()
         given_that_cached_character_combat_state_is_not_set()
             and_that_IsUnitInCombat_returns(tl.COMBAT_STATE_1)
 
-        when_get_combat_state_is_called_with_cache()
+        when_get_combat_state_is_called()
 
         then_the_returned_character_combat_state_was(tl.COMBAT_STATE_1)
             and_IsUnitInCombat_was_called_once_with_player()
@@ -365,7 +365,7 @@ describe("Test Character related data getters.", function()
         given_that_cached_character_combat_state_is(tl.COMBAT_STATE_1)
             and_that_IsUnitInCombat_returns(COMBAT_STATE_2)
 
-        when_get_combat_state_is_called_with_cache()
+        when_get_combat_state_is_called()
 
         then_the_returned_character_combat_state_was(tl.COMBAT_STATE_1)
             and_IsUnitInCombat_was_not_called()
@@ -414,7 +414,7 @@ describe("Test Character related data getters.", function()
         tl.CACHE.combat_lenght = nil
     end
 
-    local function when_get_combat_lenght_is_called_with_cache()
+    local function when_get_combat_lenght_is_called()
         results.combat_lenght = esoTERM_char.get_combat_lenght()
     end
 
@@ -427,7 +427,7 @@ describe("Test Character related data getters.", function()
     function()
         given_that_cached_combat_lenght_is_not_set()
 
-        when_get_combat_lenght_is_called_with_cache()
+        when_get_combat_lenght_is_called()
 
         then_the_returned_combat_lenght_was(0)
     end)
@@ -442,7 +442,7 @@ describe("Test Character related data getters.", function()
     function()
         given_that_cached_combat_lenght_is(-1)
 
-        when_get_combat_lenght_is_called_with_cache()
+        when_get_combat_lenght_is_called()
 
         then_the_returned_combat_lenght_was(0)
     end)
@@ -457,7 +457,7 @@ describe("Test Character related data getters.", function()
     function()
         given_that_cached_combat_lenght_is(tl.COMBAT_LENGHT)
 
-        when_get_combat_lenght_is_called_with_cache()
+        when_get_combat_lenght_is_called()
 
         then_the_returned_combat_lenght_was(tl.COMBAT_LENGHT)
     end)
@@ -467,7 +467,7 @@ describe("Test Character related data getters.", function()
         tl.CACHE.combat_damage = nil
     end
 
-    local function when_get_combat_damage_is_called_with_cache()
+    local function when_get_combat_damage_is_called()
         results.combat_damage = esoTERM_char.get_combat_damage()
     end
 
@@ -480,7 +480,7 @@ describe("Test Character related data getters.", function()
     function()
         given_that_cached_combat_damage_is_not_set()
 
-        when_get_combat_damage_is_called_with_cache()
+        when_get_combat_damage_is_called()
 
         then_the_returned_combat_damage_was(0)
     end)
@@ -495,7 +495,7 @@ describe("Test Character related data getters.", function()
     function()
         given_that_cached_combat_damage_is(tl.COMBAT_DAMAGE)
 
-        when_get_combat_damage_is_called_with_cache()
+        when_get_combat_damage_is_called()
 
         then_the_returned_combat_damage_was(tl.COMBAT_DAMAGE)
     end)
