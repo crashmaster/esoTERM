@@ -499,6 +499,44 @@ describe("Test Character related data getters.", function()
 
         then_the_returned_combat_damage_was(tl.COMBAT_DAMAGE)
     end)
+
+    -- {{{
+    local function given_that_cached_last_xp_gain_time_is_not_set()
+        tl.CACHE.last_xp_gain_time = nil
+    end
+
+    local function when_get_last_xp_gain_time_is_called()
+        results.last_xp_gain_time = esoTERM_char.get_last_xp_gain_time()
+    end
+
+    local function then_the_returned_last_xp_gain_time_was(start_time)
+        assert.is.equal(start_time, results.last_xp_gain_time)
+    end
+    -- }}}
+
+    it("Query LAST XP GAIN TIME, when NOT CACHED.",
+    function()
+        given_that_cached_last_xp_gain_time_is_not_set()
+
+        when_get_last_xp_gain_time_is_called()
+
+        then_the_returned_last_xp_gain_time_was(0)
+    end)
+
+    -- {{{
+    local function given_that_cached_last_xp_gain_time_is(time)
+        tl.CACHE.last_xp_gain_time = time
+    end
+    -- }}}
+
+    it("Query LAST XP GAIN TIME, when CACHED.",
+    function()
+        given_that_cached_last_xp_gain_time_is(tl.LAST_XP_GAIN_TIME)
+
+        when_get_last_xp_gain_time_is_called()
+
+        then_the_returned_last_xp_gain_time_was(tl.LAST_XP_GAIN_TIME)
+    end)
 end)
 
 describe("The on combat-state-change event handler.", function()

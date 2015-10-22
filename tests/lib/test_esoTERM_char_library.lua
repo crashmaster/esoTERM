@@ -16,6 +16,7 @@ test_esoTERM_char_library.COMBAT_STATE_2 = test_library.B_BOOL
 test_esoTERM_char_library.COMBAT_START_TIME = test_library.A_INTEGER
 test_esoTERM_char_library.COMBAT_LENGHT = test_library.A_INTEGER
 test_esoTERM_char_library.COMBAT_DAMAGE = test_library.A_INTEGER
+test_esoTERM_char_library.LAST_XP_GAIN_TIME = test_library.A_INTEGER
 
 local MODULE_NAME = "character"
 
@@ -70,7 +71,8 @@ test_esoTERM_char_library.RETURN_VALUES_OF_THE_GETTER_STUBS = {
     get_combat_state = test_esoTERM_char_library.COMBAT_STATE_1,
     get_combat_start_time = test_esoTERM_char_library.COMBAT_START_TIME,
     get_combat_lenght = test_esoTERM_char_library.COMBAT_LENGHT,
-    get_combat_damage = test_esoTERM_char_library.COMBAT_DAMAGE
+    get_combat_damage = test_esoTERM_char_library.COMBAT_DAMAGE,
+    get_last_xp_gain_time = test_esoTERM_char_library.LAST_XP_GAIN_TIME,
 }
 
 test_esoTERM_char_library.EXPECTED_CACHED_VALUES = {
@@ -80,7 +82,8 @@ test_esoTERM_char_library.EXPECTED_CACHED_VALUES = {
     combat_state = test_esoTERM_char_library.COMBAT_STATE_1,
     combat_start_time = test_esoTERM_char_library.COMBAT_START_TIME,
     combat_lenght = test_esoTERM_char_library.COMBAT_LENGHT,
-    combat_damage = test_esoTERM_char_library.COMBAT_DAMAGE
+    combat_damage = test_esoTERM_char_library.COMBAT_DAMAGE,
+    last_xp_gain_time = test_esoTERM_char_library.LAST_XP_GAIN_TIME,
 }
 
 -- register_for_event {{{

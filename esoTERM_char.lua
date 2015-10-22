@@ -65,6 +65,14 @@ function esoTERM_char.get_combat_damage()
     end
 end
 
+function esoTERM_char.get_last_xp_gain_time()
+    if ESOTERM_CHAR_CACHE.last_xp_gain_time ~= nil then
+        return ESOTERM_CHAR_CACHE.combat_damage
+    else
+        return 0
+    end
+end
+
 function esoTERM_char.on_combat_state_update(event, combat_state)
     ESOTERM_CHAR_CACHE.last_reported_combat_state = combat_state
     if combat_state then
@@ -211,6 +219,7 @@ function esoTERM_char.activate()
     ESOTERM_CHAR_CACHE.combat_start_time = esoTERM_char.get_combat_start_time()
     ESOTERM_CHAR_CACHE.combat_lenght = esoTERM_char.get_combat_lenght()
     ESOTERM_CHAR_CACHE.combat_damage = esoTERM_char.get_combat_damage()
+    ESOTERM_CHAR_CACHE.last_xp_gain_time = esoTERM_char.get_last_xp_gain_time()
 
     esoTERM_common.register_for_event(esoTERM_char,
                                       EVENT_PLAYER_COMBAT_STATE,
