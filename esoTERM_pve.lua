@@ -78,14 +78,6 @@ function esoTERM_pve.get_xp_gain()
     end
 end
 
-function esoTERM_pve.get_xp_gain_time()
-    if ESOTERM_PVE_CACHE.xp_gain_time ~= nil then
-        return ESOTERM_PVE_CACHE.xp_gain_time
-    else
-        return nil
-    end
-end
-
 local function get_xp_message()
     return string.format("Gained %d XP (%.2f%%)",
                          esoTERM_pve.get_xp_gain(),
@@ -138,7 +130,6 @@ function esoTERM_pve.activate()
     ESOTERM_PVE_CACHE.level_xp_max = esoTERM_pve.get_level_xp_max()
     ESOTERM_PVE_CACHE.level_xp_percent = esoTERM_pve.get_level_xp_percent()
     ESOTERM_PVE_CACHE.xp_gain = esoTERM_pve.get_xp_gain()
-    ESOTERM_PVE_CACHE.xp_gain_time = esoTERM_pve.get_xp_gain_time()
 
     if ESOTERM_PVE_CACHE.veteran then
         esoTERM_common.register_for_event(esoTERM_pve,

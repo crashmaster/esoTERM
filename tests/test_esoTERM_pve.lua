@@ -565,44 +565,6 @@ describe("Test PvE related data getters.", function()
 
         then_the_returned_level_xp_gain_was(tl.LEVEL_XP_GAIN)
     end)
-
-    -- {{{
-    local function given_that_cached_character_level_xp_gain_time_is_not_set()
-        tl.CACHE.xp_gain_time = nil
-    end
-
-    local function when_get_xp_gain_time_is_called()
-        results.xp_gain_time = esoTERM_pve.get_xp_gain_time()
-    end
-
-    local function then_the_returned_level_xp_gain_time_was(gain)
-        assert.is.equal(gain, results.xp_gain_time)
-    end
-    -- }}}
-
-    it("Query CHARACTER XP-GAIN-TIME, when NOT CACHED.",
-    function()
-        given_that_cached_character_level_xp_gain_time_is_not_set()
-
-        when_get_xp_gain_time_is_called()
-
-        then_the_returned_level_xp_gain_time_was(nil)
-    end)
-
-    -- {{{
-    local function given_that_cached_character_level_xp_gain_time_is(gain)
-        tl.CACHE.xp_gain_time = gain
-    end
-    -- }}}
-
-    it("Query CHARACTER XP-GAIN-TIME, when CACHED.",
-    function()
-        given_that_cached_character_level_xp_gain_time_is(tl.LEVEL_XP_GAIN_TIME)
-
-        when_get_xp_gain_time_is_called()
-
-        then_the_returned_level_xp_gain_time_was(tl.LEVEL_XP_GAIN_TIME)
-    end)
 end)
 
 describe("Test the event handlers.", function()
