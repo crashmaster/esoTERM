@@ -104,6 +104,16 @@ function test_esoTERM_char_library.and_that_expected_register_for_event_calls_ar
         event = EVENT_UNIT_DEATH_STATE_CHANGED,
         callback = esoTERM_char.on_unit_death_state_change
     }
+    test_esoTERM_char_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.xp_gain_update = {
+        module = esoTERM_char,
+        event = EVENT_EXPERIENCE_GAIN,
+        callback = esoTERM_char.on_xp_gain
+    }
+    test_esoTERM_char_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.vp_gain_update = {
+        module = esoTERM_char,
+        event = EVENT_VETERAN_POINTS_GAIN,
+        callback = esoTERM_char.on_vp_gain
+    }
 end
 
 function test_esoTERM_char_library.and_that_register_for_event_is_stubbed()

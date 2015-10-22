@@ -183,6 +183,12 @@ function esoTERM_char.on_unit_death_state_change(event, unit, is_dead)
     end
 end
 
+function esoTERM_char.on_xp_gain(event, reason, level, previous_xp, current_xp)
+end
+
+function esoTERM_char.on_vp_gain(event, reason, rank, previous_vp, current_vp)
+end
+
 function esoTERM_char.initialize()
     esoTERM_char.settings = ZO_SavedVars:New(
         "esoTERM_settings",
@@ -227,6 +233,12 @@ function esoTERM_char.activate()
     esoTERM_common.register_for_event(esoTERM_char,
                                       EVENT_UNIT_DEATH_STATE_CHANGED,
                                       esoTERM_char.on_unit_death_state_change)
+    esoTERM_common.register_for_event(esoTERM_char,
+                                      EVENT_EXPERIENCE_GAIN,
+                                      esoTERM_char.on_xp_gain)
+    esoTERM_common.register_for_event(esoTERM_char,
+                                      EVENT_VETERAN_POINTS_GAIN,
+                                      esoTERM_char.on_vp_gain)
 --  esoTERM_common.register_for_event(esoTERM_char,
 --                                    EVENT_SKILL_XP_UPDATE,
 --                                    esoTERM_char.on_skill_xp_update)
