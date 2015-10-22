@@ -563,8 +563,8 @@ describe("The on combat-state-change event handler.", function()
         tl.CACHE.last_reported_combat_state = state
     end
 
-    local function when_on_combat_state_update_is_called_with(event, combat_state)
-        esoTERM_char.on_combat_state_update(event, combat_state)
+    local function when_on_combat_state_update_is_called_with(...)
+        esoTERM_char.on_combat_state_update(...)
     end
 
     local function then_cached_last_reported_combat_state_became(state)
@@ -809,8 +809,8 @@ describe("The on combat-state-change event handler.", function()
         ut_helper.stub_function(esoTERM_char, "on_combat_state_update", nil)
     end
 
-    local function when_on_unit_death_state_change_is_called_with(event, is_dead)
-        esoTERM_char.on_unit_death_state_change(event, PLAYER, is_dead)
+    local function when_on_unit_death_state_change_is_called_with(...)
+        esoTERM_char.on_unit_death_state_change(...)
     end
 
     local function then_on_combat_state_update_was_called_with(combat_state)
@@ -822,7 +822,7 @@ describe("The on combat-state-change event handler.", function()
         given_that_on_combat_state_update_is_stubbed()
             and_that_esoTERM_output_stdout_is_stubbed()
 
-        when_on_unit_death_state_change_is_called_with(EVENT, DEAD)
+        when_on_unit_death_state_change_is_called_with(EVENT, PLAYER, DEAD)
 
         then_on_combat_state_update_was_called_with(OUT_OF_COMBAT)
             and_esoTERM_output_stdout_was_called_with("Died, you are pathetic!")
@@ -847,7 +847,7 @@ describe("The on combat-state-change event handler.", function()
             and_that_esoTERM_output_stdout_is_stubbed()
             and_that_IsUnitInCombat_returns(OUT_OF_COMBAT)
 
-        when_on_unit_death_state_change_is_called_with(EVENT, ALIVE)
+        when_on_unit_death_state_change_is_called_with(EVENT, PLAYER, ALIVE)
 
         then_on_combat_state_update_was_called_with(OUT_OF_COMBAT)
             and_esoTERM_output_stdout_was_called_with("Resurrected, watch out next time!")
@@ -860,7 +860,7 @@ describe("The on combat-state-change event handler.", function()
             and_that_esoTERM_output_stdout_is_stubbed()
             and_that_IsUnitInCombat_returns(IN_COMBAT)
 
-        when_on_unit_death_state_change_is_called_with(EVENT, ALIVE)
+        when_on_unit_death_state_change_is_called_with(EVENT, PLAYER, ALIVE)
 
         then_on_combat_state_update_was_called_with(IN_COMBAT)
             and_esoTERM_output_stdout_was_called_with("Resurrected, watch out next time!")
@@ -875,7 +875,6 @@ describe("The on combat event handler.", function()
     local ABILITY = "Orbital Strike"
     local ABILITY_HIT = 56789
 
-    local EVENT_ID = 1
     local RESULT = 2
     local EVENT_NOT_OK = 3
     local ABILITY_NAME = 4
@@ -990,6 +989,26 @@ describe("The on combat event handler.", function()
         when_on_combat_event_update_is_called()
 
         then_esoTERM_output_stdout_was_called_with(get_damage_message())
+    end)
+end)
+
+describe("The on experience gain handlers.", function()
+    -- {{{
+    local function when_on_xp_gain_is_called_with(...)
+        esoTERM_char.on_xp_gain(...)
+    end
+    -- }}}
+
+    it("Time of the last experience point gain for non-veteran character is stored.", function()
+    end)
+
+    -- {{{
+    local function when_on_vp_gain_is_called_with(...)
+        esoTERM_char.on_vp_gain(...)
+    end
+    -- }}}
+
+    it("Time of the last veteran point gain for veteran character is stored.", function()
     end)
 end)
 
