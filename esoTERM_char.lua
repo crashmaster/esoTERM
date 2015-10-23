@@ -67,7 +67,7 @@ end
 
 function esoTERM_char.get_last_xp_gain_time()
     if ESOTERM_CHAR_CACHE.last_xp_gain_time ~= nil then
-        return ESOTERM_CHAR_CACHE.combat_damage
+        return ESOTERM_CHAR_CACHE.last_xp_gain_time
     else
         return 0
     end

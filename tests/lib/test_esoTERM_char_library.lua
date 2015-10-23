@@ -5,6 +5,7 @@ test_esoTERM_char_library = {}
 
 test_esoTERM_char_library.CACHE = esoTERM_char.cache
 
+-- TODO make values unique
 test_esoTERM_char_library.GENDER_1 = test_library.A_STRING
 test_esoTERM_char_library.GENDER_2 = test_library.B_STRING
 test_esoTERM_char_library.CLASS_1 = test_library.A_STRING
