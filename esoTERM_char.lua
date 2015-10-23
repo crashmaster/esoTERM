@@ -143,7 +143,16 @@ function esoTERM_char.enter_combat()
     esoTERM_output.stdout(get_combat_enter_message())
 end
 
-local function get_combat_left_message()
+function esoTERM_char.get_combat_exit_time()
+    local last_xp_gain_time = esoTERM_char.get_last_xp_gain_time()
+    if last_xp_gain_time ~= 0 then
+        return last_xp_gain_time
+    else
+        return GetGameTimeMilliseconds()
+    end
+end
+
+local function get_combat_exit_message()
     local net_length = esoTERM_char.get_combat_lenght() - EXIT_COMBAT_CALL_DELAY
     local length = net_length >= 1000 and net_length or 1000
     local damage = esoTERM_char.get_combat_damage()
@@ -157,13 +166,14 @@ function esoTERM_char.exit_combat()
        ESOTERM_CHAR_CACHE.combat_state == false then
         return
     end
+
     local combat_start_time = esoTERM_char.get_combat_start_time()
-    ESOTERM_CHAR_CACHE.combat_lenght = GetGameTimeMilliseconds() - combat_start_time
+    local combat_exit_time = esoTERM_char.get_combat_exit_time()
+    ESOTERM_CHAR_CACHE.combat_lenght = combat_exit_time - combat_start_time
 
-    esoTERM_common.unregister_from_event(esoTERM_char,
-                                         EVENT_COMBAT_EVENT)
+    esoTERM_common.unregister_from_event(esoTERM_char, EVENT_COMBAT_EVENT)
 
-    esoTERM_output.stdout(get_combat_left_message())
+    esoTERM_output.stdout(get_combat_exit_message())
 
     ESOTERM_CHAR_CACHE.combat_state = false
     ESOTERM_CHAR_CACHE.combat_start_time = 0
@@ -183,10 +193,16 @@ function esoTERM_char.on_unit_death_state_change(event, unit, is_dead)
     end
 end
 
+local function save_current_game_time()
+    ESOTERM_CHAR_CACHE.last_xp_gain_time = GetGameTimeMilliseconds()
+end
+
 function esoTERM_char.on_xp_gain(event, reason, level, previous_xp, current_xp)
+    save_current_game_time()
 end
 
 function esoTERM_char.on_vp_gain(event, reason, rank, previous_vp, current_vp)
+    save_current_game_time()
 end
 
 function esoTERM_char.initialize()

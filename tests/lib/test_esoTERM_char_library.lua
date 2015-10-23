@@ -17,6 +17,7 @@ test_esoTERM_char_library.COMBAT_START_TIME = test_library.A_INTEGER
 test_esoTERM_char_library.COMBAT_LENGHT = test_library.A_INTEGER
 test_esoTERM_char_library.COMBAT_DAMAGE = test_library.A_INTEGER
 test_esoTERM_char_library.LAST_XP_GAIN_TIME = test_library.A_INTEGER
+test_esoTERM_char_library.GET_COMBAT_EXIT_TIME_RESULT = nil
 
 local MODULE_NAME = "character"
 
@@ -292,6 +293,64 @@ end
 
 function test_esoTERM_char_library.and_unregister_from_event_was_not_called()
     test_library.stub_function_was_not_called(esoTERM_common.unregister_from_event)
+end
+-- }}}
+
+-- on_xp_gain {{{
+function test_esoTERM_char_library.when_on_xp_gain_is_called_with(...)
+    esoTERM_char.on_xp_gain(...)
+end
+-- }}}
+
+-- on_vp_gain {{{
+function test_esoTERM_char_library.when_on_vp_gain_is_called_with(...)
+    esoTERM_char.on_vp_gain(...)
+end
+-- }}}
+
+-- cached_last_xp_gain_time {{{
+function test_esoTERM_char_library.given_that_cached_last_xp_gain_time_is_not_set()
+    test_esoTERM_char_library.CACHE.last_xp_gain_time = nil
+end
+
+function test_esoTERM_char_library.then_cached_last_xp_gain_time_became(time)
+    assert.is.equal(time, test_esoTERM_char_library.CACHE.last_xp_gain_time)
+end
+-- }}}
+
+-- get_last_xp_gain_time {{{
+function test_esoTERM_char_library.given_that_get_last_xp_gain_time_returns(...)
+    test_library.stub_function_with_return_value(esoTERM_char, "get_last_xp_gain_time", ...)
+end
+
+function test_esoTERM_char_library.and_get_last_xp_gain_time_was_called()
+    test_library.stub_function_called_without_arguments(esoTERM_char.get_last_xp_gain_time)
+end
+-- }}}
+
+-- {{{
+function test_esoTERM_char_library.when_get_combat_exit_time_is_called()
+    test_esoTERM_char_library.GET_COMBAT_EXIT_TIME_RESULT = esoTERM_char.get_combat_exit_time()
+end
+
+function test_esoTERM_char_library.then_get_combat_exit_time_returned(...)
+    assert.is.equal(..., test_esoTERM_char_library.GET_COMBAT_EXIT_TIME_RESULT)
+end
+
+function test_esoTERM_char_library.and_that_get_combat_exit_time_returns(...)
+    test_library.stub_function_with_return_value(esoTERM_char, "get_combat_exit_time", ...)
+end
+
+function test_esoTERM_char_library.and_that_get_combat_exit_time_is_stubbed()
+    test_esoTERM_char_library.and_that_get_combat_exit_time_returns(nil)
+end
+
+function test_esoTERM_char_library.and_get_combat_exit_time_was_called()
+    test_library.stub_function_called_without_arguments(esoTERM_char.get_combat_exit_time)
+end
+
+function test_esoTERM_char_library.and_get_combat_exit_time_was_not_called()
+    test_library.stub_function_was_not_called(esoTERM_char.get_combat_exit_time)
 end
 -- }}}
 

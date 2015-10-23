@@ -6,8 +6,11 @@ local and_GetGameTimeMilliseconds_was_called = tl.and_GetGameTimeMilliseconds_wa
 local and_GetGameTimeMilliseconds_was_not_called = tl.and_GetGameTimeMilliseconds_was_not_called
 local and_cache_is_no_longer_empty = tl.and_cache_is_no_longer_empty
 local and_cached_values_became_initialized = tl.and_cached_values_became_initialized
+local and_get_combat_exit_time_was_called = tl.and_get_combat_exit_time_was_called
+local and_get_combat_exit_time_was_not_called = tl.and_get_combat_exit_time_was_not_called
 local and_get_combat_start_time_was_called = tl.and_get_combat_start_time_was_called
 local and_get_combat_start_time_was_not_called = tl.and_get_combat_start_time_was_not_called
+local and_get_last_xp_gain_time_was_called = tl.and_get_last_xp_gain_time_was_called
 local and_getter_function_stubs_were_called = tl.and_getter_function_stubs_were_called
 local and_module_became_active = tl.and_module_became_active
 local and_module_is_active_was_saved = tl.and_module_is_active_was_saved
@@ -22,6 +25,8 @@ local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
 local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
 local and_that_cache_is_empty = tl.and_that_cache_is_empty
 local and_that_expected_register_for_event_calls_are_set_up = tl.and_that_expected_register_for_event_calls_are_set_up
+local and_that_get_combat_exit_time_is_stubbed = tl.and_that_get_combat_exit_time_is_stubbed
+local and_that_get_combat_exit_time_returns = tl.and_that_get_combat_exit_time_returns
 local and_that_get_combat_start_time_is_stubbed = tl.and_that_get_combat_start_time_is_stubbed
 local and_that_get_combat_start_time_returns = tl.and_that_get_combat_start_time_returns
 local and_that_getter_functions_are_stubbed = tl.and_that_getter_functions_are_stubbed
@@ -35,18 +40,25 @@ local and_unregister_from_event_was_not_called = tl.and_unregister_from_event_wa
 local and_zo_savedvars_new_was_called = tl.and_zo_savedvars_new_was_called
 local and_zo_savedvars_new_was_called = tl.and_zo_savedvars_new_was_called
 local expected_register_for_event_calls_are_cleared = tl.expected_register_for_event_calls_are_cleared
+local given_that_cached_last_xp_gain_time_is_not_set = tl.given_that_cached_last_xp_gain_time_is_not_set
+local given_that_get_last_xp_gain_time_returns = tl.given_that_get_last_xp_gain_time_returns
 local given_that_module_configured_as_active = tl.given_that_module_configured_as_active
 local given_that_module_configured_as_inactive = tl.given_that_module_configured_as_inactive
 local given_that_module_is_active = tl.given_that_module_is_active
 local given_that_module_is_inactive = tl.given_that_module_is_inactive
 local then_activate_was_called = tl.then_activate_was_called
 local then_activate_was_not_called = tl.then_activate_was_not_called
+local then_cached_last_xp_gain_time_became = tl.then_cached_last_xp_gain_time_became
+local then_get_combat_exit_time_returned = tl.then_get_combat_exit_time_returned
 local then_module_became_inactive = tl.then_module_became_inactive
 local verify_that_esoTERM_char_module_has_the_expected_name = tl.verify_that_esoTERM_char_module_has_the_expected_name
 local when_activate_is_called = tl.when_activate_is_called
 local when_deactivate_for_the_module_is_called = tl.when_deactivate_for_the_module_is_called
+local when_get_combat_exit_time_is_called = tl.when_get_combat_exit_time_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
+local when_on_vp_gain_is_called_with = tl.when_on_vp_gain_is_called_with
+local when_on_xp_gain_is_called_with = tl.when_on_xp_gain_is_called_with
 -- }}}
 
 describe("Test the esoTERM_char module.", function()
@@ -540,6 +552,7 @@ describe("Test Character related data getters.", function()
 end)
 
 describe("The on combat-state-change event handler.", function()
+    local EVENT = 1234
     local OUT_OF_COMBAT = false
     local IN_COMBAT = true
     local DEAD = true
@@ -549,6 +562,7 @@ describe("The on combat-state-change event handler.", function()
     local EXIT_TIME = 3010 + EXIT_COMBAT_CALL_DELAY
     local EXIT_TIME_ONE_HIT = 210 + EXIT_COMBAT_CALL_DELAY
     local DAMAGE = 9000
+    local COMBAT_EXIT_TIME
 
     after_each(function()
         tl.CACHE.combat_state = nil
@@ -702,7 +716,7 @@ describe("The on combat-state-change event handler.", function()
     it("Exit combat handler.", function()
         given_that_cached_last_reported_combat_state_is(OUT_OF_COMBAT)
             and_that_get_combat_start_time_returns(ENTER_TIME)
-            and_that_GetGameTimeMilliseconds_returns(EXIT_TIME)
+            and_that_get_combat_exit_time_returns(EXIT_TIME)
             and_that_unregister_from_event_is_stubbed()
             and_that_cached_combat_damage_is(DAMAGE)
             and_that_esoTERM_output_stdout_is_stubbed()
@@ -711,7 +725,7 @@ describe("The on combat-state-change event handler.", function()
 
         then_cached_combat_state_became(OUT_OF_COMBAT)
             and_get_combat_start_time_was_called()
-            and_GetGameTimeMilliseconds_was_called()
+            and_get_combat_exit_time_was_called()
             and_cached_combat_lenght_became(EXIT_TIME - ENTER_TIME)
             and_unregister_from_event_was_called_with(esoTERM_char, EVENT_COMBAT_EVENT)
             and_cached_combat_start_time_became(0)
@@ -735,7 +749,7 @@ describe("The on combat-state-change event handler.", function()
             and_that_cached_combat_start_time_is(ENTER_TIME)
             and_that_cached_combat_damage_is(DAMAGE)
             and_that_get_combat_start_time_is_stubbed()
-            and_that_GetGameTimeMilliseconds_is_stubbed()
+            and_that_get_combat_exit_time_is_stubbed()
             and_that_unregister_from_event_is_stubbed()
             and_that_esoTERM_output_stdout_is_stubbed()
 
@@ -745,7 +759,7 @@ describe("The on combat-state-change event handler.", function()
             and_cached_combat_start_time_became(ENTER_TIME)
             and_cached_combat_damage_became(DAMAGE)
             and_get_combat_start_time_was_not_called()
-            and_GetGameTimeMilliseconds_was_not_called()
+            and_get_combat_exit_time_was_not_called()
             and_unregister_from_event_was_not_called()
             and_esoTERM_output_stdout_was_not_called()
     end)
@@ -756,7 +770,7 @@ describe("The on combat-state-change event handler.", function()
             and_that_cached_combat_start_time_is(ENTER_TIME)
             and_that_cached_combat_damage_is(DAMAGE)
             and_that_get_combat_start_time_is_stubbed()
-            and_that_GetGameTimeMilliseconds_is_stubbed()
+            and_that_get_combat_exit_time_is_stubbed()
             and_that_unregister_from_event_is_stubbed()
             and_that_esoTERM_output_stdout_is_stubbed()
 
@@ -766,7 +780,7 @@ describe("The on combat-state-change event handler.", function()
             and_cached_combat_start_time_became(ENTER_TIME)
             and_cached_combat_damage_became(DAMAGE)
             and_get_combat_start_time_was_not_called()
-            and_GetGameTimeMilliseconds_was_not_called()
+            and_get_combat_exit_time_was_not_called()
             and_unregister_from_event_was_not_called()
             and_esoTERM_output_stdout_was_not_called()
     end)
@@ -788,7 +802,7 @@ describe("The on combat-state-change event handler.", function()
     it("Onehit the enemy.", function()
         given_that_get_combat_state_returns(IN_COMBAT)
             and_that_get_combat_start_time_returns(ENTER_TIME)
-            and_that_GetGameTimeMilliseconds_returns(EXIT_TIME_ONE_HIT)
+            and_that_get_combat_exit_time_returns(EXIT_TIME_ONE_HIT)
             and_that_unregister_from_event_is_stubbed()
             and_that_cached_combat_damage_is(DAMAGE)
             and_that_esoTERM_output_stdout_is_stubbed()
@@ -866,6 +880,28 @@ describe("The on combat-state-change event handler.", function()
             and_esoTERM_output_stdout_was_called_with("Resurrected, watch out next time!")
             and_IsUnitInCombat_was_called_once()
             and_cached_combat_state_became(IN_COMBAT)
+    end)
+
+    it("Combat exit time is the laxt xp/vp gain time if there was xp/vp gain during combat.", function()
+        given_that_get_last_xp_gain_time_returns(tl.LAST_XP_GAIN_TIME)
+            and_that_GetGameTimeMilliseconds_is_stubbed()
+
+        when_get_combat_exit_time_is_called()
+
+        then_get_combat_exit_time_returned(tl.LAST_XP_GAIN_TIME)
+            and_get_last_xp_gain_time_was_called()
+            and_GetGameTimeMilliseconds_was_not_called()
+    end)
+
+    it("Combat exit time is the current game time if there was no xp/vp gain during combat.", function()
+        given_that_get_last_xp_gain_time_returns(0)
+            and_that_GetGameTimeMilliseconds_returns(EXIT_TIME)
+
+        when_get_combat_exit_time_is_called()
+
+        then_get_combat_exit_time_returned(EXIT_TIME)
+            and_get_last_xp_gain_time_was_called()
+            and_GetGameTimeMilliseconds_was_called()
     end)
 end)
 
@@ -993,22 +1029,33 @@ describe("The on combat event handler.", function()
 end)
 
 describe("The on experience gain handlers.", function()
-    -- {{{
-    local function when_on_xp_gain_is_called_with(...)
-        esoTERM_char.on_xp_gain(...)
-    end
-    -- }}}
+    local EVENT = 1234
+    local REASON = 1
+    local LEVEL = 2
+    local PREVIOUS_EXPERIENCE = 3
+    local CURRENT_EXPERIENCE = 4
+    local RANK = 5
+    local PREVIOUS_POINTS = 6
+    local CURRENT_POINTS = 7
 
     it("Time of the last experience point gain for non-veteran character is stored.", function()
+        given_that_cached_last_xp_gain_time_is_not_set()
+            and_that_GetGameTimeMilliseconds_returns(tl.LAST_XP_GAIN_TIME)
+
+        when_on_xp_gain_is_called_with(EVENT, REASON, LEVEL, PREVIOUS_EXPERIENCE, CURRENT_EXPERIENCE)
+
+        then_cached_last_xp_gain_time_became(tl.LAST_XP_GAIN_TIME)
+            and_GetGameTimeMilliseconds_was_called()
     end)
 
-    -- {{{
-    local function when_on_vp_gain_is_called_with(...)
-        esoTERM_char.on_vp_gain(...)
-    end
-    -- }}}
-
     it("Time of the last veteran point gain for veteran character is stored.", function()
+        given_that_cached_last_xp_gain_time_is_not_set()
+            and_that_GetGameTimeMilliseconds_returns(tl.LAST_XP_GAIN_TIME)
+
+        when_on_vp_gain_is_called_with(EVENT, REASON, RANK, PREVIOUS_POINTS, CURRENT_POINTS)
+
+        then_cached_last_xp_gain_time_became(tl.LAST_XP_GAIN_TIME)
+            and_GetGameTimeMilliseconds_was_called()
     end)
 end)
 
