@@ -559,8 +559,8 @@ describe("The on combat-state-change event handler.", function()
     local ALIVE = false
     local EXIT_COMBAT_CALL_DELAY = 500
     local ENTER_TIME = 10
-    local EXIT_TIME = 3010 + EXIT_COMBAT_CALL_DELAY
-    local EXIT_TIME_ONE_HIT = 210 + EXIT_COMBAT_CALL_DELAY
+    local EXIT_TIME = 3010
+    local EXIT_TIME_ONE_HIT = 210
     local DAMAGE = 9000
     local COMBAT_EXIT_TIME
 
@@ -707,9 +707,9 @@ describe("The on combat-state-change event handler.", function()
     local function get_exit_combat_message()
         return string.format(
             "Left combat (lasted: %.2fs, damage: %d, dps: %.2f)",
-            (EXIT_TIME - ENTER_TIME - EXIT_COMBAT_CALL_DELAY) / 1000,
+            (EXIT_TIME - ENTER_TIME) / 1000,
             DAMAGE,
-            DAMAGE * 1000 / (EXIT_TIME - ENTER_TIME - EXIT_COMBAT_CALL_DELAY))
+            DAMAGE * 1000 / (EXIT_TIME - ENTER_TIME))
     end
     -- }}}
 
@@ -793,7 +793,7 @@ describe("The on combat-state-change event handler.", function()
     local function get_exit_one_hit_combat_message()
         return string.format(
             "Left combat (lasted: %.2fs, damage: %d, dps: %.2f)",
-            (EXIT_TIME_ONE_HIT - ENTER_TIME - EXIT_COMBAT_CALL_DELAY) / 1000,
+            (EXIT_TIME_ONE_HIT - ENTER_TIME) / 1000,
             DAMAGE,
             DAMAGE)
     end
@@ -899,7 +899,7 @@ describe("The on combat-state-change event handler.", function()
 
         when_get_combat_exit_time_is_called()
 
-        then_get_combat_exit_time_returned(EXIT_TIME)
+        then_get_combat_exit_time_returned(EXIT_TIME - EXIT_COMBAT_CALL_DELAY)
             and_get_last_xp_gain_time_was_called()
             and_GetGameTimeMilliseconds_was_called()
     end)

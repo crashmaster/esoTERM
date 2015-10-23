@@ -148,12 +148,12 @@ function esoTERM_char.get_combat_exit_time()
     if last_xp_gain_time ~= 0 then
         return last_xp_gain_time
     else
-        return GetGameTimeMilliseconds()
+        return GetGameTimeMilliseconds() - EXIT_COMBAT_CALL_DELAY
     end
 end
 
 local function get_combat_exit_message()
-    local net_length = esoTERM_char.get_combat_lenght() - EXIT_COMBAT_CALL_DELAY
+    local net_length = esoTERM_char.get_combat_lenght()
     local length = net_length >= 1000 and net_length or 1000
     local damage = esoTERM_char.get_combat_damage()
     return string.format(
