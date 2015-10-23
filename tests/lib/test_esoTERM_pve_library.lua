@@ -8,18 +8,19 @@ test_esoTERM_pve_library.EVENT_REGISTER = esoTERM_pve.event_register
 
 test_esoTERM_pve_library.VETERANNESS_1 = test_library.A_BOOL
 test_esoTERM_pve_library.VETERANNESS_2 = test_library.B_BOOL
+
 test_esoTERM_pve_library.LEVEL_1 = test_library.A_INTEGER
 test_esoTERM_pve_library.LEVEL_2 = test_library.B_INTEGER
-test_esoTERM_pve_library.LEVEL_XP_1 = test_library.A_INTEGER
-test_esoTERM_pve_library.LEVEL_XP_2 = test_library.B_INTEGER
-test_esoTERM_pve_library.LEVEL_VP_1 = test_library.C_INTEGER
-test_esoTERM_pve_library.LEVEL_VP_2 = test_library.D_INTEGER
-test_esoTERM_pve_library.LEVEL_XP_MAX_1 = test_library.A_INTEGER
-test_esoTERM_pve_library.LEVEL_XP_MAX_2 = test_library.B_INTEGER
-test_esoTERM_pve_library.LEVEL_VP_MAX_1 = test_library.C_INTEGER
-test_esoTERM_pve_library.LEVEL_VP_MAX_2 = test_library.D_INTEGER
-test_esoTERM_pve_library.LEVEL_XP_PERCENT = test_library.A_INTEGER
-test_esoTERM_pve_library.LEVEL_XP_GAIN = test_library.A_INTEGER
+test_esoTERM_pve_library.LEVEL_XP_1 = test_library.C_INTEGER
+test_esoTERM_pve_library.LEVEL_XP_2 = test_library.D_INTEGER
+test_esoTERM_pve_library.LEVEL_VP_1 = test_library.E_INTEGER
+test_esoTERM_pve_library.LEVEL_VP_2 = test_library.F_INTEGER
+test_esoTERM_pve_library.LEVEL_XP_MAX_1 = test_library.G_INTEGER
+test_esoTERM_pve_library.LEVEL_XP_MAX_2 = test_library.H_INTEGER
+test_esoTERM_pve_library.LEVEL_VP_MAX_1 = test_library.I_INTEGER
+test_esoTERM_pve_library.LEVEL_VP_MAX_2 = test_library.J_INTEGER
+test_esoTERM_pve_library.LEVEL_XP_PERCENT = test_library.K_INTEGER
+test_esoTERM_pve_library.LEVEL_XP_GAIN = test_library.L_INTEGER
 
 local MODULE_NAME = "pve"
 

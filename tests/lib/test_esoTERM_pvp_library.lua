@@ -8,23 +8,23 @@ test_esoTERM_pvp_library.EVENT_REGISTER = esoTERM_pvp.event_register
 
 test_esoTERM_pvp_library.AVA_POINTS_1 = test_library.A_INTEGER
 test_esoTERM_pvp_library.AVA_POINTS_2 = test_library.B_INTEGER
-test_esoTERM_pvp_library.AVA_RANK_1 = test_library.A_INTEGER
-test_esoTERM_pvp_library.AVA_RANK_2 = test_library.B_INTEGER
-test_esoTERM_pvp_library.AVA_SUB_RANK_1 = test_library.A_INTEGER
-test_esoTERM_pvp_library.AVA_SUB_RANK_2 = test_library.B_INTEGER
-test_esoTERM_pvp_library.AVA_RANK_NAME_1 = test_library.A_INTEGER
-test_esoTERM_pvp_library.AVA_RANK_NAME_2 = test_library.B_INTEGER
-test_esoTERM_pvp_library.AVA_RANK_POINTS_1 = test_library.A_INTEGER
-test_esoTERM_pvp_library.AVA_RANK_POINTS_2 = test_library.B_INTEGER
-test_esoTERM_pvp_library.AVA_RANK_POINTS_MAX_1 = test_library.A_INTEGER
-test_esoTERM_pvp_library.AVA_RANK_POINTS_MAX_2 = test_library.B_INTEGER
-test_esoTERM_pvp_library.AVA_RANK_POINTS_LB_1 = test_library.A_INTEGER
-test_esoTERM_pvp_library.AVA_RANK_POINTS_LB_2 = test_library.B_INTEGER
-test_esoTERM_pvp_library.AVA_RANK_POINTS_UB_1 = test_library.A_INTEGER
-test_esoTERM_pvp_library.AVA_RANK_POINTS_UB_2 = test_library.B_INTEGER
-test_esoTERM_pvp_library.AVA_RANK_POINTS_PERCENT = test_library.A_INTEGER
-test_esoTERM_pvp_library.AVA_POINTS_GAIN = test_library.A_INTEGER
-test_esoTERM_pvp_library.GENDER_1 = test_library.A_INTEGER
+test_esoTERM_pvp_library.AVA_RANK_1 = test_library.C_INTEGER
+test_esoTERM_pvp_library.AVA_RANK_2 = test_library.D_INTEGER
+test_esoTERM_pvp_library.AVA_SUB_RANK_1 = test_library.E_INTEGER
+test_esoTERM_pvp_library.AVA_SUB_RANK_2 = test_library.F_INTEGER
+test_esoTERM_pvp_library.AVA_RANK_NAME_1 = test_library.G_INTEGER
+test_esoTERM_pvp_library.AVA_RANK_NAME_2 = test_library.H_INTEGER
+test_esoTERM_pvp_library.AVA_RANK_POINTS_1 = test_library.I_INTEGER
+test_esoTERM_pvp_library.AVA_RANK_POINTS_2 = test_library.J_INTEGER
+test_esoTERM_pvp_library.AVA_RANK_POINTS_MAX_1 = test_library.K_INTEGER
+test_esoTERM_pvp_library.AVA_RANK_POINTS_MAX_2 = test_library.L_INTEGER
+test_esoTERM_pvp_library.AVA_RANK_POINTS_LB_1 = test_library.M_INTEGER
+test_esoTERM_pvp_library.AVA_RANK_POINTS_LB_2 = test_library.N_INTEGER
+test_esoTERM_pvp_library.AVA_RANK_POINTS_UB_1 = test_library.O_INTEGER
+test_esoTERM_pvp_library.AVA_RANK_POINTS_UB_2 = test_library.P_INTEGER
+test_esoTERM_pvp_library.AVA_RANK_POINTS_PERCENT = test_library.Q_INTEGER
+test_esoTERM_pvp_library.AVA_POINTS_GAIN = test_library.R_INTEGER
+test_esoTERM_pvp_library.GENDER_1 = test_library.S_INTEGER
 
 local MODULE_NAME = "pvp"
 
@@ -108,7 +108,7 @@ function test_esoTERM_pvp_library.and_that_register_for_event_is_stubbed()
 end
 
 test_esoTERM_pvp_library.RETURN_VALUES_OF_THE_GETTER_STUBS = {
-    get_ava_points = test_esoTERM_pvp_library.AVA_RANK_1,
+    get_ava_points = test_esoTERM_pvp_library.AVA_POINTS_1,
     get_ava_rank = test_esoTERM_pvp_library.AVA_RANK_1,
     get_ava_sub_rank = test_esoTERM_pvp_library.AVA_SUB_RANK_1,
     get_ava_rank_name = test_esoTERM_pvp_library.AVA_RANK_NAME_1,

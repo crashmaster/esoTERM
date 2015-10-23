@@ -6,7 +6,7 @@ test_esoTERM_champ_library = {}
 test_esoTERM_champ_library.CACHE = esoTERM_champ.cache
 
 test_esoTERM_champ_library.CHAMPION_XP_1 = test_library.A_INTEGER
-test_esoTERM_champ_library.CHAMPION_XP_MAX_1 = test_library.A_INTEGER
+test_esoTERM_champ_library.CHAMPION_XP_MAX_1 = test_library.B_INTEGER
 
 local MODULE_NAME = "champion"
 

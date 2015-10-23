@@ -11,8 +11,27 @@ this.A_INTEGER = 1111
 this.B_INTEGER = 2222
 this.C_INTEGER = 3333
 this.D_INTEGER = 4444
+this.E_INTEGER = 5555
+this.F_INTEGER = 6666
+this.G_INTEGER = 7777
+this.H_INTEGER = 8888
+this.I_INTEGER = 9999
+this.J_INTEGER = 1234
+this.K_INTEGER = 5678
+this.L_INTEGER = 9012
+this.M_INTEGER = 3456
+this.N_INTEGER = 7890
+this.O_INTEGER = 9876
+this.P_INTEGER = 5432
+this.Q_INTEGER = 1098
+this.R_INTEGER = 7654
+this.S_INTEGER = 3210
 this.A_STRING = "aAaAa"
 this.B_STRING = "bBbBb"
+this.C_STRING = "cCcCc"
+this.D_STRING = "dDdDd"
+this.E_STRING = "eEeEe"
+this.F_STRING = "fFfFf"
 
 local function stub_function(module, function_name, return_value)
     ut_helper.stub_function(module, function_name, return_value)
