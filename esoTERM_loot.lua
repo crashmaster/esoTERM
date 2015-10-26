@@ -65,6 +65,7 @@ function esoTERM_loot.on_money_received(event, new_amount, old_amount, reason)
     end
 end
 
+-- TODO: duplicate code
 function esoTERM_loot.initialize()
     esoTERM_loot.settings = ZO_SavedVars:New(
         "esoTERM_settings",

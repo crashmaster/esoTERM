@@ -63,6 +63,7 @@ function esoTERM_champ.on_champion_point_gain()
     esoTERM_output.stdout("Gained champion point (" .. GetPlayerChampionPointsEarned() .. ")")
 end
 
+-- TODO: duplicate code
 function esoTERM_champ.initialize()
     if GetChampionXPInRank(GetPlayerChampionPointsEarned()) == nil then
         return

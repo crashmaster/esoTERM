@@ -127,6 +127,7 @@ function esoTERM_pvp.on_ava_points_update(event, point, sound, diff)
     end
 end
 
+-- TODO: duplicate code
 function esoTERM_pvp.initialize()
     esoTERM_pvp.settings = ZO_SavedVars:New(
         "esoTERM_settings",

@@ -76,7 +76,7 @@ function this.configure_module_as_active(module_name)
     this.stub_function_with_return_value(ZO_SavedVars, "New", setting)
 end
 
-function this.zo_savedvars_new_was_called_with_module(module_name)
+function this.ZO_SavedVars_new_was_called_with_module(module_name)
     assert.spy(ZO_SavedVars.New).was.called_with(
         ZO_SavedVars,
         "esoTERM_settings",

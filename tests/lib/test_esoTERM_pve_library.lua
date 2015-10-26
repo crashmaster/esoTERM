@@ -43,8 +43,8 @@ function test_esoTERM_pve_library.given_that_module_configured_as_active()
     test_library.configure_module_as_active(MODULE_NAME)
 end
 
-function test_esoTERM_pve_library.and_zo_savedvars_new_was_called()
-    test_library.zo_savedvars_new_was_called_with_module(MODULE_NAME)
+function test_esoTERM_pve_library.and_ZO_SavedVars_new_was_called()
+    test_library.ZO_SavedVars_new_was_called_with_module(MODULE_NAME)
 end
 
 function test_esoTERM_pve_library.and_that_register_module_is_stubbed()

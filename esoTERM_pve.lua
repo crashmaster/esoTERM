@@ -108,6 +108,7 @@ function esoTERM_pve.on_level_update(event, unit, level)
     end
 end
 
+-- TODO: duplicate code
 function esoTERM_pve.initialize()
     esoTERM_pve.settings = ZO_SavedVars:New(
         "esoTERM_settings",

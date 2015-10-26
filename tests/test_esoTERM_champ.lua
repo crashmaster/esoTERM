@@ -21,9 +21,9 @@ local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is
 local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
 local and_unregister_from_all_events_was_called = tl.and_unregister_from_all_events_was_called
-local and_zo_savedvars_new_is_stubbed = tl.and_zo_savedvars_new_is_stubbed
-local and_zo_savedvars_new_was_called = tl.and_zo_savedvars_new_was_called
-local and_zo_savedvars_new_was_not_called = tl.and_zo_savedvars_new_was_not_called
+local and_ZO_SavedVars_new_is_stubbed = tl.and_ZO_SavedVars_new_is_stubbed
+local and_ZO_SavedVars_new_was_called = tl.and_ZO_SavedVars_new_was_called
+local and_ZO_SavedVars_new_was_not_called = tl.and_ZO_SavedVars_new_was_not_called
 local given_that_character_is_not_eligible_for_champion_xp = tl.given_that_character_is_not_eligible_for_champion_xp
 local given_that_module_configured_as_active = tl.given_that_module_configured_as_active
 local given_that_module_configured_as_inactive = tl.given_that_module_configured_as_inactive
@@ -54,14 +54,14 @@ describe("Test the esoTERM_champ module initialization.", function()
     it("Do not initialize if character is not eligible for champion system.",
     function()
         given_that_character_is_not_eligible_for_champion_xp()
-            and_zo_savedvars_new_is_stubbed()
+            and_ZO_SavedVars_new_is_stubbed()
             and_that_register_module_is_stubbed()
 
         when_initialize_is_called()
 
         then_GetPlayerChampionPointsEarned_was_called()
             and_GetChampionXPInRank_was_called()
-            and_zo_savedvars_new_was_not_called()
+            and_ZO_SavedVars_new_was_not_called()
             and_register_module_was_not_called()
     end)
 
@@ -75,7 +75,7 @@ describe("Test the esoTERM_champ module initialization.", function()
         when_initialize_is_called()
 
         then_esoTERM_champ_activate_was_not_called()
-            and_zo_savedvars_new_was_called()
+            and_ZO_SavedVars_new_was_called()
             and_register_module_was_called()
     end)
 
@@ -89,7 +89,7 @@ describe("Test the esoTERM_champ module initialization.", function()
         when_initialize_is_called()
 
         then_esoTERM_champ_activate_was_called()
-            and_zo_savedvars_new_was_called()
+            and_ZO_SavedVars_new_was_called()
             and_register_module_was_called()
     end)
 end)

@@ -21,8 +21,8 @@ local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubb
 local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
 local and_unregister_from_all_events_was_called = tl.and_unregister_from_all_events_was_called
-local and_zo_savedvars_new_was_called = tl.and_zo_savedvars_new_was_called
-local and_zo_savedvars_new_was_called = tl.and_zo_savedvars_new_was_called
+local and_ZO_SavedVars_new_was_called = tl.and_ZO_SavedVars_new_was_called
+local and_ZO_SavedVars_new_was_called = tl.and_ZO_SavedVars_new_was_called
 local expected_register_for_event_calls_are_cleared = tl.expected_register_for_event_calls_are_cleared
 local given_that_module_configured_as_active = tl.given_that_module_configured_as_active
 local given_that_module_configured_as_inactive = tl.given_that_module_configured_as_inactive
@@ -59,7 +59,7 @@ describe("Test the esoTERM_loot module initialization.", function()
         when_initialize_is_called()
 
         then_esoTERM_loot_activate_was_not_called()
-            and_zo_savedvars_new_was_called()
+            and_ZO_SavedVars_new_was_called()
             and_register_module_was_called()
     end)
 
@@ -72,7 +72,7 @@ describe("Test the esoTERM_loot module initialization.", function()
         when_initialize_is_called()
 
         then_esoTERM_loot_activate_was_called()
-            and_zo_savedvars_new_was_called()
+            and_ZO_SavedVars_new_was_called()
             and_register_module_was_called()
     end)
 end)

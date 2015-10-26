@@ -205,6 +205,7 @@ function esoTERM_char.on_vp_gain(event, reason, rank, previous_vp, current_vp)
     save_current_game_time()
 end
 
+-- TODO: duplicate code
 function esoTERM_char.initialize()
     esoTERM_char.settings = ZO_SavedVars:New(
         "esoTERM_settings",
