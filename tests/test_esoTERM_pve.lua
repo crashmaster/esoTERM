@@ -38,7 +38,7 @@ local when_initialize_is_called = tl.when_initialize_is_called
 -- }}}
 
 describe("Test module.", function()
-    it("Module is called: esoTERM-pve.",
+    it("Module is called: pve.",
     function()
         verify_that_esoTERM_pve_module_has_the_expected_name()
     end)

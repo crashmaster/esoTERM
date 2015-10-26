@@ -62,7 +62,7 @@ local when_on_xp_gain_is_called_with = tl.when_on_xp_gain_is_called_with
 -- }}}
 
 describe("Test the esoTERM_char module.", function()
-    it("Module is called: esoTERM-character.",
+    it("Module is called: character.",
     function()
         verify_that_esoTERM_char_module_has_the_expected_name()
     end)

@@ -40,7 +40,7 @@ local when_initialize_is_called = tl.when_initialize_is_called
 -- }}}
 
 describe("Test the esoTERM_champ module.", function()
-    it("Module is called: esoTERM-champion.",
+    it("Module is called: champion.",
     function()
         verify_that_esoTERM_champ_module_has_the_expected_name()
     end)

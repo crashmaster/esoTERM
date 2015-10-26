@@ -39,7 +39,7 @@ local when_initialize_is_called = tl.when_initialize_is_called
 -- }}}
 
 describe("Test module.", function()
-    it("Module is called: esoTERM-loot.",
+    it("Module is called: loot.",
     function()
         verify_that_esoTERM_loot_module_has_the_expected_name()
     end)
