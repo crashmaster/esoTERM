@@ -87,7 +87,6 @@ function this.ZO_SavedVars_new_was_called_with_module(module_name)
         }
     )
 end
-
 -- }}}
 
 -- Module activeness {{{
