@@ -49,7 +49,7 @@ local then_get_combat_exit_time_returned = tl.then_get_combat_exit_time_returned
 local then_module_became_inactive = tl.then_module_became_inactive
 local verify_that_esoTERM_char_module_has_the_expected_name = tl.verify_that_esoTERM_char_module_has_the_expected_name
 local when_activate_is_called = tl.when_activate_is_called
-local when_deactivate_for_the_module_is_called = tl.when_deactivate_for_the_module_is_called
+local when_deactivate_is_called = tl.when_deactivate_is_called
 local when_get_combat_exit_time_is_called = tl.when_get_combat_exit_time_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
 local when_on_vp_gain_is_called_with = tl.when_on_vp_gain_is_called_with
@@ -131,7 +131,7 @@ describe("Test esoTERM_char module deactivate.", function()
         given_that_module_is_active()
             and_that_unregister_from_all_events_is_stubbed()
 
-        when_deactivate_for_the_module_is_called()
+        when_deactivate_is_called()
 
         then_module_became_inactive()
             and_unregister_from_all_events_was_called()

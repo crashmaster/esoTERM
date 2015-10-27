@@ -160,7 +160,7 @@ function test_esoTERM_champ_library.when_activate_is_called()
     esoTERM_champ.activate()
 end
 
-function test_esoTERM_champ_library.when_deactivate_for_the_module_is_called()
+function test_esoTERM_champ_library.when_deactivate_is_called()
     esoTERM_champ.deactivate()
 end
 

@@ -260,7 +260,7 @@ end
 -- }}}
 
 -- Deactivate {{{
-function test_esoTERM_pve_library.when_deactivate_for_the_module_is_called()
+function test_esoTERM_pve_library.when_deactivate_is_called()
     esoTERM_pve.deactivate()
 end
 

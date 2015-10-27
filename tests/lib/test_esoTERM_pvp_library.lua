@@ -172,7 +172,7 @@ end
 -- }}}
 
 -- Deactivate {{{
-function test_esoTERM_pvp_library.when_deactivate_for_the_module_is_called()
+function test_esoTERM_pvp_library.when_deactivate_is_called()
     esoTERM_pvp.deactivate()
 end
 

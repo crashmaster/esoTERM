@@ -33,7 +33,7 @@ local then_esoTERM_pve_activate_was_not_called = tl.then_esoTERM_pve_activate_wa
 local then_module_became_inactive = tl.then_module_became_inactive
 local verify_that_esoTERM_pve_module_has_the_expected_name = tl.verify_that_esoTERM_pve_module_has_the_expected_name
 local when_activate_is_called = tl.when_activate_is_called
-local when_deactivate_for_the_module_is_called = tl.when_deactivate_for_the_module_is_called
+local when_deactivate_is_called = tl.when_deactivate_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
 -- }}}
 
@@ -130,7 +130,7 @@ describe("Test esoTERM_pve module deactivate.", function()
         given_that_module_is_active()
             and_that_unregister_from_all_events_is_stubbed()
 
-        when_deactivate_for_the_module_is_called()
+        when_deactivate_is_called()
 
         then_module_became_inactive()
             and_unregister_from_all_events_was_called()

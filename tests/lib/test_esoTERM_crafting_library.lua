@@ -59,7 +59,17 @@ function test_esoTERM_crafting_library.then_activate_was_not_called()
 end
 -- }}}
 
+-- deactivate {{{
+function test_esoTERM_crafting_library.when_deactivate_is_called()
+    esoTERM_crafting.deactivate()
+end
+-- }}}
+
 -- Module activeness {{{
+function test_esoTERM_crafting_library.given_that_module_is_active()
+    test_library.set_module_to_active(esoTERM_crafting)
+end
+
 function test_esoTERM_crafting_library.given_that_module_is_inactive()
     test_library.set_module_to_inactive(esoTERM_crafting)
 end
@@ -68,8 +78,16 @@ function test_esoTERM_crafting_library.and_module_became_active()
     test_library.check_that_module_became_active(esoTERM_crafting)
 end
 
+function test_esoTERM_crafting_library.then_module_became_inactive()
+    test_library.check_that_module_became_inactive(esoTERM_crafting)
+end
+
 function test_esoTERM_crafting_library.and_module_is_active_was_saved()
     assert.is.equal(esoTERM_crafting.settings[MODULE_NAME], true)
+end
+
+function test_esoTERM_crafting_library.and_module_is_inactive_was_saved()
+    assert.is.equal(esoTERM_crafting.settings[MODULE_NAME], false)
 end
 -- }}}
 
@@ -103,6 +121,16 @@ function test_esoTERM_crafting_library.and_register_for_event_was_called_with_ex
             test_esoTERM_crafting_library.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].callback)
         assert.is_not.equal(nil, test_esoTERM_crafting_library.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].callback)
     end
+end
+-- }}}
+
+-- unregister_from_all_events {{{
+function test_esoTERM_crafting_library.and_that_unregister_from_all_events_is_stubbed()
+    test_library.stub_function_with_no_return_value(esoTERM_common, "unregister_from_all_events")
+end
+
+function test_esoTERM_crafting_library.and_unregister_from_all_events_was_called()
+    test_library.stub_function_called_with_arguments(esoTERM_common.unregister_from_all_events, esoTERM_crafting)
 end
 -- }}}
 

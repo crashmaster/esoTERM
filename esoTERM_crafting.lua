@@ -30,4 +30,12 @@ function esoTERM_crafting.activate()
     esoTERM_crafting.settings[esoTERM_crafting.module_name] = esoTERM_crafting.is_active
 end
 
+-- TODO: duplicate code
+function esoTERM_crafting.deactivate()
+    esoTERM_common.unregister_from_all_events(esoTERM_crafting)
+
+    esoTERM_crafting.is_active = false
+    esoTERM_crafting.settings[esoTERM_crafting.module_name] = esoTERM_crafting.is_active
+end
+
 return esoTERM_crafting

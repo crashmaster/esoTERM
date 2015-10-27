@@ -144,7 +144,7 @@ end
 -- }}}
 
 -- Deactivate {{{
-function test_esoTERM_loot_library.when_deactivate_for_the_module_is_called()
+function test_esoTERM_loot_library.when_deactivate_is_called()
     esoTERM_loot.deactivate()
 end
 

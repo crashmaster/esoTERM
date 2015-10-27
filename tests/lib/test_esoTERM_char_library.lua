@@ -182,7 +182,7 @@ end
 -- }}}
 
 -- deactivate {{{
-function test_esoTERM_char_library.when_deactivate_for_the_module_is_called()
+function test_esoTERM_char_library.when_deactivate_is_called()
     esoTERM_char.deactivate()
 end
 -- }}}
