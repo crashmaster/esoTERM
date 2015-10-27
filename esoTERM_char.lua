@@ -205,20 +205,8 @@ function esoTERM_char.on_vp_gain(event, reason, rank, previous_vp, current_vp)
     save_current_game_time()
 end
 
--- TODO: duplicate code
 function esoTERM_char.initialize()
-    esoTERM_char.settings = ZO_SavedVars:New(
-        "esoTERM_settings",
-        2,
-        "active_modules",
-        {[esoTERM_char.module_name] = true}
-    )
-
-    esoTERM_common.register_module(esoTERM.module_register, esoTERM_char)
-
-    if esoTERM_char.settings[esoTERM_char.module_name] then
-        esoTERM_char.activate()
-    end
+    esoTERM_common.initialize_module(esoTERM_char)
 end
 
 function esoTERM_char.on_skill_xp_update(event, skillType, skillLine, lastRankXP, nextRankXP, currentXP)

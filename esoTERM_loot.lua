@@ -65,20 +65,8 @@ function esoTERM_loot.on_money_received(event, new_amount, old_amount, reason)
     end
 end
 
--- TODO: duplicate code
 function esoTERM_loot.initialize()
-    esoTERM_loot.settings = ZO_SavedVars:New(
-        "esoTERM_settings",
-        2,
-        "active_modules",
-        {[esoTERM_loot.module_name] = true}
-    )
-
-    esoTERM_common.register_module(esoTERM.module_register, esoTERM_loot)
-
-    if esoTERM_loot.settings[esoTERM_loot.module_name] then
-        esoTERM_loot.activate()
-    end
+    esoTERM_common.initialize_module(esoTERM_loot)
 end
 
 function esoTERM_loot.activate()

@@ -22,6 +22,21 @@ function esoTERM_common.register_module(module_register, module)
     table.insert(module_register, module)
 end
 
+function esoTERM_common.initialize_module(module)
+    module.settings = ZO_SavedVars:New(
+        "esoTERM_settings",
+        2,
+        "active_modules",
+        {[module.module_name] = true}
+    )
+
+    esoTERM_common.register_module(esoTERM.module_register, module)
+
+    if module.settings[module.module_name] then
+        module.activate()
+    end
+end
+
 function esoTERM_common.get_module(module_register, module_name)
     for _index, value in ipairs(module_register) do
         if string.lower(value.module_name) == string.lower(module_name) then

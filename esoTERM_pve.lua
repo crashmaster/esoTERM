@@ -108,20 +108,8 @@ function esoTERM_pve.on_level_update(event, unit, level)
     end
 end
 
--- TODO: duplicate code
 function esoTERM_pve.initialize()
-    esoTERM_pve.settings = ZO_SavedVars:New(
-        "esoTERM_settings",
-        2,
-        "active_modules",
-        {[esoTERM_pve.module_name] = true}
-    )
-
-    esoTERM_common.register_module(esoTERM.module_register, esoTERM_pve)
-
-    if esoTERM_pve.settings[esoTERM_pve.module_name] then
-        esoTERM_pve.activate()
-    end
+    esoTERM_common.initialize_module(esoTERM_pve)
 end
 
 function esoTERM_pve.activate()

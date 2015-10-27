@@ -63,24 +63,12 @@ function esoTERM_champ.on_champion_point_gain()
     esoTERM_output.stdout("Gained champion point (" .. GetPlayerChampionPointsEarned() .. ")")
 end
 
--- TODO: duplicate code
 function esoTERM_champ.initialize()
     if GetChampionXPInRank(GetPlayerChampionPointsEarned()) == nil then
         return
     end
 
-    esoTERM_champ.settings = ZO_SavedVars:New(
-        "esoTERM_settings",
-        2,
-        "active_modules",
-        {[esoTERM_champ.module_name] = true}
-    )
-
-    esoTERM_common.register_module(esoTERM.module_register, esoTERM_champ)
-
-    if esoTERM_champ.settings[esoTERM_champ.module_name] then
-        esoTERM_champ.activate()
-    end
+    esoTERM_common.initialize_module(esoTERM_champ)
 end
 
 function esoTERM_champ.activate()

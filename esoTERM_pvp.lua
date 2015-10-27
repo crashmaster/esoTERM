@@ -127,20 +127,8 @@ function esoTERM_pvp.on_ava_points_update(event, point, sound, diff)
     end
 end
 
--- TODO: duplicate code
 function esoTERM_pvp.initialize()
-    esoTERM_pvp.settings = ZO_SavedVars:New(
-        "esoTERM_settings",
-        2,
-        "active_modules",
-        {[esoTERM_pvp.module_name] = true}
-    )
-
-    esoTERM_common.register_module(esoTERM.module_register, esoTERM_pvp)
-
-    if esoTERM_pvp.settings[esoTERM_pvp.module_name] then
-        esoTERM_pvp.activate()
-    end
+    esoTERM_common.initialize_module(esoTERM_pvp)
 end
 
 function esoTERM_pvp.activate()
