@@ -125,15 +125,9 @@ function test_esoTERM_char_library.and_that_register_for_event_is_stubbed()
 end
 
 function test_esoTERM_char_library.and_register_for_event_was_called_with_expected_parameters()
-    assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(test_esoTERM_char_library.EXPECTED_REGISTER_FOR_EVENT_CALLS))
-    for param in pairs(test_esoTERM_char_library.EXPECTED_REGISTER_FOR_EVENT_CALLS) do
-        test_library.stub_function_called_with_arguments(
-            esoTERM_common.register_for_event,
-            test_esoTERM_char_library.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].module,
-            test_esoTERM_char_library.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].event,
-            test_esoTERM_char_library.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].callback)
-        assert.is_not.equal(nil, test_esoTERM_char_library.EXPECTED_REGISTER_FOR_EVENT_CALLS[param].callback)
-    end
+    test_library.register_for_event_was_called_with_expected_parameters(
+        test_esoTERM_char_library.EXPECTED_REGISTER_FOR_EVENT_CALLS
+    )
 end
 
 function test_esoTERM_char_library.and_register_for_event_was_not_called()

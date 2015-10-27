@@ -110,6 +110,20 @@ function this.check_that_module_became_inactive(module)
 end
 -- }}}
 
+-- register_for_event_was_called_with_expected_parameters {{{
+function this.register_for_event_was_called_with_expected_parameters(expected_register_for_event_calls)
+    assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(expected_register_for_event_calls))
+    for param in pairs(expected_register_for_event_calls) do
+        this.stub_function_called_with_arguments(
+            esoTERM_common.register_for_event,
+            expected_register_for_event_calls[param].module,
+            expected_register_for_event_calls[param].event,
+            expected_register_for_event_calls[param].callback)
+        assert.is_not.equal(nil, expected_register_for_event_calls[param].callback)
+    end
+end
+-- }}}
+
 return this
 
 -- vim:fdm=marker
