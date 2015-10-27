@@ -2,11 +2,31 @@
 local requires_for_tests = require("tests/requires_for_tests")
 local tl = require("tests/lib/test_esoTERM_crafting_library")
 
+tl.setup_test_functions(
+    {
+        activate = {
+            module = esoTERM_crafting,
+            function_types = {
+                AND_THAT_X_IS_STUBBED,
+                WHEN_X_IS_CALLED,
+                THEN_X_WAS_CALLED,
+                THEN_X_WAS_NOT_CALLED,
+            },
+        },
+        deactivate = {
+            module = esoTERM_crafting,
+            function_types = {
+                WHEN_X_IS_CALLED,
+            },
+        },
+    }
+)
+
 local and_ZO_SavedVars_new_was_called = tl.and_ZO_SavedVars_new_was_called
 local and_module_became_active = tl.and_module_became_active
 local and_module_is_active_was_saved = tl.and_module_is_active_was_saved
 local and_module_is_inactive_was_saved = tl.and_module_is_inactive_was_saved
-local and_register_for_event_was_called_with_expected_parameters = tl.and_register_for_event_was_called_with_expected_parameters
+local and_register_for_event_was_called_with = tl.and_register_for_event_was_called_with
 local and_register_module_was_called = tl.and_register_module_was_called
 local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
 local and_that_expected_register_for_event_calls_are_set_up = tl.and_that_expected_register_for_event_calls_are_set_up
@@ -82,7 +102,7 @@ describe("Test esoTERM_crafting module activate.", function()
         when_activate_is_called()
 
         and_module_became_active()
-            and_register_for_event_was_called_with_expected_parameters()
+            and_register_for_event_was_called_with(tl.EXPECTED_REGISTER_FOR_EVENT_CALLS)
             and_module_is_active_was_saved()
     end)
 end)
