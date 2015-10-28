@@ -20,7 +20,7 @@ local and_that_getter_functions_are_stubbed = tl.and_that_getter_functions_are_s
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
 local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
-local and_unregister_from_all_events_was_called = tl.and_unregister_from_all_events_was_called
+local and_unregister_from_all_events_was_called_with = tl.and_unregister_from_all_events_was_called_with
 local and_ZO_SavedVars_new_is_stubbed = tl.and_ZO_SavedVars_new_is_stubbed
 local and_ZO_SavedVars_new_was_called = tl.and_ZO_SavedVars_new_was_called
 local and_ZO_SavedVars_new_was_not_called = tl.and_ZO_SavedVars_new_was_not_called
@@ -133,7 +133,7 @@ describe("Test esoTERM_champ module deactivate.", function()
         when_deactivate_is_called()
 
         then_module_became_inactive()
-            and_unregister_from_all_events_was_called()
+            and_unregister_from_all_events_was_called_with(esoTERM_champ)
             and_module_is_inactive_was_saved()
     end)
 end)

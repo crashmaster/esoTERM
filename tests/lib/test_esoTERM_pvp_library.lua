@@ -183,7 +183,7 @@ function test_esoTERM_pvp_library.and_that_unregister_from_all_events_is_stubbed
     test_library.stub_function_with_no_return_value(esoTERM_common, "unregister_from_all_events")
 end
 
-function test_esoTERM_pvp_library.and_unregister_from_all_events_was_called()
+function test_esoTERM_pvp_library.and_unregister_from_all_events_was_called_with(...)
     assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(esoTERM_pvp)
 end
 

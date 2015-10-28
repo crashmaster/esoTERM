@@ -33,7 +33,7 @@ local and_that_expected_register_for_event_calls_are_set_up = tl.and_that_expect
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
 local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
-local and_unregister_from_all_events_was_called = tl.and_unregister_from_all_events_was_called
+local and_unregister_from_all_events_was_called_with = tl.and_unregister_from_all_events_was_called_with
 local expected_register_for_event_calls_are_cleared = tl.expected_register_for_event_calls_are_cleared
 local given_that_module_configured_as_active = tl.given_that_module_configured_as_active
 local given_that_module_configured_as_inactive = tl.given_that_module_configured_as_inactive
@@ -120,7 +120,7 @@ describe("Test esoTERM_crafting module deactivate.", function()
         when_deactivate_is_called()
 
         then_module_became_inactive()
-            and_unregister_from_all_events_was_called()
+            and_unregister_from_all_events_was_called_with(esoTERM_crafting)
             and_module_is_inactive_was_saved()
     end)
 end)

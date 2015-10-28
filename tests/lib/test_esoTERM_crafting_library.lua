@@ -128,7 +128,7 @@ function test_esoTERM_crafting_library.and_that_unregister_from_all_events_is_st
     test_library.stub_function_with_no_return_value(esoTERM_common, "unregister_from_all_events")
 end
 
-function test_esoTERM_crafting_library.and_unregister_from_all_events_was_called()
+function test_esoTERM_crafting_library.and_unregister_from_all_events_was_called_with(...)
     test_library.stub_function_called_with_arguments(esoTERM_common.unregister_from_all_events, esoTERM_crafting)
 end
 -- }}}
