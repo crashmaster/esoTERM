@@ -4,41 +4,43 @@ local tl = require("tests/lib/test_esoTERM_crafting_library")
 
 tl.setup_test_functions(
     {
-        activate = {
-            module = esoTERM_crafting,
-            function_types = {
-                {
-                    name_template = FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED,
-                },
-                {
-                    name_template = FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED,
-                },
-                {
-                    name_template = FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED,
-                },
-                {
-                    name_template = FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED,
-                },
+        [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = {
+            {
+                module = esoTERM_crafting,
+                function_name = "activate",
+            },
+            {
+                module = esoTERM_common,
+                function_name = "unregister_from_all_events",
             },
         },
-        deactivate = {
-            module = esoTERM_crafting,
-            function_types = {
-                {
-                    name_template = FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED,
-                },
+        [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = {
+            {
+                module = esoTERM_common,
+                function_name = "unregister_from_all_events",
+                called_with = esoTERM_crafting,
             },
         },
-        unregister_from_all_events = {
-            module = esoTERM_common,
-            function_types = {
-                {
-                    name_template = FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED,
-                },
-                {
-                    name_template = FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH,
-                    argument = esoTERM_crafting,
-                },
+        [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED] = {
+            {
+                module = esoTERM_crafting,
+                function_name = "activate",
+            },
+        },
+        [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED] = {
+            {
+                module = esoTERM_crafting,
+                function_name = "activate",
+            },
+        },
+        [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED] = {
+            {
+                module = esoTERM_crafting,
+                function_name = "activate",
+            },
+            {
+                module = esoTERM_crafting,
+                function_name = "deactivate",
             },
         },
     }

@@ -65,6 +65,59 @@ function this.stub_function_called_with_arguments(module_function, ...)
     assert.spy(module_function).was.called_with(...)
 end
 
+local function add_and_that_x_is_stubbed_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["and_that_" .. fp.function_name .. "_is_stubbed" ] = function ()
+        this.stub_function_with_no_return_value(fp.module, fp.function_name)
+    end
+end
+
+local function add_and_x_was_called_with_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["and_" .. fp.function_name .. "_was_called_with"] = function ()
+        this.stub_function_called_with_arguments(fp.module[fp.function_name], fp.called_with)
+    end
+end
+
+local function add_then_x_was_called_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["then_" .. fp.function_name .. "_was_called" ] = function ()
+        this.stub_function_called_without_arguments(fp.module[fp.function_name])
+    end
+end
+
+local function add_then_x_was_not_called_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["then_" .. fp.function_name .. "_was_not_called" ] = function ()
+        this.stub_function_was_not_called(fp.module[fp.function_name])
+    end
+end
+
+local function add_when_x_is_called_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["when_" .. fp.function_name .. "_is_called"] = function ()
+        fp.module[fp.function_name]()
+    end
+end
+
+local FUNCTION_NAME_TEMPLATE_TO_ADD_FUCTION = {
+    [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = add_and_that_x_is_stubbed_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = add_and_x_was_called_with_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED] = add_then_x_was_called_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED] = add_then_x_was_not_called_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED] = add_when_x_is_called_test_library_function,
+}
+
+function this.setup_test_library_functions(test_library, schema)
+    for function_name_template, template_specialization_parameters in pairs(schema) do
+        for _i, function_properties in ipairs(template_specialization_parameters) do
+            FUNCTION_NAME_TEMPLATE_TO_ADD_FUCTION[function_name_template](
+                test_library, function_properties
+            )
+        end
+    end
+end
+
 -- Initialization {{{
 function this.initialize_module(module)
     module.initialize()

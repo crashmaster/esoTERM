@@ -12,37 +12,8 @@ end
 -- }}}
 
 -- setup_test_functions {{{
-function test_esoTERM_crafting_library.setup_test_functions(functions)
-    for function_name, function_properties in pairs(functions) do
-        local module = function_properties.module
-        for _i, function_type in ipairs(function_properties.function_types) do
-            if function_type.name_template == FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED then
-                test_esoTERM_crafting_library["and_that_" .. function_name .. "_is_stubbed" ] = function ()
-                    test_library.stub_function_with_no_return_value(module, function_name)
-                end
-            end
-            if function_type.name_template == FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED then
-                test_esoTERM_crafting_library["when_" .. function_name .. "_is_called"] = function ()
-                    module[function_name]()
-                end
-            end
-            if function_type.name_template == FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED then
-                test_esoTERM_crafting_library["then_" .. function_name .. "_was_called" ] = function ()
-                    test_library.stub_function_called_without_arguments(module[function_name])
-                end
-            end
-            if function_type.name_template == FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED then
-                test_esoTERM_crafting_library["then_" .. function_name .. "_was_not_called" ] = function ()
-                    test_library.stub_function_was_not_called(module[function_name])
-                end
-            end
-            if function_type.name_template == FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH then
-                test_esoTERM_crafting_library["and_" .. function_name .. "_was_called_with"] = function ()
-                    test_library.stub_function_called_with_arguments(module[function_name], function_type.argument)
-                end
-            end
-        end
-    end
+function test_esoTERM_crafting_library.setup_test_functions(...)
+    test_library.setup_test_library_functions(test_esoTERM_crafting_library, ...)
 end
 -- }}}
 
