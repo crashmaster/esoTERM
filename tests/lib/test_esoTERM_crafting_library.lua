@@ -16,24 +16,29 @@ function test_esoTERM_crafting_library.setup_test_functions(functions)
     for function_name, function_properties in pairs(functions) do
         local module = function_properties.module
         for _i, function_type in ipairs(function_properties.function_types) do
-            if function_type == AND_THAT_X_IS_STUBBED then
+            if function_type.name_template == FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED then
                 test_esoTERM_crafting_library["and_that_" .. function_name .. "_is_stubbed" ] = function ()
                     test_library.stub_function_with_no_return_value(module, function_name)
                 end
             end
-            if function_type == WHEN_X_IS_CALLED then
+            if function_type.name_template == FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED then
                 test_esoTERM_crafting_library["when_" .. function_name .. "_is_called"] = function ()
                     module[function_name]()
                 end
             end
-            if function_type == THEN_X_WAS_CALLED then
+            if function_type.name_template == FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED then
                 test_esoTERM_crafting_library["then_" .. function_name .. "_was_called" ] = function ()
                     test_library.stub_function_called_without_arguments(module[function_name])
                 end
             end
-            if function_type == THEN_X_WAS_NOT_CALLED then
+            if function_type.name_template == FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED then
                 test_esoTERM_crafting_library["then_" .. function_name .. "_was_not_called" ] = function ()
                     test_library.stub_function_was_not_called(module[function_name])
+                end
+            end
+            if function_type.name_template == FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH then
+                test_esoTERM_crafting_library["and_" .. function_name .. "_was_called_with"] = function ()
+                    test_library.stub_function_called_with_arguments(module[function_name], function_type.argument)
                 end
             end
         end
@@ -120,16 +125,6 @@ function test_esoTERM_crafting_library.and_register_for_event_was_called_with()
     test_library.register_for_event_was_called_with_expected_parameters(
         test_esoTERM_crafting_library.EXPECTED_REGISTER_FOR_EVENT_CALLS
     )
-end
--- }}}
-
--- unregister_from_all_events {{{
-function test_esoTERM_crafting_library.and_that_unregister_from_all_events_is_stubbed()
-    test_library.stub_function_with_no_return_value(esoTERM_common, "unregister_from_all_events")
-end
-
-function test_esoTERM_crafting_library.and_unregister_from_all_events_was_called_with(...)
-    test_library.stub_function_called_with_arguments(esoTERM_common.unregister_from_all_events, esoTERM_crafting)
 end
 -- }}}
 

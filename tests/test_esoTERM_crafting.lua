@@ -7,16 +7,38 @@ tl.setup_test_functions(
         activate = {
             module = esoTERM_crafting,
             function_types = {
-                AND_THAT_X_IS_STUBBED,
-                WHEN_X_IS_CALLED,
-                THEN_X_WAS_CALLED,
-                THEN_X_WAS_NOT_CALLED,
+                {
+                    name_template = FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED,
+                },
+                {
+                    name_template = FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED,
+                },
+                {
+                    name_template = FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED,
+                },
+                {
+                    name_template = FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED,
+                },
             },
         },
         deactivate = {
             module = esoTERM_crafting,
             function_types = {
-                WHEN_X_IS_CALLED,
+                {
+                    name_template = FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED,
+                },
+            },
+        },
+        unregister_from_all_events = {
+            module = esoTERM_common,
+            function_types = {
+                {
+                    name_template = FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED,
+                },
+                {
+                    name_template = FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH,
+                    argument = esoTERM_crafting,
+                },
             },
         },
     }

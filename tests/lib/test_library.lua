@@ -5,10 +5,13 @@ this = {}
 GLOBAL = _G
 PLAYER = "player"
 
-AND_THAT_X_IS_STUBBED = "and_that_x_is_stubbed"
-WHEN_X_IS_CALLED = "when_x_is_called"
-THEN_X_WAS_CALLED = "then_x_was_called"
-THEN_X_WAS_NOT_CALLED = "then_x_was_not_called"
+FUNCTION_NAME_TEMPLATES = {
+    AND_THAT_X_IS_STUBBED = "and_that_x_is_stubbed",
+    AND_X_WAS_CALLED_WITH = "and_x_was_called_with",
+    THEN_X_WAS_CALLED = "then_x_was_called",
+    THEN_X_WAS_NOT_CALLED = "then_x_was_not_called",
+    WHEN_X_IS_CALLED = "when_x_is_called",
+}
 
 this.A_BOOL = true
 this.B_BOOL = false
