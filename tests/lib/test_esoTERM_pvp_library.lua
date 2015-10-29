@@ -76,7 +76,7 @@ end
 test_esoTERM_pvp_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
 
 function test_esoTERM_pvp_library.expected_register_for_event_calls_are_cleared()
-    test_esoTERM_pvp_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
+    ut_helper.clear_table(test_esoTERM_pvp_library.EXPECTED_REGISTER_FOR_EVENT_CALLS)
 end
 
 function test_esoTERM_pvp_library.when_activate_is_called()

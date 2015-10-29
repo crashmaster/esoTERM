@@ -72,7 +72,7 @@ test_esoTERM_loot_library.EXPECTED_CACHED_VALUES = {
 }
 
 function test_esoTERM_loot_library.expected_register_for_event_calls_are_cleared()
-    test_esoTERM_loot_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
+    ut_helper.clear_table(test_esoTERM_loot_library.EXPECTED_REGISTER_FOR_EVENT_CALLS)
 end
 
 function test_esoTERM_loot_library.given_that_module_is_inactive()
