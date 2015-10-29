@@ -1055,5 +1055,3 @@ describe("The on experience gain handlers.", function()
             and_GetGameTimeMilliseconds_was_called()
     end)
 end)
-
--- vim:fdm=marker

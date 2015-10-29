@@ -735,5 +735,3 @@ describe("Test the event handlers.", function()
         end)
     end)
 end)
-
--- vim:fdm=marker

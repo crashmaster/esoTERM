@@ -257,5 +257,3 @@ function test_esoTERM_champ_library.when_on_experience_update_is_called()
 end
 
 return test_esoTERM_champ_library
-
--- vim:fdm=marker

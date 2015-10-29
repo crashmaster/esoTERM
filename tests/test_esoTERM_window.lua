@@ -143,5 +143,3 @@ describe("Test esoTERM window initialization.", function()
             and_SCENE_AddFragment_was_called()
     end)
 end)
-
--- vim:fdm=marker

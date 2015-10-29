@@ -150,5 +150,3 @@ describe("Test various unit test helpers", function()
         then_the_test_table_has_no_entries()
     end)
 end)
-
--- vim:fdm=marker

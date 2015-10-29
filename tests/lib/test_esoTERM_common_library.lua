@@ -56,5 +56,3 @@ function test_esoTERM_common_library.split_string_into_strings_at_spaces(input_s
 end
 
 return test_esoTERM_common_library
-
--- vim:fdm=marker

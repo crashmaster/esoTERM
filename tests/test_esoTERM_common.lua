@@ -197,5 +197,3 @@ describe("Test common functions.", function()
         end)
     end)
 end)
-
--- vim:fdm=marker

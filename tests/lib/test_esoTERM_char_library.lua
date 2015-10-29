@@ -350,5 +350,3 @@ end
 -- }}}
 
 return test_esoTERM_char_library
-
--- vim:fdm=marker

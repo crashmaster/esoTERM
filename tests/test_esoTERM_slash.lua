@@ -231,5 +231,3 @@ describe("Test slash command handlers.", function()
             and_sysout_was_called_with("Module fake_active_module already active")
     end)
 end)
-
--- vim:fdm=marker

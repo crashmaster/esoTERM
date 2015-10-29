@@ -187,5 +187,3 @@ end
 -- }}}
 
 return this
-
--- vim:fdm=marker

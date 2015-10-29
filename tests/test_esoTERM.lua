@@ -39,5 +39,3 @@ describe("Test main module.", function()
         tl.then_initialize_was_called()
     end)
 end)
-
--- vim:fdm=marker

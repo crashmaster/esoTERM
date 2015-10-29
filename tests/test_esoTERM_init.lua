@@ -79,5 +79,3 @@ describe("Test esoTERM initialization", function()
                                                                  EVENT_ADD_ON_LOADED)
     end)
 end)
-
--- vim:fdm=marker

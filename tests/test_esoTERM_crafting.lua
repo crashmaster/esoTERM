@@ -132,4 +132,3 @@ describe("Test esoTERM_crafting module deactivate.", function()
             and_module_is_inactive_was_saved()
     end)
 end)
-

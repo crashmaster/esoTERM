@@ -166,5 +166,3 @@ describe("Test output.", function()
             and_esoTERM_output_sysout_message_buffer_became_empty()
     end)
 end)
-
--- vim:fdm=marker

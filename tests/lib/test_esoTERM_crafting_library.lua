@@ -78,5 +78,3 @@ end
 -- }}}
 
 return test_esoTERM_crafting_library
-
--- vim:fdm=marker
