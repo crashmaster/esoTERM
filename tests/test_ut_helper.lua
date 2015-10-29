@@ -132,8 +132,8 @@ describe("Test various unit test helpers", function()
     end)
 
     -- {{{
-    local function when_clean_table_on_test_table_is_called()
-        result = ut_helper.clean_table(test_table)
+    local function when_clear_table_on_test_table_is_called()
+        result = ut_helper.clear_table(test_table)
     end
 
     local function then_the_test_table_has_no_entries()
@@ -145,7 +145,7 @@ describe("Test various unit test helpers", function()
     function()
         given_that_the_number_of_entries_in_the_test_table_is(n)
 
-        when_clean_table_on_test_table_is_called()
+        when_clear_table_on_test_table_is_called()
 
         then_the_test_table_has_no_entries()
     end)

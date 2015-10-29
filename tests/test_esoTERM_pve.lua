@@ -8,9 +8,7 @@ local and_getter_function_stubs_were_called = tl.and_getter_function_stubs_were_
 local and_module_became_active = tl.and_module_became_active
 local and_module_is_active_was_saved = tl.and_module_is_active_was_saved
 local and_module_is_inactive_was_saved = tl.and_module_is_inactive_was_saved
-local and_register_for_event_was_called_with_expected_parameters = tl.and_register_for_event_was_called_with_expected_parameters
-local and_register_module_was_called = tl.and_register_module_was_called
-local and_register_module_was_called = tl.and_register_module_was_called
+local and_register_module_was_called_with = tl.and_register_module_was_called_with
 local and_that_cache_is_empty = tl.and_that_cache_is_empty
 local and_that_esoTERM_pve_activate_is_stubbed = tl.and_that_esoTERM_pve_activate_is_stubbed
 local and_that_esoTERM_pve_activate_is_stubbed = tl.and_that_esoTERM_pve_activate_is_stubbed
@@ -35,6 +33,9 @@ local verify_that_esoTERM_pve_module_has_the_expected_name = tl.verify_that_esoT
 local when_activate_is_called = tl.when_activate_is_called
 local when_deactivate_is_called = tl.when_deactivate_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
+
+local EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN = tl.EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN
+local EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN = tl.EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN
 -- }}}
 
 describe("Test module.", function()
@@ -59,7 +60,7 @@ describe("Test the esoTERM_pve module initialization.", function()
 
         then_esoTERM_pve_activate_was_not_called()
             and_ZO_SavedVars_new_was_called()
-            and_register_module_was_called()
+            and_register_module_was_called_with(esoTERM_pve)
     end)
 
     it("Initialize, and activate when configured as active.",
@@ -72,7 +73,7 @@ describe("Test the esoTERM_pve module initialization.", function()
 
         then_esoTERM_pve_activate_was_called()
             and_ZO_SavedVars_new_was_called()
-            and_register_module_was_called()
+            and_register_module_was_called_with(esoTERM_pve)
     end)
 end)
 
@@ -95,7 +96,7 @@ describe("Test esoTERM_pve module activate.", function()
 
         tl.and_module_became_active()
             tl.and_cache_is_no_longer_empty()
-            tl.and_register_for_event_was_called_for_non_veteran_unit()
+            tl.and_register_for_event_was_called_for_non_veteran_unit_was_called_with(EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN)
             tl.and_getter_function_stubs_were_called()
             tl.and_cached_values_for_non_veteran_unit_became_initialized()
             tl.and_module_is_active_was_saved()
@@ -113,7 +114,7 @@ describe("Test esoTERM_pve module activate.", function()
 
         tl.and_module_became_active()
             tl.and_cache_is_no_longer_empty()
-            tl.and_register_for_event_was_called_for_veteran_unit()
+            tl.and_register_for_event_was_called_for_veteran_unit_was_called_with(EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN)
             tl.and_getter_function_stubs_were_called()
             tl.and_cached_values_for_veteran_unit_became_initialized()
             tl.and_module_is_active_was_saved()

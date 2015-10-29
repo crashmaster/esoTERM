@@ -75,7 +75,7 @@ end
 local function add_and_x_was_called_with_test_library_function(test_library, function_properties)
     local fp = function_properties
     test_library["and_" .. fp.function_name .. "_was_called_with"] = function ()
-        this.stub_function_called_with_arguments(fp.module[fp.function_name], fp.called_with)
+        this.stub_function_called_with_arguments(fp.module[fp.function_name], unpack(fp.called_with))
     end
 end
 
@@ -119,6 +119,7 @@ function this.setup_test_library_functions(test_library, schema)
 end
 
 -- Initialization {{{
+-- TODO: will be obsolete when function generator is everywhere in place
 function this.initialize_module(module)
     module.initialize()
 end

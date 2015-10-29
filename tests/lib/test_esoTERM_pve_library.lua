@@ -51,8 +51,8 @@ function test_esoTERM_pve_library.and_that_register_module_is_stubbed()
     test_library.stub_function_with_no_return_value(esoTERM_common, "register_module")
 end
 
-function test_esoTERM_pve_library.and_register_module_was_called()
-    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, esoTERM_pve)
+function test_esoTERM_pve_library.and_register_module_was_called_with(...)
+    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, ...)
 end
 
 function test_esoTERM_pve_library.and_that_esoTERM_pve_activate_is_stubbed()
@@ -76,8 +76,8 @@ function test_esoTERM_pve_library.cache_is_cleared()
 end
 
 function test_esoTERM_pve_library.expected_register_for_event_calls_are_cleared()
-    test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN = {}
-    test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN = {}
+    ut_helper.clear_table(test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN)
+    ut_helper.clear_table(test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN)
 end
 
 function test_esoTERM_pve_library.when_activate_is_called()
@@ -198,26 +198,12 @@ function test_esoTERM_pve_library.and_cache_is_no_longer_empty()
     assert.is_not.equal(0, ut_helper.table_size(test_esoTERM_pve_library.CACHE))
 end
 
-function test_esoTERM_pve_library.and_register_for_event_was_called_for_non_veteran_unit()
-    assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN))
-    for param in pairs(test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN) do
-        assert.spy(esoTERM_common.register_for_event).was.called_with(
-            test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN[param].module,
-            test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN[param].event,
-            test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN[param].callback)
-        assert.is_not.equal(nil, test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN[param].callback)
-    end
+function test_esoTERM_pve_library.and_register_for_event_was_called_for_non_veteran_unit_was_called_with(...)
+    test_library.register_for_event_was_called_with_expected_parameters(...)
 end
 
-function test_esoTERM_pve_library.and_register_for_event_was_called_for_veteran_unit()
-    assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN))
-    for param in pairs(test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN) do
-        assert.spy(esoTERM_common.register_for_event).was.called_with(
-            test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN[param].module,
-            test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN[param].event,
-            test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN[param].callback)
-        assert.is_not.equal(nil, test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN[param].callback)
-    end
+function test_esoTERM_pve_library.and_register_for_event_was_called_for_veteran_unit_was_called_with(...)
+    test_library.register_for_event_was_called_with_expected_parameters(...)
 end
 
 function test_esoTERM_pve_library.and_getter_function_stubs_were_called()

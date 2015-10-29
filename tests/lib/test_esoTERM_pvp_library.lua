@@ -55,8 +55,8 @@ function test_esoTERM_pvp_library.and_that_register_module_is_stubbed()
     test_library.stub_function_with_no_return_value(esoTERM_common, "register_module")
 end
 
-function test_esoTERM_pvp_library.and_register_module_was_called()
-    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, esoTERM_pvp)
+function test_esoTERM_pvp_library.and_register_module_was_called_with(...)
+    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, ...)
 end
 
 function test_esoTERM_pvp_library.and_that_esoTERM_pvp_activate_is_stubbed()
@@ -143,10 +143,8 @@ function test_esoTERM_pvp_library.and_cache_is_no_longer_empty()
     assert.is_not.equal(0, ut_helper.table_size(test_esoTERM_pvp_library.CACHE))
 end
 
-function test_esoTERM_pvp_library.and_register_for_event_was_called_with_expected_parameters()
-    test_library.register_for_event_was_called_with_expected_parameters(
-        test_esoTERM_pvp_library.EXPECTED_REGISTER_FOR_EVENT_CALLS
-    )
+function test_esoTERM_pvp_library.and_register_for_event_was_called_with(...)
+    test_library.register_for_event_was_called_with_expected_parameters(...)
 end
 
 function test_esoTERM_pvp_library.and_getter_function_stubs_were_called()

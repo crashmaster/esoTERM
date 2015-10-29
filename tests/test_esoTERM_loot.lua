@@ -8,9 +8,8 @@ local and_getter_function_stubs_were_called = tl.and_getter_function_stubs_were_
 local and_module_became_active = tl.and_module_became_active
 local and_module_is_active_was_saved = tl.and_module_is_active_was_saved
 local and_module_is_inactive_was_saved = tl.and_module_is_inactive_was_saved
-local and_register_for_event_was_called_with_expected_parameters = tl.and_register_for_event_was_called_with_expected_parameters
-local and_register_module_was_called = tl.and_register_module_was_called
-local and_register_module_was_called = tl.and_register_module_was_called
+local and_register_for_event_was_called_with = tl.and_register_for_event_was_called_with
+local and_register_module_was_called_with = tl.and_register_module_was_called_with
 local and_that_cache_is_empty = tl.and_that_cache_is_empty
 local and_that_esoTERM_loot_activate_is_stubbed = tl.and_that_esoTERM_loot_activate_is_stubbed
 local and_that_esoTERM_loot_activate_is_stubbed = tl.and_that_esoTERM_loot_activate_is_stubbed
@@ -36,6 +35,8 @@ local when_activate_is_called = tl.when_activate_is_called
 local when_deactivate_is_called = tl.when_deactivate_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
+
+local EXPECTED_REGISTER_FOR_EVENT_CALLS = tl.EXPECTED_REGISTER_FOR_EVENT_CALLS
 -- }}}
 
 describe("Test module.", function()
@@ -60,7 +61,7 @@ describe("Test the esoTERM_loot module initialization.", function()
 
         then_esoTERM_loot_activate_was_not_called()
             and_ZO_SavedVars_new_was_called()
-            and_register_module_was_called()
+            and_register_module_was_called_with(esoTERM_loot)
     end)
 
     it("Initialize, and activate when configured as active.",
@@ -73,7 +74,7 @@ describe("Test the esoTERM_loot module initialization.", function()
 
         then_esoTERM_loot_activate_was_called()
             and_ZO_SavedVars_new_was_called()
-            and_register_module_was_called()
+            and_register_module_was_called_with(esoTERM_loot)
     end)
 end)
 
@@ -96,7 +97,7 @@ describe("Test esoTERM_loot module activate.", function()
 
         and_module_became_active()
             and_cache_is_no_longer_empty()
-            and_register_for_event_was_called_with_expected_parameters()
+            and_register_for_event_was_called_with(EXPECTED_REGISTER_FOR_EVENT_CALLS)
             and_getter_function_stubs_were_called()
             and_cached_values_became_initialized()
             and_module_is_active_was_saved()

@@ -7,7 +7,7 @@ local test_module = {
 }
 
 function test_esoTERM_common_library.clean_test_module_register()
-    ut_helper.clean_table(test_register)
+    ut_helper.clear_table(test_register)
 end
 
 function test_esoTERM_common_library.given_that_module_register_is_empty()

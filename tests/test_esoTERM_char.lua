@@ -15,9 +15,9 @@ local and_getter_function_stubs_were_called = tl.and_getter_function_stubs_were_
 local and_module_became_active = tl.and_module_became_active
 local and_module_is_active_was_saved = tl.and_module_is_active_was_saved
 local and_module_is_inactive_was_saved = tl.and_module_is_inactive_was_saved
-local and_register_for_event_was_called_with_expected_parameters = tl.and_register_for_event_was_called_with_expected_parameters
+local and_register_for_event_was_called_with = tl.and_register_for_event_was_called_with
 local and_register_for_event_was_not_called = tl.and_register_for_event_was_not_called
-local and_register_module_was_called = tl.and_register_module_was_called
+local and_register_module_was_called_with = tl.and_register_module_was_called_with
 local and_that_GetGameTimeMilliseconds_is_stubbed = tl.and_that_GetGameTimeMilliseconds_is_stubbed
 local and_that_GetGameTimeMilliseconds_returns = tl.and_that_GetGameTimeMilliseconds_returns
 local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
@@ -54,6 +54,8 @@ local when_get_combat_exit_time_is_called = tl.when_get_combat_exit_time_is_call
 local when_initialize_is_called = tl.when_initialize_is_called
 local when_on_vp_gain_is_called_with = tl.when_on_vp_gain_is_called_with
 local when_on_xp_gain_is_called_with = tl.when_on_xp_gain_is_called_with
+
+local EXPECTED_REGISTER_FOR_EVENT_CALLS = tl.EXPECTED_REGISTER_FOR_EVENT_CALLS
 -- }}}
 
 describe("Test the esoTERM_char module.", function()
@@ -78,7 +80,7 @@ describe("Test the esoTERM_char module initialization.", function()
 
         then_activate_was_not_called()
             and_ZO_SavedVars_new_was_called()
-            and_register_module_was_called()
+            and_register_module_was_called_with(esoTERM_char)
     end)
 
     it("Initialize, and activate when configured as active.",
@@ -91,7 +93,7 @@ describe("Test the esoTERM_char module initialization.", function()
 
         then_activate_was_called()
             and_ZO_SavedVars_new_was_called()
-            and_register_module_was_called()
+            and_register_module_was_called_with(esoTERM_char)
     end)
 end)
 
@@ -114,7 +116,7 @@ describe("Test esoTERM_char module activate.", function()
 
         and_module_became_active()
             and_cache_is_no_longer_empty()
-            and_register_for_event_was_called_with_expected_parameters()
+            and_register_for_event_was_called_with(EXPECTED_REGISTER_FOR_EVENT_CALLS)
             and_getter_function_stubs_were_called()
             and_cached_values_became_initialized()
             and_module_is_active_was_saved()

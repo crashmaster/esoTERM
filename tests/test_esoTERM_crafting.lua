@@ -5,43 +5,25 @@ local tl = require("tests/lib/test_esoTERM_crafting_library")
 tl.setup_test_functions(
     {
         [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = {
-            {
-                module = esoTERM_crafting,
-                function_name = "activate",
-            },
-            {
-                module = esoTERM_common,
-                function_name = "unregister_from_all_events",
-            },
+            { module = esoTERM_common, function_name = "register_for_event", },
+            { module = esoTERM_common, function_name = "register_module", },
+            { module = esoTERM_common, function_name = "unregister_from_all_events", },
+            { module = esoTERM_crafting, function_name = "activate", },
         },
         [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = {
-            {
-                module = esoTERM_common,
-                function_name = "unregister_from_all_events",
-                called_with = esoTERM_crafting,
-            },
+            { module = esoTERM_common, function_name = "register_module", called_with = {esoTERM.module_register, esoTERM_crafting, }, },
+            { module = esoTERM_common, function_name = "unregister_from_all_events", called_with = {esoTERM_crafting, }, },
         },
         [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED] = {
-            {
-                module = esoTERM_crafting,
-                function_name = "activate",
-            },
+            { module = esoTERM_crafting, function_name = "activate", },
         },
         [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED] = {
-            {
-                module = esoTERM_crafting,
-                function_name = "activate",
-            },
+            { module = esoTERM_crafting, function_name = "activate", },
         },
         [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED] = {
-            {
-                module = esoTERM_crafting,
-                function_name = "activate",
-            },
-            {
-                module = esoTERM_crafting,
-                function_name = "deactivate",
-            },
+            { module = esoTERM_crafting, function_name = "activate", },
+            { module = esoTERM_crafting, function_name = "deactivate", },
+            { module = esoTERM_crafting, function_name = "initialize", },
         },
     }
 )
@@ -51,7 +33,7 @@ local and_module_became_active = tl.and_module_became_active
 local and_module_is_active_was_saved = tl.and_module_is_active_was_saved
 local and_module_is_inactive_was_saved = tl.and_module_is_inactive_was_saved
 local and_register_for_event_was_called_with = tl.and_register_for_event_was_called_with
-local and_register_module_was_called = tl.and_register_module_was_called
+local and_register_module_was_called_with = tl.and_register_module_was_called_with
 local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
 local and_that_expected_register_for_event_calls_are_set_up = tl.and_that_expected_register_for_event_calls_are_set_up
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
@@ -70,6 +52,8 @@ local verify_that_esoTERM_crafting_module_has_the_expected_name = tl.verify_that
 local when_activate_is_called = tl.when_activate_is_called
 local when_deactivate_is_called = tl.when_deactivate_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
+
+local EXPECTED_REGISTER_FOR_EVENT_CALLS = tl.EXPECTED_REGISTER_FOR_EVENT_CALLS
 -- }}}
 
 describe("Test the esoTERM_crafting module.", function()
@@ -94,7 +78,7 @@ describe("Test the esoTERM_crafting module initialization.", function()
 
         then_activate_was_not_called()
             and_ZO_SavedVars_new_was_called()
-            and_register_module_was_called()
+            and_register_module_was_called_with(esoTERM_crafting)
     end)
 
     it("Initialize, and activate when configured as active.",
@@ -107,7 +91,7 @@ describe("Test the esoTERM_crafting module initialization.", function()
 
         then_activate_was_called()
             and_ZO_SavedVars_new_was_called()
-            and_register_module_was_called()
+            and_register_module_was_called_with(esoTERM_crafting)
     end)
 end)
 
@@ -126,7 +110,7 @@ describe("Test esoTERM_crafting module activate.", function()
         when_activate_is_called()
 
         and_module_became_active()
-            and_register_for_event_was_called_with(tl.EXPECTED_REGISTER_FOR_EVENT_CALLS)
+            and_register_for_event_was_called_with(EXPECTED_REGISTER_FOR_EVENT_CALLS)
             and_module_is_active_was_saved()
     end)
 end)

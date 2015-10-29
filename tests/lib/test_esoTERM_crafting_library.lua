@@ -17,12 +17,6 @@ function test_esoTERM_crafting_library.setup_test_functions(...)
 end
 -- }}}
 
--- initialize {{{
-function test_esoTERM_crafting_library.when_initialize_is_called()
-    test_library.initialize_module(esoTERM_crafting)
-end
--- }}}
-
 -- ZO_SavedVars {{{
 function test_esoTERM_crafting_library.given_that_module_configured_as_inactive()
     test_library.configure_module_as_inactive(MODULE_NAME)
@@ -34,16 +28,6 @@ end
 
 function test_esoTERM_crafting_library.and_ZO_SavedVars_new_was_called()
     test_library.ZO_SavedVars_new_was_called_with_module(MODULE_NAME)
-end
--- }}}
-
--- register_module {{{
-function test_esoTERM_crafting_library.and_that_register_module_is_stubbed()
-    test_library.stub_function_with_no_return_value(esoTERM_common, "register_module")
-end
-
-function test_esoTERM_crafting_library.and_register_module_was_called()
-    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, esoTERM_crafting)
 end
 -- }}}
 
@@ -88,14 +72,8 @@ function test_esoTERM_crafting_library.and_that_expected_register_for_event_call
     }
 end
 
-function test_esoTERM_crafting_library.and_that_register_for_event_is_stubbed()
-    test_library.stub_function_with_no_return_value(esoTERM_common, "register_for_event")
-end
-
-function test_esoTERM_crafting_library.and_register_for_event_was_called_with()
-    test_library.register_for_event_was_called_with_expected_parameters(
-        test_esoTERM_crafting_library.EXPECTED_REGISTER_FOR_EVENT_CALLS
-    )
+function test_esoTERM_crafting_library.and_register_for_event_was_called_with(...)
+    test_library.register_for_event_was_called_with_expected_parameters(...)
 end
 -- }}}
 

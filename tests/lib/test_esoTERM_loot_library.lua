@@ -38,8 +38,8 @@ function test_esoTERM_loot_library.and_that_register_module_is_stubbed()
     test_library.stub_function_with_no_return_value(esoTERM_common, "register_module")
 end
 
-function test_esoTERM_loot_library.and_register_module_was_called()
-    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, esoTERM_loot)
+function test_esoTERM_loot_library.and_register_module_was_called_with(...)
+    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, ...)
 end
 
 function test_esoTERM_loot_library.and_that_esoTERM_loot_activate_is_stubbed()
@@ -100,10 +100,8 @@ function test_esoTERM_loot_library.and_that_register_for_event_is_stubbed()
     ut_helper.stub_function(esoTERM_common, "register_for_event", nil)
 end
 
-function test_esoTERM_loot_library.and_register_for_event_was_called_with_expected_parameters()
-    test_library.register_for_event_was_called_with_expected_parameters(
-        test_esoTERM_loot_library.EXPECTED_REGISTER_FOR_EVENT_CALLS
-    )
+function test_esoTERM_loot_library.and_register_for_event_was_called_with(...)
+    test_library.register_for_event_was_called_with_expected_parameters(...)
 end
 
 test_esoTERM_loot_library.RETURN_VALUES_OF_THE_GETTER_STUBS = {

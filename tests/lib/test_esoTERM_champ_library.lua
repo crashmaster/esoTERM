@@ -37,8 +37,8 @@ function test_esoTERM_champ_library.and_that_register_module_is_stubbed()
     test_library.stub_function_with_no_return_value(esoTERM_common, "register_module")
 end
 
-function test_esoTERM_champ_library.and_register_module_was_called()
-    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, esoTERM_champ)
+function test_esoTERM_champ_library.and_register_module_was_called_with(...)
+    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, ...)
 end
 
 function test_esoTERM_champ_library.and_that_esoTERM_champ_activate_is_stubbed()
@@ -172,10 +172,8 @@ function test_esoTERM_champ_library.then_module_became_inactive()
     test_library.check_that_module_became_inactive(esoTERM_champ)
 end
 
-function test_esoTERM_champ_library.and_register_for_event_was_called_with_expected_parameters()
-    test_library.register_for_event_was_called_with_expected_parameters(
-        test_esoTERM_champ_library.EXPECTED_REGISTER_FOR_EVENT_CALLS
-    )
+function test_esoTERM_champ_library.and_register_for_event_was_called_with(...)
+    test_library.register_for_event_was_called_with_expected_parameters(...)
 end
 
 function test_esoTERM_champ_library.and_unregister_from_all_events_was_called_with(...)
