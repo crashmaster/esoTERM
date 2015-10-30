@@ -31,32 +31,6 @@ function test_esoTERM_crafting_library.and_ZO_SavedVars_new_was_called()
 end
 -- }}}
 
--- Module activeness {{{
-function test_esoTERM_crafting_library.given_that_module_is_active()
-    test_library.set_module_to_active(esoTERM_crafting)
-end
-
-function test_esoTERM_crafting_library.given_that_module_is_inactive()
-    test_library.set_module_to_inactive(esoTERM_crafting)
-end
-
-function test_esoTERM_crafting_library.and_module_became_active()
-    test_library.check_that_module_became_active(esoTERM_crafting)
-end
-
-function test_esoTERM_crafting_library.then_module_became_inactive()
-    test_library.check_that_module_became_inactive(esoTERM_crafting)
-end
-
-function test_esoTERM_crafting_library.and_module_is_active_was_saved()
-    assert.is.equal(esoTERM_crafting.settings[MODULE_NAME], true)
-end
-
-function test_esoTERM_crafting_library.and_module_is_inactive_was_saved()
-    assert.is.equal(esoTERM_crafting.settings[MODULE_NAME], false)
-end
--- }}}
-
 -- register_for_event {{{
 test_esoTERM_crafting_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
 

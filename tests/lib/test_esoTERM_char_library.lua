@@ -208,11 +208,11 @@ function test_esoTERM_char_library.and_cache_is_no_longer_empty()
     assert.is_not.equal(0, ut_helper.table_size(test_esoTERM_char_library.CACHE))
 end
 
-function test_esoTERM_char_library.and_module_is_active_was_saved()
+function test_esoTERM_char_library.and_active_state_of_the_module_was_saved()
     assert.is.equal(esoTERM_char.settings[MODULE_NAME], true)
 end
 
-function test_esoTERM_char_library.and_module_is_inactive_was_saved()
+function test_esoTERM_char_library.and_inactive_state_of_the_module_was_saved()
     assert.is.equal(esoTERM_char.settings[MODULE_NAME], false)
 end
 -- }}}

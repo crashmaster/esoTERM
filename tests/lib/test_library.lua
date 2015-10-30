@@ -6,8 +6,14 @@ GLOBAL = _G
 PLAYER = "player"
 
 FUNCTION_NAME_TEMPLATES = {
+    AND_ACTIVE_STATE_OF_THE_MODULE_WAS_SAVED = "and_active_state_of_the_module_was_saved",
+    AND_INACTIVE_STATE_OF_THE_MODULE_WAS_SAVED = "and_inactive_state_of_the_module_was_saved",
     AND_THAT_X_IS_STUBBED = "and_that_x_is_stubbed",
     AND_X_WAS_CALLED_WITH = "and_x_was_called_with",
+    GIVEN_THAT_MODULE_IS_ACTIVE = "given_that_module_is_active",
+    GIVEN_THAT_MODULE_IS_INACTIVE = "given_that_module_is_inactive",
+    THEN_MODULE_BECAME_ACTIVE = "then_module_became_active",
+    THEN_MODULE_BECAME_INACTIVE = "then_module_became_inactive",
     THEN_X_WAS_CALLED = "then_x_was_called",
     THEN_X_WAS_NOT_CALLED = "then_x_was_not_called",
     WHEN_X_IS_CALLED = "when_x_is_called",
@@ -65,6 +71,20 @@ function this.stub_function_called_with_arguments(module_function, ...)
     assert.spy(module_function).was.called_with(...)
 end
 
+local function add_and_active_state_of_the_module_was_saved_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["and_active_state_of_the_module_was_saved" ] = function ()
+        assert.is.equal(fp.module.settings[fp.module_name_in_settings], true)
+    end
+end
+
+local function add_and_inactive_state_of_the_module_was_saved_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["and_inactive_state_of_the_module_was_saved" ] = function ()
+        assert.is.equal(fp.module.settings[fp.module_name_in_settings], false)
+    end
+end
+
 local function add_and_that_x_is_stubbed_test_library_function(test_library, function_properties)
     local fp = function_properties
     test_library["and_that_" .. fp.function_name .. "_is_stubbed" ] = function ()
@@ -76,6 +96,34 @@ local function add_and_x_was_called_with_test_library_function(test_library, fun
     local fp = function_properties
     test_library["and_" .. fp.function_name .. "_was_called_with"] = function ()
         this.stub_function_called_with_arguments(fp.module[fp.function_name], unpack(fp.called_with))
+    end
+end
+
+local function add_given_that_module_is_active_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["given_that_module_is_active"] = function ()
+        this.set_module_to_active(fp.module)
+    end
+end
+
+local function add_given_that_module_is_inactive_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["given_that_module_is_inactive"] = function ()
+        this.set_module_to_active(fp.module)
+    end
+end
+
+local function add_then_module_became_active_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["then_module_became_active"] = function ()
+        this.check_that_module_became_active(fp.module)
+    end
+end
+
+local function add_then_module_became_inactive_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["then_module_became_inactive"] = function ()
+        this.check_that_module_became_inactive(fp.module)
     end
 end
 
@@ -101,8 +149,14 @@ local function add_when_x_is_called_test_library_function(test_library, function
 end
 
 local FUNCTION_NAME_TEMPLATE_TO_ADD_FUCTION = {
+    [FUNCTION_NAME_TEMPLATES.AND_ACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = add_and_active_state_of_the_module_was_saved_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.AND_INACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = add_and_inactive_state_of_the_module_was_saved_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = add_and_that_x_is_stubbed_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = add_and_x_was_called_with_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_ACTIVE] = add_given_that_module_is_active_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_INACTIVE] = add_given_that_module_is_inactive_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_ACTIVE] = add_then_module_became_active_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_INACTIVE] = add_then_module_became_inactive_test_library_function,
     [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED] = add_then_x_was_called_test_library_function,
     [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED] = add_then_x_was_not_called_test_library_function,
     [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED] = add_when_x_is_called_test_library_function,

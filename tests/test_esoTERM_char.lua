@@ -13,8 +13,8 @@ local and_get_combat_start_time_was_not_called = tl.and_get_combat_start_time_wa
 local and_get_last_xp_gain_time_was_called = tl.and_get_last_xp_gain_time_was_called
 local and_getter_function_stubs_were_called = tl.and_getter_function_stubs_were_called
 local and_module_became_active = tl.and_module_became_active
-local and_module_is_active_was_saved = tl.and_module_is_active_was_saved
-local and_module_is_inactive_was_saved = tl.and_module_is_inactive_was_saved
+local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
+local and_inactive_state_of_the_module_was_saved = tl.and_inactive_state_of_the_module_was_saved
 local and_register_for_event_was_called_with = tl.and_register_for_event_was_called_with
 local and_register_for_event_was_not_called = tl.and_register_for_event_was_not_called
 local and_register_module_was_called_with = tl.and_register_module_was_called_with
@@ -119,7 +119,7 @@ describe("Test esoTERM_char module activate.", function()
             and_register_for_event_was_called_with(EXPECTED_REGISTER_FOR_EVENT_CALLS)
             and_getter_function_stubs_were_called()
             and_cached_values_became_initialized()
-            and_module_is_active_was_saved()
+            and_active_state_of_the_module_was_saved()
     end)
 end)
 
@@ -137,7 +137,7 @@ describe("Test esoTERM_char module deactivate.", function()
 
         then_module_became_inactive()
             and_unregister_from_all_events_was_called_with(esoTERM_char)
-            and_module_is_inactive_was_saved()
+            and_inactive_state_of_the_module_was_saved()
     end)
 end)
 

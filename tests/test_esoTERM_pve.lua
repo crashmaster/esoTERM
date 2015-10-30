@@ -6,8 +6,8 @@ local and_cache_is_no_longer_empty = tl.and_cache_is_no_longer_empty
 local and_cached_values_became_initialized = tl.and_cached_values_became_initialized
 local and_getter_function_stubs_were_called = tl.and_getter_function_stubs_were_called
 local and_module_became_active = tl.and_module_became_active
-local and_module_is_active_was_saved = tl.and_module_is_active_was_saved
-local and_module_is_inactive_was_saved = tl.and_module_is_inactive_was_saved
+local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
+local and_inactive_state_of_the_module_was_saved = tl.and_inactive_state_of_the_module_was_saved
 local and_register_module_was_called_with = tl.and_register_module_was_called_with
 local and_that_cache_is_empty = tl.and_that_cache_is_empty
 local and_that_esoTERM_pve_activate_is_stubbed = tl.and_that_esoTERM_pve_activate_is_stubbed
@@ -99,7 +99,7 @@ describe("Test esoTERM_pve module activate.", function()
             tl.and_register_for_event_was_called_for_non_veteran_unit_was_called_with(EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN)
             tl.and_getter_function_stubs_were_called()
             tl.and_cached_values_for_non_veteran_unit_became_initialized()
-            tl.and_module_is_active_was_saved()
+            tl.and_active_state_of_the_module_was_saved()
     end)
 
     it("Update cache and subscribe for events on activate for veteran unit.",
@@ -117,7 +117,7 @@ describe("Test esoTERM_pve module activate.", function()
             tl.and_register_for_event_was_called_for_veteran_unit_was_called_with(EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN)
             tl.and_getter_function_stubs_were_called()
             tl.and_cached_values_for_veteran_unit_became_initialized()
-            tl.and_module_is_active_was_saved()
+            tl.and_active_state_of_the_module_was_saved()
     end)
 end)
 
@@ -135,7 +135,7 @@ describe("Test esoTERM_pve module deactivate.", function()
 
         then_module_became_inactive()
             and_unregister_from_all_events_was_called_with(esoTERM_pve)
-            and_module_is_inactive_was_saved()
+            and_inactive_state_of_the_module_was_saved()
     end)
 end)
 

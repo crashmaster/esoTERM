@@ -131,7 +131,7 @@ function test_esoTERM_loot_library.and_cached_values_became_initialized()
     end
 end
 
-function test_esoTERM_loot_library.and_module_is_active_was_saved()
+function test_esoTERM_loot_library.and_active_state_of_the_module_was_saved()
     assert.is.equal(esoTERM_loot.settings[MODULE_NAME], true)
 end
 -- }}}
@@ -157,7 +157,7 @@ function test_esoTERM_loot_library.and_unregister_from_all_events_was_called_wit
     assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(esoTERM_loot)
 end
 
-function test_esoTERM_loot_library.and_module_is_inactive_was_saved()
+function test_esoTERM_loot_library.and_inactive_state_of_the_module_was_saved()
     assert.is.equal(esoTERM_loot.settings[MODULE_NAME], false)
 end
 -- }}}
