@@ -11,7 +11,7 @@ LUACOV_REPORT := luacov.report.out
 ADDON_NAME := esoTERM
 ADDON_DESCRIPTION := https://github.com/crashmaster/esoTERM
 ADDON_TEXT_FILE := $(ADDON_NAME).txt
-ESO_API_VERSION := 100012
+ESO_API_VERSION := 100013
 ADDON_SAVED_VARIABLES := esoTERM_settings
 
 USER_DOCUMENTS_DIR := C:/Users/$(USER)/Documents
