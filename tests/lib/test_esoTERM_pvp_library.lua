@@ -29,8 +29,8 @@ test_esoTERM_pvp_library.GENDER_1 = test_library.S_INTEGER
 local MODULE_NAME = "pvp"
 
 -- Module Name {{{
-function test_esoTERM_pvp_library.verify_that_esoTERM_pvp_module_has_the_expected_name()
-    assert.is.equal(MODULE_NAME, esoTERM_pvp.module_name)
+function test_esoTERM_pvp_library.verify_that_module_has_the_expected_name(module)
+    assert.is.equal(MODULE_NAME, module.module_name)
 end
 -- }}}
 

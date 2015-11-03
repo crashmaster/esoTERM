@@ -29,7 +29,7 @@ local given_that_module_is_inactive = tl.given_that_module_is_inactive
 local then_esoTERM_pve_activate_was_called = tl.then_esoTERM_pve_activate_was_called
 local then_esoTERM_pve_activate_was_not_called = tl.then_esoTERM_pve_activate_was_not_called
 local then_module_became_inactive = tl.then_module_became_inactive
-local verify_that_esoTERM_pve_module_has_the_expected_name = tl.verify_that_esoTERM_pve_module_has_the_expected_name
+local verify_that_module_has_the_expected_name = tl.verify_that_module_has_the_expected_name
 local when_activate_is_called = tl.when_activate_is_called
 local when_deactivate_is_called = tl.when_deactivate_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
@@ -41,7 +41,7 @@ local EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN = tl.EXPECTED_REGISTER_FOR_EVENT
 describe("Test module.", function()
     it("Module is called: pve.",
     function()
-        verify_that_esoTERM_pve_module_has_the_expected_name()
+        verify_that_module_has_the_expected_name(esoTERM_pve)
     end)
 end)
 

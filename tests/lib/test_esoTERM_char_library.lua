@@ -25,8 +25,8 @@ test_esoTERM_char_library.GET_COMBAT_EXIT_TIME_RESULT = nil
 local MODULE_NAME = "character"
 
 -- Module Name {{{
-function test_esoTERM_char_library.verify_that_esoTERM_char_module_has_the_expected_name()
-    assert.is.equal(MODULE_NAME, esoTERM_char.module_name)
+function test_esoTERM_char_library.verify_that_module_has_the_expected_name(module)
+    assert.is.equal(MODULE_NAME, module.module_name)
 end
 -- }}}
 

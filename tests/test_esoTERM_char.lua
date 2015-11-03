@@ -47,7 +47,7 @@ local then_activate_was_not_called = tl.then_activate_was_not_called
 local then_cached_last_xp_gain_time_became = tl.then_cached_last_xp_gain_time_became
 local then_get_combat_exit_time_returned = tl.then_get_combat_exit_time_returned
 local then_module_became_inactive = tl.then_module_became_inactive
-local verify_that_esoTERM_char_module_has_the_expected_name = tl.verify_that_esoTERM_char_module_has_the_expected_name
+local verify_that_module_has_the_expected_name = tl.verify_that_module_has_the_expected_name
 local when_activate_is_called = tl.when_activate_is_called
 local when_deactivate_is_called = tl.when_deactivate_is_called
 local when_get_combat_exit_time_is_called = tl.when_get_combat_exit_time_is_called
@@ -61,7 +61,7 @@ local EXPECTED_REGISTER_FOR_EVENT_CALLS = tl.EXPECTED_REGISTER_FOR_EVENT_CALLS
 describe("Test the esoTERM_char module.", function()
     it("Module is called: character.",
     function()
-        verify_that_esoTERM_char_module_has_the_expected_name()
+        verify_that_module_has_the_expected_name(esoTERM_char)
     end)
 end)
 

@@ -66,7 +66,7 @@ local then_activate_was_called = tl.then_activate_was_called
 local then_activate_was_not_called = tl.then_activate_was_not_called
 local then_module_became_active = tl.then_module_became_active
 local then_module_became_inactive = tl.then_module_became_inactive
-local verify_that_esoTERM_crafting_module_has_the_expected_name = tl.verify_that_esoTERM_crafting_module_has_the_expected_name
+local verify_that_module_has_the_expected_name = tl.verify_that_module_has_the_expected_name
 local when_activate_is_called = tl.when_activate_is_called
 local when_deactivate_is_called = tl.when_deactivate_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
@@ -77,7 +77,7 @@ local EXPECTED_REGISTER_FOR_EVENT_CALLS = tl.EXPECTED_REGISTER_FOR_EVENT_CALLS
 describe("Test the esoTERM_crafting module.", function()
     it("Module is called: crafting.",
     function()
-        verify_that_esoTERM_crafting_module_has_the_expected_name()
+        verify_that_module_has_the_expected_name(esoTERM_crafting)
     end)
 end)
 
