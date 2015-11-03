@@ -21,16 +21,16 @@ tl.setup_test_functions(
             { module = esoTERM_common, function_name = "unregister_from_all_events", called_with = {esoTERM_crafting, }, },
         },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_ACTIVE] = {
-            { module = esoTERM_crafting, },
+            { },
         },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_INACTIVE] = {
-            { module = esoTERM_crafting, },
+            { },
         },
         [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_ACTIVE] = {
-            { module = esoTERM_crafting, },
+            { },
         },
         [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_INACTIVE] = {
-            { module = esoTERM_crafting, },
+            { },
         },
         [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED] = {
             { module = esoTERM_crafting, function_name = "activate", },
@@ -121,13 +121,13 @@ describe("Test esoTERM_crafting module activate.", function()
 
     it("Update cache and subscribe for events on activate.",
     function()
-        given_that_module_is_inactive()
+        given_that_module_is_inactive(esoTERM_crafting)
             and_that_expected_register_for_event_calls_are_set_up()
             and_that_register_for_event_is_stubbed()
 
         when_activate_is_called()
 
-        then_module_became_active()
+        then_module_became_active(esoTERM_crafting)
             and_register_for_event_was_called_with(EXPECTED_REGISTER_FOR_EVENT_CALLS)
             and_active_state_of_the_module_was_saved()
     end)
@@ -140,12 +140,12 @@ describe("Test esoTERM_crafting module deactivate.", function()
 
     it("Unsubscribe from active events on deactivate.",
     function()
-        given_that_module_is_active()
+        given_that_module_is_active(esoTERM_crafting)
             and_that_unregister_from_all_events_is_stubbed()
 
         when_deactivate_is_called()
 
-        then_module_became_inactive()
+        then_module_became_inactive(esoTERM_crafting)
             and_unregister_from_all_events_was_called_with(esoTERM_crafting)
             and_inactive_state_of_the_module_was_saved()
     end)

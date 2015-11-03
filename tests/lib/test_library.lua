@@ -100,30 +100,26 @@ local function add_and_x_was_called_with_test_library_function(test_library, fun
 end
 
 local function add_given_that_module_is_active_test_library_function(test_library, function_properties)
-    local fp = function_properties
-    test_library["given_that_module_is_active"] = function ()
-        this.set_module_to_active(fp.module)
+    test_library["given_that_module_is_active"] = function (...)
+        this.set_module_to_active(...)
     end
 end
 
 local function add_given_that_module_is_inactive_test_library_function(test_library, function_properties)
-    local fp = function_properties
-    test_library["given_that_module_is_inactive"] = function ()
-        this.set_module_to_active(fp.module)
+    test_library["given_that_module_is_inactive"] = function (...)
+        this.set_module_to_active(...)
     end
 end
 
 local function add_then_module_became_active_test_library_function(test_library, function_properties)
-    local fp = function_properties
-    test_library["then_module_became_active"] = function ()
-        this.check_that_module_became_active(fp.module)
+    test_library["then_module_became_active"] = function (...)
+        this.check_that_module_became_active(...)
     end
 end
 
 local function add_then_module_became_inactive_test_library_function(test_library, function_properties)
-    local fp = function_properties
-    test_library["then_module_became_inactive"] = function ()
-        this.check_that_module_became_inactive(fp.module)
+    test_library["then_module_became_inactive"] = function (...)
+        this.check_that_module_became_inactive(...)
     end
 end
 
