@@ -61,7 +61,7 @@ local EXPECTED_REGISTER_FOR_EVENT_CALLS = tl.EXPECTED_REGISTER_FOR_EVENT_CALLS
 describe("Test the esoTERM_char module.", function()
     it("Module is called: character.",
     function()
-        verify_that_module_has_the_expected_name(esoTERM_char)
+        verify_that_module_has_the_expected_name(esoTERM_char, "character")
     end)
 end)
 

@@ -41,7 +41,7 @@ local EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN = tl.EXPECTED_REGISTER_FOR_EVENT
 describe("Test module.", function()
     it("Module is called: pve.",
     function()
-        verify_that_module_has_the_expected_name(esoTERM_pve)
+        verify_that_module_has_the_expected_name(esoTERM_pve, "pve")
     end)
 end)
 

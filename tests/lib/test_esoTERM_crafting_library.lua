@@ -5,12 +5,6 @@ test_esoTERM_crafting_library = {}
 
 local MODULE_NAME = "crafting"
 
--- Module Name {{{
-function test_esoTERM_crafting_library.verify_that_module_has_the_expected_name(module)
-    assert.is.equal(MODULE_NAME, module.module_name)
-end
--- }}}
-
 -- setup_test_functions {{{
 function test_esoTERM_crafting_library.setup_test_functions(...)
     test_library.setup_test_library_functions(test_esoTERM_crafting_library, ...)

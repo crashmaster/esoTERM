@@ -16,6 +16,7 @@ FUNCTION_NAME_TEMPLATES = {
     THEN_MODULE_BECAME_INACTIVE = "then_module_became_inactive",
     THEN_X_WAS_CALLED = "then_x_was_called",
     THEN_X_WAS_NOT_CALLED = "then_x_was_not_called",
+    VERIFY_THAT_MODULE_HAS_THE_EXPECTED_NAME = "verify_that_module_has_the_expected_name",
     WHEN_X_IS_CALLED = "when_x_is_called",
 }
 
@@ -73,73 +74,80 @@ end
 
 local function add_and_active_state_of_the_module_was_saved_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["and_active_state_of_the_module_was_saved" ] = function ()
+    test_library["and_active_state_of_the_module_was_saved" ] = function()
         assert.is.equal(fp.module.settings[fp.module_name_in_settings], true)
     end
 end
 
 local function add_and_inactive_state_of_the_module_was_saved_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["and_inactive_state_of_the_module_was_saved" ] = function ()
+    test_library["and_inactive_state_of_the_module_was_saved" ] = function()
         assert.is.equal(fp.module.settings[fp.module_name_in_settings], false)
     end
 end
 
 local function add_and_that_x_is_stubbed_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["and_that_" .. fp.function_name .. "_is_stubbed" ] = function ()
+    test_library["and_that_" .. fp.function_name .. "_is_stubbed" ] = function()
         this.stub_function_with_no_return_value(fp.module, fp.function_name)
     end
 end
 
 local function add_and_x_was_called_with_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["and_" .. fp.function_name .. "_was_called_with"] = function ()
-        this.stub_function_called_with_arguments(fp.module[fp.function_name], unpack(fp.called_with))
+    test_library["and_" .. fp.function_name .. "_was_called_with"] = function(...)
+        this.stub_function_called_with_arguments(fp.module[fp.function_name], ...)
     end
 end
 
 local function add_given_that_module_is_active_test_library_function(test_library, function_properties)
-    test_library["given_that_module_is_active"] = function (...)
+    test_library["given_that_module_is_active"] = function(...)
         this.set_module_to_active(...)
     end
 end
 
 local function add_given_that_module_is_inactive_test_library_function(test_library, function_properties)
-    test_library["given_that_module_is_inactive"] = function (...)
+    test_library["given_that_module_is_inactive"] = function(...)
         this.set_module_to_active(...)
     end
 end
 
 local function add_then_module_became_active_test_library_function(test_library, function_properties)
-    test_library["then_module_became_active"] = function (...)
+    test_library["then_module_became_active"] = function(...)
         this.check_that_module_became_active(...)
     end
 end
 
 local function add_then_module_became_inactive_test_library_function(test_library, function_properties)
-    test_library["then_module_became_inactive"] = function (...)
+    test_library["then_module_became_inactive"] = function(...)
         this.check_that_module_became_inactive(...)
     end
 end
 
 local function add_then_x_was_called_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["then_" .. fp.function_name .. "_was_called" ] = function ()
+    test_library["then_" .. fp.function_name .. "_was_called" ] = function()
         this.stub_function_called_without_arguments(fp.module[fp.function_name])
     end
 end
 
 local function add_then_x_was_not_called_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["then_" .. fp.function_name .. "_was_not_called" ] = function ()
+    test_library["then_" .. fp.function_name .. "_was_not_called" ] = function()
         this.stub_function_was_not_called(fp.module[fp.function_name])
+    end
+end
+
+local function add_verify_that_module_has_the_expected_name_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["verify_that_module_has_the_expected_name"] = function(module, expected_name)
+        assert.is.equal(expected_name, module.module_name)
     end
 end
 
 local function add_when_x_is_called_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["when_" .. fp.function_name .. "_is_called"] = function ()
+    test_library["when_" .. fp.function_name .. "_is_called"] = function()
         fp.module[fp.function_name]()
     end
 end
@@ -155,6 +163,7 @@ local FUNCTION_NAME_TEMPLATE_TO_ADD_FUCTION = {
     [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_INACTIVE] = add_then_module_became_inactive_test_library_function,
     [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED] = add_then_x_was_called_test_library_function,
     [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED] = add_then_x_was_not_called_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.VERIFY_THAT_MODULE_HAS_THE_EXPECTED_NAME] = add_verify_that_module_has_the_expected_name_test_library_function,
     [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED] = add_when_x_is_called_test_library_function,
 }
 

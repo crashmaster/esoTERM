@@ -42,7 +42,7 @@ local EXPECTED_REGISTER_FOR_EVENT_CALLS = tl.EXPECTED_REGISTER_FOR_EVENT_CALLS
 describe("Test module.", function()
     it("Module is called: loot.",
     function()
-        verify_that_module_has_the_expected_name(esoTERM_loot)
+        verify_that_module_has_the_expected_name(esoTERM_loot, "loot")
     end)
 end)
 
