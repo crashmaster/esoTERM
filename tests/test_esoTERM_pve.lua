@@ -52,7 +52,7 @@ describe("Test the esoTERM_pve module initialization.", function()
 
     it("Initialize, but do not activate when configured as inactive.",
     function()
-        given_that_module_configured_as_inactive()
+        given_that_module_configured_as_inactive("pve")
             and_that_register_module_is_stubbed()
             and_that_esoTERM_pve_activate_is_stubbed()
 
@@ -65,7 +65,7 @@ describe("Test the esoTERM_pve module initialization.", function()
 
     it("Initialize, and activate when configured as active.",
     function()
-        given_that_module_configured_as_active()
+        given_that_module_configured_as_active("pve")
             and_that_register_module_is_stubbed()
             and_that_esoTERM_pve_activate_is_stubbed()
 

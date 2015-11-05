@@ -21,12 +21,12 @@ function test_esoTERM_champ_library.when_initialize_is_called()
     test_library.initialize_module(esoTERM_champ)
 end
 
-function test_esoTERM_champ_library.given_that_module_configured_as_inactive()
-    test_library.configure_module_as_inactive(MODULE_NAME)
+function test_esoTERM_champ_library.given_that_module_configured_as_inactive(...)
+    test_library.configure_module_as_inactive(...)
 end
 
-function test_esoTERM_champ_library.given_that_module_configured_as_active()
-    test_library.configure_module_as_active(MODULE_NAME)
+function test_esoTERM_champ_library.given_that_module_configured_as_active(...)
+    test_library.configure_module_as_active(...)
 end
 
 function test_esoTERM_champ_library.and_ZO_SavedVars_new_was_called()
