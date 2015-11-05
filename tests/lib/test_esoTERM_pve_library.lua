@@ -35,12 +35,12 @@ function test_esoTERM_pve_library.when_initialize_is_called()
     test_library.initialize_module(esoTERM_pve)
 end
 
-function test_esoTERM_pve_library.given_that_module_configured_as_inactive(...)
-    test_library.configure_module_as_inactive(...)
+function test_esoTERM_pve_library.given_that_module_is_set_inactive_in_the_config_file(...)
+    test_library.set_module_to_inactive_in_config_file(...)
 end
 
-function test_esoTERM_pve_library.given_that_module_configured_as_active(...)
-    test_library.configure_module_as_active(...)
+function test_esoTERM_pve_library.given_that_module_is_set_active_in_the_config_file(...)
+    test_library.set_module_to_active_in_config_file(...)
 end
 
 function test_esoTERM_pve_library.and_ZO_SavedVars_new_was_called()

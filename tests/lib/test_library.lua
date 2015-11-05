@@ -12,6 +12,8 @@ FUNCTION_NAME_TEMPLATES = {
     AND_X_WAS_CALLED_WITH = "and_x_was_called_with",
     GIVEN_THAT_MODULE_IS_ACTIVE = "given_that_module_is_active",
     GIVEN_THAT_MODULE_IS_INACTIVE = "given_that_module_is_inactive",
+    GIVEN_THAT_MODULE_IS_SET_ACTIVE_IN_THE_CONFIG_FILE = "given_that_module_is_set_active_in_the_config_file",
+    GIVEN_THAT_MODULE_IS_SET_INACTIVE_IN_THE_CONFIG_FILE = "given_that_module_is_set_inactive_in_the_config_file",
     THEN_MODULE_BECAME_ACTIVE = "then_module_became_active",
     THEN_MODULE_BECAME_INACTIVE = "then_module_became_inactive",
     THEN_X_WAS_CALLED = "then_x_was_called",
@@ -112,6 +114,18 @@ local function add_given_that_module_is_inactive_test_library_function(test_libr
     end
 end
 
+local function add_given_that_module_is_set_active_in_the_config_file_test_library_function(test_library, function_properties)
+    test_library["given_that_module_is_set_active_in_the_config_file"] = function(...)
+        this.set_module_to_active_in_config_file(...)
+    end
+end
+
+local function add_given_that_module_is_set_inactive_in_the_config_file_test_library_function(test_library, function_properties)
+    test_library["given_that_module_is_set_inactive_in_the_config_file"] = function(...)
+        this.set_module_to_inactive_in_config_file(...)
+    end
+end
+
 local function add_then_module_became_active_test_library_function(test_library, function_properties)
     test_library["then_module_became_active"] = function(...)
         this.check_that_module_became_active(...)
@@ -159,6 +173,8 @@ local FUNCTION_NAME_TEMPLATE_TO_ADD_FUCTION = {
     [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = add_and_x_was_called_with_test_library_function,
     [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_ACTIVE] = add_given_that_module_is_active_test_library_function,
     [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_INACTIVE] = add_given_that_module_is_inactive_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_ACTIVE_IN_THE_CONFIG_FILE] = add_given_that_module_is_set_active_in_the_config_file_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_INACTIVE_IN_THE_CONFIG_FILE] = add_given_that_module_is_set_inactive_in_the_config_file_test_library_function,
     [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_ACTIVE] = add_then_module_became_active_test_library_function,
     [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_INACTIVE] = add_then_module_became_inactive_test_library_function,
     [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED] = add_then_x_was_called_test_library_function,
@@ -183,18 +199,19 @@ function this.initialize_module(module)
     module.initialize()
 end
 
-function this.configure_module_as_inactive(module_name)
+local function set_state_of_the_module_in_the_config_file(module_name, state)
     local setting = {
-        [module_name] = false
+        [module_name] = state
     }
     this.stub_function_with_return_value(ZO_SavedVars, "New", setting)
 end
 
-function this.configure_module_as_active(module_name)
-    local setting = {
-        [module_name] = true
-    }
-    this.stub_function_with_return_value(ZO_SavedVars, "New", setting)
+function this.set_module_to_active_in_config_file(module_name)
+    set_state_of_the_module_in_the_config_file(module_name, true)
+end
+
+function this.set_module_to_inactive_in_config_file(module_name)
+    set_state_of_the_module_in_the_config_file(module_name, false)
 end
 
 function this.ZO_SavedVars_new_was_called_with_module(module_name)

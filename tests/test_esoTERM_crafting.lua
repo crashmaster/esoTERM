@@ -22,6 +22,8 @@ tl.setup_test_functions(
         },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_ACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_INACTIVE] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_ACTIVE_IN_THE_CONFIG_FILE] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_INACTIVE_IN_THE_CONFIG_FILE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_ACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_INACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED] = {
@@ -51,8 +53,8 @@ local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubb
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
 local and_unregister_from_all_events_was_called_with = tl.and_unregister_from_all_events_was_called_with
 local expected_register_for_event_calls_are_cleared = tl.expected_register_for_event_calls_are_cleared
-local given_that_module_configured_as_active = tl.given_that_module_configured_as_active
-local given_that_module_configured_as_inactive = tl.given_that_module_configured_as_inactive
+local given_that_module_is_set_active_in_the_config_file = tl.given_that_module_is_set_active_in_the_config_file
+local given_that_module_is_set_inactive_in_the_config_file = tl.given_that_module_is_set_inactive_in_the_config_file
 local given_that_module_is_active = tl.given_that_module_is_active
 local given_that_module_is_inactive = tl.given_that_module_is_inactive
 local then_activate_was_called = tl.then_activate_was_called
@@ -81,7 +83,7 @@ describe("Test the esoTERM_crafting module initialization.", function()
 
     it("Initialize, but do not activate when configured as inactive.",
     function()
-        given_that_module_configured_as_inactive("crafting")
+        given_that_module_is_set_inactive_in_the_config_file("crafting")
             and_that_register_module_is_stubbed()
             and_that_activate_is_stubbed()
 
@@ -94,7 +96,7 @@ describe("Test the esoTERM_crafting module initialization.", function()
 
     it("Initialize, and activate when configured as active.",
     function()
-        given_that_module_configured_as_active("crafting")
+        given_that_module_is_set_active_in_the_config_file("crafting")
             and_that_register_module_is_stubbed()
             and_that_activate_is_stubbed()
 

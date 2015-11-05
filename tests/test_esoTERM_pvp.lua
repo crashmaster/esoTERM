@@ -20,8 +20,8 @@ local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_fr
 local and_unregister_from_all_events_was_called_with = tl.and_unregister_from_all_events_was_called_with
 local and_ZO_SavedVars_new_was_called = tl.and_ZO_SavedVars_new_was_called
 local expected_register_for_event_calls_are_cleared = tl.expected_register_for_event_calls_are_cleared
-local given_that_module_configured_as_active = tl.given_that_module_configured_as_active
-local given_that_module_configured_as_inactive = tl.given_that_module_configured_as_inactive
+local given_that_module_is_set_active_in_the_config_file = tl.given_that_module_is_set_active_in_the_config_file
+local given_that_module_is_set_inactive_in_the_config_file = tl.given_that_module_is_set_inactive_in_the_config_file
 local given_that_module_is_active = tl.given_that_module_is_active
 local given_that_module_is_inactive = tl.given_that_module_is_inactive
 local then_esoTERM_pvp_activate_was_called = tl.then_esoTERM_pvp_activate_was_called
@@ -49,7 +49,7 @@ describe("Test the esoTERM_pvp module initialization.", function()
 
     it("Initialize, but do not activate when configured as inactive.",
     function()
-        given_that_module_configured_as_inactive("pvp")
+        given_that_module_is_set_inactive_in_the_config_file("pvp")
             and_that_register_module_is_stubbed()
             and_that_esoTERM_pvp_activate_is_stubbed()
 
@@ -62,7 +62,7 @@ describe("Test the esoTERM_pvp module initialization.", function()
 
     it("Initialize, and activate when configured as active.",
     function()
-        given_that_module_configured_as_active("pvp")
+        given_that_module_is_set_active_in_the_config_file("pvp")
             and_that_register_module_is_stubbed()
             and_that_esoTERM_pvp_activate_is_stubbed()
 

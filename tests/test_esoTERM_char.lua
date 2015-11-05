@@ -38,8 +38,8 @@ local and_ZO_SavedVars_new_was_called = tl.and_ZO_SavedVars_new_was_called
 local expected_register_for_event_calls_are_cleared = tl.expected_register_for_event_calls_are_cleared
 local given_that_cached_last_xp_gain_time_is_not_set = tl.given_that_cached_last_xp_gain_time_is_not_set
 local given_that_get_last_xp_gain_time_returns = tl.given_that_get_last_xp_gain_time_returns
-local given_that_module_configured_as_active = tl.given_that_module_configured_as_active
-local given_that_module_configured_as_inactive = tl.given_that_module_configured_as_inactive
+local given_that_module_is_set_active_in_the_config_file = tl.given_that_module_is_set_active_in_the_config_file
+local given_that_module_is_set_inactive_in_the_config_file = tl.given_that_module_is_set_inactive_in_the_config_file
 local given_that_module_is_active = tl.given_that_module_is_active
 local given_that_module_is_inactive = tl.given_that_module_is_inactive
 local then_activate_was_called = tl.then_activate_was_called
@@ -72,7 +72,7 @@ describe("Test the esoTERM_char module initialization.", function()
 
     it("Initialize, but do not activate when configured as inactive.",
     function()
-        given_that_module_configured_as_inactive("character")
+        given_that_module_is_set_inactive_in_the_config_file("character")
             and_that_register_module_is_stubbed()
             and_that_activate_is_stubbed()
 
@@ -85,7 +85,7 @@ describe("Test the esoTERM_char module initialization.", function()
 
     it("Initialize, and activate when configured as active.",
     function()
-        given_that_module_configured_as_active("character")
+        given_that_module_is_set_active_in_the_config_file("character")
             and_that_register_module_is_stubbed()
             and_that_activate_is_stubbed()
 
