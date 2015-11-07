@@ -10,6 +10,7 @@ FUNCTION_NAME_TEMPLATES = {
     AND_INACTIVE_STATE_OF_THE_MODULE_WAS_SAVED = "and_inactive_state_of_the_module_was_saved",
     AND_THAT_X_IS_STUBBED = "and_that_x_is_stubbed",
     AND_X_WAS_CALLED_WITH = "and_x_was_called_with",
+    AND_ZO_SAVEDVARS_NEW_WAS_CALLED_WITH = "and_ZO_SavedVars_new_was_called_with",
     GIVEN_THAT_MODULE_IS_ACTIVE = "given_that_module_is_active",
     GIVEN_THAT_MODULE_IS_INACTIVE = "given_that_module_is_inactive",
     GIVEN_THAT_MODULE_IS_SET_ACTIVE_IN_THE_CONFIG_FILE = "given_that_module_is_set_active_in_the_config_file",
@@ -102,6 +103,13 @@ local function add_and_x_was_called_with_test_library_function(test_library, fun
     end
 end
 
+local function add_and_zo_savedvars_new_was_called_with_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["and_ZO_SavedVars_new_was_called_with"] = function(...)
+        this.ZO_SavedVars_new_was_called_with_module(...)
+    end
+end
+
 local function add_given_that_module_is_active_test_library_function(test_library, function_properties)
     test_library["given_that_module_is_active"] = function(...)
         this.set_module_to_active(...)
@@ -171,6 +179,7 @@ local FUNCTION_NAME_TEMPLATE_TO_ADD_FUCTION = {
     [FUNCTION_NAME_TEMPLATES.AND_INACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = add_and_inactive_state_of_the_module_was_saved_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = add_and_that_x_is_stubbed_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = add_and_x_was_called_with_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.AND_ZO_SAVEDVARS_NEW_WAS_CALLED_WITH] = add_and_zo_savedvars_new_was_called_with_test_library_function,
     [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_ACTIVE] = add_given_that_module_is_active_test_library_function,
     [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_INACTIVE] = add_given_that_module_is_inactive_test_library_function,
     [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_ACTIVE_IN_THE_CONFIG_FILE] = add_given_that_module_is_set_active_in_the_config_file_test_library_function,
@@ -251,13 +260,13 @@ end
 -- register_for_event_was_called_with_expected_parameters {{{
 function this.register_for_event_was_called_with_expected_parameters(expected_register_for_event_calls)
     assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(expected_register_for_event_calls))
-    for param in pairs(expected_register_for_event_calls) do
+    for _call, call_parameters in pairs(expected_register_for_event_calls) do
         this.stub_function_called_with_arguments(
             esoTERM_common.register_for_event,
-            expected_register_for_event_calls[param].module,
-            expected_register_for_event_calls[param].event,
-            expected_register_for_event_calls[param].callback)
-        assert.is_not.equal(nil, expected_register_for_event_calls[param].callback)
+            call_parameters.module,
+            call_parameters.event,
+            call_parameters.callback)
+        assert.is_not.equal(nil, call_parameters.callback)
     end
 end
 -- }}}

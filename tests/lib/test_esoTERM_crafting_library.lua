@@ -11,12 +11,6 @@ function test_esoTERM_crafting_library.setup_test_functions(...)
 end
 -- }}}
 
--- ZO_SavedVars {{{
-function test_esoTERM_crafting_library.and_ZO_SavedVars_new_was_called()
-    test_library.ZO_SavedVars_new_was_called_with_module(MODULE_NAME)
-end
--- }}}
-
 -- register_for_event {{{
 test_esoTERM_crafting_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
 

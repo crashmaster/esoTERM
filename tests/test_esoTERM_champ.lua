@@ -22,7 +22,7 @@ local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubb
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
 local and_unregister_from_all_events_was_called_with = tl.and_unregister_from_all_events_was_called_with
 local and_ZO_SavedVars_new_is_stubbed = tl.and_ZO_SavedVars_new_is_stubbed
-local and_ZO_SavedVars_new_was_called = tl.and_ZO_SavedVars_new_was_called
+local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
 local and_ZO_SavedVars_new_was_not_called = tl.and_ZO_SavedVars_new_was_not_called
 local given_that_character_is_not_eligible_for_champion_xp = tl.given_that_character_is_not_eligible_for_champion_xp
 local given_that_module_is_set_active_in_the_config_file = tl.given_that_module_is_set_active_in_the_config_file
@@ -77,7 +77,7 @@ describe("Test the esoTERM_champ module initialization.", function()
         when_initialize_is_called()
 
         then_esoTERM_champ_activate_was_not_called()
-            and_ZO_SavedVars_new_was_called()
+            and_ZO_SavedVars_new_was_called_with("champion")
             and_register_module_was_called_with(esoTERM_champ)
     end)
 
@@ -91,7 +91,7 @@ describe("Test the esoTERM_champ module initialization.", function()
         when_initialize_is_called()
 
         then_esoTERM_champ_activate_was_called()
-            and_ZO_SavedVars_new_was_called()
+            and_ZO_SavedVars_new_was_called_with("champion")
             and_register_module_was_called_with(esoTERM_champ)
     end)
 end)

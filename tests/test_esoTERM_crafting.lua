@@ -20,6 +20,7 @@ tl.setup_test_functions(
             { module = esoTERM_common, function_name = "register_module", },
             { module = esoTERM_common, function_name = "unregister_from_all_events", },
         },
+        [FUNCTION_NAME_TEMPLATES.AND_ZO_SAVEDVARS_NEW_WAS_CALLED_WITH] = { { }, },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_ACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_INACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_ACTIVE_IN_THE_CONFIG_FILE] = { { }, },
@@ -41,7 +42,7 @@ tl.setup_test_functions(
     }
 )
 
-local and_ZO_SavedVars_new_was_called = tl.and_ZO_SavedVars_new_was_called
+local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
 local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
 local and_inactive_state_of_the_module_was_saved = tl.and_inactive_state_of_the_module_was_saved
 local and_register_for_event_was_called_with = tl.and_register_for_event_was_called_with
@@ -90,7 +91,7 @@ describe("Test the esoTERM_crafting module initialization.", function()
         when_initialize_is_called()
 
         then_activate_was_not_called()
-            and_ZO_SavedVars_new_was_called()
+            and_ZO_SavedVars_new_was_called_with("crafting")
             and_register_module_was_called_with(esoTERM.module_register, esoTERM_crafting)
     end)
 
@@ -103,7 +104,7 @@ describe("Test the esoTERM_crafting module initialization.", function()
         when_initialize_is_called()
 
         then_activate_was_called()
-            and_ZO_SavedVars_new_was_called()
+            and_ZO_SavedVars_new_was_called_with("crafting")
             and_register_module_was_called_with(esoTERM.module_register, esoTERM_crafting)
     end)
 end)
