@@ -75,11 +75,6 @@ function test_esoTERM_pve_library.cache_is_cleared()
     end
 end
 
-function test_esoTERM_pve_library.expected_register_for_event_calls_are_cleared()
-    ut_helper.clear_table(test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN)
-    ut_helper.clear_table(test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN)
-end
-
 function test_esoTERM_pve_library.when_activate_is_called()
     esoTERM_pve.activate()
 end
@@ -96,37 +91,38 @@ function test_esoTERM_pve_library.and_that_cache_is_empty()
     assert.is.equal(0, ut_helper.table_size(test_esoTERM_pve_library.CACHE))
 end
 
-test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN = {}
-test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN = {}
-
-function test_esoTERM_pve_library.and_that_expected_register_for_event_calls_for_non_veteran_unit_are_set_up()
-    test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN.experience_points_update = {
-        module = esoTERM_pve,
-        event = EVENT_EXPERIENCE_UPDATE,
-        callback = esoTERM_pve.on_experience_update
-    }
-    test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN.level_update = {
-        module = esoTERM_pve,
-        event = EVENT_LEVEL_UPDATE,
-        callback = esoTERM_pve.on_level_update
-    }
-    test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN.veteran_rank_update = {
-        module = esoTERM_pve,
-        event = EVENT_VETERAN_RANK_UPDATE,
-        callback = esoTERM_pve.on_level_update
+function test_esoTERM_pve_library.get_expected_register_for_event_call_parameters_for_non_veteran_unit()
+    return {
+        {
+            module = esoTERM_pve,
+            event = EVENT_EXPERIENCE_UPDATE,
+            callback = esoTERM_pve.on_experience_update
+        },
+        {
+            module = esoTERM_pve,
+            event = EVENT_LEVEL_UPDATE,
+            callback = esoTERM_pve.on_level_update
+        },
+        {
+            module = esoTERM_pve,
+            event = EVENT_VETERAN_RANK_UPDATE,
+            callback = esoTERM_pve.on_level_update
+        },
     }
 end
 
-function test_esoTERM_pve_library.and_that_expected_register_for_event_calls_for_veteran_unit_are_set_up()
-    test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN.experience_points_update = {
-        module = esoTERM_pve,
-        event = EVENT_VETERAN_POINTS_UPDATE,
-        callback = esoTERM_pve.on_experience_update
-    }
-    test_esoTERM_pve_library.EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN.veteran_rank_update = {
-        module = esoTERM_pve,
-        event = EVENT_VETERAN_RANK_UPDATE,
-        callback = esoTERM_pve.on_level_update
+function test_esoTERM_pve_library.get_expected_register_for_event_call_parameters_for_veteran_unit()
+    return {
+        {
+            module = esoTERM_pve,
+            event = EVENT_VETERAN_POINTS_UPDATE,
+            callback = esoTERM_pve.on_experience_update
+        },
+        {
+            module = esoTERM_pve,
+            event = EVENT_VETERAN_RANK_UPDATE,
+            callback = esoTERM_pve.on_level_update
+        },
     }
 end
 

@@ -12,17 +12,13 @@ end
 -- }}}
 
 -- register_for_event {{{
-test_esoTERM_crafting_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
-
-function test_esoTERM_crafting_library.expected_register_for_event_calls_are_cleared()
-    ut_helper.clear_table(test_esoTERM_crafting_library.EXPECTED_REGISTER_FOR_EVENT_CALLS)
-end
-
-function test_esoTERM_crafting_library.and_that_expected_register_for_event_calls_are_set_up()
-    test_esoTERM_crafting_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.craft_completed_update = {
-        module = esoTERM_crafting,
-        event = EVENT_CRAFT_COMPLETED,
-        callback = esoTERM_crafting.on_craft_completed_update
+function test_esoTERM_crafting_library.get_expected_register_for_event_call_parameters()
+    return {
+        {
+            module = esoTERM_crafting,
+            event = EVENT_CRAFT_COMPLETED,
+            callback = esoTERM_crafting.on_craft_completed_update
+        },
     }
 end
 

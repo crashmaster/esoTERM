@@ -65,12 +65,6 @@ test_esoTERM_champ_library.EXPECTED_CACHED_VALUES = {
 }
 
 -- esoTERM_champ module activeness {{{
-test_esoTERM_champ_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
-
-function test_esoTERM_champ_library.expected_register_for_event_calls_are_cleared()
-    ut_helper.clear_table(test_esoTERM_champ_library.EXPECTED_REGISTER_FOR_EVENT_CALLS)
-end
-
 function test_esoTERM_champ_library.given_that_module_is_active()
     test_library.set_module_to_active(esoTERM_champ)
 end
@@ -95,16 +89,18 @@ function test_esoTERM_champ_library.and_that_unregister_from_all_events_is_stubb
     test_library.stub_function_with_no_return_value(esoTERM_common, "unregister_from_all_events")
 end
 
-function test_esoTERM_champ_library.and_that_expected_register_for_event_calls_are_set_up()
-    test_esoTERM_champ_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.champion_xp_gained = {
-        module = esoTERM_champ,
-        event = EVENT_EXPERIENCE_UPDATE,
-        callback = esoTERM_champ.on_experience_update
-    }
-    test_esoTERM_champ_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.champion_point_gained = {
-        module = esoTERM_champ,
-        event = EVENT_CHAMPION_POINT_GAINED,
-        callback = esoTERM_champ.on_champion_point_gain
+function test_esoTERM_champ_library.get_expected_register_for_event_call_parameters()
+    return {
+        {
+            module = esoTERM_champ,
+            event = EVENT_EXPERIENCE_UPDATE,
+            callback = esoTERM_champ.on_experience_update
+        },
+        {
+            module = esoTERM_champ,
+            event = EVENT_CHAMPION_POINT_GAINED,
+            callback = esoTERM_champ.on_champion_point_gain
+        },
     }
 end
 

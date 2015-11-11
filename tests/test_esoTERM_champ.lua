@@ -15,7 +15,7 @@ local and_register_module_was_not_called = tl.and_register_module_was_not_called
 local and_that_cache_is_empty = tl.and_that_cache_is_empty
 local and_that_character_is_eligible_for_champion_xp = tl.and_that_character_is_eligible_for_champion_xp
 local and_that_esoTERM_champ_activate_is_stubbed = tl.and_that_esoTERM_champ_activate_is_stubbed
-local and_that_expected_register_for_event_calls_are_set_up = tl.and_that_expected_register_for_event_calls_are_set_up
+local get_expected_register_for_event_call_parameters = tl.get_expected_register_for_event_call_parameters
 local and_that_getter_functions_are_stubbed = tl.and_that_getter_functions_are_stubbed
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
 local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
@@ -37,8 +37,6 @@ local verify_that_module_has_the_expected_name = tl.verify_that_module_has_the_e
 local when_activate_is_called = tl.when_activate_is_called
 local when_deactivate_is_called = tl.when_deactivate_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
-
-local EXPECTED_REGISTER_FOR_EVENT_CALLS = tl.EXPECTED_REGISTER_FOR_EVENT_CALLS
 -- }}}
 
 describe("Test the esoTERM_champ module.", function()
@@ -98,7 +96,6 @@ end)
 
 describe("Test esoTERM_champ module activate.", function()
     after_each(function()
-        tl.expected_register_for_event_calls_are_cleared()
         ut_helper.restore_stubbed_functions()
     end)
     -- TODO: clear chache after tests?
@@ -107,7 +104,6 @@ describe("Test esoTERM_champ module activate.", function()
     function()
         given_that_module_is_inactive()
             and_that_cache_is_empty()
-            and_that_expected_register_for_event_calls_are_set_up()
             and_that_register_for_event_is_stubbed()
             and_that_getter_functions_are_stubbed()
 
@@ -115,7 +111,9 @@ describe("Test esoTERM_champ module activate.", function()
 
         and_module_became_active()
             and_cache_is_no_longer_empty()
-            and_register_for_event_was_called_with(EXPECTED_REGISTER_FOR_EVENT_CALLS)
+            and_register_for_event_was_called_with(
+                get_expected_register_for_event_call_parameters()
+            )
             and_getter_function_stubs_were_called()
             and_cached_values_became_initialized()
             and_active_state_of_the_module_was_saved()

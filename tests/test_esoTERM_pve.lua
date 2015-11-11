@@ -11,13 +11,11 @@ local and_inactive_state_of_the_module_was_saved = tl.and_inactive_state_of_the_
 local and_register_module_was_called_with = tl.and_register_module_was_called_with
 local and_that_cache_is_empty = tl.and_that_cache_is_empty
 local and_that_esoTERM_pve_activate_is_stubbed = tl.and_that_esoTERM_pve_activate_is_stubbed
-local and_that_expected_register_for_event_calls_are_set_up = tl.and_that_expected_register_for_event_calls_are_set_up
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
 local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
 local and_unregister_from_all_events_was_called_with = tl.and_unregister_from_all_events_was_called_with
 local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
-local expected_register_for_event_calls_are_cleared = tl.expected_register_for_event_calls_are_cleared
 local given_that_module_is_set_active_in_the_config_file = tl.given_that_module_is_set_active_in_the_config_file
 local given_that_module_is_set_inactive_in_the_config_file = tl.given_that_module_is_set_inactive_in_the_config_file
 local given_that_module_is_active = tl.given_that_module_is_active
@@ -29,9 +27,6 @@ local verify_that_module_has_the_expected_name = tl.verify_that_module_has_the_e
 local when_activate_is_called = tl.when_activate_is_called
 local when_deactivate_is_called = tl.when_deactivate_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
-
-local EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN = tl.EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN
-local EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN = tl.EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN
 -- }}}
 
 describe("Test module.", function()
@@ -76,7 +71,6 @@ end)
 describe("Test esoTERM_pve module activate.", function()
     after_each(function()
         tl.cache_is_cleared()
-        tl.expected_register_for_event_calls_are_cleared()
         ut_helper.restore_stubbed_functions()
     end)
 
@@ -84,7 +78,6 @@ describe("Test esoTERM_pve module activate.", function()
     function()
         tl.given_that_module_is_inactive()
             tl.and_that_cache_is_empty()
-            tl.and_that_expected_register_for_event_calls_for_non_veteran_unit_are_set_up()
             tl.and_that_register_for_event_is_stubbed()
             tl.and_that_getter_functions_for_non_veteran_unit_are_stubbed()
 
@@ -92,7 +85,9 @@ describe("Test esoTERM_pve module activate.", function()
 
         tl.and_module_became_active()
             tl.and_cache_is_no_longer_empty()
-            tl.and_register_for_event_was_called_for_non_veteran_unit_was_called_with(EXPECTED_REGISTER_FOR_EVENT_CALLS_NON_VETERAN)
+            tl.and_register_for_event_was_called_for_non_veteran_unit_was_called_with(
+                tl.get_expected_register_for_event_call_parameters_for_non_veteran_unit()
+            )
             tl.and_getter_function_stubs_were_called()
             tl.and_cached_values_for_non_veteran_unit_became_initialized()
             tl.and_active_state_of_the_module_was_saved()
@@ -102,7 +97,6 @@ describe("Test esoTERM_pve module activate.", function()
     function()
         tl.given_that_module_is_inactive()
             tl.and_that_cache_is_empty()
-            tl.and_that_expected_register_for_event_calls_for_veteran_unit_are_set_up()
             tl.and_that_register_for_event_is_stubbed()
             tl.and_that_getter_functions_for_veteran_unit_are_stubbed()
 
@@ -110,7 +104,9 @@ describe("Test esoTERM_pve module activate.", function()
 
         tl.and_module_became_active()
             tl.and_cache_is_no_longer_empty()
-            tl.and_register_for_event_was_called_for_veteran_unit_was_called_with(EXPECTED_REGISTER_FOR_EVENT_CALLS_VETERAN)
+            tl.and_register_for_event_was_called_for_veteran_unit_was_called_with(
+                tl.get_expected_register_for_event_call_parameters_for_veteran_unit()
+            )
             tl.and_getter_function_stubs_were_called()
             tl.and_cached_values_for_veteran_unit_became_initialized()
             tl.and_active_state_of_the_module_was_saved()
