@@ -4,6 +4,8 @@ local tl = require("tests/lib/test_esoTERM_char_library")
 
 local and_GetGameTimeMilliseconds_was_called = tl.and_GetGameTimeMilliseconds_was_called
 local and_GetGameTimeMilliseconds_was_not_called = tl.and_GetGameTimeMilliseconds_was_not_called
+local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
+local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
 local and_cache_is_no_longer_empty = tl.and_cache_is_no_longer_empty
 local and_cached_values_became_initialized = tl.and_cached_values_became_initialized
 local and_get_combat_exit_time_was_called = tl.and_get_combat_exit_time_was_called
@@ -12,9 +14,8 @@ local and_get_combat_start_time_was_called = tl.and_get_combat_start_time_was_ca
 local and_get_combat_start_time_was_not_called = tl.and_get_combat_start_time_was_not_called
 local and_get_last_xp_gain_time_was_called = tl.and_get_last_xp_gain_time_was_called
 local and_getter_function_stubs_were_called = tl.and_getter_function_stubs_were_called
-local and_module_became_active = tl.and_module_became_active
-local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
 local and_inactive_state_of_the_module_was_saved = tl.and_inactive_state_of_the_module_was_saved
+local and_module_became_active = tl.and_module_became_active
 local and_register_for_event_was_called_with = tl.and_register_for_event_was_called_with
 local and_register_for_event_was_not_called = tl.and_register_for_event_was_not_called
 local and_register_module_was_called_with = tl.and_register_module_was_called_with
@@ -22,7 +23,6 @@ local and_that_GetGameTimeMilliseconds_is_stubbed = tl.and_that_GetGameTimeMilli
 local and_that_GetGameTimeMilliseconds_returns = tl.and_that_GetGameTimeMilliseconds_returns
 local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
 local and_that_cache_is_empty = tl.and_that_cache_is_empty
-local and_that_expected_register_for_event_calls_are_set_up = tl.and_that_expected_register_for_event_calls_are_set_up
 local and_that_get_combat_exit_time_is_stubbed = tl.and_that_get_combat_exit_time_is_stubbed
 local and_that_get_combat_exit_time_returns = tl.and_that_get_combat_exit_time_returns
 local and_that_get_combat_start_time_is_stubbed = tl.and_that_get_combat_start_time_is_stubbed
@@ -34,14 +34,13 @@ local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_fr
 local and_that_unregister_from_event_is_stubbed = tl.and_that_unregister_from_event_is_stubbed
 local and_unregister_from_all_events_was_called_with = tl.and_unregister_from_all_events_was_called_with
 local and_unregister_from_event_was_not_called = tl.and_unregister_from_event_was_not_called
-local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
-local expected_register_for_event_calls_are_cleared = tl.expected_register_for_event_calls_are_cleared
+local get_expected_register_for_event_call_parameters = tl.get_expected_register_for_event_call_parameters
 local given_that_cached_last_xp_gain_time_is_not_set = tl.given_that_cached_last_xp_gain_time_is_not_set
 local given_that_get_last_xp_gain_time_returns = tl.given_that_get_last_xp_gain_time_returns
-local given_that_module_is_set_active_in_the_config_file = tl.given_that_module_is_set_active_in_the_config_file
-local given_that_module_is_set_inactive_in_the_config_file = tl.given_that_module_is_set_inactive_in_the_config_file
 local given_that_module_is_active = tl.given_that_module_is_active
 local given_that_module_is_inactive = tl.given_that_module_is_inactive
+local given_that_module_is_set_active_in_the_config_file = tl.given_that_module_is_set_active_in_the_config_file
+local given_that_module_is_set_inactive_in_the_config_file = tl.given_that_module_is_set_inactive_in_the_config_file
 local then_activate_was_called = tl.then_activate_was_called
 local then_activate_was_not_called = tl.then_activate_was_not_called
 local then_cached_last_xp_gain_time_became = tl.then_cached_last_xp_gain_time_became
@@ -54,8 +53,6 @@ local when_get_combat_exit_time_is_called = tl.when_get_combat_exit_time_is_call
 local when_initialize_is_called = tl.when_initialize_is_called
 local when_on_vp_gain_is_called_with = tl.when_on_vp_gain_is_called_with
 local when_on_xp_gain_is_called_with = tl.when_on_xp_gain_is_called_with
-
-local EXPECTED_REGISTER_FOR_EVENT_CALLS = tl.EXPECTED_REGISTER_FOR_EVENT_CALLS
 -- }}}
 
 describe("Test the esoTERM_char module.", function()
@@ -99,7 +96,6 @@ end)
 
 describe("Test esoTERM_char module activate.", function()
     after_each(function()
-        expected_register_for_event_calls_are_cleared()
         ut_helper.restore_stubbed_functions()
     end)
     -- TODO: clear chache after tests?
@@ -108,7 +104,6 @@ describe("Test esoTERM_char module activate.", function()
     function()
         given_that_module_is_inactive()
             and_that_cache_is_empty()
-            and_that_expected_register_for_event_calls_are_set_up()
             and_that_register_for_event_is_stubbed()
             and_that_getter_functions_are_stubbed()
 
@@ -116,7 +111,9 @@ describe("Test esoTERM_char module activate.", function()
 
         and_module_became_active()
             and_cache_is_no_longer_empty()
-            and_register_for_event_was_called_with(EXPECTED_REGISTER_FOR_EVENT_CALLS)
+            and_register_for_event_was_called_with(
+                get_expected_register_for_event_call_parameters()
+            )
             and_getter_function_stubs_were_called()
             and_cached_values_became_initialized()
             and_active_state_of_the_module_was_saved()

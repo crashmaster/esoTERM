@@ -91,32 +91,28 @@ test_esoTERM_char_library.EXPECTED_CACHED_VALUES = {
 }
 
 -- register_for_event {{{
-test_esoTERM_char_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
-
-function test_esoTERM_char_library.expected_register_for_event_calls_are_cleared()
-    ut_helper.clear_table(test_esoTERM_char_library.EXPECTED_REGISTER_FOR_EVENT_CALLS)
-end
-
-function test_esoTERM_char_library.and_that_expected_register_for_event_calls_are_set_up()
-    test_esoTERM_char_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.combat_state_update = {
-        module = esoTERM_char,
-        event = EVENT_PLAYER_COMBAT_STATE,
-        callback = esoTERM_char.on_combat_state_update
-    }
-    test_esoTERM_char_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.death_state_update = {
-        module = esoTERM_char,
-        event = EVENT_UNIT_DEATH_STATE_CHANGED,
-        callback = esoTERM_char.on_unit_death_state_change
-    }
-    test_esoTERM_char_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.xp_gain_update = {
-        module = esoTERM_char,
-        event = EVENT_EXPERIENCE_GAIN,
-        callback = esoTERM_char.on_xp_gain
-    }
-    test_esoTERM_char_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.vp_gain_update = {
-        module = esoTERM_char,
-        event = EVENT_VETERAN_POINTS_GAIN,
-        callback = esoTERM_char.on_vp_gain
+function test_esoTERM_char_library.get_expected_register_for_event_call_parameters()
+    return {
+        {
+            module = esoTERM_char,
+            event = EVENT_PLAYER_COMBAT_STATE,
+            callback = esoTERM_char.on_combat_state_update
+        },
+        {
+            module = esoTERM_char,
+            event = EVENT_UNIT_DEATH_STATE_CHANGED,
+            callback = esoTERM_char.on_unit_death_state_change
+        },
+        {
+            module = esoTERM_char,
+            event = EVENT_EXPERIENCE_GAIN,
+            callback = esoTERM_char.on_xp_gain
+        },
+        {
+            module = esoTERM_char,
+            event = EVENT_VETERAN_POINTS_GAIN,
+            callback = esoTERM_char.on_vp_gain
+        },
     }
 end
 

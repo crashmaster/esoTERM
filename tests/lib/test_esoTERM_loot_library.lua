@@ -56,8 +56,6 @@ end
 -- }}}
 
 -- Activate {{{
-test_esoTERM_loot_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
-
 function test_esoTERM_loot_library.when_activate_is_called()
     esoTERM_loot.activate()
 end
@@ -71,10 +69,6 @@ test_esoTERM_loot_library.EXPECTED_CACHED_VALUES = {
     looted_item = test_esoTERM_loot_library.LOOTED_ITEM,
 }
 
-function test_esoTERM_loot_library.expected_register_for_event_calls_are_cleared()
-    ut_helper.clear_table(test_esoTERM_loot_library.EXPECTED_REGISTER_FOR_EVENT_CALLS)
-end
-
 function test_esoTERM_loot_library.given_that_module_is_inactive()
     test_library.set_module_to_inactive(esoTERM_loot)
 end
@@ -83,16 +77,18 @@ function test_esoTERM_loot_library.and_that_cache_is_empty()
     assert.is.equal(0, ut_helper.table_size(test_esoTERM_loot_library.CACHE))
 end
 
-function test_esoTERM_loot_library.and_that_expected_register_for_event_calls_are_set_up()
-    test_esoTERM_loot_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.loot_received_update = {
-        module = esoTERM_loot,
-        event = EVENT_LOOT_RECEIVED,
-        callback = esoTERM_loot.on_loot_received
-    }
-    test_esoTERM_loot_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.money_received_update = {
-        module = esoTERM_loot,
-        event = EVENT_MONEY_UPDATE,
-        callback = esoTERM_loot.on_money_received
+function test_esoTERM_loot_library.get_expected_register_for_event_call_parameters()
+    return {
+        {
+            module = esoTERM_loot,
+            event = EVENT_LOOT_RECEIVED,
+            callback = esoTERM_loot.on_loot_received
+        },
+        {
+            module = esoTERM_loot,
+            event = EVENT_MONEY_UPDATE,
+            callback = esoTERM_loot.on_money_received
+        },
     }
 end
 

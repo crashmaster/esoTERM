@@ -3,32 +3,32 @@ local requires_for_tests = require("tests/requires_for_tests")
 local tl = require("tests/lib/test_esoTERM_champ_library")
 
 local and_GetChampionXPInRank_was_called = tl.and_GetChampionXPInRank_was_called
+local and_ZO_SavedVars_new_is_stubbed = tl.and_ZO_SavedVars_new_is_stubbed
+local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
+local and_ZO_SavedVars_new_was_not_called = tl.and_ZO_SavedVars_new_was_not_called
+local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
 local and_cache_is_no_longer_empty = tl.and_cache_is_no_longer_empty
 local and_cached_values_became_initialized = tl.and_cached_values_became_initialized
 local and_getter_function_stubs_were_called = tl.and_getter_function_stubs_were_called
-local and_module_became_active = tl.and_module_became_active
-local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
 local and_inactive_state_of_the_module_was_saved = tl.and_inactive_state_of_the_module_was_saved
+local and_module_became_active = tl.and_module_became_active
 local and_register_for_event_was_called_with = tl.and_register_for_event_was_called_with
 local and_register_module_was_called_with = tl.and_register_module_was_called_with
 local and_register_module_was_not_called = tl.and_register_module_was_not_called
 local and_that_cache_is_empty = tl.and_that_cache_is_empty
 local and_that_character_is_eligible_for_champion_xp = tl.and_that_character_is_eligible_for_champion_xp
 local and_that_esoTERM_champ_activate_is_stubbed = tl.and_that_esoTERM_champ_activate_is_stubbed
-local and_that_expected_register_for_event_calls_are_set_up = tl.and_that_expected_register_for_event_calls_are_set_up
 local and_that_getter_functions_are_stubbed = tl.and_that_getter_functions_are_stubbed
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
 local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
 local and_unregister_from_all_events_was_called_with = tl.and_unregister_from_all_events_was_called_with
-local and_ZO_SavedVars_new_is_stubbed = tl.and_ZO_SavedVars_new_is_stubbed
-local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
-local and_ZO_SavedVars_new_was_not_called = tl.and_ZO_SavedVars_new_was_not_called
+local get_expected_register_for_event_call_parameters = tl.get_expected_register_for_event_call_parameters
 local given_that_character_is_not_eligible_for_champion_xp = tl.given_that_character_is_not_eligible_for_champion_xp
-local given_that_module_is_set_active_in_the_config_file = tl.given_that_module_is_set_active_in_the_config_file
-local given_that_module_is_set_inactive_in_the_config_file = tl.given_that_module_is_set_inactive_in_the_config_file
 local given_that_module_is_active = tl.given_that_module_is_active
 local given_that_module_is_inactive = tl.given_that_module_is_inactive
+local given_that_module_is_set_active_in_the_config_file = tl.given_that_module_is_set_active_in_the_config_file
+local given_that_module_is_set_inactive_in_the_config_file = tl.given_that_module_is_set_inactive_in_the_config_file
 local then_GetPlayerChampionPointsEarned_was_called = tl.then_GetPlayerChampionPointsEarned_was_called
 local then_esoTERM_champ_activate_was_called = tl.then_esoTERM_champ_activate_was_called
 local then_esoTERM_champ_activate_was_not_called = tl.then_esoTERM_champ_activate_was_not_called
@@ -37,8 +37,6 @@ local verify_that_module_has_the_expected_name = tl.verify_that_module_has_the_e
 local when_activate_is_called = tl.when_activate_is_called
 local when_deactivate_is_called = tl.when_deactivate_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
-
-local EXPECTED_REGISTER_FOR_EVENT_CALLS = tl.EXPECTED_REGISTER_FOR_EVENT_CALLS
 -- }}}
 
 describe("Test the esoTERM_champ module.", function()
@@ -98,7 +96,6 @@ end)
 
 describe("Test esoTERM_champ module activate.", function()
     after_each(function()
-        tl.expected_register_for_event_calls_are_cleared()
         ut_helper.restore_stubbed_functions()
     end)
     -- TODO: clear chache after tests?
@@ -107,7 +104,6 @@ describe("Test esoTERM_champ module activate.", function()
     function()
         given_that_module_is_inactive()
             and_that_cache_is_empty()
-            and_that_expected_register_for_event_calls_are_set_up()
             and_that_register_for_event_is_stubbed()
             and_that_getter_functions_are_stubbed()
 
@@ -115,7 +111,9 @@ describe("Test esoTERM_champ module activate.", function()
 
         and_module_became_active()
             and_cache_is_no_longer_empty()
-            and_register_for_event_was_called_with(EXPECTED_REGISTER_FOR_EVENT_CALLS)
+            and_register_for_event_was_called_with(
+                get_expected_register_for_event_call_parameters()
+            )
             and_getter_function_stubs_were_called()
             and_cached_values_became_initialized()
             and_active_state_of_the_module_was_saved()

@@ -12,7 +12,7 @@ end
 -- }}}
 
 -- register_for_event {{{
-function test_esoTERM_crafting_library.get_expected_register_for_event_calls()
+function test_esoTERM_crafting_library.get_expected_register_for_event_call_parameters()
     return {
         {
             module = esoTERM_crafting,

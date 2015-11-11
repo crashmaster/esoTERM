@@ -3,10 +3,7 @@ local requires_for_tests = require("tests/requires_for_tests")
 local GLOBAL = _G
 
 describe("Test output initialization", function()
-    local expected_register_params = {}
-
     after_each(function()
-        expected_register_params = nil
         ut_helper.restore_stubbed_functions()
     end)
 
@@ -19,11 +16,13 @@ describe("Test output initialization", function()
         ut_helper.stub_function(esoTERM_output, "on_player_activated", nil)
     end
 
-    local function and_expected_register_event_parameter_is_set_up()
-        expected_register_params.experience_points_update = {
-            module = esoTERM_output,
-            event = EVENT_PLAYER_ACTIVATED,
-            callback = esoTERM_output.on_player_activated
+    local function get_expected_register_for_event_call_parameters()
+        return {
+            {
+                module = esoTERM_output,
+                event = EVENT_PLAYER_ACTIVATED,
+                callback = esoTERM_output.on_player_activated
+            }
         }
     end
 
@@ -48,11 +47,12 @@ describe("Test output initialization", function()
     function()
         given_that_register_for_event_is_stubbed()
             and_esoTERM_output_on_player_activated_is_stubbed()
-            and_expected_register_event_parameter_is_set_up()
 
         when_initialize_is_called()
 
-        then_register_for_event_was_called_with(expected_register_params)
+        then_register_for_event_was_called_with(
+            get_expected_register_for_event_call_parameters()
+        )
     end)
 end)
 

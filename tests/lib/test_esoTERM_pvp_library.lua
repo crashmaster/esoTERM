@@ -73,12 +73,6 @@ end
 -- }}}
 
 -- Activate {{{
-test_esoTERM_pvp_library.EXPECTED_REGISTER_FOR_EVENT_CALLS = {}
-
-function test_esoTERM_pvp_library.expected_register_for_event_calls_are_cleared()
-    ut_helper.clear_table(test_esoTERM_pvp_library.EXPECTED_REGISTER_FOR_EVENT_CALLS)
-end
-
 function test_esoTERM_pvp_library.when_activate_is_called()
     esoTERM_pvp.activate()
 end
@@ -95,11 +89,13 @@ function test_esoTERM_pvp_library.and_that_cache_is_empty()
     assert.is.equal(0, ut_helper.table_size(test_esoTERM_pvp_library.CACHE))
 end
 
-function test_esoTERM_pvp_library.and_that_expected_register_for_event_calls_are_set_up()
-    test_esoTERM_pvp_library.EXPECTED_REGISTER_FOR_EVENT_CALLS.ava_points_update = {
-        module = esoTERM_pvp,
-        event = EVENT_ALLIANCE_POINT_UPDATE,
-        callback = esoTERM_pvp.on_ava_points_update
+function test_esoTERM_pvp_library.get_expected_register_for_event_call_parameters()
+    return {
+        {
+            module = esoTERM_pvp,
+            event = EVENT_ALLIANCE_POINT_UPDATE,
+            callback = esoTERM_pvp.on_ava_points_update
+        },
     }
 end
 
