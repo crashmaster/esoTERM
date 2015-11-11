@@ -47,8 +47,8 @@ function test_esoTERM_pvp_library.given_that_module_is_set_active_in_the_config_
     test_library.set_module_to_active_in_config_file(...)
 end
 
-function test_esoTERM_pvp_library.and_ZO_SavedVars_new_was_called()
-    test_library.ZO_SavedVars_new_was_called_with_module(MODULE_NAME)
+function test_esoTERM_pvp_library.and_ZO_SavedVars_new_was_called_with(...)
+    test_library.ZO_SavedVars_new_was_called_with_module(...)
 end
 
 function test_esoTERM_pvp_library.and_that_register_module_is_stubbed()

@@ -12,16 +12,13 @@ local and_register_for_event_was_called_with = tl.and_register_for_event_was_cal
 local and_register_module_was_called_with = tl.and_register_module_was_called_with
 local and_that_cache_is_empty = tl.and_that_cache_is_empty
 local and_that_esoTERM_loot_activate_is_stubbed = tl.and_that_esoTERM_loot_activate_is_stubbed
-local and_that_esoTERM_loot_activate_is_stubbed = tl.and_that_esoTERM_loot_activate_is_stubbed
 local and_that_expected_register_for_event_calls_are_set_up = tl.and_that_expected_register_for_event_calls_are_set_up
 local and_that_getter_functions_are_stubbed = tl.and_that_getter_functions_are_stubbed
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
 local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
-local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
 local and_unregister_from_all_events_was_called_with = tl.and_unregister_from_all_events_was_called_with
-local and_ZO_SavedVars_new_was_called = tl.and_ZO_SavedVars_new_was_called
-local and_ZO_SavedVars_new_was_called = tl.and_ZO_SavedVars_new_was_called
+local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
 local expected_register_for_event_calls_are_cleared = tl.expected_register_for_event_calls_are_cleared
 local given_that_module_is_set_active_in_the_config_file = tl.given_that_module_is_set_active_in_the_config_file
 local given_that_module_is_set_inactive_in_the_config_file = tl.given_that_module_is_set_inactive_in_the_config_file
@@ -33,7 +30,6 @@ local then_module_became_inactive = tl.then_module_became_inactive
 local verify_that_module_has_the_expected_name = tl.verify_that_module_has_the_expected_name
 local when_activate_is_called = tl.when_activate_is_called
 local when_deactivate_is_called = tl.when_deactivate_is_called
-local when_initialize_is_called = tl.when_initialize_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
 
 local EXPECTED_REGISTER_FOR_EVENT_CALLS = tl.EXPECTED_REGISTER_FOR_EVENT_CALLS
@@ -60,7 +56,7 @@ describe("Test the esoTERM_loot module initialization.", function()
         when_initialize_is_called()
 
         then_esoTERM_loot_activate_was_not_called()
-            and_ZO_SavedVars_new_was_called()
+            and_ZO_SavedVars_new_was_called_with("loot")
             and_register_module_was_called_with(esoTERM_loot)
     end)
 
@@ -73,7 +69,7 @@ describe("Test the esoTERM_loot module initialization.", function()
         when_initialize_is_called()
 
         then_esoTERM_loot_activate_was_called()
-            and_ZO_SavedVars_new_was_called()
+            and_ZO_SavedVars_new_was_called_with("loot")
             and_register_module_was_called_with(esoTERM_loot)
     end)
 end)

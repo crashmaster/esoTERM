@@ -34,7 +34,7 @@ local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_fr
 local and_that_unregister_from_event_is_stubbed = tl.and_that_unregister_from_event_is_stubbed
 local and_unregister_from_all_events_was_called_with = tl.and_unregister_from_all_events_was_called_with
 local and_unregister_from_event_was_not_called = tl.and_unregister_from_event_was_not_called
-local and_ZO_SavedVars_new_was_called = tl.and_ZO_SavedVars_new_was_called
+local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
 local expected_register_for_event_calls_are_cleared = tl.expected_register_for_event_calls_are_cleared
 local given_that_cached_last_xp_gain_time_is_not_set = tl.given_that_cached_last_xp_gain_time_is_not_set
 local given_that_get_last_xp_gain_time_returns = tl.given_that_get_last_xp_gain_time_returns
@@ -79,7 +79,7 @@ describe("Test the esoTERM_char module initialization.", function()
         when_initialize_is_called()
 
         then_activate_was_not_called()
-            and_ZO_SavedVars_new_was_called()
+            and_ZO_SavedVars_new_was_called_with("character")
             and_register_module_was_called_with(esoTERM_char)
     end)
 
@@ -92,7 +92,7 @@ describe("Test the esoTERM_char module initialization.", function()
         when_initialize_is_called()
 
         then_activate_was_called()
-            and_ZO_SavedVars_new_was_called()
+            and_ZO_SavedVars_new_was_called_with("character")
             and_register_module_was_called_with(esoTERM_char)
     end)
 end)
