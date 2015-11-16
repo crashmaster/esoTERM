@@ -3,8 +3,6 @@ local esoTERM_crafting = require("esoTERM_crafting")
 
 test_esoTERM_crafting_library = {}
 
-local MODULE_NAME = "crafting"
-
 -- setup_test_functions {{{
 function test_esoTERM_crafting_library.setup_test_functions(...)
     test_library.setup_test_library_functions(test_esoTERM_crafting_library, ...)

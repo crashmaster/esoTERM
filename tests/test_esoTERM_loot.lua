@@ -1,7 +1,25 @@
+-- Locals {{{
 local requires_for_tests = require("tests/requires_for_tests")
 local tl = require("tests/lib/test_esoTERM_loot_library")
 
--- Locals {{{
+tl.setup_test_functions(
+    {
+        [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = {
+            { module = esoTERM_common, function_name = "register_module", },
+            { module = esoTERM_loot, function_name = "activate", },
+        },
+        [FUNCTION_NAME_TEMPLATES.AND_ZO_SAVEDVARS_NEW_WAS_CALLED_WITH] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_INACTIVE_IN_THE_CONFIG_FILE] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED] = {
+            { module = esoTERM_loot, function_name = "activate", },
+        },
+        [FUNCTION_NAME_TEMPLATES.VERIFY_THAT_MODULE_HAS_THE_EXPECTED_NAME] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED] = {
+            { module = esoTERM_loot, function_name = "initialize", },
+        },
+    }
+)
+
 local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
 local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
 local and_cache_is_no_longer_empty = tl.and_cache_is_no_longer_empty
@@ -12,7 +30,7 @@ local and_module_became_active = tl.and_module_became_active
 local and_register_for_event_was_called_with = tl.and_register_for_event_was_called_with
 local and_register_module_was_called_with = tl.and_register_module_was_called_with
 local and_that_cache_is_empty = tl.and_that_cache_is_empty
-local and_that_esoTERM_loot_activate_is_stubbed = tl.and_that_esoTERM_loot_activate_is_stubbed
+local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
 local and_that_getter_functions_are_stubbed = tl.and_that_getter_functions_are_stubbed
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
 local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
@@ -24,7 +42,7 @@ local given_that_module_is_inactive = tl.given_that_module_is_inactive
 local given_that_module_is_set_active_in_the_config_file = tl.given_that_module_is_set_active_in_the_config_file
 local given_that_module_is_set_inactive_in_the_config_file = tl.given_that_module_is_set_inactive_in_the_config_file
 local then_esoTERM_loot_activate_was_called = tl.then_esoTERM_loot_activate_was_called
-local then_esoTERM_loot_activate_was_not_called = tl.then_esoTERM_loot_activate_was_not_called
+local then_activate_was_not_called = tl.then_activate_was_not_called
 local then_module_became_inactive = tl.then_module_became_inactive
 local verify_that_module_has_the_expected_name = tl.verify_that_module_has_the_expected_name
 local when_activate_is_called = tl.when_activate_is_called
@@ -48,11 +66,11 @@ describe("Test the esoTERM_loot module initialization.", function()
     function()
         given_that_module_is_set_inactive_in_the_config_file("loot")
             and_that_register_module_is_stubbed()
-            and_that_esoTERM_loot_activate_is_stubbed()
+            and_that_activate_is_stubbed()
 
         when_initialize_is_called()
 
-        then_esoTERM_loot_activate_was_not_called()
+        then_activate_was_not_called()
             and_ZO_SavedVars_new_was_called_with("loot")
             and_register_module_was_called_with(esoTERM_loot)
     end)
@@ -61,7 +79,7 @@ describe("Test the esoTERM_loot module initialization.", function()
     function()
         given_that_module_is_set_active_in_the_config_file("loot")
             and_that_register_module_is_stubbed()
-            and_that_esoTERM_loot_activate_is_stubbed()
+            and_that_activate_is_stubbed()
 
         when_initialize_is_called()
 

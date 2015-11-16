@@ -11,47 +11,23 @@ test_esoTERM_loot_library.LOOT_QUANTITY = test_library.B_INTEGER
 
 local MODULE_NAME = "loot"
 
--- Module Name {{{
-function test_esoTERM_loot_library.verify_that_module_has_the_expected_name(module, expected_name)
-    assert.is.equal(expected_name, module.module_name)
+-- setup_test_functions {{{
+function test_esoTERM_loot_library.setup_test_functions(...)
+    test_library.setup_test_library_functions(test_esoTERM_loot_library, ...)
 end
 -- }}}
 
 -- Initialization {{{
-function test_esoTERM_loot_library.when_initialize_is_called()
-    test_library.initialize_module(esoTERM_loot)
-end
-
-function test_esoTERM_loot_library.given_that_module_is_set_inactive_in_the_config_file(...)
-    test_library.set_module_to_inactive_in_config_file(...)
-end
-
 function test_esoTERM_loot_library.given_that_module_is_set_active_in_the_config_file(...)
     test_library.set_module_to_active_in_config_file(...)
-end
-
-function test_esoTERM_loot_library.and_ZO_SavedVars_new_was_called_with(...)
-    test_library.ZO_SavedVars_new_was_called_with_module(...)
-end
-
-function test_esoTERM_loot_library.and_that_register_module_is_stubbed()
-    test_library.stub_function_with_no_return_value(esoTERM_common, "register_module")
 end
 
 function test_esoTERM_loot_library.and_register_module_was_called_with(...)
     test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, ...)
 end
 
-function test_esoTERM_loot_library.and_that_esoTERM_loot_activate_is_stubbed()
-    test_library.stub_function_with_no_return_value(esoTERM_loot, "activate")
-end
-
 function test_esoTERM_loot_library.then_esoTERM_loot_activate_was_called()
     test_library.stub_function_called_without_arguments(esoTERM_loot.activate)
-end
-
-function test_esoTERM_loot_library.then_esoTERM_loot_activate_was_not_called()
-    test_library.stub_function_was_not_called(esoTERM_loot.activate)
 end
 -- }}}
 
