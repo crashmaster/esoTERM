@@ -21,10 +21,6 @@ function test_esoTERM_crafting_library.get_expected_register_for_event_call_para
         },
     }
 end
-
-function test_esoTERM_crafting_library.and_register_for_event_was_called_with(...)
-    test_library.register_for_event_was_called_with_expected_parameters(...)
-end
 -- }}}
 
 return test_esoTERM_crafting_library

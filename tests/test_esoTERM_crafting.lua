@@ -16,6 +16,7 @@ tl.setup_test_functions(
             { module = esoTERM_common, function_name = "unregister_from_all_events", },
             { module = esoTERM_crafting, function_name = "activate", },
         },
+        [FUNCTION_NAME_TEMPLATES.AND_REGISTER_FOR_EVENT_WAS_CALLED_WITH] = { { }, },
         [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = {
             { module = esoTERM_common, function_name = "register_module", },
             { module = esoTERM_common, function_name = "unregister_from_all_events", },

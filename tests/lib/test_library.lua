@@ -9,6 +9,7 @@ FUNCTION_NAME_TEMPLATES = {
     AND_ACTIVE_STATE_OF_THE_MODULE_WAS_SAVED = "and_active_state_of_the_module_was_saved",
     AND_INACTIVE_STATE_OF_THE_MODULE_WAS_SAVED = "and_inactive_state_of_the_module_was_saved",
     AND_THAT_X_IS_STUBBED = "and_that_x_is_stubbed",
+    AND_REGISTER_FOR_EVENT_WAS_CALLED_WITH = "and_register_for_event_was_called_with",
     AND_X_WAS_CALLED_WITH = "and_x_was_called_with",
     AND_ZO_SAVEDVARS_NEW_WAS_CALLED_WITH = "and_ZO_SavedVars_new_was_called_with",
     GIVEN_THAT_MODULE_IS_ACTIVE = "given_that_module_is_active",
@@ -96,6 +97,13 @@ local function add_and_that_x_is_stubbed_test_library_function(test_library, fun
     end
 end
 
+local function add_and_register_for_event_was_called_with_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["and_register_for_event_was_called_with"] = function(...)
+        this.register_for_event_was_called_with_expected_parameters(...)
+    end
+end
+
 local function add_and_x_was_called_with_test_library_function(test_library, function_properties)
     local fp = function_properties
     test_library["and_" .. fp.function_name .. "_was_called_with"] = function(...)
@@ -178,6 +186,7 @@ local FUNCTION_NAME_TEMPLATE_TO_ADD_FUCTION = {
     [FUNCTION_NAME_TEMPLATES.AND_ACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = add_and_active_state_of_the_module_was_saved_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_INACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = add_and_inactive_state_of_the_module_was_saved_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = add_and_that_x_is_stubbed_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.AND_REGISTER_FOR_EVENT_WAS_CALLED_WITH] = add_and_register_for_event_was_called_with_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = add_and_x_was_called_with_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_ZO_SAVEDVARS_NEW_WAS_CALLED_WITH] = add_and_zo_savedvars_new_was_called_with_test_library_function,
     [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_ACTIVE] = add_given_that_module_is_active_test_library_function,
