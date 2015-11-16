@@ -21,33 +21,13 @@ end
 function test_esoTERM_loot_library.given_that_module_is_set_active_in_the_config_file(...)
     test_library.set_module_to_active_in_config_file(...)
 end
-
-function test_esoTERM_loot_library.and_register_module_was_called_with(...)
-    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, ...)
-end
-
-function test_esoTERM_loot_library.then_esoTERM_loot_activate_was_called()
-    test_library.stub_function_called_without_arguments(esoTERM_loot.activate)
-end
 -- }}}
 
 -- Activate {{{
-function test_esoTERM_loot_library.when_activate_is_called()
-    esoTERM_loot.activate()
-end
-
-function test_esoTERM_loot_library.and_module_became_active()
-    test_library.check_that_module_became_active(esoTERM_loot)
-end
-
 test_esoTERM_loot_library.EXPECTED_CACHED_VALUES = {
     loot_quantity = test_esoTERM_loot_library.LOOT_QUANTITY,
     looted_item = test_esoTERM_loot_library.LOOTED_ITEM,
 }
-
-function test_esoTERM_loot_library.given_that_module_is_inactive()
-    test_library.set_module_to_inactive(esoTERM_loot)
-end
 
 function test_esoTERM_loot_library.and_that_cache_is_empty()
     assert.is.equal(0, ut_helper.table_size(test_esoTERM_loot_library.CACHE))
@@ -66,14 +46,6 @@ function test_esoTERM_loot_library.get_expected_register_for_event_call_paramete
             callback = esoTERM_loot.on_money_received
         },
     }
-end
-
-function test_esoTERM_loot_library.and_that_register_for_event_is_stubbed()
-    ut_helper.stub_function(esoTERM_common, "register_for_event", nil)
-end
-
-function test_esoTERM_loot_library.and_register_for_event_was_called_with(...)
-    test_library.register_for_event_was_called_with_expected_parameters(...)
 end
 
 test_esoTERM_loot_library.RETURN_VALUES_OF_THE_GETTER_STUBS = {
@@ -101,10 +73,6 @@ function test_esoTERM_loot_library.and_cached_values_became_initialized()
     for cache_attribute, expected_value in pairs(test_esoTERM_loot_library.EXPECTED_CACHED_VALUES) do
         assert.is.equal(expected_value, test_esoTERM_loot_library.CACHE[cache_attribute])
     end
-end
-
-function test_esoTERM_loot_library.and_active_state_of_the_module_was_saved()
-    assert.is.equal(esoTERM_loot.settings[MODULE_NAME], true)
 end
 -- }}}
 
