@@ -36,7 +36,6 @@ tl.setup_test_functions(
 
 local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
 local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
-local and_cache_is_no_longer_empty = tl.and_cache_is_no_longer_empty
 local and_cached_values_became_initialized = tl.and_cached_values_became_initialized
 local and_getter_function_stubs_were_called = tl.and_getter_function_stubs_were_called
 local and_inactive_state_of_the_module_was_saved = tl.and_inactive_state_of_the_module_was_saved
@@ -112,19 +111,14 @@ describe("Test esoTERM_loot module activate.", function()
     it("Update cache and subscribe for events on initialization for champion characters.",
     function()
         given_that_module_is_inactive(esoTERM_loot)
-            and_that_cache_is_empty()
             and_that_register_for_event_is_stubbed()
-            and_that_getter_functions_are_stubbed()
 
         when_activate_is_called()
 
         then_module_became_active(esoTERM_loot)
-            and_cache_is_no_longer_empty()
             and_register_for_event_was_called_with(
                 get_expected_register_for_event_call_parameters()
             )
-            and_getter_function_stubs_were_called()
-            and_cached_values_became_initialized()
             and_active_state_of_the_module_was_saved()
     end)
 end)
@@ -144,94 +138,6 @@ describe("Test esoTERM_char module deactivate.", function()
         then_module_became_inactive()
             and_unregister_from_all_events_was_called_with(esoTERM_loot)
             and_inactive_state_of_the_module_was_saved()
-    end)
-end)
-
-describe("Test Loot related data getters.", function()
-    local results = {}
-
-    after_each(function()
-        ut_helper.restore_stubbed_functions()
-    end)
-
-    teardown(function()
-        results = nil
-    end)
-
-    -- {{{
-    local function given_that_cached_looted_item_is_not_set()
-        tl.CACHE.looted_item = nil
-    end
-
-    local function when_get_looted_item_is_called()
-        results.looted_item = esoTERM_loot.get_looted_item()
-    end
-
-    local function then_the_returned_looted_item_was(item)
-        assert.is.equal(item, results.looted_item)
-    end
-    -- }}}
-
-    it("Query CHARACTER LOOTED ITEM, when NOT CACHED.",
-    function()
-        given_that_cached_looted_item_is_not_set()
-
-        when_get_looted_item_is_called()
-
-        then_the_returned_looted_item_was("N/A")
-    end)
-
-    -- {{{
-    local function given_that_cached_looted_item_is(item)
-        tl.CACHE.looted_item = item
-    end
-    -- }}}
-
-    it("Query CHARACTER LOOTED ITEM, when CACHED.",
-    function()
-        given_that_cached_looted_item_is(tl.LOOTED_ITEM)
-
-        when_get_looted_item_is_called()
-
-        then_the_returned_looted_item_was(tl.LOOTED_ITEM)
-    end)
-
-    -- {{{
-    local function given_that_cached_loot_quantity_is_not_set()
-        tl.CACHE.loot_quantity = nil
-    end
-
-    local function when_get_loot_quantity_is_called()
-        results.loot_quantity = esoTERM_loot.get_loot_quantity()
-    end
-
-    local function then_the_returned_loot_quantity_was(item)
-        assert.is.equal(item, results.loot_quantity)
-    end
-    -- }}}
-
-    it("Query CHARACTER LOOT QUANTITY, when NOT CACHED.",
-    function()
-        given_that_cached_loot_quantity_is_not_set()
-
-        when_get_loot_quantity_is_called()
-
-        then_the_returned_loot_quantity_was(0)
-    end)
-
-    -- {{{
-    local function given_that_cached_loot_quantity_is(item)
-        tl.CACHE.loot_quantity = item
-    end
-    -- }}}
-
-    it("Query CHARACTER LOOT QUANTITY, when CACHED.",
-    function()
-        given_that_cached_loot_quantity_is(tl.LOOT_QUANTITY)
-
-        when_get_loot_quantity_is_called()
-
-        then_the_returned_loot_quantity_was(tl.LOOT_QUANTITY)
     end)
 end)
 
@@ -268,14 +174,6 @@ describe("Test the event handlers.", function()
             ut_helper.stub_function(esoTERM_output, "stdout", nil)
         end
 
-        local function and_get_looted_item_returns(item)
-            ut_helper.stub_function(esoTERM_loot, "get_looted_item", item)
-        end
-
-        local function and_get_looted_item_was_called()
-            assert.spy(esoTERM_loot.get_looted_item).was.called_with()
-        end
-
         local function and_GetItemLinkQuality_returns(quality)
             ut_helper.stub_function(GLOBAL, "GetItemLinkQuality", quality)
         end
@@ -292,19 +190,11 @@ describe("Test the event handlers.", function()
             assert.spy(GLOBAL.GetItemQualityColor).was.called_with(quality)
         end
 
-        local function and_get_loot_quantity_returns(quantity)
-            ut_helper.stub_function(esoTERM_loot, "get_loot_quantity", quantity)
-        end
-
-        local function and_get_loot_quantity_was_called()
-            assert.spy(esoTERM_loot.get_loot_quantity).was.called_with()
-        end
-
         local function when_on_loot_received_is_called_with(event, by, item, quantity, sound, loot_type, self)
             esoTERM_loot.on_loot_received(event, by, item, quantity, sound, loot_type, self)
         end
 
-        local function get_loot_message()
+        local function get_item_received_message()
             return string.format("Received " ..  QUANTITY .. " " .. "[" .. ITEM .. "]")
         end
 
@@ -325,29 +215,25 @@ describe("Test the event handlers.", function()
 
         it("Looting happy flow.", function()
             given_that_esoTERM_output_stdout_is_stubbed()
-                and_get_looted_item_returns(ITEM)
                 and_GetItemLinkQuality_returns(QUALITY)
                 and_GetItemQualityColor_returns_fake_color()
-                and_get_loot_quantity_returns(QUANTITY)
 
             when_on_loot_received_is_called_with(EVENT, BY, ITEM, QUANTITY, SOUND, LOOT_TYPE, true)
 
-            then_esoTERM_output_stdout_was_called_with(get_loot_message())
-                and_get_looted_item_was_called()
+            then_esoTERM_output_stdout_was_called_with(get_item_received_message())
                 and_GetItemLinkQuality_was_called_with(ITEM)
                 and_GetItemQualityColor_was_called_with(QUALITY)
-                and_get_loot_quantity_was_called()
                 and_fake_color_was_called()
                 and_zo_strformat_was_called()
         end)
 
         -- {{{
         local function and_get_loot_message_is_stubbed()
-            ut_helper.stub_function(esoTERM_loot, "get_loot_message", nil)
+            ut_helper.stub_function(esoTERM_loot, "get_item_received_message", nil)
         end
 
         local function and_get_loot_message_was_not_called()
-            assert.spy(esoTERM_loot.get_loot_message).was_not.called()
+            assert.spy(esoTERM_loot.get_item_received_message).was_not.called()
         end
 
         local function then_esoTERM_output_loot_to_chat_tab_was_not_called()

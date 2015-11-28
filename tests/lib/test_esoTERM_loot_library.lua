@@ -24,15 +24,6 @@ end
 -- }}}
 
 -- Activate {{{
-test_esoTERM_loot_library.EXPECTED_CACHED_VALUES = {
-    loot_quantity = test_esoTERM_loot_library.LOOT_QUANTITY,
-    looted_item = test_esoTERM_loot_library.LOOTED_ITEM,
-}
-
-function test_esoTERM_loot_library.and_that_cache_is_empty()
-    assert.is.equal(0, ut_helper.table_size(test_esoTERM_loot_library.CACHE))
-end
-
 function test_esoTERM_loot_library.get_expected_register_for_event_call_parameters()
     return {
         {
@@ -46,33 +37,6 @@ function test_esoTERM_loot_library.get_expected_register_for_event_call_paramete
             callback = esoTERM_loot.on_money_received
         },
     }
-end
-
-test_esoTERM_loot_library.RETURN_VALUES_OF_THE_GETTER_STUBS = {
-    get_loot_quantity = test_esoTERM_loot_library.LOOT_QUANTITY,
-    get_looted_item = test_esoTERM_loot_library.LOOTED_ITEM,
-}
-
-function test_esoTERM_loot_library.and_that_getter_functions_are_stubbed()
-    for getter, return_value in pairs(test_esoTERM_loot_library.RETURN_VALUES_OF_THE_GETTER_STUBS) do
-        test_library.stub_function_with_return_value(esoTERM_loot, getter, return_value)
-    end
-end
-
-function test_esoTERM_loot_library.and_getter_function_stubs_were_called()
-    for getter, _ in pairs(test_esoTERM_loot_library.RETURN_VALUES_OF_THE_GETTER_STUBS) do
-        assert.spy(esoTERM_loot[getter]).was.called_with()
-    end
-end
-
-function test_esoTERM_loot_library.and_cache_is_no_longer_empty()
-    assert.is_not.equal(0, ut_helper.table_size(test_esoTERM_loot_library.CACHE))
-end
-
-function test_esoTERM_loot_library.and_cached_values_became_initialized()
-    for cache_attribute, expected_value in pairs(test_esoTERM_loot_library.EXPECTED_CACHED_VALUES) do
-        assert.is.equal(expected_value, test_esoTERM_loot_library.CACHE[cache_attribute])
-    end
 end
 -- }}}
 
