@@ -196,4 +196,70 @@ describe("Test common functions.", function()
             tl.split_string_into_strings_at_spaces("a  aa    a", {"a", "aa", "a"})
         end)
     end)
+
+    describe("Get item received log message including colorized item link.", function()
+        local fake_color = {
+            Colorize = function(self, message) return message end
+        }
+
+        before_each(function()
+            spy.on(fake_color, "Colorize")
+            spy.on(GLOBAL, "zo_strformat")
+        end)
+
+        after_each(function()
+            fake_color.Colorize:revert()
+            GLOBAL.zo_strformat:revert()
+        end)
+
+        -- {{{
+        local function given_that_GetItemLinkQuality_returns(...)
+            ut_helper.stub_function(GLOBAL, "GetItemLinkQuality", ...)
+        end
+
+        local function and_that_GetItemQualityColor_returns(...)
+            ut_helper.stub_function(GLOBAL, "GetItemQualityColor", ...)
+        end
+
+        local function when_get_item_received_message_is_called_with(...)
+            return esoTERM_common.get_item_received_message(...)
+        end
+
+        local function then_the_returned_message_was(expected, actual)
+            assert.is.equal(expected, actual)
+        end
+
+        local function and_GetItemLinkQuality_was_called_with(item)
+            assert.spy(GLOBAL.GetItemLinkQuality).was.called_with(item)
+        end
+
+        local function and_GetItemQualityColor_was_called_with(quality)
+            assert.spy(GLOBAL.GetItemQualityColor).was.called_with(quality)
+        end
+
+        local function and_fake_color_was_called()
+            assert.spy(fake_color.Colorize).was.called(2)
+            assert.spy(fake_color.Colorize).was.called_with(fake_color, "[")
+            assert.spy(fake_color.Colorize).was.called_with(fake_color, "]")
+        end
+
+        local function and_zo_strformat_was_called_with(...)
+            assert.spy(GLOBAL.zo_strformat).was.called_with(...)
+        end
+        -- }}}
+
+        it("Call returns the expected string.",
+        function()
+            given_that_GetItemLinkQuality_returns("quality")
+                and_that_GetItemQualityColor_returns(fake_color)
+
+            actual = when_get_item_received_message_is_called_with("item", 1)
+
+            then_the_returned_message_was("Received 1 [item]", actual)
+                and_GetItemLinkQuality_was_called_with("item")
+                and_GetItemQualityColor_was_called_with("quality")
+                and_fake_color_was_called()
+                and_zo_strformat_was_called_with(SI_TOOLTIP_ITEM_NAME, "item")
+        end)
+    end)
 end)

@@ -155,85 +155,43 @@ describe("Test the event handlers.", function()
         local QUANTITY = 2
         local SOUND = "sound"
         local LOOT_TYPE = "loot_type"
-        local fake_color = {
-            Colorize = function(self, message) return message end
-        }
-
-        before_each(function()
-            spy.on(fake_color, "Colorize")
-            spy.on(GLOBAL, "zo_strformat")
-        end)
-
-        after_each(function()
-            fake_color.Colorize:revert()
-            GLOBAL.zo_strformat:revert()
-        end)
+        local MESSAGE = "message"
 
         -- {{{
         local function given_that_esoTERM_output_stdout_is_stubbed()
             ut_helper.stub_function(esoTERM_output, "stdout", nil)
         end
 
-        local function and_GetItemLinkQuality_returns(quality)
-            ut_helper.stub_function(GLOBAL, "GetItemLinkQuality", quality)
-        end
-
-        local function and_GetItemLinkQuality_was_called_with(item)
-            assert.spy(GLOBAL.GetItemLinkQuality).was.called_with(item)
-        end
-
-        local function and_GetItemQualityColor_returns_fake_color()
-            ut_helper.stub_function(GLOBAL, "GetItemQualityColor", fake_color)
-        end
-
-        local function and_GetItemQualityColor_was_called_with(quality)
-            assert.spy(GLOBAL.GetItemQualityColor).was.called_with(quality)
-        end
-
         local function when_on_loot_received_is_called_with(event, by, item, quantity, sound, loot_type, self)
             esoTERM_loot.on_loot_received(event, by, item, quantity, sound, loot_type, self)
-        end
-
-        local function get_item_received_message()
-            return string.format("Received " ..  QUANTITY .. " " .. "[" .. ITEM .. "]")
         end
 
         local function then_esoTERM_output_stdout_was_called_with(message)
             assert.spy(esoTERM_output.stdout).was.called_with(message)
         end
 
-        local function and_fake_color_was_called()
-            assert.spy(fake_color.Colorize).was.called(2)
-            assert.spy(fake_color.Colorize).was.called_with(fake_color, "[")
-            assert.spy(fake_color.Colorize).was.called_with(fake_color, "]")
+        local function and_get_item_received_message_returns(...)
+            ut_helper.stub_function(esoTERM_common, "get_item_received_message", ...)
         end
 
-        local function and_zo_strformat_was_called()
-            assert.spy(GLOBAL.zo_strformat).was.called_with(SI_TOOLTIP_ITEM_NAME, ITEM)
+        local function and_get_item_received_message_was_called_with(...)
+            assert.spy(esoTERM_common.get_item_received_message).was.called_with(...)
         end
         -- }}}
 
         it("Looting happy flow.", function()
             given_that_esoTERM_output_stdout_is_stubbed()
-                and_GetItemLinkQuality_returns(QUALITY)
-                and_GetItemQualityColor_returns_fake_color()
+                and_get_item_received_message_returns(MESSAGE)
 
             when_on_loot_received_is_called_with(EVENT, BY, ITEM, QUANTITY, SOUND, LOOT_TYPE, true)
 
-            then_esoTERM_output_stdout_was_called_with(get_item_received_message())
-                and_GetItemLinkQuality_was_called_with(ITEM)
-                and_GetItemQualityColor_was_called_with(QUALITY)
-                and_fake_color_was_called()
-                and_zo_strformat_was_called()
+            then_esoTERM_output_stdout_was_called_with(MESSAGE)
+                and_get_item_received_message_was_called_with(ITEM, QUANTITY)
         end)
 
         -- {{{
-        local function and_get_loot_message_is_stubbed()
-            ut_helper.stub_function(esoTERM_loot, "get_item_received_message", nil)
-        end
-
-        local function and_get_loot_message_was_not_called()
-            assert.spy(esoTERM_loot.get_item_received_message).was_not.called()
+        local function and_get_item_received_message_was_not_called()
+            assert.spy(esoTERM_common.get_item_received_message).was_not.called()
         end
 
         local function then_esoTERM_output_loot_to_chat_tab_was_not_called()
@@ -243,12 +201,12 @@ describe("Test the event handlers.", function()
 
         it("Looting, if not self.", function()
             given_that_esoTERM_output_stdout_is_stubbed()
-                and_get_loot_message_is_stubbed()
+                and_get_item_received_message_returns(MESSAGE)
 
             when_on_loot_received_is_called_with(EVENT, BY, ITEM, QUANTITY, SOUND, LOOT_TYPE, false)
 
             then_esoTERM_output_loot_to_chat_tab_was_not_called()
-                and_get_loot_message_was_not_called()
+                and_get_item_received_message_was_not_called()
         end)
 
         -- {{{

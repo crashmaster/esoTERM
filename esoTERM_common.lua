@@ -53,4 +53,13 @@ function esoTERM_common.split(input_string)
     return result
 end
 
+function esoTERM_common.get_item_received_message(item, quantity)
+    local color = GetItemQualityColor(GetItemLinkQuality(item))
+    return string.format("Received %d %s%s%s",
+                         quantity,
+                         color:Colorize("["),
+                         zo_strformat(SI_TOOLTIP_ITEM_NAME, item),
+                         color:Colorize("]"))
+end
+
 return esoTERM_common

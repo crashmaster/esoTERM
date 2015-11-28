@@ -6,21 +6,12 @@ esoTERM_loot.event_register = {}
 esoTERM_loot.module_name = "loot"
 esoTERM_loot.is_active = false
 
-local function get_item_received_message(item, quantity)
-    local color = GetItemQualityColor(GetItemLinkQuality(item))
-    return string.format("Received %d %s%s%s",
-                         quantity,
-                         color:Colorize("["),
-                         zo_strformat(SI_TOOLTIP_ITEM_NAME, item),
-                         color:Colorize("]"))
-end
-
 function esoTERM_loot.on_loot_received(event, by, item, quantity, sound, loot_type, self)
     if not self then
         return
     end
 
-    esoTERM_output.stdout(get_item_received_message(item, quantity))
+    esoTERM_output.stdout(esoTERM_common.get_item_received_message(item, quantity))
 end
 
 local function get_money_received_message(new_amount, old_amount)
