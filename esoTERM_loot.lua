@@ -1,8 +1,6 @@
 esoTERM_loot = {}
 
-esoTERM_loot.cache = {}
 esoTERM_loot.event_register = {}
-
 esoTERM_loot.module_name = "loot"
 esoTERM_loot.is_active = false
 

@@ -65,6 +65,10 @@ SLASH_COMMANDS = {}
 
 function GetChampionXPInRank() end
 
+function GetLastCraftingResultItemInfo() end
+
+function GetNumLastCraftingResultItemsAndPenalty() end
+
 function GetPlayerChampionPointsEarned() end
 
 function GetPlayerChampionXP() end

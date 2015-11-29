@@ -37,6 +37,7 @@ function esoTERM_window.set_window_visibility()
         "mailInbox",
         "mailSend",
         "notifications",
+        "provisioner",
         "questJournal",
         "siegeBar",
         "skills",
