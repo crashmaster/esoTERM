@@ -5,7 +5,7 @@ describe("Test esoTERM initialization", function()
         esoTERM_output,
         esoTERM_champ,
         esoTERM_char,
-        esoTERM_crafting,
+        esoTERM_inventory,
         esoTERM_pve,
         esoTERM_pvp,
         esoTERM_loot,

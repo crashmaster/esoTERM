@@ -1,20 +1,20 @@
 -- Locals {{{
 local requires_for_tests = require("tests/requires_for_tests")
-local tl = require("tests/lib/test_esoTERM_crafting_library")
+local tl = require("tests/lib/test_esoTERM_inventory_library")
 
 tl.setup_test_functions(
     {
         [FUNCTION_NAME_TEMPLATES.AND_ACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = {
-            { module = esoTERM_crafting, module_name_in_settings = "crafting" },
+            { module = esoTERM_inventory, module_name_in_settings = "inventory" },
         },
         [FUNCTION_NAME_TEMPLATES.AND_INACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = {
-            { module = esoTERM_crafting, module_name_in_settings = "crafting" },
+            { module = esoTERM_inventory, module_name_in_settings = "inventory" },
         },
         [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = {
             { module = esoTERM_common, function_name = "register_for_event", },
             { module = esoTERM_common, function_name = "register_module", },
             { module = esoTERM_common, function_name = "unregister_from_all_events", },
-            { module = esoTERM_crafting, function_name = "activate", },
+            { module = esoTERM_inventory, function_name = "activate", },
         },
         [FUNCTION_NAME_TEMPLATES.AND_REGISTER_FOR_EVENT_WAS_CALLED_WITH] = { { }, },
         [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = {
@@ -29,16 +29,16 @@ tl.setup_test_functions(
         [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_ACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_INACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED] = {
-            { module = esoTERM_crafting, function_name = "activate", },
+            { module = esoTERM_inventory, function_name = "activate", },
         },
         [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED] = {
-            { module = esoTERM_crafting, function_name = "activate", },
+            { module = esoTERM_inventory, function_name = "activate", },
         },
         [FUNCTION_NAME_TEMPLATES.VERIFY_THAT_MODULE_HAS_THE_EXPECTED_NAME] = { { }, },
         [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED] = {
-            { module = esoTERM_crafting, function_name = "activate", },
-            { module = esoTERM_crafting, function_name = "deactivate", },
-            { module = esoTERM_crafting, function_name = "initialize", },
+            { module = esoTERM_inventory, function_name = "activate", },
+            { module = esoTERM_inventory, function_name = "deactivate", },
+            { module = esoTERM_inventory, function_name = "initialize", },
         },
     }
 )
@@ -68,58 +68,58 @@ local when_deactivate_is_called = tl.when_deactivate_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
 -- }}}
 
-describe("Test the esoTERM_crafting module.", function()
-    it("Module is called: crafting.",
+describe("Test the esoTERM_inventory module.", function()
+    it("Module is called: inventory.",
     function()
-        verify_that_module_has_the_expected_name(esoTERM_crafting, "crafting")
+        verify_that_module_has_the_expected_name(esoTERM_inventory, "inventory")
     end)
 end)
 
-describe("Test the esoTERM_crafting module initialization.", function()
+describe("Test the esoTERM_inventory module initialization.", function()
     after_each(function()
         ut_helper.restore_stubbed_functions()
     end)
 
     it("Initialize, but do not activate when configured as inactive.",
     function()
-        given_that_module_is_set_inactive_in_the_config_file("crafting")
+        given_that_module_is_set_inactive_in_the_config_file("inventory")
             and_that_register_module_is_stubbed()
             and_that_activate_is_stubbed()
 
         when_initialize_is_called()
 
         then_activate_was_not_called()
-            and_ZO_SavedVars_new_was_called_with("crafting")
-            and_register_module_was_called_with(esoTERM.module_register, esoTERM_crafting)
+            and_ZO_SavedVars_new_was_called_with("inventory")
+            and_register_module_was_called_with(esoTERM.module_register, esoTERM_inventory)
     end)
 
     it("Initialize, and activate when configured as active.",
     function()
-        given_that_module_is_set_active_in_the_config_file("crafting")
+        given_that_module_is_set_active_in_the_config_file("inventory")
             and_that_register_module_is_stubbed()
             and_that_activate_is_stubbed()
 
         when_initialize_is_called()
 
         then_activate_was_called()
-            and_ZO_SavedVars_new_was_called_with("crafting")
-            and_register_module_was_called_with(esoTERM.module_register, esoTERM_crafting)
+            and_ZO_SavedVars_new_was_called_with("inventory")
+            and_register_module_was_called_with(esoTERM.module_register, esoTERM_inventory)
     end)
 end)
 
-describe("Test esoTERM_crafting module activate.", function()
+describe("Test esoTERM_inventory module activate.", function()
     after_each(function()
         ut_helper.restore_stubbed_functions()
     end)
 
     it("Update cache and subscribe for events on activate.",
     function()
-        given_that_module_is_inactive(esoTERM_crafting)
+        given_that_module_is_inactive(esoTERM_inventory)
             and_that_register_for_event_is_stubbed()
 
         when_activate_is_called()
 
-        then_module_became_active(esoTERM_crafting)
+        then_module_became_active(esoTERM_inventory)
             and_register_for_event_was_called_with(
                 get_expected_register_for_event_call_parameters()
             )
@@ -127,20 +127,20 @@ describe("Test esoTERM_crafting module activate.", function()
     end)
 end)
 
-describe("Test esoTERM_crafting module deactivate.", function()
+describe("Test esoTERM_inventory module deactivate.", function()
     after_each(function()
         ut_helper.restore_stubbed_functions()
     end)
 
     it("Unsubscribe from active events on deactivate.",
     function()
-        given_that_module_is_active(esoTERM_crafting)
+        given_that_module_is_active(esoTERM_inventory)
             and_that_unregister_from_all_events_is_stubbed()
 
         when_deactivate_is_called()
 
-        then_module_became_inactive(esoTERM_crafting)
-            and_unregister_from_all_events_was_called_with(esoTERM_crafting)
+        then_module_became_inactive(esoTERM_inventory)
+            and_unregister_from_all_events_was_called_with(esoTERM_inventory)
             and_inactive_state_of_the_module_was_saved()
     end)
 end)
