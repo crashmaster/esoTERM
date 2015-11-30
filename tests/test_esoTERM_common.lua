@@ -1,5 +1,41 @@
+-- Locals {{{
 local requires_for_tests = require("tests/requires_for_tests")
 local tl = require("tests/lib/test_esoTERM_common_library")
+
+tl.setup_test_functions(
+    {
+        [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = {
+            { module = esoTERM_common, function_name = "register_module", },
+            { module = tl.dummy_module, function_name = "activate", },
+        },
+        [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = {
+            { module = esoTERM_common, function_name = "register_module", },
+        },
+        [FUNCTION_NAME_TEMPLATES.AND_ZO_SAVEDVARS_NEW_WAS_CALLED_WITH] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_ACTIVE_IN_THE_CONFIG_FILE] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_INACTIVE_IN_THE_CONFIG_FILE] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED] = {
+            { module = tl.dummy_module, function_name = "activate", },
+        },
+        [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED] = {
+            { module = tl.dummy_module, function_name = "activate", },
+        },
+        [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED] = {
+            { module = tl.dummy_module, function_name = "initialize", },
+        },
+    }
+)
+
+local and_register_module_was_called_with = tl.and_register_module_was_called_with
+local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
+local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
+local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
+local given_that_module_is_set_active_in_the_config_file = tl.given_that_module_is_set_active_in_the_config_file
+local given_that_module_is_set_inactive_in_the_config_file = tl.given_that_module_is_set_inactive_in_the_config_file
+local then_activate_was_called = tl.then_activate_was_called
+local then_activate_was_not_called = tl.then_activate_was_not_called
+local when_initialize_is_called = tl.when_initialize_is_called
+-- }}}
 
 describe("Test common functions.", function()
     describe("Local register for subscribed events.", function()
@@ -260,6 +296,37 @@ describe("Test common functions.", function()
                 and_GetItemQualityColor_was_called_with("quality")
                 and_fake_color_was_called()
                 and_zo_strformat_was_called_with(SI_TOOLTIP_ITEM_NAME, "item")
+        end)
+    end)
+    describe("Test module initialization.", function()
+        after_each(function()
+            ut_helper.restore_stubbed_functions()
+        end)
+
+        it("Initialize, but do not activate when configured as inactive.",
+        function()
+            given_that_module_is_set_inactive_in_the_config_file(tl.dummy_module_name)
+                and_that_register_module_is_stubbed()
+                and_that_activate_is_stubbed()
+
+            when_initialize_is_called()
+
+            then_activate_was_not_called()
+                and_ZO_SavedVars_new_was_called_with(tl.dummy_module_name)
+                and_register_module_was_called_with(esoTERM.module_register, tl.dummy_module)
+        end)
+
+        it("Initialize, and activate when configured as active.",
+        function()
+            given_that_module_is_set_active_in_the_config_file(tl.dummy_module_name)
+                and_that_register_module_is_stubbed()
+                and_that_activate_is_stubbed()
+
+            when_initialize_is_called()
+
+            then_activate_was_called()
+                and_ZO_SavedVars_new_was_called_with(tl.dummy_module_name)
+                and_register_module_was_called_with(esoTERM.module_register, tl.dummy_module)
         end)
     end)
 end)

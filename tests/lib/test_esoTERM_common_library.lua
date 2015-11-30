@@ -1,4 +1,24 @@
+local test_library = require("tests/lib/test_library")
+
 test_esoTERM_common_library = {}
+
+test_esoTERM_common_library.dummy_module_name = "dummy_module"
+
+test_esoTERM_common_library.dummy_module = {}
+test_esoTERM_common_library.dummy_module.event_register = {}
+test_esoTERM_common_library.dummy_module.module_name = test_esoTERM_common_library.dummy_module_name
+test_esoTERM_common_library.dummy_module.is_active = false
+test_esoTERM_common_library.dummy_module.initialize = function()
+    esoTERM_common.initialize_module(test_esoTERM_common_library.dummy_module)
+end
+test_esoTERM_common_library.dummy_module.activate = function() return nil end
+test_esoTERM_common_library.dummy_module.deactivate = function() return nil end
+
+-- setup_test_functions {{{
+function test_esoTERM_common_library.setup_test_functions(...)
+    test_library.setup_test_library_functions(test_esoTERM_common_library, ...)
+end
+-- }}}
 
 local test_register = {}
 
