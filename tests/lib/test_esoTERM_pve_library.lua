@@ -165,50 +165,6 @@ function test_esoTERM_pve_library.and_cached_values_for_veteran_unit_became_init
         assert.is.equal(expected_value, test_esoTERM_pve_library.CACHE[cache_attribute])
     end
 end
-
-function test_esoTERM_pve_library.and_character_is_veteran()
-    ut_helper.stub_function(esoTERM_pve, "is_veteran", true)
-end
-
-function test_esoTERM_pve_library.and_character_is_not_veteran()
-    ut_helper.stub_function(esoTERM_pve, "is_veteran", false)
-end
--- }}}
-
--- GetUnitXP {{{
-function test_esoTERM_pve_library.and_that_GetUnitXP_returns(xp)
-    test_library.stub_function_with_return_value(GLOBAL, "GetUnitXP", xp)
-end
--- }}}
-
---  GetUnitVeteranPoints {{{
-function test_esoTERM_pve_library.and_that_GetUnitVeteranPoints_returns(xp)
-    test_library.stub_function_with_return_value(GLOBAL, "GetUnitVeteranPoints", xp)
-end
---  }}}
-
--- GetUnitXPMax {{{
-function test_esoTERM_pve_library.and_that_GetUnitXPMax_returns(xp)
-    test_library.stub_function_with_return_value(GLOBAL, "GetUnitXPMax", xp)
-end
--- }}}
-
--- GetUnitVeteranPointsMax {{{
-function test_esoTERM_pve_library.and_that_GetUnitVeteranPointsMax_returns(xp)
-    test_library.stub_function_with_return_value(GLOBAL, "GetUnitVeteranPointsMax", xp)
-end
--- }}}
-
--- GetUnitLevel {{{
-function test_esoTERM_pve_library.and_that_GetUnitLevel_returns(level)
-    test_library.stub_function_with_return_value(GLOBAL, "GetUnitLevel", level)
-end
--- }}}
-
--- GetUnitVeteranRank {{{
-function test_esoTERM_pve_library.and_that_GetUnitVeteranRank_returns(level)
-    test_library.stub_function_with_return_value(GLOBAL, "GetUnitVeteranRank", level)
-end
 -- }}}
 
 return test_esoTERM_pve_library

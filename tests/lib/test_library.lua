@@ -8,8 +8,9 @@ PLAYER = "player"
 FUNCTION_NAME_TEMPLATES = {
     AND_ACTIVE_STATE_OF_THE_MODULE_WAS_SAVED = "and_active_state_of_the_module_was_saved",
     AND_INACTIVE_STATE_OF_THE_MODULE_WAS_SAVED = "and_inactive_state_of_the_module_was_saved",
-    AND_THAT_X_IS_STUBBED = "and_that_x_is_stubbed",
     AND_REGISTER_FOR_EVENT_WAS_CALLED_WITH = "and_register_for_event_was_called_with",
+    AND_THAT_X_IS_STUBBED = "and_that_x_is_stubbed",
+    AND_THAT_X_RETURNS = "and_that_x_returns",
     AND_X_WAS_CALLED = "and_x_was_called",
     AND_X_WAS_CALLED_WITH = "and_x_was_called_with",
     AND_X_WAS_NOT_CALLED = "and_x_was_not_called",
@@ -99,6 +100,13 @@ local function add_and_that_x_is_stubbed_test_library_function(test_library, fun
     end
 end
 
+local function add_and_that_x_returns_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["and_that_" .. fp.function_name .. "_returns" ] = function(...)
+        this.stub_function_with_return_value(fp.module, fp.function_name, ...)
+    end
+end
+
 local function add_and_register_for_event_was_called_with_test_library_function(test_library, function_properties)
     local fp = function_properties
     test_library["and_register_for_event_was_called_with"] = function(...)
@@ -108,7 +116,7 @@ end
 
 local function add_and_x_was_called_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["and_" .. fp.function_name .. "_was_called"] = function(...)
+    test_library["and_" .. fp.function_name .. "_was_called"] = function()
         this.stub_function_called_without_arguments(fp.module[fp.function_name])
     end
 end
@@ -122,7 +130,7 @@ end
 
 local function add_and_x_was_not_called_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["and_" .. fp.function_name .. "_was_not_called"] = function(...)
+    test_library["and_" .. fp.function_name .. "_was_not_called"] = function()
         this.stub_function_was_not_called(fp.module[fp.function_name])
     end
 end
@@ -201,8 +209,9 @@ end
 local FUNCTION_NAME_TEMPLATE_TO_ADD_FUCTION = {
     [FUNCTION_NAME_TEMPLATES.AND_ACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = add_and_active_state_of_the_module_was_saved_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_INACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = add_and_inactive_state_of_the_module_was_saved_test_library_function,
-    [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = add_and_that_x_is_stubbed_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_REGISTER_FOR_EVENT_WAS_CALLED_WITH] = add_and_register_for_event_was_called_with_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = add_and_that_x_is_stubbed_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.AND_THAT_X_RETURNS] = add_and_that_x_returns_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED] = add_and_x_was_called_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = add_and_x_was_called_with_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_X_WAS_NOT_CALLED] = add_and_x_was_not_called_test_library_function,
