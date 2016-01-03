@@ -1,17 +1,74 @@
+-- Locals {{{
 local requires_for_tests = require("tests/requires_for_tests")
 local tl = require("tests/lib/test_esoTERM_pve_library")
 
--- Locals {{{
+tl.setup_test_functions(
+    {
+        [FUNCTION_NAME_TEMPLATES.AND_ACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = {
+            { module = esoTERM_pve, module_name_in_settings = "pve" },
+        },
+        [FUNCTION_NAME_TEMPLATES.AND_INACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = {
+            { module = esoTERM_pve, module_name_in_settings = "pve" },
+        },
+        [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = {
+            { module = esoTERM_common, function_name = "register_for_event", },
+            { module = esoTERM_common, function_name = "register_module", },
+            { module = esoTERM_common, function_name = "unregister_from_all_events", },
+            { module = esoTERM_pve, function_name = "activate", },
+        },
+        [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED] = {
+            { module = esoTERM_pve, function_name = "is_veteran", },
+        },
+        [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = {
+            { module = GLOBAL, function_name = "GetUnitLevel", },
+            { module = GLOBAL, function_name = "GetUnitVeteranPoints", },
+            { module = GLOBAL, function_name = "GetUnitVeteranPointsMax", },
+            { module = GLOBAL, function_name = "GetUnitVeteranRank", },
+            { module = GLOBAL, function_name = "GetUnitXP", },
+            { module = GLOBAL, function_name = "GetUnitXPMax", },
+            { module = esoTERM_common, function_name = "register_module", },
+            { module = esoTERM_common, function_name = "unregister_from_all_events", },
+        },
+        [FUNCTION_NAME_TEMPLATES.AND_X_WAS_NOT_CALLED] = {
+            { module = GLOBAL, function_name = "GetUnitLevel", },
+            { module = GLOBAL, function_name = "GetUnitVeteranPoints", },
+            { module = GLOBAL, function_name = "GetUnitVeteranPointsMax", },
+            { module = GLOBAL, function_name = "GetUnitVeteranRank", },
+            { module = GLOBAL, function_name = "GetUnitXP", },
+            { module = GLOBAL, function_name = "GetUnitXPMax", },
+            { module = esoTERM_pve, function_name = "is_veteran", },
+        },
+        [FUNCTION_NAME_TEMPLATES.AND_ZO_SAVEDVARS_NEW_WAS_CALLED_WITH] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_ACTIVE] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_INACTIVE] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_ACTIVE_IN_THE_CONFIG_FILE] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_INACTIVE_IN_THE_CONFIG_FILE] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_ACTIVE] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_INACTIVE] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED] = {
+            { module = esoTERM_pve, function_name = "activate", },
+        },
+        [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED] = {
+            { module = esoTERM_pve, function_name = "activate", },
+        },
+        [FUNCTION_NAME_TEMPLATES.VERIFY_THAT_MODULE_HAS_THE_EXPECTED_NAME] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED] = {
+            { module = esoTERM_pve, function_name = "activate", },
+            { module = esoTERM_pve, function_name = "deactivate", },
+            { module = esoTERM_pve, function_name = "initialize", },
+        },
+    }
+)
+
 local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
 local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
 local and_cache_is_no_longer_empty = tl.and_cache_is_no_longer_empty
 local and_cached_values_became_initialized = tl.and_cached_values_became_initialized
 local and_getter_function_stubs_were_called = tl.and_getter_function_stubs_were_called
 local and_inactive_state_of_the_module_was_saved = tl.and_inactive_state_of_the_module_was_saved
-local and_module_became_active = tl.and_module_became_active
 local and_register_module_was_called_with = tl.and_register_module_was_called_with
+local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
 local and_that_cache_is_empty = tl.and_that_cache_is_empty
-local and_that_esoTERM_pve_activate_is_stubbed = tl.and_that_esoTERM_pve_activate_is_stubbed
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
 local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
@@ -20,8 +77,9 @@ local given_that_module_is_active = tl.given_that_module_is_active
 local given_that_module_is_inactive = tl.given_that_module_is_inactive
 local given_that_module_is_set_active_in_the_config_file = tl.given_that_module_is_set_active_in_the_config_file
 local given_that_module_is_set_inactive_in_the_config_file = tl.given_that_module_is_set_inactive_in_the_config_file
-local then_esoTERM_pve_activate_was_called = tl.then_esoTERM_pve_activate_was_called
-local then_esoTERM_pve_activate_was_not_called = tl.then_esoTERM_pve_activate_was_not_called
+local then_activate_was_called = tl.then_activate_was_called
+local then_activate_was_not_called = tl.then_activate_was_not_called
+local then_module_became_active = tl.then_module_became_active
 local then_module_became_inactive = tl.then_module_became_inactive
 local verify_that_module_has_the_expected_name = tl.verify_that_module_has_the_expected_name
 local when_activate_is_called = tl.when_activate_is_called
@@ -45,26 +103,26 @@ describe("Test the esoTERM_pve module initialization.", function()
     function()
         given_that_module_is_set_inactive_in_the_config_file("pve")
             and_that_register_module_is_stubbed()
-            and_that_esoTERM_pve_activate_is_stubbed()
+            and_that_activate_is_stubbed()
 
         when_initialize_is_called()
 
-        then_esoTERM_pve_activate_was_not_called()
+        then_activate_was_not_called()
             and_ZO_SavedVars_new_was_called_with("pve")
-            and_register_module_was_called_with(esoTERM_pve)
+            and_register_module_was_called_with(esoTERM.module_register, esoTERM_pve)
     end)
 
     it("Initialize, and activate when configured as active.",
     function()
         given_that_module_is_set_active_in_the_config_file("pve")
             and_that_register_module_is_stubbed()
-            and_that_esoTERM_pve_activate_is_stubbed()
+            and_that_activate_is_stubbed()
 
         when_initialize_is_called()
 
-        then_esoTERM_pve_activate_was_called()
+        then_activate_was_called()
             and_ZO_SavedVars_new_was_called_with("pve")
-            and_register_module_was_called_with(esoTERM_pve)
+            and_register_module_was_called_with(esoTERM.module_register, esoTERM_pve)
     end)
 end)
 
@@ -76,14 +134,14 @@ describe("Test esoTERM_pve module activate.", function()
 
     it("Update cache and subscribe for events on activate for non veteran unit.",
     function()
-        tl.given_that_module_is_inactive()
+        tl.given_that_module_is_inactive(esoTERM_pve)
             tl.and_that_cache_is_empty()
             tl.and_that_register_for_event_is_stubbed()
             tl.and_that_getter_functions_for_non_veteran_unit_are_stubbed()
 
         tl.when_activate_is_called()
 
-        tl.and_module_became_active()
+        tl.then_module_became_active(esoTERM_pve)
             tl.and_cache_is_no_longer_empty()
             tl.and_register_for_event_was_called_for_non_veteran_unit_was_called_with(
                 tl.get_expected_register_for_event_call_parameters_for_non_veteran_unit()
@@ -95,14 +153,14 @@ describe("Test esoTERM_pve module activate.", function()
 
     it("Update cache and subscribe for events on activate for veteran unit.",
     function()
-        tl.given_that_module_is_inactive()
+        tl.given_that_module_is_inactive(esoTERM_pve)
             tl.and_that_cache_is_empty()
             tl.and_that_register_for_event_is_stubbed()
             tl.and_that_getter_functions_for_veteran_unit_are_stubbed()
 
         tl.when_activate_is_called()
 
-        tl.and_module_became_active()
+        tl.then_module_became_active(esoTERM_pve)
             tl.and_cache_is_no_longer_empty()
             tl.and_register_for_event_was_called_for_veteran_unit_was_called_with(
                 tl.get_expected_register_for_event_call_parameters_for_veteran_unit()
@@ -120,12 +178,12 @@ describe("Test esoTERM_pve module deactivate.", function()
 
     it("Unsubscribe from active events on deactivate.",
     function()
-        given_that_module_is_active()
+        given_that_module_is_active(esoTERM_pve)
             and_that_unregister_from_all_events_is_stubbed()
 
         when_deactivate_is_called()
 
-        then_module_became_inactive()
+        then_module_became_inactive(esoTERM_pve)
             and_unregister_from_all_events_was_called_with(esoTERM_pve)
             and_inactive_state_of_the_module_was_saved()
     end)
@@ -159,7 +217,7 @@ describe("Test PvE related data getters.", function()
         assert.is.equal(veteranness, results.veteran)
     end
 
-    local function and_IsUnitVeteran_was_called_once_with_player()
+    local function and_IsUnitVeteran_was_called_with(PLAYER)
         assert.spy(GLOBAL.IsUnitVeteran).was.called_with(PLAYER)
     end
     -- }}}
@@ -172,7 +230,7 @@ describe("Test PvE related data getters.", function()
         when_is_veteran_is_called()
 
         then_the_returned_character_veteranness_was(tl.VETERANNESS_1)
-            and_IsUnitVeteran_was_called_once_with_player()
+            and_IsUnitVeteran_was_called_with(PLAYER)
     end)
 
     -- {{{
@@ -223,7 +281,7 @@ describe("Test PvE related data getters.", function()
         when_get_level_is_called()
 
         then_the_returned_level_was(tl.LEVEL_1)
-            tl.and_GetUnitLevel_was_called_once_with_player()
+            tl.and_GetUnitLevel_was_called_with(PLAYER)
     end)
 
     it("Query VETERAN CHARACTER LEVEL, when NOT CACHED.",
@@ -235,7 +293,7 @@ describe("Test PvE related data getters.", function()
         when_get_level_is_called()
 
         then_the_returned_level_was(tl.LEVEL_1)
-            tl.and_GetUnitVeteranRank_was_called_once_with_player()
+            tl.and_GetUnitVeteranRank_was_called_with(PLAYER)
     end)
 
     -- {{{
@@ -295,7 +353,7 @@ describe("Test PvE related data getters.", function()
 
         then_the_returned_level_xp_was(tl.LEVEL_XP_1)
             tl.and_is_veteran_was_called()
-            tl.and_GetUnitXP_was_called_once_with_player()
+            tl.and_GetUnitXP_was_called_with(PLAYER)
             tl.and_GetUnitVeteranPoints_was_not_called()
     end)
 
@@ -310,7 +368,7 @@ describe("Test PvE related data getters.", function()
 
         then_the_returned_level_xp_was(tl.LEVEL_VP_1)
             tl.and_is_veteran_was_called()
-            tl.and_GetUnitVeteranPoints_was_called_once_with_player()
+            tl.and_GetUnitVeteranPoints_was_called_with(PLAYER)
             tl.and_GetUnitXP_was_not_called()
     end)
 
@@ -375,7 +433,7 @@ describe("Test PvE related data getters.", function()
 
         then_the_returned_level_xp_max_was(tl.LEVEL_XP_MAX_1)
             tl.and_is_veteran_was_called()
-            tl.and_GetUnitXPMax_was_called_once_with_player()
+            tl.and_GetUnitXPMax_was_called_with(PLAYER)
             tl.and_GetUnitVeteranPointsMax_was_not_called()
     end)
 
@@ -391,7 +449,7 @@ describe("Test PvE related data getters.", function()
         then_the_returned_level_xp_max_was(tl.LEVEL_VP_MAX_1)
             tl.and_is_veteran_was_called()
             tl.and_GetUnitXPMax_was_not_called()
-            tl.and_GetUnitVeteranPointsMax_was_called_once_with_player()
+            tl.and_GetUnitVeteranPointsMax_was_called_with(PLAYER)
     end)
 
     -- {{{

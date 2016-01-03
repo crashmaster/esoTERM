@@ -3,6 +3,12 @@ local esoTERM_pve = require("esoTERM_pve")
 
 test_esoTERM_pve_library = {}
 
+-- setup_test_functions {{{
+function test_esoTERM_pve_library.setup_test_functions(...)
+    test_library.setup_test_library_functions(test_esoTERM_pve_library, ...)
+end
+-- }}}
+
 test_esoTERM_pve_library.CACHE = esoTERM_pve.cache
 test_esoTERM_pve_library.EVENT_REGISTER = esoTERM_pve.event_register
 
@@ -24,67 +30,11 @@ test_esoTERM_pve_library.LEVEL_XP_GAIN = test_library.L_INTEGER
 
 local MODULE_NAME = "pve"
 
--- Module Name {{{
-function test_esoTERM_pve_library.verify_that_module_has_the_expected_name(module, expected_name)
-    assert.is.equal(expected_name, module.module_name)
-end
--- }}}
-
--- Initialization {{{
-function test_esoTERM_pve_library.when_initialize_is_called()
-    test_library.initialize_module(esoTERM_pve)
-end
-
-function test_esoTERM_pve_library.given_that_module_is_set_inactive_in_the_config_file(...)
-    test_library.set_module_to_inactive_in_config_file(...)
-end
-
-function test_esoTERM_pve_library.given_that_module_is_set_active_in_the_config_file(...)
-    test_library.set_module_to_active_in_config_file(...)
-end
-
-function test_esoTERM_pve_library.and_ZO_SavedVars_new_was_called_with(...)
-    test_library.ZO_SavedVars_new_was_called_with_module(...)
-end
-
-function test_esoTERM_pve_library.and_that_register_module_is_stubbed()
-    test_library.stub_function_with_no_return_value(esoTERM_common, "register_module")
-end
-
-function test_esoTERM_pve_library.and_register_module_was_called_with(...)
-    test_library.stub_function_called_with_arguments(esoTERM_common.register_module, esoTERM.module_register, ...)
-end
-
-function test_esoTERM_pve_library.and_that_esoTERM_pve_activate_is_stubbed()
-    test_library.stub_function_with_no_return_value(esoTERM_pve, "activate")
-end
-
-function test_esoTERM_pve_library.then_esoTERM_pve_activate_was_called()
-    test_library.stub_function_called_without_arguments(esoTERM_pve.activate)
-end
-
-function test_esoTERM_pve_library.then_esoTERM_pve_activate_was_not_called()
-    test_library.stub_function_was_not_called(esoTERM_pve.activate)
-end
--- }}}
-
 -- Activate {{{
 function test_esoTERM_pve_library.cache_is_cleared()
     for k, v in pairs(test_esoTERM_pve_library.CACHE) do
         test_esoTERM_pve_library.CACHE[k] = nil
     end
-end
-
-function test_esoTERM_pve_library.when_activate_is_called()
-    esoTERM_pve.activate()
-end
-
-function test_esoTERM_pve_library.and_module_became_active()
-    test_library.check_that_module_became_active(esoTERM_pve)
-end
-
-function test_esoTERM_pve_library.given_that_module_is_inactive()
-    test_library.set_module_to_inactive(esoTERM_pve)
 end
 
 function test_esoTERM_pve_library.and_that_cache_is_empty()
@@ -124,10 +74,6 @@ function test_esoTERM_pve_library.get_expected_register_for_event_call_parameter
             callback = esoTERM_pve.on_level_update
         },
     }
-end
-
-function test_esoTERM_pve_library.and_that_register_for_event_is_stubbed()
-    test_library.stub_function_with_no_return_value(esoTERM_common, "register_for_event")
 end
 
 test_esoTERM_pve_library.RETURN_VALUES_OF_THE_GETTER_STUBS_COMMON = {
@@ -220,10 +166,6 @@ function test_esoTERM_pve_library.and_cached_values_for_veteran_unit_became_init
     end
 end
 
-function test_esoTERM_pve_library.and_active_state_of_the_module_was_saved()
-    assert.is.equal(esoTERM_pve.settings[MODULE_NAME], true)
-end
-
 function test_esoTERM_pve_library.and_character_is_veteran()
     ut_helper.stub_function(esoTERM_pve, "is_veteran", true)
 end
@@ -231,53 +173,11 @@ end
 function test_esoTERM_pve_library.and_character_is_not_veteran()
     ut_helper.stub_function(esoTERM_pve, "is_veteran", false)
 end
-
-function test_esoTERM_pve_library.and_is_veteran_was_called()
-    assert.spy(esoTERM_pve.is_veteran).was.called()
-end
-
-function test_esoTERM_pve_library.and_is_veteran_was_not_called()
-    assert.spy(esoTERM_pve.is_veteran).was_not.called()
-end
--- }}}
-
--- Deactivate {{{
-function test_esoTERM_pve_library.when_deactivate_is_called()
-    esoTERM_pve.deactivate()
-end
-
-function test_esoTERM_pve_library.then_module_became_inactive()
-    test_library.check_that_module_became_inactive(esoTERM_pve)
-end
-
-function test_esoTERM_pve_library.given_that_module_is_active()
-    test_library.set_module_to_active(esoTERM_pve)
-end
-
-function test_esoTERM_pve_library.and_that_unregister_from_all_events_is_stubbed()
-    test_library.stub_function_with_no_return_value(esoTERM_common, "unregister_from_all_events")
-end
-
-function test_esoTERM_pve_library.and_unregister_from_all_events_was_called_with(...)
-    assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(esoTERM_pve)
-end
-
-function test_esoTERM_pve_library.and_inactive_state_of_the_module_was_saved()
-    assert.is.equal(esoTERM_pve.settings[MODULE_NAME], false)
-end
 -- }}}
 
 -- GetUnitXP {{{
 function test_esoTERM_pve_library.and_that_GetUnitXP_returns(xp)
     test_library.stub_function_with_return_value(GLOBAL, "GetUnitXP", xp)
-end
-
-function test_esoTERM_pve_library.and_GetUnitXP_was_called_once_with_player()
-    assert.spy(GLOBAL.GetUnitXP).was.called_with(PLAYER)
-end
-
-function test_esoTERM_pve_library.and_GetUnitXP_was_not_called()
-    assert.spy(GLOBAL.GetUnitXP).was_not.called()
 end
 -- }}}
 
@@ -285,27 +185,11 @@ end
 function test_esoTERM_pve_library.and_that_GetUnitVeteranPoints_returns(xp)
     test_library.stub_function_with_return_value(GLOBAL, "GetUnitVeteranPoints", xp)
 end
-
-function test_esoTERM_pve_library.and_GetUnitVeteranPoints_was_called_once_with_player()
-    assert.spy(GLOBAL.GetUnitVeteranPoints).was.called_with(PLAYER)
-end
-
-function test_esoTERM_pve_library.and_GetUnitVeteranPoints_was_not_called()
-    assert.spy(GLOBAL.GetUnitVeteranPoints).was_not.called()
-end
 --  }}}
 
 -- GetUnitXPMax {{{
 function test_esoTERM_pve_library.and_that_GetUnitXPMax_returns(xp)
     test_library.stub_function_with_return_value(GLOBAL, "GetUnitXPMax", xp)
-end
-
-function test_esoTERM_pve_library.and_GetUnitXPMax_was_called_once_with_player()
-    assert.spy(GLOBAL.GetUnitXPMax).was.called_with(PLAYER)
-end
-
-function test_esoTERM_pve_library.and_GetUnitXPMax_was_not_called()
-    assert.spy(GLOBAL.GetUnitXPMax).was_not.called()
 end
 -- }}}
 
@@ -313,41 +197,17 @@ end
 function test_esoTERM_pve_library.and_that_GetUnitVeteranPointsMax_returns(xp)
     test_library.stub_function_with_return_value(GLOBAL, "GetUnitVeteranPointsMax", xp)
 end
-
-function test_esoTERM_pve_library.and_GetUnitVeteranPointsMax_was_called_once_with_player()
-    assert.spy(GLOBAL.GetUnitVeteranPointsMax).was.called_with(PLAYER)
-end
-
-function test_esoTERM_pve_library.and_GetUnitVeteranPointsMax_was_not_called()
-    assert.spy(GLOBAL.GetUnitVeteranPointsMax).was_not.called()
-end
 -- }}}
 
 -- GetUnitLevel {{{
 function test_esoTERM_pve_library.and_that_GetUnitLevel_returns(level)
     test_library.stub_function_with_return_value(GLOBAL, "GetUnitLevel", level)
 end
-
-function test_esoTERM_pve_library.and_GetUnitLevel_was_called_once_with_player()
-    assert.spy(GLOBAL.GetUnitLevel).was.called_with(PLAYER)
-end
-
-function test_esoTERM_pve_library.and_GetUnitLevel_was_not_called()
-    assert.spy(GLOBAL.GetUnitLevel).was_not.called()
-end
 -- }}}
 
 -- GetUnitVeteranRank {{{
 function test_esoTERM_pve_library.and_that_GetUnitVeteranRank_returns(level)
     test_library.stub_function_with_return_value(GLOBAL, "GetUnitVeteranRank", level)
-end
-
-function test_esoTERM_pve_library.and_GetUnitVeteranRank_was_called_once_with_player()
-    assert.spy(GLOBAL.GetUnitVeteranRank).was.called_with(PLAYER)
-end
-
-function test_esoTERM_pve_library.and_GetUnitVeteranRank_was_not_called()
-    assert.spy(GLOBAL.GetUnitVeteranRank).was_not.called()
 end
 -- }}}
 
