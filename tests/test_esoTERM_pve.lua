@@ -24,10 +24,14 @@ tl.setup_test_functions(
             { module = GLOBAL, function_name = "GetUnitXP", },
             { module = GLOBAL, function_name = "GetUnitXPMax", },
             { module = GLOBAL, function_name = "IsUnitVeteran", },
+            { module = esoTERM_pve, function_name = "get_level_xp", },
+            { module = esoTERM_pve, function_name = "get_level_xp_max", },
             { module = esoTERM_pve, function_name = "is_veteran", },
         },
         [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED] = {
             { module = esoTERM_pve, function_name = "is_veteran", },
+            { module = esoTERM_pve, function_name = "get_level_xp", },
+            { module = esoTERM_pve, function_name = "get_level_xp_max", },
         },
         [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = {
             { module = GLOBAL, function_name = "GetUnitLevel", },
@@ -48,6 +52,8 @@ tl.setup_test_functions(
             { module = GLOBAL, function_name = "GetUnitXP", },
             { module = GLOBAL, function_name = "GetUnitXPMax", },
             { module = GLOBAL, function_name = "IsUnitVeteran", },
+            { module = esoTERM_pve, function_name = "get_level_xp", },
+            { module = esoTERM_pve, function_name = "get_level_xp_max", },
             { module = esoTERM_pve, function_name = "is_veteran", },
         },
         [FUNCTION_NAME_TEMPLATES.AND_ZO_SAVEDVARS_NEW_WAS_CALLED_WITH] = { { }, },
@@ -57,6 +63,7 @@ tl.setup_test_functions(
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_INACTIVE_IN_THE_CONFIG_FILE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_ACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_INACTIVE] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.THEN_THE_RETURNED_VALUE_WAS] = { { }, },
         [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED] = {
             { module = esoTERM_pve, function_name = "activate", },
         },
@@ -67,7 +74,13 @@ tl.setup_test_functions(
         [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED] = {
             { module = esoTERM_pve, function_name = "activate", },
             { module = esoTERM_pve, function_name = "deactivate", },
+            { module = esoTERM_pve, function_name = "get_level", },
+            { module = esoTERM_pve, function_name = "get_level_xp", },
+            { module = esoTERM_pve, function_name = "get_level_xp_max", },
+            { module = esoTERM_pve, function_name = "get_level_xp_percent", },
+            { module = esoTERM_pve, function_name = "get_xp_gain", },
             { module = esoTERM_pve, function_name = "initialize", },
+            { module = esoTERM_pve, function_name = "is_veteran", },
         },
     }
 )
@@ -78,12 +91,18 @@ local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_
 local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
 local and_cache_is_no_longer_empty = tl.and_cache_is_no_longer_empty
 local and_cached_values_became_initialized = tl.and_cached_values_became_initialized
+local and_get_level_xp_max_was_called = tl.and_get_level_xp_max_was_called
+local and_get_level_xp_max_was_not_called = tl.and_get_level_xp_max_was_not_called
+local and_get_level_xp_was_called = tl.and_get_level_xp_was_called
+local and_get_level_xp_was_not_called = tl.and_get_level_xp_was_not_called
 local and_getter_function_stubs_were_called = tl.and_getter_function_stubs_were_called
 local and_inactive_state_of_the_module_was_saved = tl.and_inactive_state_of_the_module_was_saved
 local and_register_module_was_called_with = tl.and_register_module_was_called_with
 local and_that_IsUnitVeteran_returns = tl.and_that_IsUnitVeteran_returns
 local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
 local and_that_cache_is_empty = tl.and_that_cache_is_empty
+local and_that_get_level_xp_max_returns = tl.and_that_get_level_xp_max_returns
+local and_that_get_level_xp_returns = tl.and_that_get_level_xp_returns
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
 local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
@@ -96,10 +115,17 @@ local then_activate_was_called = tl.then_activate_was_called
 local then_activate_was_not_called = tl.then_activate_was_not_called
 local then_module_became_active = tl.then_module_became_active
 local then_module_became_inactive = tl.then_module_became_inactive
+local then_the_returned_value_was = tl.then_the_returned_value_was
 local verify_that_module_has_the_expected_name = tl.verify_that_module_has_the_expected_name
 local when_activate_is_called = tl.when_activate_is_called
 local when_deactivate_is_called = tl.when_deactivate_is_called
+local when_get_level_is_called = tl.when_get_level_is_called
+local when_get_level_xp_is_called = tl.when_get_level_xp_is_called
+local when_get_level_xp_max_is_called = tl.when_get_level_xp_max_is_called
+local when_get_level_xp_percent_is_called = tl.when_get_level_xp_percent_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
+local when_is_veteran_is_called = tl.when_is_veteran_is_called
+local when_get_xp_gain_is_called = tl.when_get_xp_gain_is_called
 -- }}}
 
 describe("Test module.", function()
@@ -219,14 +245,6 @@ describe("Test PvE related data getters.", function()
     local function given_that_cached_character_veteranness_is_not_set()
         tl.CACHE.veteran = nil
     end
-
-    local function when_is_veteran_is_called()
-        results.veteran = esoTERM_pve.is_veteran()
-    end
-
-    local function then_the_returned_character_veteranness_was(veteranness)
-        assert.is.equal(veteranness, results.veteran)
-    end
     -- }}}
 
     it("Query CHARACTER VETERANNESS, when NOT CACHED.",
@@ -234,9 +252,9 @@ describe("Test PvE related data getters.", function()
         given_that_cached_character_veteranness_is_not_set()
             and_that_IsUnitVeteran_returns(tl.VETERANNESS_1)
 
-        when_is_veteran_is_called()
+        veteranness = when_is_veteran_is_called()
 
-        then_the_returned_character_veteranness_was(tl.VETERANNESS_1)
+        then_the_returned_value_was(tl.VETERANNESS_1, veteranness)
             and_IsUnitVeteran_was_called_with(PLAYER)
     end)
 
@@ -251,23 +269,15 @@ describe("Test PvE related data getters.", function()
         given_that_cached_character_veteranness_is(tl.VETERANNESS_1)
             and_that_IsUnitVeteran_returns(tl.VETERANNESS_2)
 
-        when_is_veteran_is_called()
+        veteranness = when_is_veteran_is_called()
 
-        then_the_returned_character_veteranness_was(tl.VETERANNESS_1)
+        then_the_returned_value_was(tl.VETERANNESS_1, veteranness)
             and_IsUnitVeteran_was_not_called()
     end)
 
     -- {{{
     local function given_that_cached_character_level_is_not_set()
         tl.CACHE.level = nil
-    end
-
-    local function when_get_level_is_called()
-        results.level = esoTERM_pve.get_level()
-    end
-
-    local function then_the_returned_level_was(level)
-        assert.is.equal(level, results.level)
     end
     -- }}}
 
@@ -277,9 +287,9 @@ describe("Test PvE related data getters.", function()
             tl.and_that_GetUnitLevel_returns(tl.LEVEL_1)
             tl.and_that_is_veteran_returns(false)
 
-        when_get_level_is_called()
+        level = when_get_level_is_called()
 
-        then_the_returned_level_was(tl.LEVEL_1)
+        then_the_returned_value_was(tl.LEVEL_1, level)
             tl.and_GetUnitLevel_was_called_with(PLAYER)
     end)
 
@@ -289,9 +299,9 @@ describe("Test PvE related data getters.", function()
             tl.and_that_GetUnitVeteranRank_returns(tl.LEVEL_1)
             tl.and_that_is_veteran_returns(true)
 
-        when_get_level_is_called()
+        level = when_get_level_is_called()
 
-        then_the_returned_level_was(tl.LEVEL_1)
+        then_the_returned_value_was(tl.LEVEL_1, level)
             tl.and_GetUnitVeteranRank_was_called_with(PLAYER)
     end)
 
@@ -307,9 +317,9 @@ describe("Test PvE related data getters.", function()
             tl.and_that_GetUnitLevel_returns(tl.LEVEL_2)
             tl.and_that_is_veteran_returns(false)
 
-        when_get_level_is_called()
+        level = when_get_level_is_called()
 
-        then_the_returned_level_was(tl.LEVEL_1)
+        then_the_returned_value_was(tl.LEVEL_1, level)
             tl.and_is_veteran_was_not_called()
             tl.and_GetUnitLevel_was_not_called()
     end)
@@ -320,9 +330,9 @@ describe("Test PvE related data getters.", function()
             tl.and_that_GetUnitVeteranRank_returns(tl.LEVEL_2)
             tl.and_that_is_veteran_returns(true)
 
-        when_get_level_is_called()
+        level = when_get_level_is_called()
 
-        then_the_returned_level_was(tl.LEVEL_1)
+        then_the_returned_value_was(tl.LEVEL_1, level)
             tl.and_is_veteran_was_not_called()
             tl.and_GetUnitVeteranRank_was_not_called()
     end)
@@ -330,14 +340,6 @@ describe("Test PvE related data getters.", function()
     -- {{{
     local function given_that_cached_character_level_xp_is_not_set()
         tl.CACHE.level_xp = nil
-    end
-
-    local function when_get_level_xp_is_called()
-        results.level_xp = esoTERM_pve.get_level_xp()
-    end
-
-    local function then_the_returned_level_xp_was(xp)
-        assert.is.equal(xp, results.level_xp)
     end
     -- }}}
 
@@ -348,9 +350,9 @@ describe("Test PvE related data getters.", function()
             tl.and_that_GetUnitVeteranPoints_returns(tl.LEVEL_VP_1)
             tl.and_that_is_veteran_returns(false)
 
-        when_get_level_xp_is_called()
+        level_xp = when_get_level_xp_is_called()
 
-        then_the_returned_level_xp_was(tl.LEVEL_XP_1)
+        then_the_returned_value_was(tl.LEVEL_XP_1, level_xp)
             tl.and_is_veteran_was_called()
             tl.and_GetUnitXP_was_called_with(PLAYER)
             tl.and_GetUnitVeteranPoints_was_not_called()
@@ -363,9 +365,9 @@ describe("Test PvE related data getters.", function()
             tl.and_that_GetUnitVeteranPoints_returns(tl.LEVEL_VP_1)
             tl.and_that_is_veteran_returns(true)
 
-        when_get_level_xp_is_called()
+        level_xp = when_get_level_xp_is_called()
 
-        then_the_returned_level_xp_was(tl.LEVEL_VP_1)
+        then_the_returned_value_was(tl.LEVEL_VP_1, level_xp)
             tl.and_is_veteran_was_called()
             tl.and_GetUnitVeteranPoints_was_called_with(PLAYER)
             tl.and_GetUnitXP_was_not_called()
@@ -384,9 +386,9 @@ describe("Test PvE related data getters.", function()
             tl.and_that_GetUnitVeteranPoints_returns(tl.LEVEL_VP_2)
             tl.and_that_is_veteran_returns(false)
 
-        when_get_level_xp_is_called()
+        level_xp = when_get_level_xp_is_called()
 
-        then_the_returned_level_xp_was(tl.LEVEL_XP_1)
+        then_the_returned_value_was(tl.LEVEL_XP_1, level_xp)
             tl.and_is_veteran_was_not_called()
             tl.and_GetUnitXP_was_not_called()
             tl.and_GetUnitVeteranPoints_was_not_called()
@@ -399,9 +401,9 @@ describe("Test PvE related data getters.", function()
             tl.and_that_GetUnitVeteranPoints_returns(tl.LEVEL_VP_2)
             tl.and_that_is_veteran_returns(false)
 
-        when_get_level_xp_is_called()
+        level_xp = when_get_level_xp_is_called()
 
-        then_the_returned_level_xp_was(tl.LEVEL_VP_1)
+        then_the_returned_value_was(tl.LEVEL_VP_1, level_xp)
             tl.and_is_veteran_was_not_called()
             tl.and_GetUnitXP_was_not_called()
             tl.and_GetUnitVeteranPoints_was_not_called()
@@ -410,14 +412,6 @@ describe("Test PvE related data getters.", function()
     -- {{{
     local function given_that_cached_character_level_xp_max_is_not_set()
         tl.CACHE.level_xp_max = nil
-    end
-
-    local function when_get_level_xp_max_is_called()
-        results.level_xp_max = esoTERM_pve.get_level_xp_max()
-    end
-
-    local function then_the_returned_level_xp_max_was(xp)
-        assert.is.equal(xp, results.level_xp_max)
     end
     -- }}}
 
@@ -428,9 +422,9 @@ describe("Test PvE related data getters.", function()
             tl.and_that_GetUnitVeteranPointsMax_returns(tl.LEVEL_VP_MAX_1)
             tl.and_that_is_veteran_returns(false)
 
-        when_get_level_xp_max_is_called()
+        level_xp_max = when_get_level_xp_max_is_called()
 
-        then_the_returned_level_xp_max_was(tl.LEVEL_XP_MAX_1)
+        then_the_returned_value_was(tl.LEVEL_XP_MAX_1, level_xp_max)
             tl.and_is_veteran_was_called()
             tl.and_GetUnitXPMax_was_called_with(PLAYER)
             tl.and_GetUnitVeteranPointsMax_was_not_called()
@@ -443,9 +437,9 @@ describe("Test PvE related data getters.", function()
             tl.and_that_GetUnitVeteranPointsMax_returns(tl.LEVEL_VP_MAX_1)
             tl.and_that_is_veteran_returns(true)
 
-        when_get_level_xp_max_is_called()
+        level_xp_max = when_get_level_xp_max_is_called()
 
-        then_the_returned_level_xp_max_was(tl.LEVEL_VP_MAX_1)
+        then_the_returned_value_was(tl.LEVEL_VP_MAX_1, level_xp_max)
             tl.and_is_veteran_was_called()
             tl.and_GetUnitXPMax_was_not_called()
             tl.and_GetUnitVeteranPointsMax_was_called_with(PLAYER)
@@ -464,9 +458,9 @@ describe("Test PvE related data getters.", function()
             tl.and_that_GetUnitVeteranPointsMax_returns(tl.LEVEL_VP_MAX_2)
             tl.and_that_is_veteran_returns(false)
 
-        when_get_level_xp_max_is_called()
+        level_xp_max = when_get_level_xp_max_is_called()
 
-        then_the_returned_level_xp_max_was(tl.LEVEL_XP_MAX_1)
+        then_the_returned_value_was(tl.LEVEL_XP_MAX_1, level_xp_max)
             tl.and_is_veteran_was_not_called()
             tl.and_GetUnitXPMax_was_not_called()
             tl.and_GetUnitVeteranPointsMax_was_not_called()
@@ -479,9 +473,9 @@ describe("Test PvE related data getters.", function()
             tl.and_that_GetUnitVeteranPointsMax_returns(tl.LEVEL_VP_MAX_2)
             tl.and_that_is_veteran_returns(true)
 
-        when_get_level_xp_max_is_called()
+        level_xp_max = when_get_level_xp_max_is_called()
 
-        then_the_returned_level_xp_max_was(tl.LEVEL_VP_MAX_1)
+        then_the_returned_value_was(tl.LEVEL_VP_MAX_1, level_xp_max)
             tl.and_is_veteran_was_not_called()
             tl.and_GetUnitXPMax_was_not_called()
             tl.and_GetUnitVeteranPointsMax_was_not_called()
@@ -491,30 +485,6 @@ describe("Test PvE related data getters.", function()
     local function given_that_cached_character_level_xp_percent_is_not_set()
         tl.CACHE.level_xp_percent = nil
     end
-
-    local function and_that_get_level_xp_returns(xp)
-        ut_helper.stub_function(esoTERM_pve, "get_level_xp", xp)
-    end
-
-    local function and_that_get_level_xp_max_returns(xp)
-        ut_helper.stub_function(esoTERM_pve, "get_level_xp_max", xp)
-    end
-
-    local function when_get_level_xp_percent_is_called()
-        results.level_xp_percent = esoTERM_pve.get_level_xp_percent()
-    end
-
-    local function then_the_returned_level_xp_percent_was(level_xp_percent)
-        assert.is.equal(level_xp_percent, results.level_xp_percent)
-    end
-
-    local function and_get_level_xp_was_called()
-        assert.spy(esoTERM_pve.get_level_xp).was.called_with()
-    end
-
-    local function and_get_level_xp_max_was_called()
-        assert.spy(esoTERM_pve.get_level_xp_max).was.called_with()
-    end
     -- }}}
 
     it("Query CHARACTER LEVEL-XP PERCENT, when NOT CACHED.",
@@ -523,9 +493,9 @@ describe("Test PvE related data getters.", function()
             and_that_get_level_xp_returns(82)
             and_that_get_level_xp_max_returns(500)
 
-        when_get_level_xp_percent_is_called()
+        level_xp_percent = when_get_level_xp_percent_is_called()
 
-        then_the_returned_level_xp_percent_was(16.4)
+        then_the_returned_value_was(16.4, level_xp_percent)
             and_get_level_xp_was_called()
             and_get_level_xp_max_was_called()
     end)
@@ -536,9 +506,9 @@ describe("Test PvE related data getters.", function()
             and_that_get_level_xp_returns(100)
             and_that_get_level_xp_max_returns(0)
 
-        when_get_level_xp_percent_is_called()
+        level_xp_percent = when_get_level_xp_percent_is_called()
 
-        then_the_returned_level_xp_percent_was(0)
+        then_the_returned_value_was(0, level_xp_percent)
             and_get_level_xp_was_called()
             and_get_level_xp_max_was_called()
     end)
@@ -546,22 +516,6 @@ describe("Test PvE related data getters.", function()
     -- {{{
     local function given_that_cached_character_level_xp_percent_is(percent)
         tl.CACHE.level_xp_percent = percent
-    end
-
-    local function and_that_get_level_xp_max_returns(xp)
-        ut_helper.stub_function(esoTERM_pve, "get_level_xp_max", xp)
-    end
-
-    local function and_that_get_level_xp_returns(xp)
-        ut_helper.stub_function(esoTERM_pve, "get_level_xp", xp)
-    end
-
-    local function and_get_level_xp_max_was_not_called()
-        assert.spy(esoTERM_pve.get_level_xp_max).was_not.called()
-    end
-
-    local function and_get_level_xp_was_not_called()
-        assert.spy(esoTERM_pve.get_level_xp).was_not.called()
     end
     -- }}}
 
@@ -571,9 +525,9 @@ describe("Test PvE related data getters.", function()
             and_that_get_level_xp_max_returns(tl.LEVEL_XP_MAX_1)
             and_that_get_level_xp_returns(tl.LEVEL_XP_1)
 
-        when_get_level_xp_percent_is_called()
+        level_xp_percent = when_get_level_xp_percent_is_called()
 
-        then_the_returned_level_xp_percent_was(tl.LEVEL_XP_PERCENT)
+        then_the_returned_value_was(tl.LEVEL_XP_PERCENT, level_xp_percent)
             and_get_level_xp_max_was_not_called()
             and_get_level_xp_was_not_called()
     end)
@@ -582,23 +536,15 @@ describe("Test PvE related data getters.", function()
     local function given_that_cached_character_level_xp_gain_is_not_set()
         tl.CACHE.xp_gain = nil
     end
-
-    local function when_get_xp_gain_is_called()
-        results.xp_gain = esoTERM_pve.get_xp_gain()
-    end
-
-    local function then_the_returned_level_xp_gain_was(gain)
-        assert.is.equal(gain, results.xp_gain)
-    end
     -- }}}
 
     it("Query CHARACTER XP-GAIN, when NOT CACHED.",
     function()
         given_that_cached_character_level_xp_gain_is_not_set()
 
-        when_get_xp_gain_is_called()
+        xp_gain = when_get_xp_gain_is_called()
 
-        then_the_returned_level_xp_gain_was(0)
+        then_the_returned_value_was(0, xp_gain)
     end)
 
     -- {{{
@@ -611,9 +557,9 @@ describe("Test PvE related data getters.", function()
     function()
         given_that_cached_character_level_xp_gain_is(tl.LEVEL_XP_GAIN)
 
-        when_get_xp_gain_is_called()
+        xp_gain = when_get_xp_gain_is_called()
 
-        then_the_returned_level_xp_gain_was(tl.LEVEL_XP_GAIN)
+        then_the_returned_value_was(tl.LEVEL_XP_GAIN, xp_gain)
     end)
 end)
 

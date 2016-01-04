@@ -21,6 +21,7 @@ FUNCTION_NAME_TEMPLATES = {
     GIVEN_THAT_MODULE_IS_SET_INACTIVE_IN_THE_CONFIG_FILE = "given_that_module_is_set_inactive_in_the_config_file",
     THEN_MODULE_BECAME_ACTIVE = "then_module_became_active",
     THEN_MODULE_BECAME_INACTIVE = "then_module_became_inactive",
+    THEN_THE_RETURNED_VALUE_WAS = "then_the_returned_value_was",
     THEN_X_WAS_CALLED = "then_x_was_called",
     THEN_X_WAS_NOT_CALLED = "then_x_was_not_called",
     VERIFY_THAT_MODULE_HAS_THE_EXPECTED_NAME = "verify_that_module_has_the_expected_name",
@@ -178,6 +179,12 @@ local function add_then_module_became_inactive_test_library_function(test_librar
     end
 end
 
+local function add_then_the_returned_value_was_test_library_function(test_library, function_properties)
+    test_library["then_the_returned_value_was"] = function(...)
+        assert.is.equal(...)
+    end
+end
+
 local function add_then_x_was_called_test_library_function(test_library, function_properties)
     local fp = function_properties
     test_library["then_" .. fp.function_name .. "_was_called" ] = function()
@@ -202,7 +209,7 @@ end
 local function add_when_x_is_called_test_library_function(test_library, function_properties)
     local fp = function_properties
     test_library["when_" .. fp.function_name .. "_is_called"] = function()
-        fp.module[fp.function_name]()
+        return fp.module[fp.function_name]()
     end
 end
 
@@ -222,6 +229,7 @@ local FUNCTION_NAME_TEMPLATE_TO_ADD_FUCTION = {
     [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_INACTIVE_IN_THE_CONFIG_FILE] = add_given_that_module_is_set_inactive_in_the_config_file_test_library_function,
     [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_ACTIVE] = add_then_module_became_active_test_library_function,
     [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_INACTIVE] = add_then_module_became_inactive_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.THEN_THE_RETURNED_VALUE_WAS] = add_then_the_returned_value_was_test_library_function,
     [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED] = add_then_x_was_called_test_library_function,
     [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED] = add_then_x_was_not_called_test_library_function,
     [FUNCTION_NAME_TEMPLATES.VERIFY_THAT_MODULE_HAS_THE_EXPECTED_NAME] = add_verify_that_module_has_the_expected_name_test_library_function,
