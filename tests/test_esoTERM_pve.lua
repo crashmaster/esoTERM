@@ -7,6 +7,9 @@ tl.setup_test_functions(
         [FUNCTION_NAME_TEMPLATES.AND_ACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = {
             { module = esoTERM_pve, module_name_in_settings = "pve" },
         },
+        [FUNCTION_NAME_TEMPLATES.AND_CACHED_VALUE_BECAME] = {
+            {  module = esoTERM_pve },
+        },
         [FUNCTION_NAME_TEMPLATES.AND_INACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = {
             { module = esoTERM_pve, module_name_in_settings = "pve" },
         },
@@ -64,13 +67,23 @@ tl.setup_test_functions(
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_INACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_ACTIVE_IN_THE_CONFIG_FILE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_INACTIVE_IN_THE_CONFIG_FILE] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_X_IS_STUBBED] = {
+            { module = esoTERM_output, function_name = "stdout", },
+        },
+        [FUNCTION_NAME_TEMPLATES.THEN_CACHED_VALUE_BECAME] = {
+            {  module = esoTERM_pve },
+        },
         [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_ACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_INACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.THEN_THE_RETURNED_VALUE_WAS] = { { }, },
         [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED] = {
             { module = esoTERM_pve, function_name = "activate", },
         },
+        [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED_WITH] = {
+            { module = esoTERM_output, function_name = "stdout", },
+        },
         [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED] = {
+            { module = esoTERM_output, function_name = "stdout", },
             { module = esoTERM_pve, function_name = "activate", },
         },
         [FUNCTION_NAME_TEMPLATES.VERIFY_THAT_MODULE_HAS_THE_EXPECTED_NAME] = { { }, },
@@ -85,6 +98,10 @@ tl.setup_test_functions(
             { module = esoTERM_pve, function_name = "initialize", },
             { module = esoTERM_pve, function_name = "is_veteran", },
         },
+        [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED_WITH] = {
+            { module = esoTERM_pve, function_name = "on_experience_update", },
+            { module = esoTERM_pve, function_name = "on_level_update", },
+        },
     }
 )
 
@@ -93,6 +110,7 @@ local and_IsUnitVeteran_was_not_called = tl.and_IsUnitVeteran_was_not_called
 local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
 local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
 local and_cache_is_no_longer_empty = tl.and_cache_is_no_longer_empty
+local and_cached_value_became = tl.and_cached_value_became
 local and_cached_values_became_initialized = tl.and_cached_values_became_initialized
 local and_get_level_xp_max_was_called = tl.and_get_level_xp_max_was_called
 local and_get_level_xp_max_was_not_called = tl.and_get_level_xp_max_was_not_called
@@ -115,10 +133,14 @@ local given_that_module_is_active = tl.given_that_module_is_active
 local given_that_module_is_inactive = tl.given_that_module_is_inactive
 local given_that_module_is_set_active_in_the_config_file = tl.given_that_module_is_set_active_in_the_config_file
 local given_that_module_is_set_inactive_in_the_config_file = tl.given_that_module_is_set_inactive_in_the_config_file
+local given_that_stdout_is_stubbed = tl.given_that_stdout_is_stubbed
 local then_activate_was_called = tl.then_activate_was_called
 local then_activate_was_not_called = tl.then_activate_was_not_called
+local then_cached_value_became = tl.then_cached_value_became
 local then_module_became_active = tl.then_module_became_active
 local then_module_became_inactive = tl.then_module_became_inactive
+local then_stdout_was_called_with = tl.then_stdout_was_called_with
+local then_stdout_was_not_called = tl.then_stdout_was_not_called
 local then_the_returned_value_was = tl.then_the_returned_value_was
 local verify_that_module_has_the_expected_name = tl.verify_that_module_has_the_expected_name
 local when_activate_is_called = tl.when_activate_is_called
@@ -127,9 +149,11 @@ local when_get_level_is_called = tl.when_get_level_is_called
 local when_get_level_xp_is_called = tl.when_get_level_xp_is_called
 local when_get_level_xp_max_is_called = tl.when_get_level_xp_max_is_called
 local when_get_level_xp_percent_is_called = tl.when_get_level_xp_percent_is_called
+local when_get_xp_gain_is_called = tl.when_get_xp_gain_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
 local when_is_veteran_is_called = tl.when_is_veteran_is_called
-local when_get_xp_gain_is_called = tl.when_get_xp_gain_is_called
+local when_on_experience_update_is_called_with = tl.when_on_experience_update_is_called_with
+local when_on_level_update_is_called_with = tl.when_on_level_update_is_called_with
 -- }}}
 
 describe("Test module.", function()
@@ -496,26 +520,11 @@ describe("Test the event handlers.", function()
         ut_helper.restore_stubbed_functions()
     end)
 
-    -- {{{
-    local function given_that_esoTERM_output_stdout_is_stubbed()
-        ut_helper.stub_function(esoTERM_output, "stdout", nil)
-    end
-
     local function get_xp_message()
         return string.format("Gained %d XP (%.2f%%)",
                              tl.CACHE.xp_gain,
                              tl.CACHE.level_xp_percent)
     end
-
-    local function and_esoTERM_output_stdout_was_called_with_xp_message()
-        local message = get_xp_message()
-        assert.spy(esoTERM_output.stdout).was.called_with(message)
-    end
-
-    local function and_esoTERM_output_stdout_was_not_called()
-        assert.spy(esoTERM_output.stdout).was_not.called()
-    end
-    -- }}}
 
     describe("The on experience update event handler.", function()
         local REASON = 0
@@ -535,87 +544,62 @@ describe("Test the event handlers.", function()
             tl.CACHE.xp_gain = OLD_XP_GAIN
         end)
 
-        -- {{{
-        local function when_on_experience_update_is_called_with(event, unit, xp, xp_max, reason)
-            esoTERM_pve.on_experience_update(event, unit, xp, xp_max, reason)
-        end
-
-        local function then_the_xp_properties_in_character_info_where_updated()
-            assert.is.equal(NEW_XP, tl.CACHE.level_xp)
-            assert.is.equal(NEW_XP_MAX, tl.CACHE.level_xp_max)
-            assert.is.equal(NEW_XP_PCT, tl.CACHE.level_xp_percent)
-            assert.is.equal(NEW_XP - OLD_XP, tl.CACHE.xp_gain)
-        end
-        -- }}}
-
         it("Happy flow.", function()
-            given_that_esoTERM_output_stdout_is_stubbed()
+            given_that_stdout_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, PLAYER, NEW_XP, NEW_XP_MAX, REASON)
 
-            then_the_xp_properties_in_character_info_where_updated()
-                and_esoTERM_output_stdout_was_called_with_xp_message()
+            then_stdout_was_called_with(get_xp_message())
+                and_cached_value_became("level_xp", NEW_XP)
+                and_cached_value_became("level_xp_max", NEW_XP_MAX)
+                and_cached_value_became("level_xp_percent", NEW_XP_PCT)
+                and_cached_value_became("xp_gain", NEW_XP - OLD_XP)
         end)
 
-        -- {{{
-        local function then_the_xp_properties_in_character_info_where_updated_to_lvl_up()
-            assert.is.equal(NEW_XP_LVL_UP, tl.CACHE.level_xp)
-            assert.is.equal(OLD_XP_MAX, tl.CACHE.level_xp_max)
-            assert.is.equal(100, tl.CACHE.level_xp_percent)
-            assert.is.equal(NEW_XP_LVL_UP - OLD_XP, tl.CACHE.xp_gain)
-        end
-        -- }}}
-
         it("If xp > level xp maximum, then 100%.", function()
-            given_that_esoTERM_output_stdout_is_stubbed()
+            given_that_stdout_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, PLAYER, NEW_XP_LVL_UP, OLD_XP_MAX, REASON)
 
-            then_the_xp_properties_in_character_info_where_updated_to_lvl_up()
-                and_esoTERM_output_stdout_was_called_with_xp_message()
+            then_stdout_was_called_with(get_xp_message())
+                and_cached_value_became("level_xp", NEW_XP_LVL_UP)
+                and_cached_value_became("level_xp_max", OLD_XP_MAX)
+                and_cached_value_became("level_xp_percent", 100)
+                and_cached_value_became("xp_gain", NEW_XP_LVL_UP - OLD_XP)
         end)
 
-        -- {{{
-        local function then_the_xp_properties_in_character_info_where_not_updated()
-            assert.is.equal(OLD_XP, tl.CACHE.level_xp)
-            assert.is.equal(OLD_XP_MAX, tl.CACHE.level_xp_max)
-            assert.is.equal(OLD_XP_PCT, tl.CACHE.level_xp_percent)
-        end
-        -- }}}
-
         it("If unit is incorrect.", function()
-            given_that_esoTERM_output_stdout_is_stubbed()
+            given_that_stdout_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, "foo", NEW_XP, NEW_XP_MAX, REASON)
 
-            then_the_xp_properties_in_character_info_where_not_updated()
-                and_esoTERM_output_stdout_was_not_called()
+            then_stdout_was_not_called()
+                and_cached_value_became("level_xp", OLD_XP)
+                and_cached_value_became("level_xp_max", OLD_XP_MAX)
+                and_cached_value_became("level_xp_percent", OLD_XP_PCT)
         end)
 
-        -- {{{
-        local function then_the_xp_properties_in_character_info_where_partly_updated()
-            assert.is.equal(NEW_XP, tl.CACHE.level_xp)
-            assert.is.equal(NEW_XP_MAX, tl.CACHE.level_xp_max)
-            assert.is.equal(NEW_XP_PCT, tl.CACHE.level_xp_percent)
-            assert.is.equal(OLD_XP_GAIN, tl.CACHE.xp_gain)
-        end
-        -- }}}
         it("If reason is incorrect (level up drift handling).", function()
-            given_that_esoTERM_output_stdout_is_stubbed()
+            given_that_stdout_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, PLAYER, NEW_XP, NEW_XP_MAX, -1)
 
-            then_the_xp_properties_in_character_info_where_partly_updated()
-                and_esoTERM_output_stdout_was_called_with_xp_message()
+            then_stdout_was_called_with(get_xp_message())
+                and_cached_value_became("level_xp", NEW_XP)
+                and_cached_value_became("level_xp_max", NEW_XP_MAX)
+                and_cached_value_became("level_xp_percent", NEW_XP_PCT)
+                and_cached_value_became("xp_gain", OLD_XP_GAIN)
         end)
 
         it("If total maximum xp reached.", function()
-            given_that_esoTERM_output_stdout_is_stubbed()
+            given_that_stdout_is_stubbed()
 
             when_on_experience_update_is_called_with(EVENT, PLAYER, NEW_XP, 0, REASON)
 
-            then_the_xp_properties_in_character_info_where_not_updated()
-                and_esoTERM_output_stdout_was_not_called()
+            then_stdout_was_not_called()
+                and_cached_value_became("level_xp", OLD_XP)
+                and_cached_value_became("level_xp_max", OLD_XP_MAX)
+                and_cached_value_became("level_xp_percent", OLD_XP_PCT)
         end)
     end)
 
@@ -627,32 +611,16 @@ describe("Test the event handlers.", function()
             tl.CACHE.level = OLD_LEVEL
         end)
 
-        -- {{{
-        local function when_on_level_update_is_called_with(event, unit, level)
-            esoTERM_pve.on_level_update(event, unit, level)
-        end
-
-        local function then_the_level_property_in_character_info_was_updated()
-            assert.is.equal(NEW_LEVEL, tl.CACHE.level)
-        end
-        -- }}}
-
         it("Happy flow.", function()
             when_on_level_update_is_called_with(EVENT, PLAYER, NEW_LEVEL)
 
-            then_the_level_property_in_character_info_was_updated()
+            then_cached_value_became("level", NEW_LEVEL)
         end)
-
-        -- {{{
-        local function then_the_level_property_in_character_info_was_not_updated()
-            assert.is.equal(OLD_LEVEL, tl.CACHE.level)
-        end
-        -- }}}
 
         it("If unit incorrect.", function()
             when_on_level_update_is_called_with(EVENT, "foo", NEW_LEVEL)
 
-            then_the_level_property_in_character_info_was_not_updated()
+            then_cached_value_became("level", OLD_LEVEL)
         end)
     end)
 end)

@@ -7,6 +7,7 @@ PLAYER = "player"
 
 FUNCTION_NAME_TEMPLATES = {
     AND_ACTIVE_STATE_OF_THE_MODULE_WAS_SAVED = "and_active_state_of_the_module_was_saved",
+    AND_CACHED_VALUE_BECAME = "and_cached_value_became",
     AND_INACTIVE_STATE_OF_THE_MODULE_WAS_SAVED = "and_inactive_state_of_the_module_was_saved",
     AND_REGISTER_FOR_EVENT_WAS_CALLED_WITH = "and_register_for_event_was_called_with",
     AND_THAT_X_IS_STUBBED = "and_that_x_is_stubbed",
@@ -20,13 +21,17 @@ FUNCTION_NAME_TEMPLATES = {
     GIVEN_THAT_MODULE_IS_INACTIVE = "given_that_module_is_inactive",
     GIVEN_THAT_MODULE_IS_SET_ACTIVE_IN_THE_CONFIG_FILE = "given_that_module_is_set_active_in_the_config_file",
     GIVEN_THAT_MODULE_IS_SET_INACTIVE_IN_THE_CONFIG_FILE = "given_that_module_is_set_inactive_in_the_config_file",
+    GIVEN_THAT_X_IS_STUBBED = "given_that_x_is_stubbed",
+    THEN_CACHED_VALUE_BECAME = "then_cached_value_became",
     THEN_MODULE_BECAME_ACTIVE = "then_module_became_active",
     THEN_MODULE_BECAME_INACTIVE = "then_module_became_inactive",
     THEN_THE_RETURNED_VALUE_WAS = "then_the_returned_value_was",
     THEN_X_WAS_CALLED = "then_x_was_called",
+    THEN_X_WAS_CALLED_WITH = "then_x_was_called_with",
     THEN_X_WAS_NOT_CALLED = "then_x_was_not_called",
     VERIFY_THAT_MODULE_HAS_THE_EXPECTED_NAME = "verify_that_module_has_the_expected_name",
     WHEN_X_IS_CALLED = "when_x_is_called",
+    WHEN_X_IS_CALLED_WITH = "when_x_is_called_with",
 }
 
 this.A_BOOL = true
@@ -85,6 +90,13 @@ local function add_and_active_state_of_the_module_was_saved_test_library_functio
     local fp = function_properties
     test_library["and_active_state_of_the_module_was_saved" ] = function()
         assert.is.equal(fp.module.settings[fp.module_name_in_settings], true)
+    end
+end
+
+local function add_and_cached_value_became_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["and_cached_value_became"] = function(value_name, value)
+        assert.is.equal(fp.module.cache[value_name], value)
     end
 end
 
@@ -175,6 +187,20 @@ local function add_given_that_module_is_set_inactive_in_the_config_file_test_lib
     end
 end
 
+local function add_given_that_x_is_stubbed_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["given_that_" .. fp.function_name .. "_is_stubbed" ] = function()
+        this.stub_function_with_no_return_value(fp.module, fp.function_name)
+    end
+end
+
+local function add_then_cached_value_became_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["then_cached_value_became"] = function(value_name, value)
+        assert.is.equal(fp.module.cache[value_name], value)
+    end
+end
+
 local function add_then_module_became_active_test_library_function(test_library, function_properties)
     test_library["then_module_became_active"] = function(...)
         this.check_that_module_became_active(...)
@@ -200,6 +226,13 @@ local function add_then_x_was_called_test_library_function(test_library, functio
     end
 end
 
+local function add_then_x_was_called_with_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["then_" .. fp.function_name .. "_was_called_with" ] = function(...)
+        this.stub_function_called_with_arguments(fp.module[fp.function_name], ...)
+    end
+end
+
 local function add_then_x_was_not_called_test_library_function(test_library, function_properties)
     local fp = function_properties
     test_library["then_" .. fp.function_name .. "_was_not_called" ] = function()
@@ -221,8 +254,16 @@ local function add_when_x_is_called_test_library_function(test_library, function
     end
 end
 
+local function add_when_x_is_called_with_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["when_" .. fp.function_name .. "_is_called_with"] = function(...)
+        return fp.module[fp.function_name](...)
+    end
+end
+
 local FUNCTION_NAME_TEMPLATE_TO_ADD_FUCTION = {
     [FUNCTION_NAME_TEMPLATES.AND_ACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = add_and_active_state_of_the_module_was_saved_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.AND_CACHED_VALUE_BECAME] = add_and_cached_value_became_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_INACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = add_and_inactive_state_of_the_module_was_saved_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_REGISTER_FOR_EVENT_WAS_CALLED_WITH] = add_and_register_for_event_was_called_with_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = add_and_that_x_is_stubbed_test_library_function,
@@ -236,13 +277,17 @@ local FUNCTION_NAME_TEMPLATE_TO_ADD_FUCTION = {
     [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_INACTIVE] = add_given_that_module_is_inactive_test_library_function,
     [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_ACTIVE_IN_THE_CONFIG_FILE] = add_given_that_module_is_set_active_in_the_config_file_test_library_function,
     [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_INACTIVE_IN_THE_CONFIG_FILE] = add_given_that_module_is_set_inactive_in_the_config_file_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_X_IS_STUBBED] = add_given_that_x_is_stubbed_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.THEN_CACHED_VALUE_BECAME] = add_then_cached_value_became_test_library_function,
     [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_ACTIVE] = add_then_module_became_active_test_library_function,
     [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_INACTIVE] = add_then_module_became_inactive_test_library_function,
     [FUNCTION_NAME_TEMPLATES.THEN_THE_RETURNED_VALUE_WAS] = add_then_the_returned_value_was_test_library_function,
     [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED] = add_then_x_was_called_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED_WITH] = add_then_x_was_called_with_test_library_function,
     [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED] = add_then_x_was_not_called_test_library_function,
     [FUNCTION_NAME_TEMPLATES.VERIFY_THAT_MODULE_HAS_THE_EXPECTED_NAME] = add_verify_that_module_has_the_expected_name_test_library_function,
     [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED] = add_when_x_is_called_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED_WITH] = add_when_x_is_called_with_test_library_function,
 }
 
 function this.setup_test_library_functions(test_library, schema)
