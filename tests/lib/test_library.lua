@@ -1,3 +1,4 @@
+local assert = require("luassert")
 local ut_helper = require("tests/ut_helper")
 
 this = {}
@@ -359,11 +360,11 @@ end
 function this.register_for_event_was_called_with_expected_parameters(expected_register_for_event_calls)
     assert.spy(esoTERM_common.register_for_event).was.called(ut_helper.table_size(expected_register_for_event_calls))
     for _call, call_parameters in pairs(expected_register_for_event_calls) do
-        this.stub_function_called_with_arguments(
-            esoTERM_common.register_for_event,
-            call_parameters.module,
+        assert.spy(esoTERM_common.register_for_event).was.called_with(
+            match.is_ref(call_parameters.module),
             call_parameters.event,
-            call_parameters.callback)
+            call_parameters.callback
+        )
         assert.is_not.equal(nil, call_parameters.callback)
     end
 end

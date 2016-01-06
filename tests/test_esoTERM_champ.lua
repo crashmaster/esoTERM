@@ -127,13 +127,14 @@ describe("Test esoTERM_champ module deactivate.", function()
 
     it("Unsubscribe from active events on deactivate.",
     function()
+        esoTERM_champ["settings"] = {}
         given_that_module_is_active()
             and_that_unregister_from_all_events_is_stubbed()
 
         when_deactivate_is_called()
 
         then_module_became_inactive()
-            and_unregister_from_all_events_was_called_with(esoTERM_champ)
+            and_unregister_from_all_events_was_called_with(match.is_ref(esoTERM_champ))
             and_inactive_state_of_the_module_was_saved()
     end)
 end)

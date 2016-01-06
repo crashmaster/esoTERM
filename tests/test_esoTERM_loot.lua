@@ -136,7 +136,7 @@ describe("Test esoTERM_char module deactivate.", function()
         when_deactivate_is_called()
 
         then_module_became_inactive()
-            and_unregister_from_all_events_was_called_with(esoTERM_loot)
+            and_unregister_from_all_events_was_called_with(match.is_ref(esoTERM_loot))
             and_inactive_state_of_the_module_was_saved()
     end)
 end)

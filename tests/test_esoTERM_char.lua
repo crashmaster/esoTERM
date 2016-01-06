@@ -133,7 +133,7 @@ describe("Test esoTERM_char module deactivate.", function()
         when_deactivate_is_called()
 
         then_module_became_inactive()
-            and_unregister_from_all_events_was_called_with(esoTERM_char)
+            and_unregister_from_all_events_was_called_with(match.is_ref(esoTERM_char))
             and_inactive_state_of_the_module_was_saved()
     end)
 end)
@@ -694,8 +694,11 @@ describe("The on combat-state-change event handler.", function()
         assert.is.equal(lenght, tl.CACHE.combat_lenght)
     end
 
-    local function and_unregister_from_event_was_called_with(...)
-        assert.spy(esoTERM_common.unregister_from_event).was.called_with(...)
+    local function and_unregister_from_event_was_called_with(module, event)
+        assert.spy(esoTERM_common.unregister_from_event).was.called_with(
+            match.is_ref(module),
+            event
+        )
     end
 
     local function get_exit_combat_message()

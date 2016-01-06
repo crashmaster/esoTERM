@@ -1,3 +1,4 @@
+local assert = require("luassert")
 local test_library = require("tests/lib/test_library")
 local esoTERM_char = require("esoTERM_char")
 
@@ -149,7 +150,7 @@ function test_esoTERM_char_library.and_that_unregister_from_all_events_is_stubbe
 end
 
 function test_esoTERM_char_library.and_unregister_from_all_events_was_called_with(...)
-    test_library.stub_function_called_with_arguments(esoTERM_common.unregister_from_all_events, esoTERM_char)
+    assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(...)
 end
 -- }}}
 

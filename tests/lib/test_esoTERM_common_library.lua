@@ -1,3 +1,4 @@
+local assert = require("luassert")
 local test_library = require("tests/lib/test_library")
 
 test_esoTERM_common_library = {}

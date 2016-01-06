@@ -1,3 +1,5 @@
+local spy = require("luassert.spy")
+
 local ORIGINAL_FUNCTIONS = {}
 local REPLACED_FUNCTIONS = {}
 

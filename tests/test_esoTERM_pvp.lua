@@ -1,7 +1,7 @@
+-- Locals {{{
 local requires_for_tests = require("tests/requires_for_tests")
 local tl = require("tests/lib/test_esoTERM_pvp_library")
 
--- Locals {{{
 local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
 local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
 local and_cache_is_no_longer_empty = tl.and_cache_is_no_longer_empty
@@ -110,7 +110,7 @@ describe("Test esoTERM_pvp module deactivate.", function()
         tl.when_deactivate_is_called()
 
         tl.then_module_became_inactive()
-            tl.and_unregister_from_all_events_was_called_with(esoTERM_pvp)
+            tl.and_unregister_from_all_events_was_called_with(match.is_ref(esoTERM_pvp))
             tl.and_inactive_state_of_the_module_was_saved()
     end)
 end)

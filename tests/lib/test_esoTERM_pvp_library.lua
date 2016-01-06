@@ -1,3 +1,4 @@
+local assert = require("luassert")
 local test_library = require("tests/lib/test_library")
 local esoTERM_pvp = require("esoTERM_pvp")
 
@@ -178,7 +179,7 @@ function test_esoTERM_pvp_library.and_that_unregister_from_all_events_is_stubbed
 end
 
 function test_esoTERM_pvp_library.and_unregister_from_all_events_was_called_with(...)
-    assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(esoTERM_pvp)
+    assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(...)
 end
 
 function test_esoTERM_pvp_library.and_inactive_state_of_the_module_was_saved()

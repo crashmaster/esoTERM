@@ -140,7 +140,7 @@ describe("Test esoTERM_inventory module deactivate.", function()
         when_deactivate_is_called()
 
         then_module_became_inactive(esoTERM_inventory)
-            and_unregister_from_all_events_was_called_with(esoTERM_inventory)
+            and_unregister_from_all_events_was_called_with(match.is_ref(esoTERM_inventory))
             and_inactive_state_of_the_module_was_saved()
     end)
 end)

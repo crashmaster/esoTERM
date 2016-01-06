@@ -1,3 +1,4 @@
+local assert = require("luassert")
 local test_library = require("tests/lib/test_library")
 local esoTERM_champ = require("esoTERM_champ")
 
@@ -173,7 +174,7 @@ function test_esoTERM_champ_library.and_register_for_event_was_called_with(...)
 end
 
 function test_esoTERM_champ_library.and_unregister_from_all_events_was_called_with(...)
-    assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(esoTERM_champ)
+    assert.spy(esoTERM_common.unregister_from_all_events).was.called_with(...)
 end
 
 function test_esoTERM_champ_library.and_that_getter_functions_are_stubbed()

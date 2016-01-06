@@ -4,7 +4,7 @@ RM := rm --recursive --force
 CP := cp --force
 ZIP := zip --to-crlf --verbose --recurse-paths
 LUA := lua
-BUSTED := busted --coverage
+BUSTED := busted --verbose --coverage
 LUACOV := luacov --config .luacov
 LUACOV_REPORT := luacov.report.out
 
@@ -43,8 +43,8 @@ test_silent:
 
 coverage: test_silent
 	@$(LUACOV)
-	@$(LUA) $(LUACOV_PARSER) $(LUACOV_REPORT)
-	@$(RM) $(LUACOV_REPORT)
+#	@$(LUA) $(LUACOV_PARSER) $(LUACOV_REPORT)
+#	@$(RM) $(LUACOV_REPORT)
 
 gentxt:
 	@$(RM) $(ADDON_TEXT_FILE)

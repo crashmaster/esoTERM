@@ -1,3 +1,6 @@
+assert = require("luassert")
+match = require("luassert.match")
+
 ZO_Symbols = require("tests/fake_zo_symbols")
 
 ut_helper = require("tests/ut_helper")

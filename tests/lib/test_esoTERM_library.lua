@@ -1,3 +1,4 @@
+local assert = require("luassert")
 local ut_helper = require("tests/ut_helper")
 local ZO_Symbols = require("tests/fake_zo_symbols")
 local esoTERM_init = require("esoTERM_init")
