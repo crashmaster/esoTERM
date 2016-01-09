@@ -13,6 +13,7 @@ tl.setup_test_functions(
         [FUNCTION_NAME_TEMPLATES.AND_INACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = {
             { module = esoTERM_pve, module_name_in_settings = "pve" },
         },
+        [FUNCTION_NAME_TEMPLATES.AND_THAT_CACHE_IS_EMPTY] = { { }, },
         [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = {
             { module = esoTERM_common, function_name = "register_for_event", },
             { module = esoTERM_common, function_name = "register_module", },
@@ -60,6 +61,7 @@ tl.setup_test_functions(
             { module = esoTERM_pve, function_name = "is_veteran", },
         },
         [FUNCTION_NAME_TEMPLATES.AND_ZO_SAVEDVARS_NEW_WAS_CALLED_WITH] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.CACHE_IS_CLEARED] = { { }, },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_CACHED_VALUE_IS] = {
             {  module = esoTERM_pve },
         },
@@ -128,6 +130,9 @@ local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is
 local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
 local and_unregister_from_all_events_was_called_with = tl.and_unregister_from_all_events_was_called_with
+local cache_is_cleared = tl.cache_is_cleared
+local get_expected_register_for_event_call_parameters_for_non_veteran_unit = tl.get_expected_register_for_event_call_parameters_for_non_veteran_unit
+local get_expected_register_for_event_call_parameters_for_veteran_unit = tl.get_expected_register_for_event_call_parameters_for_veteran_unit
 local given_that_cached_value_is = tl.given_that_cached_value_is
 local given_that_module_is_active = tl.given_that_module_is_active
 local given_that_module_is_inactive = tl.given_that_module_is_inactive
@@ -197,46 +202,46 @@ end)
 
 describe("Test esoTERM_pve module activate.", function()
     after_each(function()
-        tl.cache_is_cleared()
+        cache_is_cleared(esoTERM_pve)
         ut_helper.restore_stubbed_functions()
     end)
 
     it("Update cache and subscribe for events on activate for non veteran unit.",
     function()
-        tl.given_that_module_is_inactive(esoTERM_pve)
-            tl.and_that_cache_is_empty()
-            tl.and_that_register_for_event_is_stubbed()
+        given_that_module_is_inactive(esoTERM_pve)
+            and_that_cache_is_empty(esoTERM_pve)
+            and_that_register_for_event_is_stubbed()
             tl.and_that_getter_functions_for_non_veteran_unit_are_stubbed()
 
-        tl.when_activate_is_called()
+        when_activate_is_called()
 
-        tl.then_module_became_active(esoTERM_pve)
-            tl.and_cache_is_no_longer_empty()
+        then_module_became_active(esoTERM_pve)
+            and_cache_is_no_longer_empty()
             tl.and_register_for_event_was_called_for_non_veteran_unit_was_called_with(
-                tl.get_expected_register_for_event_call_parameters_for_non_veteran_unit()
+                get_expected_register_for_event_call_parameters_for_non_veteran_unit()
             )
-            tl.and_getter_function_stubs_were_called()
+            and_getter_function_stubs_were_called()
             tl.and_cached_values_for_non_veteran_unit_became_initialized()
-            tl.and_active_state_of_the_module_was_saved()
+            and_active_state_of_the_module_was_saved()
     end)
 
     it("Update cache and subscribe for events on activate for veteran unit.",
     function()
-        tl.given_that_module_is_inactive(esoTERM_pve)
-            tl.and_that_cache_is_empty()
-            tl.and_that_register_for_event_is_stubbed()
+        given_that_module_is_inactive(esoTERM_pve)
+            and_that_cache_is_empty(esoTERM_pve)
+            and_that_register_for_event_is_stubbed()
             tl.and_that_getter_functions_for_veteran_unit_are_stubbed()
 
-        tl.when_activate_is_called()
+        when_activate_is_called()
 
-        tl.then_module_became_active(esoTERM_pve)
-            tl.and_cache_is_no_longer_empty()
+        then_module_became_active(esoTERM_pve)
+            and_cache_is_no_longer_empty()
             tl.and_register_for_event_was_called_for_veteran_unit_was_called_with(
-                tl.get_expected_register_for_event_call_parameters_for_veteran_unit()
+                get_expected_register_for_event_call_parameters_for_veteran_unit()
             )
-            tl.and_getter_function_stubs_were_called()
+            and_getter_function_stubs_were_called()
             tl.and_cached_values_for_veteran_unit_became_initialized()
-            tl.and_active_state_of_the_module_was_saved()
+            and_active_state_of_the_module_was_saved()
     end)
 end)
 

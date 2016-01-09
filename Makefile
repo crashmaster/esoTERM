@@ -43,8 +43,8 @@ test_silent:
 
 coverage: test_silent
 	@$(LUACOV)
-#	@$(LUA) $(LUACOV_PARSER) $(LUACOV_REPORT)
-#	@$(RM) $(LUACOV_REPORT)
+	@$(LUA) $(LUACOV_PARSER) $(LUACOV_REPORT)
+	@$(RM) $(LUACOV_REPORT)
 
 gentxt:
 	@$(RM) $(ADDON_TEXT_FILE)

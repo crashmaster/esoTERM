@@ -1,10 +1,10 @@
 local SECTION_DELIMITER = string.rep("=", 78)
-local NO_COV_INDICATOR = "^\*+0%s*(.*)$"
+local NO_COV_INDICATOR = "^%*+0%s*(.*)$"
 local MAX_CODE_LEN = 65
 
 local SECTION = ""
 local IN_BANNER = false
-local IN_FILE_SCETION = false
+local IN_FILE_SECTION = false
 local IN_CAPTURE = false
 local LINE_COUNTER = 0
 
@@ -25,7 +25,7 @@ local function banner_head_found(line)
 end
 
 local function file_section_found(line)
-    return string.match(line, "^.*\.lua$") and IN_BANNER
+    return string.match(line, "^.*%.lua$") and IN_BANNER
 end
 
 local function summary_section_found(line)
@@ -37,7 +37,7 @@ local function banner_tail_found(line)
 end
 
 local function in_file_content_section()
-    return not IN_BANNER and IN_CAPTURE and IN_FILE_SCETION
+    return not IN_BANNER and IN_CAPTURE and IN_FILE_SECTION
 end
 
 local function in_summary_content_section()
@@ -77,11 +77,11 @@ local function parse_luacov_report_file(file)
         if banner_head_found(line) then
             IN_BANNER = true
             IN_CAPTURE = false
-            IN_FILE_SCETION = false
+            IN_FILE_SECTION = false
             IN_SUMMARY_SECTION = false
             LINE_COUNTER = 0
         elseif file_section_found(line) then
-            IN_FILE_SCETION = true
+            IN_FILE_SECTION = true
             SECTION = basename(line)
             NO_COV_TO_FILE[SECTION] = {}
         elseif summary_section_found(line) then

@@ -11,12 +11,14 @@ FUNCTION_NAME_TEMPLATES = {
     AND_CACHED_VALUE_BECAME = "and_cached_value_became",
     AND_INACTIVE_STATE_OF_THE_MODULE_WAS_SAVED = "and_inactive_state_of_the_module_was_saved",
     AND_REGISTER_FOR_EVENT_WAS_CALLED_WITH = "and_register_for_event_was_called_with",
+    AND_THAT_CACHE_IS_EMPTY = "and_that_cache_is_empty",
     AND_THAT_X_IS_STUBBED = "and_that_x_is_stubbed",
     AND_THAT_X_RETURNS = "and_that_x_returns",
     AND_X_WAS_CALLED = "and_x_was_called",
     AND_X_WAS_CALLED_WITH = "and_x_was_called_with",
     AND_X_WAS_NOT_CALLED = "and_x_was_not_called",
     AND_ZO_SAVEDVARS_NEW_WAS_CALLED_WITH = "and_ZO_SavedVars_new_was_called_with",
+    CACHE_IS_CLEARED = "cache_is_cleared",
     GIVEN_THAT_CACHED_VALUE_IS = "given_that_cached_value_is",
     GIVEN_THAT_MODULE_IS_ACTIVE = "given_that_module_is_active",
     GIVEN_THAT_MODULE_IS_INACTIVE = "given_that_module_is_inactive",
@@ -89,7 +91,7 @@ end
 
 local function add_and_active_state_of_the_module_was_saved_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["and_active_state_of_the_module_was_saved" ] = function()
+    test_library["and_active_state_of_the_module_was_saved"] = function()
         assert.is.equal(fp.module.settings[fp.module_name_in_settings], true)
     end
 end
@@ -103,21 +105,27 @@ end
 
 local function add_and_inactive_state_of_the_module_was_saved_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["and_inactive_state_of_the_module_was_saved" ] = function()
+    test_library["and_inactive_state_of_the_module_was_saved"] = function()
         assert.is.equal(fp.module.settings[fp.module_name_in_settings], false)
+    end
+end
+
+local function add_and_that_cache_is_empty_test_library_function(test_library, function_properties)
+    test_library["and_that_cache_is_empty"] = function(module)
+        assert.is.equal(0, ut_helper.table_size(module.cache))
     end
 end
 
 local function add_and_that_x_is_stubbed_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["and_that_" .. fp.function_name .. "_is_stubbed" ] = function()
+    test_library["and_that_" .. fp.function_name .. "_is_stubbed"] = function()
         this.stub_function_with_no_return_value(fp.module, fp.function_name)
     end
 end
 
 local function add_and_that_x_returns_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["and_that_" .. fp.function_name .. "_returns" ] = function(...)
+    test_library["and_that_" .. fp.function_name .. "_returns"] = function(...)
         this.stub_function_with_return_value(fp.module, fp.function_name, ...)
     end
 end
@@ -157,6 +165,14 @@ local function add_and_zo_savedvars_new_was_called_with_test_library_function(te
     end
 end
 
+local function add_cache_is_cleared_test_library_function(test_library, function_properties)
+    test_library["cache_is_cleared"] = function(module)
+        for k, _v in pairs(module.cache) do
+            module.cache[k] = nil
+        end
+    end
+end
+
 local function add_given_that_cached_value_is_test_library_function(test_library, function_properties)
     local fp = function_properties
     test_library["given_that_cached_value_is"] = function(value_name, value)
@@ -190,7 +206,7 @@ end
 
 local function add_given_that_x_is_stubbed_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["given_that_" .. fp.function_name .. "_is_stubbed" ] = function()
+    test_library["given_that_" .. fp.function_name .. "_is_stubbed"] = function()
         this.stub_function_with_no_return_value(fp.module, fp.function_name)
     end
 end
@@ -222,21 +238,21 @@ end
 
 local function add_then_x_was_called_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["then_" .. fp.function_name .. "_was_called" ] = function()
+    test_library["then_" .. fp.function_name .. "_was_called"] = function()
         this.stub_function_called_without_arguments(fp.module[fp.function_name])
     end
 end
 
 local function add_then_x_was_called_with_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["then_" .. fp.function_name .. "_was_called_with" ] = function(...)
+    test_library["then_" .. fp.function_name .. "_was_called_with"] = function(...)
         this.stub_function_called_with_arguments(fp.module[fp.function_name], ...)
     end
 end
 
 local function add_then_x_was_not_called_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["then_" .. fp.function_name .. "_was_not_called" ] = function()
+    test_library["then_" .. fp.function_name .. "_was_not_called"] = function()
         this.stub_function_was_not_called(fp.module[fp.function_name])
     end
 end
@@ -267,12 +283,14 @@ local FUNCTION_NAME_TEMPLATE_TO_ADD_FUCTION = {
     [FUNCTION_NAME_TEMPLATES.AND_CACHED_VALUE_BECAME] = add_and_cached_value_became_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_INACTIVE_STATE_OF_THE_MODULE_WAS_SAVED] = add_and_inactive_state_of_the_module_was_saved_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_REGISTER_FOR_EVENT_WAS_CALLED_WITH] = add_and_register_for_event_was_called_with_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.AND_THAT_CACHE_IS_EMPTY] = add_and_that_cache_is_empty_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = add_and_that_x_is_stubbed_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_THAT_X_RETURNS] = add_and_that_x_returns_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED] = add_and_x_was_called_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = add_and_x_was_called_with_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_X_WAS_NOT_CALLED] = add_and_x_was_not_called_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_ZO_SAVEDVARS_NEW_WAS_CALLED_WITH] = add_and_zo_savedvars_new_was_called_with_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.CACHE_IS_CLEARED] = add_cache_is_cleared_test_library_function,
     [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_CACHED_VALUE_IS] = add_given_that_cached_value_is_test_library_function,
     [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_ACTIVE] = add_given_that_module_is_active_test_library_function,
     [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_INACTIVE] = add_given_that_module_is_inactive_test_library_function,

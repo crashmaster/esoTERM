@@ -32,16 +32,6 @@ test_esoTERM_pve_library.LEVEL_XP_GAIN = test_library.L_INTEGER
 local MODULE_NAME = "pve"
 
 -- Activate {{{
-function test_esoTERM_pve_library.cache_is_cleared()
-    for k, v in pairs(test_esoTERM_pve_library.CACHE) do
-        test_esoTERM_pve_library.CACHE[k] = nil
-    end
-end
-
-function test_esoTERM_pve_library.and_that_cache_is_empty()
-    assert.is.equal(0, ut_helper.table_size(test_esoTERM_pve_library.CACHE))
-end
-
 function test_esoTERM_pve_library.get_expected_register_for_event_call_parameters_for_non_veteran_unit()
     return {
         {
