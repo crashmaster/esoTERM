@@ -188,7 +188,7 @@ end
 
 local function add_given_that_module_is_inactive_test_library_function(test_library, function_properties)
     test_library["given_that_module_is_inactive"] = function(...)
-        this.set_module_to_active(...)
+        this.set_module_to_inactive(...)
     end
 end
 
@@ -359,10 +359,12 @@ local MODULE_INACTIVE = false
 
 function this.set_module_to_active(module)
     module.is_active = MODULE_ACTIVE
+    module.settings = {}
 end
 
 function this.set_module_to_inactive(module)
     module.is_active = MODULE_INACTIVE
+    module.settings = {}
 end
 
 function this.check_that_module_became_active(module)

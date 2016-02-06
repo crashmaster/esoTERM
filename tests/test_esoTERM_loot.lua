@@ -8,23 +8,21 @@ tl.setup_test_functions(
             { module = esoTERM_loot, module_name_in_settings = "loot" },
         },
         [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = {
+            { module = esoTERM_loot, function_name = "initialize_inventory", },
             { module = esoTERM_common, function_name = "register_for_event", },
-            { module = esoTERM_common, function_name = "register_module", },
-            { module = esoTERM_loot, function_name = "activate", },
         },
         [FUNCTION_NAME_TEMPLATES.AND_REGISTER_FOR_EVENT_WAS_CALLED_WITH] = { { }, },
-        [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = {
-            { module = esoTERM_common, function_name = "register_module", },
+        [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED] = {
+            { module = esoTERM_loot, function_name = "initialize_inventory", },
         },
-        [FUNCTION_NAME_TEMPLATES.AND_ZO_SAVEDVARS_NEW_WAS_CALLED_WITH] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_ACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_INACTIVE] = { { }, },
-        [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_SET_INACTIVE_IN_THE_CONFIG_FILE] = { { }, },
-        [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_ACTIVE] = { { }, },
-        [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED] = {
-            { module = esoTERM_loot, function_name = "activate", },
+        [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_X_IS_STUBBED] = {
+            { module = esoTERM_common, function_name = "initialize_module", },
         },
-        [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED] = {
-            { module = esoTERM_loot, function_name = "activate", },
+        [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_ACTIVE] = { { }, },
+        [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED_WITH] = {
+            { module = esoTERM_common, function_name = "initialize_module", },
         },
         [FUNCTION_NAME_TEMPLATES.VERIFY_THAT_MODULE_HAS_THE_EXPECTED_NAME] = { { }, },
         [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED] = {
@@ -34,27 +32,19 @@ tl.setup_test_functions(
     }
 )
 
-local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
 local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
-local and_cached_values_became_initialized = tl.and_cached_values_became_initialized
-local and_getter_function_stubs_were_called = tl.and_getter_function_stubs_were_called
 local and_inactive_state_of_the_module_was_saved = tl.and_inactive_state_of_the_module_was_saved
+local and_initialize_inventory_was_called = tl.and_initialize_inventory_was_called
 local and_register_for_event_was_called_with = tl.and_register_for_event_was_called_with
-local and_register_module_was_called_with = tl.and_register_module_was_called_with
-local and_that_cache_is_empty = tl.and_that_cache_is_empty
-local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
-local and_that_getter_functions_are_stubbed = tl.and_that_getter_functions_are_stubbed
+local and_that_initialize_inventory_is_stubbed = tl.and_that_initialize_inventory_is_stubbed
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
-local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
 local and_unregister_from_all_events_was_called_with = tl.and_unregister_from_all_events_was_called_with
 local get_expected_register_for_event_call_parameters = tl.get_expected_register_for_event_call_parameters
+local given_that_initialize_module_is_stubbed = tl.given_that_initialize_module_is_stubbed
 local given_that_module_is_active = tl.given_that_module_is_active
 local given_that_module_is_inactive = tl.given_that_module_is_inactive
-local given_that_module_is_set_active_in_the_config_file = tl.given_that_module_is_set_active_in_the_config_file
-local given_that_module_is_set_inactive_in_the_config_file = tl.given_that_module_is_set_inactive_in_the_config_file
-local then_activate_was_called = tl.then_activate_was_called
-local then_activate_was_not_called = tl.then_activate_was_not_called
+local then_initialize_module_was_called_with = tl.then_initialize_module_was_called_with
 local then_module_became_active = tl.then_module_became_active
 local then_module_became_inactive = tl.then_module_became_inactive
 local verify_that_module_has_the_expected_name = tl.verify_that_module_has_the_expected_name
@@ -75,30 +65,15 @@ describe("Test the esoTERM_loot module initialization.", function()
         ut_helper.restore_stubbed_functions()
     end)
 
-    it("Initialize, but do not activate when configured as inactive.",
+    it("Initialize",
     function()
-        given_that_module_is_set_inactive_in_the_config_file("loot")
-            and_that_register_module_is_stubbed()
-            and_that_activate_is_stubbed()
+        given_that_initialize_module_is_stubbed()
+            and_that_initialize_inventory_is_stubbed()
 
         when_initialize_is_called()
+            and_initialize_inventory_was_called()
 
-        then_activate_was_not_called()
-            and_ZO_SavedVars_new_was_called_with("loot")
-            and_register_module_was_called_with(esoTERM.module_register, esoTERM_loot)
-    end)
-
-    it("Initialize, and activate when configured as active.",
-    function()
-        given_that_module_is_set_active_in_the_config_file("loot")
-            and_that_register_module_is_stubbed()
-            and_that_activate_is_stubbed()
-
-        when_initialize_is_called()
-
-        then_activate_was_called()
-            and_ZO_SavedVars_new_was_called_with("loot")
-            and_register_module_was_called_with(esoTERM.module_register, esoTERM_loot)
+        then_initialize_module_was_called_with(esoTERM_loot)
     end)
 end)
 
@@ -130,7 +105,7 @@ describe("Test esoTERM_char module deactivate.", function()
 
     it("Unsubscribe from active events on deactivate.",
     function()
-        given_that_module_is_active()
+        given_that_module_is_active(esoTERM_loot)
             and_that_unregister_from_all_events_is_stubbed()
 
         when_deactivate_is_called()

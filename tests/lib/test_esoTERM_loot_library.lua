@@ -50,10 +50,6 @@ function test_esoTERM_loot_library.then_module_became_inactive()
     test_library.check_that_module_became_inactive(esoTERM_loot)
 end
 
-function test_esoTERM_loot_library.given_that_module_is_active()
-    test_library.set_module_to_active(esoTERM_loot)
-end
-
 function test_esoTERM_loot_library.and_that_unregister_from_all_events_is_stubbed()
     test_library.stub_function_with_no_return_value(esoTERM_common, "unregister_from_all_events")
 end

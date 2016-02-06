@@ -32,8 +32,12 @@ function esoTERM_loot.on_money_received(event, new_amount, old_amount, reason)
     end
 end
 
+function esoTERM_loot.initialize_inventory()
+end
+
 function esoTERM_loot.initialize()
     esoTERM_common.initialize_module(esoTERM_loot)
+    esoTERM_loot.initialize_inventory()
 end
 
 function esoTERM_loot.activate()
