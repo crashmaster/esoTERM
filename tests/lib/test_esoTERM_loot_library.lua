@@ -18,12 +18,6 @@ function test_esoTERM_loot_library.setup_test_functions(...)
 end
 -- }}}
 
--- Initialization {{{
-function test_esoTERM_loot_library.given_that_module_is_set_active_in_the_config_file(...)
-    test_library.set_module_to_active_in_config_file(...)
-end
--- }}}
-
 -- Activate {{{
 function test_esoTERM_loot_library.get_expected_register_for_event_call_parameters()
     return {
@@ -38,6 +32,18 @@ function test_esoTERM_loot_library.get_expected_register_for_event_call_paramete
             callback = esoTERM_loot.on_money_received
         },
     }
+end
+-- }}}
+
+-- given_that_bag_cache_is_empty {{{
+function test_esoTERM_loot_library.given_that_bag_cache_is_empty()
+    assert.is.same({}, esoTERM_loot.cache.bag)
+end
+-- }}}
+
+-- then_bag_cache_became {{{
+function test_esoTERM_loot_library.then_bag_cache_became(...)
+    assert.is.same(..., esoTERM_loot.cache.bag)
 end
 -- }}}
 

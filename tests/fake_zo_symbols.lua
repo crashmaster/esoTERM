@@ -61,7 +61,11 @@ DAMAGE_TYPE_SHOCK = 12
 
 SI_TOOLTIP_ITEM_NAME = "SI_TOOLTIP_ITEM_NAME"
 
+BAG_BACKPACK = 1
+
 SLASH_COMMANDS = {}
+
+function GetBagSize() end
 
 function GetChampionXPInRank() end
 

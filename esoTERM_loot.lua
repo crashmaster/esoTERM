@@ -1,5 +1,7 @@
 esoTERM_loot = {}
 
+esoTERM_loot.cache = {}
+esoTERM_loot.cache.bag = {}
 esoTERM_loot.event_register = {}
 esoTERM_loot.module_name = "loot"
 esoTERM_loot.is_active = false
@@ -32,12 +34,19 @@ function esoTERM_loot.on_money_received(event, new_amount, old_amount, reason)
     end
 end
 
-function esoTERM_loot.initialize_inventory()
+function esoTERM_loot.initialize_bag_cache()
+    local bag_size = GetBagSize(BAG_BACKPACK)
+    for i = 1, bag_size, 1 do
+        esoTERM_loot.cache.bag[i] = {
+            item_name = "",
+            stack_size = 0,
+        }
+    end
 end
 
 function esoTERM_loot.initialize()
     esoTERM_common.initialize_module(esoTERM_loot)
-    esoTERM_loot.initialize_inventory()
+    esoTERM_loot.initialize_bag_cache()
 end
 
 function esoTERM_loot.activate()

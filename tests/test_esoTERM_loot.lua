@@ -8,12 +8,18 @@ tl.setup_test_functions(
             { module = esoTERM_loot, module_name_in_settings = "loot" },
         },
         [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = {
-            { module = esoTERM_loot, function_name = "initialize_inventory", },
+            { module = esoTERM_loot, function_name = "initialize_bag_cache", },
             { module = esoTERM_common, function_name = "register_for_event", },
+        },
+        [FUNCTION_NAME_TEMPLATES.AND_THAT_X_RETURNS] = {
+            { module = GLOBAL, function_name = "GetBagSize", },
         },
         [FUNCTION_NAME_TEMPLATES.AND_REGISTER_FOR_EVENT_WAS_CALLED_WITH] = { { }, },
         [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED] = {
-            { module = esoTERM_loot, function_name = "initialize_inventory", },
+            { module = esoTERM_loot, function_name = "initialize_bag_cache", },
+        },
+        [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = {
+            { module = GLOBAL, function_name = "GetBagSize", },
         },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_ACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_INACTIVE] = { { }, },
@@ -28,28 +34,34 @@ tl.setup_test_functions(
         [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED] = {
             { module = esoTERM_loot, function_name = "activate", },
             { module = esoTERM_loot, function_name = "initialize", },
+            { module = esoTERM_loot, function_name = "initialize_bag_cache", },
         },
     }
 )
 
+local and_GetBagSize_was_called_with = tl.and_GetBagSize_was_called_with
 local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
 local and_inactive_state_of_the_module_was_saved = tl.and_inactive_state_of_the_module_was_saved
-local and_initialize_inventory_was_called = tl.and_initialize_inventory_was_called
+local and_initialize_bag_cache_was_called = tl.and_initialize_bag_cache_was_called
 local and_register_for_event_was_called_with = tl.and_register_for_event_was_called_with
-local and_that_initialize_inventory_is_stubbed = tl.and_that_initialize_inventory_is_stubbed
+local and_that_GetBagSize_returns = tl.and_that_GetBagSize_returns
+local and_that_initialize_bag_cache_is_stubbed = tl.and_that_initialize_bag_cache_is_stubbed
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
 local and_unregister_from_all_events_was_called_with = tl.and_unregister_from_all_events_was_called_with
 local get_expected_register_for_event_call_parameters = tl.get_expected_register_for_event_call_parameters
+local given_that_bag_cache_is_empty = tl.given_that_bag_cache_is_empty
 local given_that_initialize_module_is_stubbed = tl.given_that_initialize_module_is_stubbed
 local given_that_module_is_active = tl.given_that_module_is_active
 local given_that_module_is_inactive = tl.given_that_module_is_inactive
+local then_bag_cache_became = tl.then_bag_cache_became
 local then_initialize_module_was_called_with = tl.then_initialize_module_was_called_with
 local then_module_became_active = tl.then_module_became_active
 local then_module_became_inactive = tl.then_module_became_inactive
 local verify_that_module_has_the_expected_name = tl.verify_that_module_has_the_expected_name
 local when_activate_is_called = tl.when_activate_is_called
 local when_deactivate_is_called = tl.when_deactivate_is_called
+local when_initialize_bag_cache_is_called = tl.when_initialize_bag_cache_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
 -- }}}
 
@@ -68,12 +80,39 @@ describe("Test the esoTERM_loot module initialization.", function()
     it("Initialize",
     function()
         given_that_initialize_module_is_stubbed()
-            and_that_initialize_inventory_is_stubbed()
+            and_that_initialize_bag_cache_is_stubbed()
 
         when_initialize_is_called()
-            and_initialize_inventory_was_called()
+            and_initialize_bag_cache_was_called()
 
         then_initialize_module_was_called_with(esoTERM_loot)
+    end)
+end)
+
+describe("Test the esoTERM_loot module initialization.", function()
+    after_each(function()
+        ut_helper.restore_stubbed_functions()
+    end)
+
+    it("Initialize bag cache",
+    function()
+        given_that_bag_cache_is_empty()
+            and_that_GetBagSize_returns(2)
+
+        when_initialize_bag_cache_is_called()
+
+        then_bag_cache_became({
+                {
+                    item_name = "",
+                    stack_size = 0,
+                },
+                {
+                    item_name = "",
+                    stack_size = 0,
+                }
+            }
+        )
+            and_GetBagSize_was_called_with(BAG_BACKPACK)
     end)
 end)
 
