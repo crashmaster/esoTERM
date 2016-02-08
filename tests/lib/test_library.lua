@@ -14,6 +14,7 @@ FUNCTION_NAME_TEMPLATES = {
     AND_THAT_CACHE_IS_EMPTY = "and_that_cache_is_empty",
     AND_THAT_X_IS_STUBBED = "and_that_x_is_stubbed",
     AND_THAT_X_RETURNS = "and_that_x_returns",
+    AND_THAT_X_IS_REPLACED_BY = "and_that_x_is_replaced_by",
     AND_X_WAS_CALLED = "and_x_was_called",
     AND_X_WAS_CALLED_WITH = "and_x_was_called_with",
     AND_X_WAS_NOT_CALLED = "and_x_was_not_called",
@@ -65,16 +66,20 @@ this.D_STRING = "dDdDd"
 this.E_STRING = "eEeEe"
 this.F_STRING = "fFfFf"
 
-local function stub_function(module, function_name, return_value)
-    ut_helper.stub_function(module, function_name, return_value)
+function this.replace_function_by(...)
+    replace_function(...)
+end
+
+local function stub_function(...)
+    ut_helper.stub_function(...)
 end
 
 function this.stub_function_with_no_return_value(module, function_name)
     stub_function(module, function_name, nil)
 end
 
-function this.stub_function_with_return_value(module, function_name, return_value)
-    stub_function(module, function_name, return_value)
+function this.stub_function_with_return_value(...)
+    stub_function(...)
 end
 
 function this.stub_function_was_not_called(module_function)
@@ -124,6 +129,13 @@ local function add_and_that_x_is_stubbed_test_library_function(test_library, fun
 end
 
 local function add_and_that_x_returns_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["and_that_" .. fp.function_name .. "_returns"] = function(...)
+        this.stub_function_with_return_value(fp.module, fp.function_name, ...)
+    end
+end
+
+local function add_and_that_x_is_replaced_by_test_library_function(test_library, function_properties)
     local fp = function_properties
     test_library["and_that_" .. fp.function_name .. "_returns"] = function(...)
         this.stub_function_with_return_value(fp.module, fp.function_name, ...)
@@ -286,6 +298,7 @@ local FUNCTION_NAME_TEMPLATE_TO_ADD_FUCTION = {
     [FUNCTION_NAME_TEMPLATES.AND_THAT_CACHE_IS_EMPTY] = add_and_that_cache_is_empty_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = add_and_that_x_is_stubbed_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_THAT_X_RETURNS] = add_and_that_x_returns_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_REPLACED_BY] = add_and_that_x_is_replaced_by_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED] = add_and_x_was_called_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = add_and_x_was_called_with_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_X_WAS_NOT_CALLED] = add_and_x_was_not_called_test_library_function,

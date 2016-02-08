@@ -22,6 +22,13 @@ local function _register_replaced_function(scope, function_name)
     REPLACED_FUNCTIONS[key] = { scope = scope, function_name = function_name }
 end
 
+local function replace_function(scope, function_name, function_object)
+    local new_function = function_object
+    _update_function(scope, function_name, new_function)
+    _engage_spy_on_function(scope, function_name)
+    _register_replaced_function(scope, function_name)
+end
+
 local function stub_function(scope, function_name, ...)
     local return_value = {...}
     local new_function = function(arg) return unpack(return_value) end
@@ -67,6 +74,7 @@ local function clear_table(table)
 end
 
 local ut_helper = {
+    replace_function = replace_function,
     stub_function = stub_function,
     restore_stubbed_function = restore_stubbed_function,
     restore_stubbed_functions = restore_stubbed_functions,

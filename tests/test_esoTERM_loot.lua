@@ -14,6 +14,9 @@ tl.setup_test_functions(
         [FUNCTION_NAME_TEMPLATES.AND_THAT_X_RETURNS] = {
             { module = GLOBAL, function_name = "GetBagSize", },
         },
+        [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_REPLACED_BY] = {
+            { module = GLOBAL, function_name = "GetItemName", },
+        },
         [FUNCTION_NAME_TEMPLATES.AND_REGISTER_FOR_EVENT_WAS_CALLED_WITH] = { { }, },
         [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED] = {
             { module = esoTERM_loot, function_name = "initialize_bag_cache", },

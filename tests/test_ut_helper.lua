@@ -23,8 +23,8 @@ describe("Test stubbing related unit test helpers", function()
         assert.is.equal(value, test_functions.function_1(nil))
     end
 
-    local function and_stubbed_function_1_was_called_once_with(value)
-        assert.spy(test_functions.function_1).was.called_with(nil)
+    local function and_stubbed_function_1_was_called_once_with(...)
+        assert.spy(test_functions.function_1).was.called_with(...)
     end
     -- }}}
 
@@ -36,6 +36,30 @@ describe("Test stubbing related unit test helpers", function()
 
         then_function_1_called_with_anything_returns(2)
             and_stubbed_function_1_was_called_once_with(nil)
+    end)
+
+    -- {{{
+    local function when_function_1_is_replaced_with_function(function_object)
+        ut_helper.replace_function(test_functions, "function_1", function_object)
+    end
+
+    local function return_parameter(...)
+        return "parameter " .. ...
+    end
+
+    local function then_function_1_called_returns_its_parameter(expected_result, function_parameter)
+        assert.is.equal(expected_result, test_functions.function_1(function_parameter))
+    end
+    -- }}}
+
+    it("Replace a function with another function.",
+    function()
+        given_that_function_1_works_as_originally_defined()
+
+        when_function_1_is_replaced_with_function(return_parameter)
+
+        then_function_1_called_returns_its_parameter("parameter abc", "abc")
+            and_stubbed_function_1_was_called_once_with("abc")
     end)
 
     -- {{{

@@ -69,9 +69,13 @@ function GetBagSize() end
 
 function GetChampionXPInRank() end
 
+function GetItemName() end
+
 function GetPlayerChampionPointsEarned() end
 
 function GetPlayerChampionXP() end
+
+function GetSlotStackSize() end
 
 function zo_callLater(func) func() end
 
