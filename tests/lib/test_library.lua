@@ -67,7 +67,7 @@ this.E_STRING = "eEeEe"
 this.F_STRING = "fFfFf"
 
 function this.replace_function_by(...)
-    replace_function(...)
+    ut_helper.replace_function(...)
 end
 
 local function stub_function(...)
@@ -137,8 +137,8 @@ end
 
 local function add_and_that_x_is_replaced_by_test_library_function(test_library, function_properties)
     local fp = function_properties
-    test_library["and_that_" .. fp.function_name .. "_returns"] = function(...)
-        this.stub_function_with_return_value(fp.module, fp.function_name, ...)
+    test_library["and_that_" .. fp.function_name .. "_is_replaced_by"] = function(...)
+        this.replace_function_by(fp.module, fp.function_name, ...)
     end
 end
 

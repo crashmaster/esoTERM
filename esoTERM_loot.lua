@@ -38,7 +38,7 @@ function esoTERM_loot.initialize_bag_cache()
     local bag_size = GetBagSize(BAG_BACKPACK)
     for i = 1, bag_size, 1 do
         esoTERM_loot.cache.bag[i] = {
-            item_name = "",
+            item_name = GetItemName(i),
             stack_size = 0,
         }
     end

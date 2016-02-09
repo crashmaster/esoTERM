@@ -48,6 +48,7 @@ local and_inactive_state_of_the_module_was_saved = tl.and_inactive_state_of_the_
 local and_initialize_bag_cache_was_called = tl.and_initialize_bag_cache_was_called
 local and_register_for_event_was_called_with = tl.and_register_for_event_was_called_with
 local and_that_GetBagSize_returns = tl.and_that_GetBagSize_returns
+local and_that_GetItemName_is_replaced_by = tl.and_that_GetItemName_is_replaced_by
 local and_that_initialize_bag_cache_is_stubbed = tl.and_that_initialize_bag_cache_is_stubbed
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
@@ -97,20 +98,25 @@ describe("Test the esoTERM_loot module initialization.", function()
         ut_helper.restore_stubbed_functions()
     end)
 
+    local function return_item_name_plus_arg(arg)
+        return "item_name_" .. arg
+    end
+
     it("Initialize bag cache",
     function()
         given_that_bag_cache_is_empty()
             and_that_GetBagSize_returns(2)
+            and_that_GetItemName_is_replaced_by(return_item_name_plus_arg)
 
         when_initialize_bag_cache_is_called()
 
         then_bag_cache_became({
                 {
-                    item_name = "",
+                    item_name = "item_name_1",
                     stack_size = 0,
                 },
                 {
-                    item_name = "",
+                    item_name = "item_name_2",
                     stack_size = 0,
                 }
             }
