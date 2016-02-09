@@ -111,12 +111,12 @@ describe("Test the esoTERM_loot module initialization.", function()
         when_initialize_bag_cache_is_called()
 
         then_bag_cache_became({
-                {
-                    item_name = "item_name_1",
+                [0] = {
+                    item_name = "item_name_0",
                     stack_size = 0,
                 },
-                {
-                    item_name = "item_name_2",
+                [1] = {
+                    item_name = "item_name_1",
                     stack_size = 0,
                 }
             }
