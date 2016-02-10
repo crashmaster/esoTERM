@@ -24,6 +24,9 @@ tl.setup_test_functions(
         [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = {
             { module = GLOBAL, function_name = "GetBagSize", },
         },
+        [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH_MULTI_VALUES] = {
+            { module = GLOBAL, function_name = "GetItemName", },
+        },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_ACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_INACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_X_IS_STUBBED] = {
@@ -43,6 +46,7 @@ tl.setup_test_functions(
 )
 
 local and_GetBagSize_was_called_with = tl.and_GetBagSize_was_called_with
+local and_GetItemName_was_called_with_multi_values = tl.and_GetItemName_was_called_with_multi_values
 local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
 local and_inactive_state_of_the_module_was_saved = tl.and_inactive_state_of_the_module_was_saved
 local and_initialize_bag_cache_was_called = tl.and_initialize_bag_cache_was_called
@@ -102,6 +106,17 @@ describe("Test the esoTERM_loot module initialization.", function()
         return "item_name_" .. arg
     end
 
+    local expected_bag_cache_after_initialize = {
+        [0] = {
+            item_name = "item_name_0",
+            stack_size = 0,
+        },
+        [1] = {
+            item_name = "item_name_1",
+            stack_size = 0,
+        }
+    }
+
     it("Initialize bag cache",
     function()
         given_that_bag_cache_is_empty()
@@ -110,18 +125,9 @@ describe("Test the esoTERM_loot module initialization.", function()
 
         when_initialize_bag_cache_is_called()
 
-        then_bag_cache_became({
-                [0] = {
-                    item_name = "item_name_0",
-                    stack_size = 0,
-                },
-                [1] = {
-                    item_name = "item_name_1",
-                    stack_size = 0,
-                }
-            }
-        )
+        then_bag_cache_became(expected_bag_cache_after_initialize)
             and_GetBagSize_was_called_with(BAG_BACKPACK)
+            and_GetItemName_was_called_with_multi_values({0, 1})
     end)
 end)
 

@@ -17,6 +17,7 @@ FUNCTION_NAME_TEMPLATES = {
     AND_THAT_X_IS_REPLACED_BY = "and_that_x_is_replaced_by",
     AND_X_WAS_CALLED = "and_x_was_called",
     AND_X_WAS_CALLED_WITH = "and_x_was_called_with",
+    AND_X_WAS_CALLED_WITH_MULTI_VALUES = "and_x_was_called_with_multi_values",
     AND_X_WAS_NOT_CALLED = "and_x_was_not_called",
     AND_ZO_SAVEDVARS_NEW_WAS_CALLED_WITH = "and_ZO_SavedVars_new_was_called_with",
     CACHE_IS_CLEARED = "cache_is_cleared",
@@ -163,6 +164,15 @@ local function add_and_x_was_called_with_test_library_function(test_library, fun
     end
 end
 
+local function add_and_x_was_called_with_multi_values_test_library_function(test_library, function_properties)
+    local fp = function_properties
+    test_library["and_" .. fp.function_name .. "_was_called_with_multi_values"] = function(...)
+        for _i, arguments in ipairs(...) do
+            this.stub_function_called_with_arguments(fp.module[fp.function_name], arguments)
+        end
+    end
+end
+
 local function add_and_x_was_not_called_test_library_function(test_library, function_properties)
     local fp = function_properties
     test_library["and_" .. fp.function_name .. "_was_not_called"] = function()
@@ -301,6 +311,7 @@ local FUNCTION_NAME_TEMPLATE_TO_ADD_FUCTION = {
     [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_REPLACED_BY] = add_and_that_x_is_replaced_by_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED] = add_and_x_was_called_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = add_and_x_was_called_with_test_library_function,
+    [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH_MULTI_VALUES] = add_and_x_was_called_with_multi_values_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_X_WAS_NOT_CALLED] = add_and_x_was_not_called_test_library_function,
     [FUNCTION_NAME_TEMPLATES.AND_ZO_SAVEDVARS_NEW_WAS_CALLED_WITH] = add_and_zo_savedvars_new_was_called_with_test_library_function,
     [FUNCTION_NAME_TEMPLATES.CACHE_IS_CLEARED] = add_cache_is_cleared_test_library_function,
