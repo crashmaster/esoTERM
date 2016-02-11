@@ -16,6 +16,7 @@ tl.setup_test_functions(
         },
         [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_REPLACED_BY] = {
             { module = GLOBAL, function_name = "GetItemName", },
+            { module = GLOBAL, function_name = "GetSlotStackSize", },
         },
         [FUNCTION_NAME_TEMPLATES.AND_REGISTER_FOR_EVENT_WAS_CALLED_WITH] = { { }, },
         [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED] = {
@@ -26,6 +27,7 @@ tl.setup_test_functions(
         },
         [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH_MULTI_VALUES] = {
             { module = GLOBAL, function_name = "GetItemName", },
+            { module = GLOBAL, function_name = "GetSlotStackSize", },
         },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_ACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_INACTIVE] = { { }, },
@@ -47,12 +49,14 @@ tl.setup_test_functions(
 
 local and_GetBagSize_was_called_with = tl.and_GetBagSize_was_called_with
 local and_GetItemName_was_called_with_multi_values = tl.and_GetItemName_was_called_with_multi_values
+local and_GetSlotStackSize_was_called_with_multi_values = tl.and_GetSlotStackSize_was_called_with_multi_values
 local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
 local and_inactive_state_of_the_module_was_saved = tl.and_inactive_state_of_the_module_was_saved
 local and_initialize_bag_cache_was_called = tl.and_initialize_bag_cache_was_called
 local and_register_for_event_was_called_with = tl.and_register_for_event_was_called_with
 local and_that_GetBagSize_returns = tl.and_that_GetBagSize_returns
 local and_that_GetItemName_is_replaced_by = tl.and_that_GetItemName_is_replaced_by
+local and_that_GetSlotStackSize_is_replaced_by = tl.and_that_GetSlotStackSize_is_replaced_by
 local and_that_initialize_bag_cache_is_stubbed = tl.and_that_initialize_bag_cache_is_stubbed
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
@@ -102,18 +106,24 @@ describe("Test the esoTERM_loot module initialization.", function()
         ut_helper.restore_stubbed_functions()
     end)
 
-    local function return_item_name_plus_arg(arg)
-        return "item_name_" .. arg
+    local function fake_GetItemName(_bag_id, slot_index)
+        return "item_name_" .. slot_index
+    end
+
+    local function fake_GetSlotStackSize(_bag_id, slot_index)
+        local stack = 10 + slot_index
+        local max_stack = 200
+        return stack, max_stack
     end
 
     local expected_bag_cache_after_initialize = {
         [0] = {
             item_name = "item_name_0",
-            stack_size = 0,
+            stack_size = 10,
         },
         [1] = {
             item_name = "item_name_1",
-            stack_size = 0,
+            stack_size = 11,
         }
     }
 
@@ -121,13 +131,15 @@ describe("Test the esoTERM_loot module initialization.", function()
     function()
         given_that_bag_cache_is_empty()
             and_that_GetBagSize_returns(2)
-            and_that_GetItemName_is_replaced_by(return_item_name_plus_arg)
+            and_that_GetItemName_is_replaced_by(fake_GetItemName)
+            and_that_GetSlotStackSize_is_replaced_by(fake_GetSlotStackSize)
 
         when_initialize_bag_cache_is_called()
 
         then_bag_cache_became(expected_bag_cache_after_initialize)
             and_GetBagSize_was_called_with(BAG_BACKPACK)
-            and_GetItemName_was_called_with_multi_values({0, 1})
+            and_GetItemName_was_called_with_multi_values({{BAG_BACKPACK, 0}, {BAG_BACKPACK, 1}})
+            and_GetSlotStackSize_was_called_with_multi_values({{BAG_BACKPACK, 0}, {BAG_BACKPACK, 1}})
     end)
 end)
 

@@ -168,7 +168,7 @@ local function add_and_x_was_called_with_multi_values_test_library_function(test
     local fp = function_properties
     test_library["and_" .. fp.function_name .. "_was_called_with_multi_values"] = function(...)
         for _i, arguments in ipairs(...) do
-            this.stub_function_called_with_arguments(fp.module[fp.function_name], arguments)
+            this.stub_function_called_with_arguments(fp.module[fp.function_name], unpack(arguments))
         end
     end
 end
