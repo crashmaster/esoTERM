@@ -6,13 +6,13 @@ esoTERM_loot.event_register = {}
 esoTERM_loot.module_name = "loot"
 esoTERM_loot.is_active = false
 
-function esoTERM_loot.on_loot_received(event, by, item, quantity, sound, loot_type, self)
-    if not self then
-        return
-    end
-
-    esoTERM_output.stdout(esoTERM_common.get_item_received_message(item, quantity))
-end
+--function esoTERM_loot.on_loot_received(event, by, item, quantity, sound, loot_type, self)
+--    if not self then
+--        return
+--    end
+--
+--    esoTERM_output.stdout(esoTERM_common.get_item_received_message(item, quantity))
+--end
 
 local function get_money_received_message(new_amount, old_amount)
     local received = new_amount - old_amount
@@ -34,11 +34,21 @@ function esoTERM_loot.on_money_received(event, new_amount, old_amount, reason)
     end
 end
 
+function esoTERM_loot.on_inventory_single_slot_update(event, bag_id, slot_id, is_new_item, item_sound_category, update_reason)
+    if bag_id == BAG_BACKPACK then
+        local link = GetItemLink(bag_id, slot_id, LINK_STYLE_DEFAULT)
+        local new_stack_size = GetSlotStackSize(BAG_BACKPACK, slot_id)
+        local old_stack_size = esoTERM_loot.cache.bag[slot_id].stack_size
+        esoTERM_output.stdout(esoTERM_common.get_item_received_message(link, new_stack_size - old_stack_size))
+        esoTERM_loot.cache.bag[slot_id].stack_size = new_stack_size
+    end
+end
+
 function esoTERM_loot.initialize_bag_cache()
     local bag_size = GetBagSize(BAG_BACKPACK)
     for i = 0, bag_size - 1, 1 do
         esoTERM_loot.cache.bag[i] = {
-            item_name = GetItemName(BAG_BACKPACK, i),
+            item_link = GetItemLink(BAG_BACKPACK, i, LINK_STYLE_DEFAULT),
             stack_size = GetSlotStackSize(BAG_BACKPACK, i),
         }
     end
@@ -51,11 +61,11 @@ end
 
 function esoTERM_loot.activate()
     esoTERM_common.register_for_event(esoTERM_loot,
-                                      EVENT_LOOT_RECEIVED,
-                                      esoTERM_loot.on_loot_received)
-    esoTERM_common.register_for_event(esoTERM_loot,
                                       EVENT_MONEY_UPDATE,
                                       esoTERM_loot.on_money_received)
+    esoTERM_common.register_for_event(esoTERM_loot,
+                                      EVENT_INVENTORY_SINGLE_SLOT_UPDATE,
+                                      esoTERM_loot.on_inventory_single_slot_update)
 
     esoTERM_loot.is_active = true
     esoTERM_loot.settings[esoTERM_loot.module_name] = esoTERM_loot.is_active

@@ -23,13 +23,13 @@ function test_esoTERM_loot_library.get_expected_register_for_event_call_paramete
     return {
         {
             module = esoTERM_loot,
-            event = EVENT_LOOT_RECEIVED,
-            callback = esoTERM_loot.on_loot_received
+            event = EVENT_MONEY_UPDATE,
+            callback = esoTERM_loot.on_money_received
         },
         {
             module = esoTERM_loot,
-            event = EVENT_MONEY_UPDATE,
-            callback = esoTERM_loot.on_money_received
+            event = EVENT_INVENTORY_SINGLE_SLOT_UPDATE,
+            callback = esoTERM_loot.on_inventory_single_slot_update
         },
     }
 end
