@@ -13,6 +13,9 @@ tl.setup_test_functions(
         },
         [FUNCTION_NAME_TEMPLATES.AND_THAT_X_RETURNS] = {
             { module = GLOBAL, function_name = "GetBagSize", },
+            { module = GLOBAL, function_name = "GetItemLink", },
+            { module = GLOBAL, function_name = "GetSlotStackSize", },
+            { module = esoTERM_common, function_name = "get_item_received_message", },
         },
         [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_REPLACED_BY] = {
             { module = GLOBAL, function_name = "GetItemLink", },
@@ -24,6 +27,9 @@ tl.setup_test_functions(
         },
         [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = {
             { module = GLOBAL, function_name = "GetBagSize", },
+            { module = GLOBAL, function_name = "GetItemLink", },
+            { module = GLOBAL, function_name = "GetSlotStackSize", },
+            { module = esoTERM_common, function_name = "get_item_received_message", },
         },
         [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH_MULTI_VALUES] = {
             { module = GLOBAL, function_name = "GetItemLink", },
@@ -33,10 +39,15 @@ tl.setup_test_functions(
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_MODULE_IS_INACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.GIVEN_THAT_X_IS_STUBBED] = {
             { module = esoTERM_common, function_name = "initialize_module", },
+            { module = esoTERM_output, function_name = "stdout", },
         },
         [FUNCTION_NAME_TEMPLATES.THEN_MODULE_BECAME_ACTIVE] = { { }, },
         [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_CALLED_WITH] = {
             { module = esoTERM_common, function_name = "initialize_module", },
+            { module = esoTERM_output, function_name = "stdout", },
+        },
+        [FUNCTION_NAME_TEMPLATES.THEN_X_WAS_NOT_CALLED] = {
+            { module = esoTERM_output, function_name = "stdout", },
         },
         [FUNCTION_NAME_TEMPLATES.VERIFY_THAT_MODULE_HAS_THE_EXPECTED_NAME] = { { }, },
         [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED] = {
@@ -44,19 +55,30 @@ tl.setup_test_functions(
             { module = esoTERM_loot, function_name = "initialize", },
             { module = esoTERM_loot, function_name = "initialize_bag_cache", },
         },
+        [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED_WITH] = {
+            { module = esoTERM_loot, function_name = "on_money_received", },
+            { module = esoTERM_loot, function_name = "on_inventory_single_slot_update", },
+        },
     }
 )
 
+local and_that_get_item_received_message_returns = tl.and_that_get_item_received_message_returns
+local and_get_item_received_message_was_called_with = tl.and_get_item_received_message_was_called_with
 local and_GetBagSize_was_called_with = tl.and_GetBagSize_was_called_with
+local and_GetItemLink_was_called_with = tl.and_GetItemLink_was_called_with
 local and_GetItemLink_was_called_with_multi_values = tl.and_GetItemLink_was_called_with_multi_values
+local and_GetSlotStackSize_was_called_with = tl.and_GetSlotStackSize_was_called_with
 local and_GetSlotStackSize_was_called_with_multi_values = tl.and_GetSlotStackSize_was_called_with_multi_values
 local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
+local and_bag_cache_became = tl.then_bag_cache_became
 local and_inactive_state_of_the_module_was_saved = tl.and_inactive_state_of_the_module_was_saved
 local and_initialize_bag_cache_was_called = tl.and_initialize_bag_cache_was_called
 local and_register_for_event_was_called_with = tl.and_register_for_event_was_called_with
 local and_that_GetBagSize_returns = tl.and_that_GetBagSize_returns
 local and_that_GetItemLink_is_replaced_by = tl.and_that_GetItemLink_is_replaced_by
+local and_that_GetItemLink_returns = tl.and_that_GetItemLink_returns
 local and_that_GetSlotStackSize_is_replaced_by = tl.and_that_GetSlotStackSize_is_replaced_by
+local and_that_GetSlotStackSize_returns = tl.and_that_GetSlotStackSize_returns
 local and_that_initialize_bag_cache_is_stubbed = tl.and_that_initialize_bag_cache_is_stubbed
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
@@ -66,15 +88,20 @@ local given_that_bag_cache_is_empty = tl.given_that_bag_cache_is_empty
 local given_that_initialize_module_is_stubbed = tl.given_that_initialize_module_is_stubbed
 local given_that_module_is_active = tl.given_that_module_is_active
 local given_that_module_is_inactive = tl.given_that_module_is_inactive
+local given_that_stdout_is_stubbed = tl.given_that_stdout_is_stubbed
 local then_bag_cache_became = tl.then_bag_cache_became
 local then_initialize_module_was_called_with = tl.then_initialize_module_was_called_with
 local then_module_became_active = tl.then_module_became_active
 local then_module_became_inactive = tl.then_module_became_inactive
+local then_stdout_was_called_with = tl.then_stdout_was_called_with
+local then_stdout_was_not_called = tl.then_stdout_was_not_called
 local verify_that_module_has_the_expected_name = tl.verify_that_module_has_the_expected_name
 local when_activate_is_called = tl.when_activate_is_called
 local when_deactivate_is_called = tl.when_deactivate_is_called
 local when_initialize_bag_cache_is_called = tl.when_initialize_bag_cache_is_called
 local when_initialize_is_called = tl.when_initialize_is_called
+local when_on_inventory_single_slot_update_is_called_with = tl.when_on_inventory_single_slot_update_is_called_with
+local when_on_money_received_is_called_with = tl.when_on_money_received_is_called_with
 -- }}}
 
 describe("Test module.", function()
@@ -213,20 +240,67 @@ describe("Test the event handlers.", function()
         ut_helper.restore_stubbed_functions()
     end)
 
+    describe("The on single slot update event handler.", function()
+        it("Update event not for backpack is not printed", function()
+            given_that_stdout_is_stubbed()
+
+            when_on_inventory_single_slot_update_is_called_with(nil, BAG_BANK, 0, false, 0, 0)
+
+            then_stdout_was_not_called()
+        end)
+
+        -- {{{
+        local STACK_SIZE = 2
+        local MAX_STACK_SIZE = 200
+        local SLOT_ID_TO_UPDATE = 1
+        local bag_cache_empty = {
+            [0] = {
+                item_link = "",
+                stack_size = 0,
+            },
+            [1] = {
+                item_link = "",
+                stack_size = 0,
+            }
+        }
+
+        local bag_cache_one_item = {
+            [0] = {
+                item_link = "",
+                stack_size = 0,
+            },
+            [1] = {
+                item_link = "item_link_1",
+                stack_size = STACK_SIZE,
+            }
+        }
+
+        local function and_that_bag_cache_is(...)
+            esoTERM_loot.cache.bag = ...
+        end
+        -- }}}
+
+        it("The very first item in the backpack received", function()
+            given_that_stdout_is_stubbed()
+                and_that_bag_cache_is(bag_cache_empty)
+                and_that_GetItemLink_returns("item_link_1")
+                and_that_GetSlotStackSize_returns(STACK_SIZE, MAX_STACK_SIZE)
+                and_that_get_item_received_message_returns("message")
+
+            when_on_inventory_single_slot_update_is_called_with(
+                nil, BAG_BACKPACK, SLOT_ID_TO_UPDATE, false, 0, 0
+            )
+
+            then_stdout_was_called_with("message")
+                and_bag_cache_became(bag_cache_one_item)
+                and_GetItemLink_was_called_with(BAG_BACKPACK, SLOT_ID_TO_UPDATE, LINK_STYLE_DEFAULT)
+                and_GetSlotStackSize_was_called_with(BAG_BACKPACK, SLOT_ID_TO_UPDATE)
+                and_get_item_received_message_was_called_with("item_link_1", STACK_SIZE)
+        end)
+    end)
+
     describe("The on money received event handler.", function()
         -- {{{
-        local function given_that_esoTERM_output_stdout_is_stubbed()
-            ut_helper.stub_function(esoTERM_output, "stdout", nil)
-        end
-
-        local function then_esoTERM_output_stdout_was_called_with(message)
-            assert.spy(esoTERM_output.stdout).was.called_with(message)
-        end
-
-        local function when_on_money_received_is_called_with(event, after, before, reason)
-            esoTERM_loot.on_money_received(event, after, before, reason)
-        end
-
         local function money_received_message(after, before)
             local diff = after - before
             return "Received " .. diff .. " gold, now you have " .. after .. " gold"
@@ -234,11 +308,11 @@ describe("Test the event handlers.", function()
         -- }}}
 
         it("Money looted", function()
-            given_that_esoTERM_output_stdout_is_stubbed()
+            given_that_stdout_is_stubbed()
 
             when_on_money_received_is_called_with(nil, 150, 100, nil)
 
-            then_esoTERM_output_stdout_was_called_with(money_received_message(150, 100))
+            then_stdout_was_called_with(money_received_message(150, 100))
         end)
 
         -- {{{
@@ -249,25 +323,19 @@ describe("Test the event handlers.", function()
         -- }}}
 
         it("Money spent", function()
-            given_that_esoTERM_output_stdout_is_stubbed()
+            given_that_stdout_is_stubbed()
 
             when_on_money_received_is_called_with(nil, 50, 100, nil)
 
-            then_esoTERM_output_stdout_was_called_with(money_spent_message(50, 100))
+            then_stdout_was_called_with(money_spent_message(50, 100))
         end)
 
-        -- {{{
-        local function then_esoTERM_output_stdout_was_not_called()
-            assert.spy(esoTERM_output.stdout).was_not.called()
-        end
-        -- }}}
-
         it("Money same as before", function()
-            given_that_esoTERM_output_stdout_is_stubbed()
+            given_that_stdout_is_stubbed()
 
             when_on_money_received_is_called_with(nil, 50, 50, nil)
 
-            then_esoTERM_output_stdout_was_not_called()
+            then_stdout_was_not_called()
         end)
     end)
 end)
