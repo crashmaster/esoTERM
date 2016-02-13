@@ -8,8 +8,9 @@ tl.setup_test_functions(
             { module = esoTERM_loot, module_name_in_settings = "loot" },
         },
         [FUNCTION_NAME_TEMPLATES.AND_THAT_X_IS_STUBBED] = {
-            { module = esoTERM_loot, function_name = "initialize_bag_cache", },
+            { module = GLOBAL, function_name = "GetItemLink", },
             { module = esoTERM_common, function_name = "register_for_event", },
+            { module = esoTERM_loot, function_name = "initialize_bag_cache", },
         },
         [FUNCTION_NAME_TEMPLATES.AND_THAT_X_RETURNS] = {
             { module = GLOBAL, function_name = "GetBagSize", },
@@ -30,6 +31,9 @@ tl.setup_test_functions(
             { module = GLOBAL, function_name = "GetItemLink", },
             { module = GLOBAL, function_name = "GetSlotStackSize", },
             { module = esoTERM_common, function_name = "get_item_received_message", },
+        },
+        [FUNCTION_NAME_TEMPLATES.AND_X_WAS_NOT_CALLED] = {
+            { module = GLOBAL, function_name = "GetItemLink", },
         },
         [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH_MULTI_VALUES] = {
             { module = GLOBAL, function_name = "GetItemLink", },
@@ -62,6 +66,8 @@ tl.setup_test_functions(
     }
 )
 
+local and_GetItemLink_was_not_called = tl.and_GetItemLink_was_not_called
+local and_that_GetItemLink_is_stubbed = tl.and_that_GetItemLink_is_stubbed
 local and_that_get_item_received_message_returns = tl.and_that_get_item_received_message_returns
 local and_get_item_received_message_was_called_with = tl.and_get_item_received_message_was_called_with
 local and_GetBagSize_was_called_with = tl.and_GetBagSize_was_called_with
@@ -241,16 +247,9 @@ describe("Test the event handlers.", function()
     end)
 
     describe("The on single slot update event handler.", function()
-        it("Update event not for backpack is not printed", function()
-            given_that_stdout_is_stubbed()
-
-            when_on_inventory_single_slot_update_is_called_with(nil, BAG_BANK, 0, false, 0, 0)
-
-            then_stdout_was_not_called()
-        end)
-
         -- {{{
-        local STACK_SIZE = 2
+        local ONE_ITEM = 1
+        local TWO_ITEMS = 2
         local MAX_STACK_SIZE = 200
         local SLOT_ID_TO_UPDATE = 1
         local bag_cache_empty = {
@@ -271,7 +270,18 @@ describe("Test the event handlers.", function()
             },
             [1] = {
                 item_link = "item_link_1",
-                stack_size = STACK_SIZE,
+                stack_size = ONE_ITEM,
+            }
+        }
+
+        local bag_cache_two_identical_items = {
+            [0] = {
+                item_link = "",
+                stack_size = 0,
+            },
+            [1] = {
+                item_link = "item_link_1",
+                stack_size = TWO_ITEMS,
             }
         }
 
@@ -284,7 +294,7 @@ describe("Test the event handlers.", function()
             given_that_stdout_is_stubbed()
                 and_that_bag_cache_is(bag_cache_empty)
                 and_that_GetItemLink_returns("item_link_1")
-                and_that_GetSlotStackSize_returns(STACK_SIZE, MAX_STACK_SIZE)
+                and_that_GetSlotStackSize_returns(ONE_ITEM, MAX_STACK_SIZE)
                 and_that_get_item_received_message_returns("message")
 
             when_on_inventory_single_slot_update_is_called_with(
@@ -295,7 +305,34 @@ describe("Test the event handlers.", function()
                 and_bag_cache_became(bag_cache_one_item)
                 and_GetItemLink_was_called_with(BAG_BACKPACK, SLOT_ID_TO_UPDATE, LINK_STYLE_DEFAULT)
                 and_GetSlotStackSize_was_called_with(BAG_BACKPACK, SLOT_ID_TO_UPDATE)
-                and_get_item_received_message_was_called_with("item_link_1", STACK_SIZE)
+                and_get_item_received_message_was_called_with("item_link_1", ONE_ITEM)
+        end)
+
+        it("Another item from the same kind received", function()
+            given_that_stdout_is_stubbed()
+                and_that_bag_cache_is(bag_cache_one_item)
+                and_that_GetItemLink_is_stubbed()
+                and_that_GetSlotStackSize_returns(TWO_ITEMS, MAX_STACK_SIZE)
+                and_that_get_item_received_message_returns("message")
+
+            when_on_inventory_single_slot_update_is_called_with(
+                nil, BAG_BACKPACK, SLOT_ID_TO_UPDATE, false, 0, 0
+            )
+
+            then_stdout_was_called_with("message")
+                and_bag_cache_became(bag_cache_two_identical_items)
+                and_GetItemLink_was_not_called()
+                and_GetSlotStackSize_was_called_with(BAG_BACKPACK, SLOT_ID_TO_UPDATE)
+                and_get_item_received_message_was_called_with("item_link_1", ONE_ITEM)
+        end)
+
+
+        it("Update event not for backpack is not printed", function()
+            given_that_stdout_is_stubbed()
+
+            when_on_inventory_single_slot_update_is_called_with(nil, BAG_BANK, 0, false, 0, 0)
+
+            then_stdout_was_not_called()
         end)
     end)
 
