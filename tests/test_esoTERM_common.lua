@@ -8,7 +8,14 @@ tl.setup_test_functions(
             { module = esoTERM_common, function_name = "register_module", },
             { module = tl.dummy_module, function_name = "activate", },
         },
+        [FUNCTION_NAME_TEMPLATES.AND_THAT_X_RETURNS] = {
+            { module = GLOBAL, function_name = "GetItemLinkQuality", },
+            { module = GLOBAL, function_name = "GetItemQualityColor", },
+        },
         [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = {
+            { module = GLOBAL, function_name = "GetItemLinkQuality", },
+            { module = GLOBAL, function_name = "GetItemQualityColor", },
+            { module = GLOBAL, function_name = "zo_strformat", },
             { module = esoTERM_common, function_name = "register_module", },
         },
         [FUNCTION_NAME_TEMPLATES.AND_ZO_SAVEDVARS_NEW_WAS_CALLED_WITH] = { { }, },
@@ -23,17 +30,26 @@ tl.setup_test_functions(
         [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED] = {
             { module = tl.dummy_module, function_name = "initialize", },
         },
+        [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED_WITH] = {
+            { module = esoTERM_common, function_name = "get_item_received_message", },
+        },
     }
 )
 
+local and_GetItemLinkQuality_was_called_with = tl.and_GetItemLinkQuality_was_called_with
+local and_GetItemQualityColor_was_called_with = tl.and_GetItemQualityColor_was_called_with
+local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
 local and_register_module_was_called_with = tl.and_register_module_was_called_with
+local and_that_GetItemQualityColor_returns = tl.and_that_GetItemQualityColor_returns
 local and_that_activate_is_stubbed = tl.and_that_activate_is_stubbed
 local and_that_register_module_is_stubbed = tl.and_that_register_module_is_stubbed
-local and_ZO_SavedVars_new_was_called_with = tl.and_ZO_SavedVars_new_was_called_with
+local and_zo_strformat_was_called_with = tl.and_zo_strformat_was_called_with
+local given_that_GetItemLinkQuality_returns = tl.and_that_GetItemLinkQuality_returns
 local given_that_module_is_set_active_in_the_config_file = tl.given_that_module_is_set_active_in_the_config_file
 local given_that_module_is_set_inactive_in_the_config_file = tl.given_that_module_is_set_inactive_in_the_config_file
 local then_activate_was_called = tl.then_activate_was_called
 local then_activate_was_not_called = tl.then_activate_was_not_called
+local when_get_item_received_message_is_called_with = tl.when_get_item_received_message_is_called_with
 local when_initialize_is_called = tl.when_initialize_is_called
 -- }}}
 
@@ -249,38 +265,14 @@ describe("Test common functions.", function()
         end)
 
         -- {{{
-        local function given_that_GetItemLinkQuality_returns(...)
-            ut_helper.stub_function(GLOBAL, "GetItemLinkQuality", ...)
-        end
-
-        local function and_that_GetItemQualityColor_returns(...)
-            ut_helper.stub_function(GLOBAL, "GetItemQualityColor", ...)
-        end
-
-        local function when_get_item_received_message_is_called_with(...)
-            return esoTERM_common.get_item_received_message(...)
-        end
-
         local function then_the_returned_message_was(expected, actual)
             assert.is.equal(expected, actual)
-        end
-
-        local function and_GetItemLinkQuality_was_called_with(item)
-            assert.spy(GLOBAL.GetItemLinkQuality).was.called_with(item)
-        end
-
-        local function and_GetItemQualityColor_was_called_with(quality)
-            assert.spy(GLOBAL.GetItemQualityColor).was.called_with(quality)
         end
 
         local function and_fake_color_was_called()
             assert.spy(fake_color.Colorize).was.called(2)
             assert.spy(fake_color.Colorize).was.called_with(fake_color, "[")
             assert.spy(fake_color.Colorize).was.called_with(fake_color, "]")
-        end
-
-        local function and_zo_strformat_was_called_with(...)
-            assert.spy(GLOBAL.zo_strformat).was.called_with(...)
         end
         -- }}}
 
