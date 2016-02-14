@@ -32,6 +32,7 @@ tl.setup_test_functions(
         },
         [FUNCTION_NAME_TEMPLATES.WHEN_X_IS_CALLED_WITH] = {
             { module = esoTERM_common, function_name = "get_item_received_message", },
+            { module = esoTERM_common, function_name = "get_got_rid_of_item_message", },
         },
     }
 )
@@ -50,6 +51,7 @@ local given_that_module_is_set_inactive_in_the_config_file = tl.given_that_modul
 local then_activate_was_called = tl.then_activate_was_called
 local then_activate_was_not_called = tl.then_activate_was_not_called
 local when_get_item_received_message_is_called_with = tl.when_get_item_received_message_is_called_with
+local when_get_got_rid_of_item_message_is_called_with = tl.when_get_got_rid_of_item_message_is_called_with
 local when_initialize_is_called = tl.when_initialize_is_called
 -- }}}
 
@@ -249,7 +251,7 @@ describe("Test common functions.", function()
         end)
     end)
 
-    describe("Get item received log message including colorized item link.", function()
+    describe("Get item received/got rid of log message including colorized item link.", function()
         local fake_color = {
             Colorize = function(self, message) return message end
         }
@@ -276,7 +278,7 @@ describe("Test common functions.", function()
         end
         -- }}}
 
-        it("Call returns the expected string.",
+        it("Get item received message gives the expected output",
         function()
             given_that_GetItemLinkQuality_returns("quality")
                 and_that_GetItemQualityColor_returns(fake_color)
@@ -284,6 +286,20 @@ describe("Test common functions.", function()
             actual = when_get_item_received_message_is_called_with("item", 1)
 
             then_the_returned_message_was("Received 1 [item]", actual)
+                and_GetItemLinkQuality_was_called_with("item")
+                and_GetItemQualityColor_was_called_with("quality")
+                and_fake_color_was_called()
+                and_zo_strformat_was_called_with(SI_TOOLTIP_ITEM_NAME, "item")
+        end)
+
+        it("Get got rid of item message gives the expected output",
+        function()
+            given_that_GetItemLinkQuality_returns("quality")
+                and_that_GetItemQualityColor_returns(fake_color)
+
+            actual = when_get_got_rid_of_item_message_is_called_with("item", 1)
+
+            then_the_returned_message_was("Got rid of 1 [item]", actual)
                 and_GetItemLinkQuality_was_called_with("item")
                 and_GetItemQualityColor_was_called_with("quality")
                 and_fake_color_was_called()

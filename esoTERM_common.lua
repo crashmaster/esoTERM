@@ -53,13 +53,21 @@ function esoTERM_common.split(input_string)
     return result
 end
 
-function esoTERM_common.get_item_received_message(item, quantity)
+local function get_item_input_output_message(format_string, item, quantity)
     local color = GetItemQualityColor(GetItemLinkQuality(item))
-    return string.format("Received %d %s%s%s",
+    return string.format(format_string,
                          quantity,
                          color:Colorize("["),
                          zo_strformat(SI_TOOLTIP_ITEM_NAME, item),
                          color:Colorize("]"))
+end
+
+function esoTERM_common.get_item_received_message(item, quantity)
+    return get_item_input_output_message("Received %d %s%s%s", item, quantity)
+end
+
+function esoTERM_common.get_got_rid_of_item_message(item, quantity)
+    return get_item_input_output_message("Got rid of %d %s%s%s", item, quantity)
 end
 
 return esoTERM_common
