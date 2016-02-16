@@ -6,13 +6,6 @@ esoTERM_loot.event_register = {}
 esoTERM_loot.module_name = "loot"
 esoTERM_loot.is_active = false
 
---function esoTERM_loot.on_loot_received(event, by, item, quantity, sound, loot_type, self)
---    if not self then
---        return
---    end
---
---    esoTERM_output.stdout(esoTERM_common.get_item_received_message(item, quantity))
---end
 
 local function get_money_received_message(new_amount, old_amount)
     local received = new_amount - old_amount

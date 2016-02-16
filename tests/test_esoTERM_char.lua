@@ -940,7 +940,7 @@ describe("The on combat event handler.", function()
             ABILITY_HIT,                    -- 11 -> hit_value
             POWERTYPE_MAGICKA,              -- 12 -> power_type
             DAMAGE_TYPE_FIRE,               -- 13 -> damage_type
-            false                           -- 14 -> log
+            false,                          -- 14 -> log
         }
     end
     -- }}}
