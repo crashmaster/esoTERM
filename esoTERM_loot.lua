@@ -39,7 +39,9 @@ function esoTERM_loot.on_inventory_single_slot_update(event, bag_id, slot_id, is
             esoTERM_output.stdout(
                 esoTERM_common.get_item_received_message(
                     esoTERM_loot.cache.bag[slot_id].item_link,
-                    new_stack_size - old_stack_size
+                    new_stack_size - old_stack_size,
+                    0,
+                    0
                 )
             )
         end
@@ -47,7 +49,9 @@ function esoTERM_loot.on_inventory_single_slot_update(event, bag_id, slot_id, is
             esoTERM_output.stdout(
                 esoTERM_common.get_got_rid_of_item_message(
                     esoTERM_loot.cache.bag[slot_id].item_link,
-                    old_stack_size - new_stack_size
+                    old_stack_size - new_stack_size,
+                    0,
+                    0
                 )
             )
             if new_stack_size == 0 then

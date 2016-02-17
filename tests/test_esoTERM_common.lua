@@ -252,6 +252,25 @@ describe("Test common functions.", function()
     end)
 
     describe("Get item received/got rid of log message including colorized item link.", function()
+        local NAME_OF_ITEM_RECEIVED = "item"
+        local NAME_OF_ITEM_GOT_RID_OF = "item"
+        local NUMBER_OF_ITEMS_RECEIVED = 1
+        local NUMBER_OF_ITEMS_GOT_RID_OF = 1
+        local NUMBER_OF_ITEMS_IN_BACKPACK = 2
+        local NUMBER_OF_ITEMS_IN_BANK = 10
+        local EXPECTED_ITEM_RECEIVED_MESSAGE =
+            "Received " ..
+            NUMBER_OF_ITEMS_RECEIVED ..
+            " [" .. NAME_OF_ITEM_RECEIVED .. "]:" ..
+            " backpack: " .. NUMBER_OF_ITEMS_IN_BACKPACK .. "," ..
+            " bank: " .. NUMBER_OF_ITEMS_IN_BANK
+        local EXPECTED_ITEM_GOT_RID_OF_MESSAGE =
+            "Got rid of " ..
+            NUMBER_OF_ITEMS_GOT_RID_OF ..
+            " [" .. NAME_OF_ITEM_GOT_RID_OF .. "]:" ..
+            " backpack: " .. NUMBER_OF_ITEMS_IN_BACKPACK .. "," ..
+            " bank: " .. NUMBER_OF_ITEMS_IN_BANK
+
         local fake_color = {
             Colorize = function(self, message) return message end
         }
@@ -267,8 +286,8 @@ describe("Test common functions.", function()
         end)
 
         -- {{{
-        local function then_the_returned_message_was(expected, actual)
-            assert.is.equal(expected, actual)
+        local function then_the_returned_message_was(...)
+            assert.is.equal(...)
         end
 
         local function and_fake_color_was_called()
@@ -283,13 +302,17 @@ describe("Test common functions.", function()
             given_that_GetItemLinkQuality_returns("quality")
                 and_that_GetItemQualityColor_returns(fake_color)
 
-            actual = when_get_item_received_message_is_called_with("item", 1)
+            actual_message = when_get_item_received_message_is_called_with(
+                NAME_OF_ITEM_RECEIVED,
+                NUMBER_OF_ITEMS_RECEIVED,
+                NUMBER_OF_ITEMS_IN_BACKPACK,
+                NUMBER_OF_ITEMS_IN_BANK)
 
-            then_the_returned_message_was("Received 1 [item]", actual)
-                and_GetItemLinkQuality_was_called_with("item")
+            then_the_returned_message_was(EXPECTED_ITEM_RECEIVED_MESSAGE, actual_message)
+                and_GetItemLinkQuality_was_called_with(NAME_OF_ITEM_RECEIVED)
                 and_GetItemQualityColor_was_called_with("quality")
                 and_fake_color_was_called()
-                and_zo_strformat_was_called_with(SI_TOOLTIP_ITEM_NAME, "item")
+                and_zo_strformat_was_called_with(SI_TOOLTIP_ITEM_NAME, NAME_OF_ITEM_RECEIVED)
         end)
 
         it("Get got rid of item message gives the expected output",
@@ -297,15 +320,20 @@ describe("Test common functions.", function()
             given_that_GetItemLinkQuality_returns("quality")
                 and_that_GetItemQualityColor_returns(fake_color)
 
-            actual = when_get_got_rid_of_item_message_is_called_with("item", 1)
+            actual_message = when_get_got_rid_of_item_message_is_called_with(
+                NAME_OF_ITEM_GOT_RID_OF,
+                NUMBER_OF_ITEMS_GOT_RID_OF,
+                NUMBER_OF_ITEMS_IN_BACKPACK,
+                NUMBER_OF_ITEMS_IN_BANK)
 
-            then_the_returned_message_was("Got rid of 1 [item]", actual)
-                and_GetItemLinkQuality_was_called_with("item")
+            then_the_returned_message_was(EXPECTED_ITEM_GOT_RID_OF_MESSAGE, actual_message)
+                and_GetItemLinkQuality_was_called_with(NAME_OF_ITEM_GOT_RID_OF)
                 and_GetItemQualityColor_was_called_with("quality")
                 and_fake_color_was_called()
-                and_zo_strformat_was_called_with(SI_TOOLTIP_ITEM_NAME, "item")
+                and_zo_strformat_was_called_with(SI_TOOLTIP_ITEM_NAME, NAME_OF_ITEM_GOT_RID_OF)
         end)
     end)
+
     describe("Test module initialization.", function()
         after_each(function()
             ut_helper.restore_stubbed_functions()
