@@ -36,22 +36,24 @@ function esoTERM_loot.on_inventory_single_slot_update(event, bag_id, slot_id, is
                 esoTERM_loot.cache.bag[slot_id].item_link = GetItemLink(BAG_BACKPACK, slot_id, LINK_STYLE_DEFAULT)
             end
             esoTERM_loot.cache.bag[slot_id].stack_size = new_stack_size
+            local stack_count_backpack, stack_count_bank = GetItemLinkStacks(esoTERM_loot.cache.bag[slot_id].item_link)
             esoTERM_output.stdout(
                 esoTERM_common.get_item_received_message(
                     esoTERM_loot.cache.bag[slot_id].item_link,
                     new_stack_size - old_stack_size,
-                    0,
-                    0
+                    stack_count_backpack,
+                    stack_count_bank
                 )
             )
         end
         if new_stack_size < old_stack_size then
+            local stack_count_backpack, stack_count_bank = GetItemLinkStacks(esoTERM_loot.cache.bag[slot_id].item_link)
             esoTERM_output.stdout(
                 esoTERM_common.get_got_rid_of_item_message(
                     esoTERM_loot.cache.bag[slot_id].item_link,
                     old_stack_size - new_stack_size,
-                    0,
-                    0
+                    stack_count_backpack,
+                    stack_count_bank
                 )
             )
             if new_stack_size == 0 then

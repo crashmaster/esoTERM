@@ -74,6 +74,8 @@ function GetChampionXPInRank() end
 
 function GetItemLink() end
 
+function GetItemLinkStacks() end
+
 function GetItemName() end
 
 function GetPlayerChampionPointsEarned() end

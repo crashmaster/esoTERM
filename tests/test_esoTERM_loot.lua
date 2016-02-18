@@ -15,6 +15,7 @@ tl.setup_test_functions(
         [FUNCTION_NAME_TEMPLATES.AND_THAT_X_RETURNS] = {
             { module = GLOBAL, function_name = "GetBagSize", },
             { module = GLOBAL, function_name = "GetItemLink", },
+            { module = GLOBAL, function_name = "GetItemLinkStacks", },
             { module = GLOBAL, function_name = "GetSlotStackSize", },
             { module = esoTERM_common, function_name = "get_item_received_message", },
             { module = esoTERM_common, function_name = "get_got_rid_of_item_message", },
@@ -30,6 +31,7 @@ tl.setup_test_functions(
         [FUNCTION_NAME_TEMPLATES.AND_X_WAS_CALLED_WITH] = {
             { module = GLOBAL, function_name = "GetBagSize", },
             { module = GLOBAL, function_name = "GetItemLink", },
+            { module = GLOBAL, function_name = "GetItemLinkStacks", },
             { module = GLOBAL, function_name = "GetSlotStackSize", },
             { module = esoTERM_common, function_name = "get_item_received_message", },
             { module = esoTERM_common, function_name = "get_got_rid_of_item_message", },
@@ -68,27 +70,29 @@ tl.setup_test_functions(
     }
 )
 
-local and_GetItemLink_was_not_called = tl.and_GetItemLink_was_not_called
-local and_that_GetItemLink_is_stubbed = tl.and_that_GetItemLink_is_stubbed
-local and_that_get_item_received_message_returns = tl.and_that_get_item_received_message_returns
-local and_that_get_got_rid_of_item_message_returns = tl.and_that_get_got_rid_of_item_message_returns
-local and_get_item_received_message_was_called_with = tl.and_get_item_received_message_was_called_with
-local and_get_got_rid_of_item_message_was_called_with = tl.and_get_got_rid_of_item_message_was_called_with
 local and_GetBagSize_was_called_with = tl.and_GetBagSize_was_called_with
+local and_GetItemLinkStacks_was_called_with = tl.and_GetItemLinkStacks_was_called_with
 local and_GetItemLink_was_called_with = tl.and_GetItemLink_was_called_with
 local and_GetItemLink_was_called_with_multi_values = tl.and_GetItemLink_was_called_with_multi_values
+local and_GetItemLink_was_not_called = tl.and_GetItemLink_was_not_called
 local and_GetSlotStackSize_was_called_with = tl.and_GetSlotStackSize_was_called_with
 local and_GetSlotStackSize_was_called_with_multi_values = tl.and_GetSlotStackSize_was_called_with_multi_values
 local and_active_state_of_the_module_was_saved = tl.and_active_state_of_the_module_was_saved
 local and_bag_cache_became = tl.then_bag_cache_became
+local and_get_got_rid_of_item_message_was_called_with = tl.and_get_got_rid_of_item_message_was_called_with
+local and_get_item_received_message_was_called_with = tl.and_get_item_received_message_was_called_with
 local and_inactive_state_of_the_module_was_saved = tl.and_inactive_state_of_the_module_was_saved
 local and_initialize_bag_cache_was_called = tl.and_initialize_bag_cache_was_called
 local and_register_for_event_was_called_with = tl.and_register_for_event_was_called_with
 local and_that_GetBagSize_returns = tl.and_that_GetBagSize_returns
+local and_that_GetItemLinkStacks_returns = tl.and_that_GetItemLinkStacks_returns
 local and_that_GetItemLink_is_replaced_by = tl.and_that_GetItemLink_is_replaced_by
+local and_that_GetItemLink_is_stubbed = tl.and_that_GetItemLink_is_stubbed
 local and_that_GetItemLink_returns = tl.and_that_GetItemLink_returns
 local and_that_GetSlotStackSize_is_replaced_by = tl.and_that_GetSlotStackSize_is_replaced_by
 local and_that_GetSlotStackSize_returns = tl.and_that_GetSlotStackSize_returns
+local and_that_get_got_rid_of_item_message_returns = tl.and_that_get_got_rid_of_item_message_returns
+local and_that_get_item_received_message_returns = tl.and_that_get_item_received_message_returns
 local and_that_initialize_bag_cache_is_stubbed = tl.and_that_initialize_bag_cache_is_stubbed
 local and_that_register_for_event_is_stubbed = tl.and_that_register_for_event_is_stubbed
 local and_that_unregister_from_all_events_is_stubbed = tl.and_that_unregister_from_all_events_is_stubbed
@@ -250,6 +254,8 @@ describe("Test the event handlers.", function()
     local TWO_ITEMS = 2
     local MAX_STACK_SIZE = 200
     local SLOT_ID_TO_UPDATE = 1
+    local STACK_COUNT_BACKPACK = 10
+    local STACK_COUNT_BANK = 20
     local bag_cache_empty = {}
     local bag_cache_one_item = {}
     local bag_cache_two_identical_items = {}
@@ -304,6 +310,7 @@ describe("Test the event handlers.", function()
             given_that_stdout_is_stubbed()
                 and_that_bag_cache_is(bag_cache_empty)
                 and_that_GetItemLink_returns("item_link_1")
+                and_that_GetItemLinkStacks_returns(STACK_COUNT_BACKPACK, STACK_COUNT_BANK)
                 and_that_GetSlotStackSize_returns(ONE_ITEM, MAX_STACK_SIZE)
                 and_that_get_item_received_message_returns("message")
 
@@ -314,14 +321,16 @@ describe("Test the event handlers.", function()
             then_stdout_was_called_with("message")
                 and_bag_cache_became(bag_cache_one_item)
                 and_GetItemLink_was_called_with(BAG_BACKPACK, SLOT_ID_TO_UPDATE, LINK_STYLE_DEFAULT)
+                and_GetItemLinkStacks_was_called_with("item_link_1")
                 and_GetSlotStackSize_was_called_with(BAG_BACKPACK, SLOT_ID_TO_UPDATE)
-                and_get_item_received_message_was_called_with("item_link_1", ONE_ITEM, 0, 0)
+                and_get_item_received_message_was_called_with("item_link_1", ONE_ITEM, STACK_COUNT_BACKPACK, STACK_COUNT_BANK)
         end)
 
         it("Another item from the same kind received", function()
             given_that_stdout_is_stubbed()
                 and_that_bag_cache_is(bag_cache_one_item)
                 and_that_GetItemLink_is_stubbed()
+                and_that_GetItemLinkStacks_returns(STACK_COUNT_BACKPACK, STACK_COUNT_BANK)
                 and_that_GetSlotStackSize_returns(TWO_ITEMS, MAX_STACK_SIZE)
                 and_that_get_item_received_message_returns("message")
 
@@ -332,14 +341,16 @@ describe("Test the event handlers.", function()
             then_stdout_was_called_with("message")
                 and_bag_cache_became(bag_cache_two_identical_items)
                 and_GetItemLink_was_not_called()
+                and_GetItemLinkStacks_was_called_with("item_link_1")
                 and_GetSlotStackSize_was_called_with(BAG_BACKPACK, SLOT_ID_TO_UPDATE)
-                and_get_item_received_message_was_called_with("item_link_1", ONE_ITEM, 0, 0)
+                and_get_item_received_message_was_called_with("item_link_1", ONE_ITEM, STACK_COUNT_BACKPACK, STACK_COUNT_BANK)
         end)
 
         it("Get rid of one of two identical items", function()
             given_that_stdout_is_stubbed()
                 and_that_bag_cache_is(bag_cache_two_identical_items)
                 and_that_GetItemLink_is_stubbed()
+                and_that_GetItemLinkStacks_returns(STACK_COUNT_BACKPACK, STACK_COUNT_BANK)
                 and_that_GetSlotStackSize_returns(ONE_ITEM, MAX_STACK_SIZE)
                 and_that_get_got_rid_of_item_message_returns("message")
 
@@ -350,14 +361,16 @@ describe("Test the event handlers.", function()
             then_stdout_was_called_with("message")
                 and_bag_cache_became(bag_cache_one_item)
                 and_GetItemLink_was_not_called()
+                and_GetItemLinkStacks_was_called_with("item_link_1")
                 and_GetSlotStackSize_was_called_with(BAG_BACKPACK, SLOT_ID_TO_UPDATE)
-                and_get_got_rid_of_item_message_was_called_with("item_link_1", ONE_ITEM, 0, 0)
+                and_get_got_rid_of_item_message_was_called_with("item_link_1", ONE_ITEM, STACK_COUNT_BACKPACK, STACK_COUNT_BANK)
         end)
 
         it("Get rid of the very last item", function()
             given_that_stdout_is_stubbed()
                 and_that_bag_cache_is(bag_cache_one_item)
                 and_that_GetItemLink_returns("empty_link_1")
+                and_that_GetItemLinkStacks_returns(STACK_COUNT_BACKPACK, STACK_COUNT_BANK)
                 and_that_GetSlotStackSize_returns(ZERO_ITEM, MAX_STACK_SIZE)
                 and_that_get_got_rid_of_item_message_returns("message")
 
@@ -368,8 +381,9 @@ describe("Test the event handlers.", function()
             then_stdout_was_called_with("message")
                 and_bag_cache_became(bag_cache_one_item)
                 and_GetItemLink_was_called_with(BAG_BACKPACK, SLOT_ID_TO_UPDATE, LINK_STYLE_DEFAULT)
+                and_GetItemLinkStacks_was_called_with("item_link_1")
                 and_GetSlotStackSize_was_called_with(BAG_BACKPACK, SLOT_ID_TO_UPDATE)
-                and_get_got_rid_of_item_message_was_called_with("item_link_1", ONE_ITEM, 0, 0)
+                and_get_got_rid_of_item_message_was_called_with("item_link_1", ONE_ITEM, STACK_COUNT_BACKPACK, STACK_COUNT_BANK)
         end)
 
         it("Update event not for backpack is not printed", function()
