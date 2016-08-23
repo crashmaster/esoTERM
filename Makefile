@@ -10,7 +10,7 @@ LUACOV_REPORT := luacov.report.out
 
 ADDON_NAME := esoTERM
 ADDON_DESCRIPTION := https://github.com/crashmaster/esoTERM
-ADDON_TEXT_FILE := $(ADDON_NAME).txt
+ADDON_TXT_FILE := $(ADDON_NAME).txt
 ESO_API_VERSION := 100014
 ADDON_SAVED_VARIABLES := esoTERM_settings
 
@@ -31,7 +31,7 @@ BUILD_PKG_DIR := $(BUILD_DIR)/$(ADDON_NAME)
 PKG_NAME := $(ADDON_NAME)_$(shell date --iso-8601).zip
 
 
-.PHONY: all test test_silent gentxt install uninstall build
+.PHONY: all test test_silent generate_addon_txt_file install uninstall build
 
 all: test coverage
 
@@ -41,20 +41,20 @@ test:
 test_silent:
 	@$(RUN_TESTS) > /dev/null
 
-coverage: test_silent
+coverage:
 	@$(LUACOV)
 	@$(LUA) $(LUACOV_PARSER) $(LUACOV_REPORT)
 	@$(RM) $(LUACOV_REPORT)
 
-gentxt:
-	@$(RM) $(ADDON_TEXT_FILE)
-	@printf "## Title: %s\n" $(ADDON_NAME) > $(ADDON_TEXT_FILE)
-	@printf "## Description: %s\n" $(ADDON_DESCRIPTION) > $(ADDON_TEXT_FILE)
-	@printf "## APIVersion: %s\n" $(ESO_API_VERSION) >> $(ADDON_TEXT_FILE)
-	@printf "## SavedVariables: %s\n\n" $(ADDON_SAVED_VARIABLES) >> $(ADDON_TEXT_FILE)
-	@ls $(ADDON_NAME)*.lua >> $(ADDON_TEXT_FILE)
+generate_addon_txt_file:
+	@$(RM) $(ADDON_TXT_FILE)
+	@printf "## Title: %s\n" $(ADDON_NAME) > $(ADDON_TXT_FILE)
+	@printf "## Description: %s\n" $(ADDON_DESCRIPTION) > $(ADDON_TXT_FILE)
+	@printf "## APIVersion: %s\n" $(ESO_API_VERSION) >> $(ADDON_TXT_FILE)
+	@printf "## SavedVariables: %s\n\n" $(ADDON_SAVED_VARIABLES) >> $(ADDON_TXT_FILE)
+	@ls $(ADDON_NAME)*.lua >> $(ADDON_TXT_FILE)
 
-install: gentxt
+install: generate_addon_txt_file
 	@$(MKDIR) $(ESO_TERM_DIR)
 	@$(foreach file,$(SOURCES),$(UNIX2DOS) $(file) $(addprefix $(ESO_TERM_DIR)/,$(notdir $(file))) || exit $?;)
 	@printf "%s installed to:\n%s\n" $(ADDON_NAME) $(ESO_TERM_DIR)
@@ -63,7 +63,7 @@ uninstall:
 	@$(RM) $(ESO_TERM_DIR)
 	@printf "%s uninstalled from:\n%s\n" $(ADDON_NAME) $(ESO_TERM_DIR)
 
-build: gentxt
+build: generate_addon_txt_file
 	@$(RM) $(BUILD_DIR)
 	@$(MKDIR) $(BUILD_PKG_DIR)
 	@$(CP) $(SOURCES) $(BUILD_PKG_DIR)
