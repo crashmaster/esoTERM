@@ -22,7 +22,7 @@ THIS_FILE := $(abspath $(lastword $(MAKEFILE_LIST)))
 REPO_DIR := $(patsubst %/,%,$(dir $(THIS_FILE)))
 TESTS_DIR := $(REPO_DIR)/tests
 TEST_FILE_PATTERN := test_
-RUN_TESTS := $(BUSTED) --pattern=$(TEST_FILE_PATTERN) $(TESTS_DIR)
+RUN_TESTS := $(BUSTED) --pattern=$(TEST_FILE_PATTERN) /eso_term
 TOOLS_DIR := $(REPO_DIR)/tools
 LUACOV_PARSER := $(TOOLS_DIR)/parse_luacov_report.lua
 SOURCES := $(foreach dir,$(REPO_DIR),$(wildcard $(dir)/$(ADDON_NAME)*))
@@ -30,13 +30,23 @@ BUILD_DIR := $(REPO_DIR)/build
 BUILD_PKG_DIR := $(BUILD_DIR)/$(ADDON_NAME)
 PKG_NAME := $(ADDON_NAME)_$(shell date --iso-8601).zip
 
+DOCKER := /usr/bin/docker
+DOCKER_TAG := eso_term
+DOCKER_CONFIG_PATH := $(REPO_DIR)/.
+DOCKER_USER := --user "$(shell id -u):$(shell id -g)"
+DOCKER_VOLUME := --volume=$(shell readlink -f $(shell pwd)/../..${DOJOS_DIR}):/${DOCKER_TAG}
+DOCKER_OPTS := --tty --interactive
+DOCKER_BUILD := ${DOCKER} build --tag=${DOCKER_TAG} ${DOCKER_CONFIG_PATH}
+DOCKER_RUN := docker run ${DOCKER_USER} ${DOCKER_VOLUME} ${DOCKER_OPTS} ${DOCKER_TAG}
 
-.PHONY: all test test_silent generate_addon_txt_file install uninstall build
+CALL_TEST := sh -c "${RUN_TESTS}"
+
+.PHONY: all test test_silent generate_addon_txt_file install uninstall build docker_build
 
 all: test coverage
 
-test:
-	@$(RUN_TESTS)
+test: docker_build
+	@${DOCKER_RUN} ${CALL_TEST}
 
 test_silent:
 	@$(RUN_TESTS) > /dev/null
@@ -70,3 +80,6 @@ build: generate_addon_txt_file
 	@cd $(BUILD_DIR) && $(ZIP) $(PKG_NAME) $(ADDON_NAME)
 	@$(RM) $(BUILD_PKG_DIR)
 	@ls $(BUILD_DIR)/$(PKG_NAME)
+
+docker_build:
+	@${DOCKER_BUILD}
