@@ -29,8 +29,8 @@ REPO_DIR_LOCAL := $(patsubst %/,%,$(dir $(THIS_FILE)))
 
 # Variables: level 3
 BUILD_DIR := $(REPO_DIR_LOCAL)/build
-CALL_COVERAGE := sh -c "cd $(REPO_DIR_DOCKER) && $(LUACOV) && $(LUA) $(LUACOV_PARSER) $(LUACOV_REPORT); $(RM) $(LUACOV_REPORT)"
-CALL_TEST := sh -c "cd $(REPO_DIR_DOCKER) && $(BUSTED) --pattern=$(TEST_FILE_PATTERN) $(TESTS_DIR)"
+TEST_COMMAND := cd $(REPO_DIR_DOCKER) && $(BUSTED) --pattern=$(TEST_FILE_PATTERN) $(TESTS_DIR)
+CALL_TEST := sh -c "$(TEST_COMMAND)"
 DOCKER_CONFIG_PATH := $(REPO_DIR_LOCAL)/.
 DOCKER_VOLUME := --volume=$(REPO_DIR_LOCAL):/$(ADDON_NAME)
 ESO_TERM_DIR := $(ESO_ADDONS_DIR)/$(ADDON_NAME)
@@ -43,9 +43,14 @@ DOCKER_BUILD := $(DOCKER) build --tag=$(DOCKER_TAG) $(DOCKER_CONFIG_PATH)
 DOCKER_RUN := docker run $(DOCKER_VOLUME) $(DOCKER_OPTS) $(DOCKER_TAG)
 LUACOV_PARSER := $(TOOLS_DIR)/parse_luacov_report.lua
 
+# Variables: level 5
+COVERAGE_COMMAND := cd $(REPO_DIR_DOCKER) && $(LUACOV) && $(LUA) $(LUACOV_PARSER) $(LUACOV_REPORT); $(RM) $(LUACOV_REPORT)
+TEST_AND_COVERAGE_COMMAND := $(TEST_COMMAND) && echo && $(COVERAGE_COMMAND)
+CALL_TEST_AND_COVERAGE := sh -c "$(TEST_AND_COVERAGE_COMMAND)"
+
 .PHONY: all test test_silent generate_addon_txt_file install uninstall build docker_build
 
-all: test coverage
+all: test_and_coverage
 
 debug_docker: docker_build
 	@$(DOCKER_RUN) bash
@@ -53,11 +58,11 @@ debug_docker: docker_build
 test: docker_build
 	@$(DOCKER_RUN) $(CALL_TEST)
 
-test_silent:
+test_silent: docker_build
 	@$(DOCKER_RUN) $(CALL_TEST) > /dev/null
 
-coverage:
-	@$(DOCKER_RUN) $(CALL_COVERAGE)
+test_and_coverage: docker_build
+	$(DOCKER_RUN) $(CALL_TEST_AND_COVERAGE)
 
 generate_addon_txt_file:
 	@$(RM) $(ADDON_TXT_FILE)

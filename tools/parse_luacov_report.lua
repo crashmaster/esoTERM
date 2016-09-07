@@ -49,7 +49,7 @@ local function line_is_not_covered(line)
 end
 
 local function file_summary_found(line)
-    return string.match(line, "^%d+%s+%d+%s+[%d%p]+%s+[%w%p]+$")
+    return string.match(line, "^.*%.lua%s+%d+%s+%d+%s+%d+%.%d+%%$")
 end
 
 local function truncate_if_long(string)
@@ -67,9 +67,9 @@ local function store_not_covered_line(line_nr, line)
 end
 
 local function store_file_summary(line)
-    local percent = string.match(line, "%d+%s+%d+%s+(.*)%s+.*")
-    local file_name = basename(string.match(line, "%d+%s+%d+%s+.*%s+(.*)"))
-    SUMMARY[file_name] = percent
+    local percentage = string.match(line, "^.*%.lua%s+%d+%s+%d+%s+(%d+%.%d+%%)$")
+    local file_name = basename(string.match(line, "^(.*%.lua)%s+%d+%s+%d+%s+%d+%.%d+%%$"))
+    SUMMARY[file_name] = percentage
 end
 
 local function parse_luacov_report_file(file)
@@ -103,13 +103,19 @@ local function parse_luacov_report_file(file)
 end
 
 local function print_output()
+    sorted_by_file_name = {}
+    for n in pairs(SUMMARY) do
+        table.insert(sorted_by_file_name, n)
+    end
+    table.sort(sorted_by_file_name)
     print(string.format("%s\n%s", "Coverage report", SECTION_DELIMITER))
-    for k, v in pairs(SUMMARY) do
-        print(string.format("%7s  %s", v, k))
-        if #NO_COV_TO_FILE[k] > 0 then
+    for i, file_name in ipairs(sorted_by_file_name) do
+        percentage = SUMMARY[file_name]
+        print(string.format("%-30s  %s", file_name, percentage))
+        if #NO_COV_TO_FILE[file_name] > 0 then
             print("    NOT covered lines:")
-            for _, s in ipairs(NO_COV_TO_FILE[k]) do
-                print(string.format("     %s", s))
+            for _, not_covered_line in ipairs(NO_COV_TO_FILE[file_name]) do
+                print(string.format("     %s", not_covered_line))
             end
         end
     end
