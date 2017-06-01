@@ -4,7 +4,7 @@ BUSTED := busted --verbose --coverage
 CP := cp --force
 DOCKER := /usr/bin/docker
 DOCKER_OPTS := --tty --interactive
-ESO_API_VERSION := 100014
+ESO_API_VERSION := 100019
 LUA := lua
 LUACOV := luacov --config .luacov
 LUACOV_REPORT := luacov.report.out
@@ -48,18 +48,19 @@ COVERAGE_COMMAND := cd $(REPO_DIR_DOCKER) && $(LUACOV) && $(LUA) $(LUACOV_PARSER
 TEST_AND_COVERAGE_COMMAND := $(TEST_COMMAND) && echo && $(COVERAGE_COMMAND)
 CALL_TEST_AND_COVERAGE := sh -c "$(TEST_AND_COVERAGE_COMMAND)"
 
-.PHONY: all test test_silent generate_addon_txt_file install uninstall build docker_build
-
 all: test_and_coverage
 
-debug_docker: docker_build
+docker_build:
+	@$(DOCKER_BUILD)
+
+docker_shell: docker_build
 	@$(DOCKER_RUN) bash
 
 test: docker_build
 	@$(DOCKER_RUN) $(CALL_TEST)
 
 test_silent: docker_build
-	@$(DOCKER_RUN) $(CALL_TEST) > /dev/null
+	@$(DOCKER_RUN) $(CALL_TEST) > /dev/null 2>&1
 
 test_and_coverage: docker_build
 	$(DOCKER_RUN) $(CALL_TEST_AND_COVERAGE)
@@ -89,5 +90,14 @@ build: generate_addon_txt_file
 	@$(RM) $(BUILD_PKG_DIR)
 	@ls $(BUILD_DIR)/$(PKG_NAME)
 
-docker_build:
-	@$(DOCKER_BUILD)
+.PHONY: \
+	all \
+	build \
+	docker_build \
+	docker_shell \
+	generate_addon_txt_file \
+	install \
+	test \
+	test_and_coverage \
+	test_silent \
+	uninstall
